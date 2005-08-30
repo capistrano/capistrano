@@ -1,4 +1,5 @@
 require 'time'
+require 'switchtower/scm/base'
 
 module SwitchTower
   module SCM
@@ -21,13 +22,7 @@ module SwitchTower
     # Also, you can specify the CVS_RSH variable to use on the remote machine(s)
     # via the <tt>:cvs_rsh</tt> variable. This defaults to the value of the
     # CVS_RSH environment variable locally, or if it is not set, to "ssh".
-    class Cvs
-      attr_reader :configuration
-
-      def initialize(configuration) #:nodoc:
-        @configuration = configuration
-      end
-
+    class Cvs < Base
       # Return a string representing the date of the last revision (CVS is
       # seriously retarded, in that it does not give you a way to query when
       # the last revision was made to the repository, so this is a fairly
@@ -37,7 +32,7 @@ module SwitchTower
         configuration.logger.debug "querying latest revision..."
         @latest_revision = cvs_log(configuration.local).
           split(/\r?\n/).
-          grep(/^date: (.*?);/) { Time.parse($1).strftime("%FT%T") }.
+          grep(/^date: (.*?);/) { Time.parse($1).strftime("%F %T") }.
           sort.
           last
       end
@@ -49,15 +44,11 @@ module SwitchTower
         cvs_rsh = configuration[:cvs_rsh] || ENV['CVS_RSH'] || "ssh"
 
         command = <<-CMD
-          if [[ -d #{actor.release_path} ]]; then
-            cd #{actor.release_path};
-            CVS_RSH="#{cvs_rsh}" #{cvs} -q up -d#{latest_revision};
-          else
-            cd #{configuration.releases_path};
-            CVS_RSH="#{cvs_rsh}" #{cvs} -d #{configuration.repository} -q co -D #{latest_revision} -d #{latest_revision} #{actor.application};
-          fi
+          cd #{configuration.releases_path};
+          CVS_RSH="#{cvs_rsh}" #{cvs} -d #{configuration.repository} -Q co -D "#{configuration.revision}" -d #{File.basename(actor.release_path)} #{actor.application};
         CMD
-        actor.run(command) do |ch, stream, out|
+
+        run_checkout(actor, command) do |ch, stream, out|
           prefix = "#{stream} :: #{ch[:host]}"
           actor.logger.info out, prefix
           if out =~ %r{password:}
@@ -72,7 +63,7 @@ module SwitchTower
       end
 
       private
-      
+
         def cvs_log(path)
           `cd #{path || "."} && cvs -q log -N -rHEAD`
         end
