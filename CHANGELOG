@@ -1,5 +1,7 @@
 *SVN*
 
+* Make SwitchTower easier to invoke programmatically via SwitchTower::CLI
+
 * Specify the revision to release via the :revision variable (defaults to latest revision)
 
 * Allow variables to be set via the cli using the -s switch
