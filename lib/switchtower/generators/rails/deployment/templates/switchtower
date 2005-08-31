@@ -1,0 +1,12 @@
+#!/usr/local/bin/ruby
+
+VENDOR = File.dirname(__FILE__) + "/../vendor"
+$:.unshift "#{VENDOR}/switchtower/lib"
+
+begin
+  require 'rubygems'
+rescue LoadError
+end
+
+require 'switchtower/cli'
+SwitchTower::CLI.execute!
