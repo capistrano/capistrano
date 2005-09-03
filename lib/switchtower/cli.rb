@@ -72,7 +72,7 @@ module SwitchTower
         opts.separator "Framework Integration Options --------"
         opts.separator ""
 
-        opts.on("-A", "--apply-to [DIRECTORY]",
+        opts.on("-A", "--apply-to DIRECTORY",
           "Create a minimal set of scripts and recipes to use",
           "switchtower with the application at the given",
           "directory. (Currently only works with Rails apps.)"
@@ -112,10 +112,9 @@ module SwitchTower
         opts.separator <<DETAIL.split(/\n/)
 You can use the --apply-to switch to generate a minimal set of switchtower
 scripts and recipes for an application. Just specify the path to the application
-as the argument to --apply-to, and then specify the name of your application,
-like this:
+as the argument to --apply-to, like this:
 
-  switchtower --apply-to ~/projects/myapp MyApplication
+  switchtower --apply-to ~/projects/myapp
 
 You'll wind up with a sample deployment recipe in config/deploy.rb, some new
 rake tasks in config/tasks, and a switchtower script in your script directory.
@@ -197,8 +196,6 @@ DETAIL
         else
           @options[:application] = args.shift
           @options[:recipe_file] = args.shift
-
-          abort "You must specify the name of the application" if @options[:application].nil?
         end
       end
   end

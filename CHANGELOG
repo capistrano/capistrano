@@ -1,5 +1,7 @@
 *SVN*
 
+* Default the application name to "Application" when using --apply-to
+
 * Show the help screen instead of an error when no arguments are given
 
 * Make SwitchTower easier to invoke programmatically via SwitchTower::CLI
