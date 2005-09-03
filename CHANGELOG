@@ -1,5 +1,7 @@
 *SVN*
 
+* Show the help screen instead of an error when no arguments are given
+
 * Make SwitchTower easier to invoke programmatically via SwitchTower::CLI
 
 * Specify the revision to release via the :revision variable (defaults to latest revision)

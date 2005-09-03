@@ -123,7 +123,12 @@ rake tasks in config/tasks, and a switchtower script in your script directory.
 (Currently, --apply-to only works with Rails applications.)
 DETAIL
 
-        opts.parse!(args)
+        if args.empty?
+          puts opts
+          exit
+        else
+          opts.parse!(args)
+        end
       end
 
       check_options!
