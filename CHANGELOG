@@ -1,5 +1,7 @@
 *SVN*
 
+* Make default tasks work only on app/db/web roles, so that additional roles may be created for boxes with specific needs without needing to (for instance) deploy the app to those boxes
+
 * Default the application name to "Application" when using --apply-to
 
 * Show the help screen instead of an error when no arguments are given

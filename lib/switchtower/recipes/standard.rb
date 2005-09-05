@@ -24,7 +24,7 @@ task :show_tasks do
 end
 
 desc "Set up the expected application directory structure on all boxes"
-task :setup do
+task :setup, :roles => [:app, :db, :web] do
   run <<-CMD
     mkdir -p -m 775 #{releases_path} #{shared_path}/system &&
     mkdir -p -m 777 #{shared_path}/log
@@ -53,7 +53,7 @@ desc <<DESC
 Update all servers with the latest release of the source code. All this does
 is do a checkout (as defined by the selected scm module).
 DESC
-task :update_code do
+task :update_code, :roles => [:app, :db, :web] do
   on_rollback { delete release_path, :recursive => true }
 
   source.checkout(self)
@@ -69,7 +69,7 @@ desc <<DESC
 Rollback the latest checked-out version to the previous one by fixing the
 symlinks and deleting the current release from all servers.
 DESC
-task :rollback_code do
+task :rollback_code, :roles => [:app, :db, :web] do
   if releases.length < 2
     raise "could not rollback the code because there is no prior release"
   else
@@ -84,7 +84,7 @@ desc <<DESC
 Update the 'current' symlink to point to the latest version of
 the application's code.
 DESC
-task :symlink do
+task :symlink, :roles => [:app, :db, :web] do
   on_rollback { run "ln -nfs #{previous_release} #{current_path}" }
   run "ln -nfs #{current_release} #{current_path}"
 end
