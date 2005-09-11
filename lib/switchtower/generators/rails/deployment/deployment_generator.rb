@@ -10,9 +10,10 @@ class DeploymentGenerator < Rails::Generator::NamedBase
     record do |m|
       m.directory "script"
       m.file "switchtower", File.join("script", "switchtower")
-      m.directory "config/tasks"
+      m.directory "config"
       m.template "deploy.rb", File.join("config", "#{recipe_file}.rb")
-      m.template "switchtower.rake", File.join("config", "tasks", "switchtower.rake")
+      m.directory "lib/tasks"
+      m.template "switchtower.rake", File.join("lib", "tasks", "switchtower.rake")
     end
   end
 
