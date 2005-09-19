@@ -1,5 +1,7 @@
 *SVN*
 
+* Default parameters work correctly with the generator #2218 [Scott Barron]
+
 * Attempt to require 'rubygems' explicitly when running the switchtower utility #2134
 
 * Make default tasks work only on app/db/web roles, so that additional roles may be created for boxes with specific needs without needing to (for instance) deploy the app to those boxes
