@@ -1,5 +1,7 @@
 *SVN*
 
+* Remove trailing newlines from commands to prevent trailing backslash #2141
+
 * Default parameters work correctly with the generator #2218 [Scott Barron]
 
 * Attempt to require 'rubygems' explicitly when running the switchtower utility #2134

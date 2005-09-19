@@ -7,7 +7,7 @@ module SwitchTower
 
     def initialize(servers, command, callback, options, actor) #:nodoc:
       @servers = servers
-      @command = command.gsub(/\r?\n/, "\\\n")
+      @command = command.strip.gsub(/\r?\n/, "\\\n")
       @callback = callback
       @options = options
       @actor = actor
