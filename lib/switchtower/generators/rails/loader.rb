@@ -10,8 +10,8 @@ module SwitchTower
           :switchtower, File.dirname(__FILE__))
 
         args = ["deployment"]
-        args << options[:application] || "Application"
-        args << options[:recipe_file] || "deploy"
+        args << (options[:application] || "Application")
+        args << (options[:recipe_file] || "deploy")
 
         Rails::Generator::Scripts::Generate.new.run(args)
       end
