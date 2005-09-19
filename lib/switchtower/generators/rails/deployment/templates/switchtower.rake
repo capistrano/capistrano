@@ -4,17 +4,17 @@
 
 desc "Push the latest revision into production using the release manager"
 task :deploy do
-  system "script/switchtower -vvvv -r config/<%= recipe_file %> -a deploy"
+  system "switchtower -vvvv -r config/<%= recipe_file %> -a deploy"
 end
 
 desc "Rollback to the release before the current release in production"
 task :rollback do
-  system "script/switchtower -vvvv -r config/<%= recipe_file %> -a rollback"
+  system "switchtower -vvvv -r config/<%= recipe_file %> -a rollback"
 end
 
 desc "Enumerate all available deployment tasks"
 task :show_deploy_tasks do
-  system "script/switchtower -r config/<%= recipe_file %> -a show_tasks"
+  system "switchtower -r config/<%= recipe_file %> -a show_tasks"
 end
 
 desc "Execute a specific action using the release manager"
@@ -24,5 +24,5 @@ task :remote_exec do
   end
 
   actions = ENV['ACTION'].split(",").map { |a| "-a #{a}" }.join(" ")
-  system "script/switchtower -vvvv -r config/<%= recipe_file %> #{actions}"
+  system "switchtower -vvvv -r config/<%= recipe_file %> #{actions}"
 end

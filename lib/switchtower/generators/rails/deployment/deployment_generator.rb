@@ -8,8 +8,6 @@ class DeploymentGenerator < Rails::Generator::NamedBase
 
   def manifest
     record do |m|
-      m.directory "script"
-      m.file "switchtower", File.join("script", "switchtower")
       m.directory "config"
       m.template "deploy.rb", File.join("config", "#{recipe_file}.rb")
       m.directory "lib/tasks"
