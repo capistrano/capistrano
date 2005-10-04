@@ -12,6 +12,11 @@ task :rollback do
   system "switchtower -vvvv -r config/<%= recipe_file %> -a rollback"
 end
 
+desc "Describe the differences between HEAD and the last production release"
+task :diff_from_last_deploy do
+  system "switchtower -vvvv -r config/<%= recipe_file %> -a diff_from_last_deploy"
+end
+
 desc "Enumerate all available deployment tasks"
 task :show_deploy_tasks do
   system "switchtower -r config/<%= recipe_file %> -a show_tasks"
