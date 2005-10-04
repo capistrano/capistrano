@@ -135,6 +135,28 @@ task :deploy do
   restart
 end
 
+desc <<DESC
+Similar to deploy, but it runs the migrate task on the new release before
+updating the symlink. (Note that the update in this case is not atomic,
+and transactions are not used, because migrations are not guaranteed to be
+reversible.)
+DESC
+task :deploy_with_migrations do
+  update_code
+
+  begin
+    old_migrate_target = migrate_target
+    set :migrate_target, :latest
+    migrate
+  ensure
+    set :migrate_target, old_migrate_target
+  end
+
+  symlink
+
+  restart
+end
+
 desc "A macro-task that rolls back the code and restarts the application servers."
 task :rollback do
   rollback_code
