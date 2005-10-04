@@ -34,6 +34,33 @@ module SwitchTower
         @latest_revision
       end
 
+      # Return the number of the revision currently deployed.
+      def current_revision(actor)
+        latest = actor.releases.last
+        grep = %(grep " #{latest}$" #{configuration.deploy_to}/revisions.log)
+        result = ""
+        actor.run(grep, :once => true) do |ch, str, out|
+          result << out if str == :out
+          raise "could not determine current revision" if str == :err
+        end
+
+        date, time, user, rev, dir = result.split
+        raise "current revision not found in revisions.log" unless dir == latest
+
+        rev.to_i
+      end
+
+      # Return a string containing the diff between the two revisions. +from+
+      # and +to+ may be in any format that svn recognizes as a valid revision
+      # identifier. If +from+ is +nil+, it defaults to the last deployed
+      # revision. If +to+ is +nil+, it defaults to HEAD.
+      def diff(actor, from=nil, to=nil)
+        from ||= current_revision(actor)
+        to ||= "HEAD"
+
+        `svn diff #{configuration.repository}@#{from} #{configuration.repository}@#{to}`
+      end
+
       # Check out (on all servers associated with the current task) the latest
       # revision. Uses the given actor instance to execute the command. If
       # svn asks for a password this will automatically provide it (assuming

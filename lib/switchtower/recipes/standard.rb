@@ -162,3 +162,14 @@ task :rollback do
   rollback_code
   restart
 end
+
+desc <<DESC
+Displays the diff between HEAD and what was last deployed. (Not available
+with all SCM's.)
+DESC
+task :diff_from_last_deploy do
+  diff = source.diff(self)
+  puts
+  puts diff
+  puts
+end
