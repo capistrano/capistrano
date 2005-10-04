@@ -66,7 +66,7 @@ module SwitchTower
           "Specify a variable and it's value to set. This",
           "will be set after loading all recipe files."
         ) do |pair|
-          name, value = pair.split(/=/)
+          name, value = pair.split(/=/, 2)
           @options[:vars][name.to_sym] = value
         end
 

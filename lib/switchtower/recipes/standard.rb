@@ -8,6 +8,8 @@
 #   processes.
 # * There is a script in script/ called "reap" that restarts the FCGI processes
 
+set :rake, "rake"
+
 desc "Enumerate and describe every available task."
 task :show_tasks do
   keys = tasks.keys.sort_by { |a| a.to_s }
@@ -94,13 +96,30 @@ task :restart, :roles => :app do
   sudo "#{current_path}/script/reap"
 end
 
+set :migrate_target, :current
+set :migrate_env, ""
+
 desc <<DESC
-Run the migrate task in the version of the app indicated by the 'current'
-symlink. This means you should not invoke this task until the symlink has
-been updated to the most recent version.
+Run the migrate rake task. By default, it runs this in the version of the app
+indicated by the 'current' symlink. (This means you should not invoke this task
+until the symlink has been updated to the most recent version.) However, you
+can specify a different release via the migrate_target variable, which must be
+one of "current" (for the default behavior), or "latest" (for the latest release
+to be deployed with the update_code task). You can also specify additional
+environment variables to pass to rake via the migrate_env variable. Finally, you
+can specify the full path to the rake executable by setting the rake variable.
 DESC
 task :migrate, :roles => :db, :only => { :primary => true } do
-  run "cd #{current_path} && rake RAILS_ENV=production migrate"
+  directory = case migrate_target.to_sym
+    when :current then current_path
+    when :latest  then current_release
+    else
+      raise ArgumentError,
+        "you must specify one of current or latest for migrate_target"
+  end
+
+  run "cd #{directory} && " +
+      "#{rake} RAILS_ENV=production #{migrate_env} migrate"
 end
 
 desc <<DESC
