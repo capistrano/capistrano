@@ -50,9 +50,11 @@ module SwitchTower
           "be specified, and are loaded in the given order."
         ) { |value| @options[:actions] << value }
 
-        opts.on("-p", "--password PASSWORD",
-          "The password to use when connecting.",
-          "(Default: prompt for password)"
+        opts.on("-p", "--password [PASSWORD]",
+          "The password to use when connecting. If the switch",
+          "is given without a password, the password will be",
+          "prompted for immediately. (Default: prompt for password",
+          "the first time it is needed.)"
         ) { |value| @options[:password] = value }
 
         opts.on("-r", "--recipe RECIPE",
@@ -132,20 +134,24 @@ DETAIL
 
       check_options!
 
-      unless @options.has_key?(:password)
-        @options[:password] = Proc.new do
-          sync = STDOUT.sync
-          begin
-            echo false
-            STDOUT.sync = true
-            print "Password: "
-            STDIN.gets.chomp
-          ensure
-            echo true
-            STDOUT.sync = sync
-            puts
-          end
+      password_proc = Proc.new do
+        sync = STDOUT.sync
+        begin
+          echo false
+          STDOUT.sync = true
+          print "Password: "
+          STDIN.gets.chomp
+        ensure
+          echo true
+          STDOUT.sync = sync
+          puts
         end
+      end
+
+      if !@options.has_key?(:password)
+        @options[:password] = password_proc
+      elsif !@options[:password]
+        @options[:password] = password_proc.call
       end
     end
 
