@@ -1,5 +1,11 @@
 *SVN*
 
+* Add deploy_with_migrations task.
+
+* Make the migrate task more customizable.
+
+* If no password is given with the -p switch, prompt for password immediately.
+
 * Do not install a switchtower stub in the script directory. Assume the switchtower executable is in the path.
 
 * Remove trailing newlines from commands to prevent trailing backslash #2141
