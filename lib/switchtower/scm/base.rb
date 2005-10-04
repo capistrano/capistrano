@@ -13,6 +13,14 @@ module SwitchTower
         nil
       end
 
+      def current_revision(actor)
+        raise "#{self.class} doesn't support querying the deployed revision"
+      end
+
+      def diff(actor, from=nil, to=nil)
+        raise "#{self.class} doesn't support diff(from, to)"
+      end
+
       private
 
         def run_checkout(actor, guts, &block)

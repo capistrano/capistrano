@@ -1,5 +1,7 @@
 *SVN*
 
+* Add diff_from_last_deploy task (currently only works with subversion)
+
 * Add deploy_with_migrations task.
 
 * Make the migrate task more customizable.
