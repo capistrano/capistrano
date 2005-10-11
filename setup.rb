@@ -1137,7 +1137,9 @@ class Installer
   end
 
   def install_dir_bin(rel)
-    install_files collect_filenames_auto(), "#{config('bin-dir')}/#{rel}", 0755
+    list = collect_filenames_auto
+    install_files list, "#{config('bin-dir')}/#{rel}", 0755
+    install_cmd_files list, "#{config('bin-dir')}/#{rel}", 0755
   end
 
   def install_dir_lib(rel)
@@ -1153,6 +1155,19 @@ class Installer
 
   def install_dir_data(rel)
     install_files collect_filenames_auto(), "#{config('data-dir')}/#{rel}", 0644
+  end
+
+  def install_cmd_files(list, dest, mode)
+    if Config::CONFIG["arch"] =~ /dos|win32/i
+      mkdir_p dest, @options['install-prefix']
+      list.each do |fname|
+        next if no_harm?
+        File.open(File.join(dest, "#{fname}.cmd"), "w") do |file|
+          file.puts "@ruby \"#{File.join(dest, fname)}\" %*"
+        end
+        File.chmod mode, File.join(dest, "#{fname}.cmd")
+      end
+    end
   end
 
   def install_files(list, dest, mode)
