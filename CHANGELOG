@@ -1,5 +1,7 @@
 *SVN*
 
+* Use -S switch to set variables before reading recipe files #2242
+
 * Have setup.rb create a switchtower.cmd file on Win32 platforms #2402
 
 * Add diff_from_last_deploy to the rails switchtower rakefile template

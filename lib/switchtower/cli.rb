@@ -36,7 +36,8 @@ module SwitchTower
 
     def initialize(args = ARGV)
       @args = args
-      @options = { :verbose => 0, :recipes => [], :actions => [], :vars => {} }
+      @options = { :verbose => 0, :recipes => [], :actions => [], :vars => {},
+        :pre_vars => {} }
 
       OptionParser.new do |opts|
         opts.banner = "Usage: #{$0} [options] [args]"
@@ -68,6 +69,14 @@ module SwitchTower
         ) do |pair|
           name, value = pair.split(/=/, 2)
           @options[:vars][name.to_sym] = value
+        end
+
+        opts.on("-S", "--set-before NAME=VALUE",
+          "Specify a variable and it's value to set. This",
+          "will be set BEFORE loading all recipe files."
+        ) do |pair|
+          name, value = pair.split(/=/, 2)
+          @options[:pre_vars][name.to_sym] = value
         end
 
         opts.separator ""
@@ -171,7 +180,10 @@ DETAIL
         config.set :password, options[:password]
         config.set :pretend, options[:pretend]
 
-        config.load "standard" # load the standard recipe definition
+        options[:pre_vars].each { |name, value| config.set(name, value) }
+
+        # load the standard recipe definition
+        config.load "standard"
 
         options[:recipes].each { |recipe| config.load(recipe) }
         options[:vars].each { |name, value| config.set(name, value) }
