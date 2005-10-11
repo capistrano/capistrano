@@ -1,5 +1,7 @@
 *SVN*
 
+* Have setup.rb create a switchtower.cmd file on Win32 platforms #2402
+
 * Add diff_from_last_deploy to the rails switchtower rakefile template
 
 * Add diff_from_last_deploy task (currently only works with subversion)
