@@ -33,7 +33,7 @@ task :setup, :roles => [:app, :db, :web] do
   CMD
 end
 
-desc <<DESC
+desc <<-DESC
 Disable the web server by writing a "maintenance.html" file to the web
 servers. The servers must be configured to detect the presence of this file,
 and if it is present, always display it instead of performing the request.
@@ -51,7 +51,7 @@ task :enable_web, :roles => :web do
   delete "#{shared_path}/system/maintenance.html"
 end
 
-desc <<DESC
+desc <<-DESC
 Update all servers with the latest release of the source code. All this does
 is do a checkout (as defined by the selected scm module).
 DESC
@@ -67,7 +67,7 @@ task :update_code, :roles => [:app, :db, :web] do
   CMD
 end
 
-desc <<DESC
+desc <<-DESC
 Rollback the latest checked-out version to the previous one by fixing the
 symlinks and deleting the current release from all servers.
 DESC
@@ -82,7 +82,7 @@ task :rollback_code, :roles => [:app, :db, :web] do
   end
 end
 
-desc <<DESC
+desc <<-DESC
 Update the 'current' symlink to point to the latest version of
 the application's code.
 DESC
@@ -99,7 +99,7 @@ end
 set :migrate_target, :current
 set :migrate_env, ""
 
-desc <<DESC
+desc <<-DESC
 Run the migrate rake task. By default, it runs this in the version of the app
 indicated by the 'current' symlink. (This means you should not invoke this task
 until the symlink has been updated to the most recent version.) However, you
@@ -122,7 +122,7 @@ task :migrate, :roles => :db, :only => { :primary => true } do
       "#{rake} RAILS_ENV=production #{migrate_env} migrate"
 end
 
-desc <<DESC
+desc <<-DESC
 A macro-task that updates the code, fixes the symlink, and restarts the
 application servers.
 DESC
@@ -135,7 +135,7 @@ task :deploy do
   restart
 end
 
-desc <<DESC
+desc <<-DESC
 Similar to deploy, but it runs the migrate task on the new release before
 updating the symlink. (Note that the update in this case is not atomic,
 and transactions are not used, because migrations are not guaranteed to be
@@ -163,7 +163,7 @@ task :rollback do
   restart
 end
 
-desc <<DESC
+desc <<-DESC
 Displays the diff between HEAD and what was last deployed. (Not available
 with all SCM's.)
 DESC
