@@ -93,7 +93,7 @@ end
 
 desc "Restart the FCGI processes on the app server."
 task :restart, :roles => :app do
-  sudo "#{current_path}/script/reap"
+  sudo "#{current_path}/script/process reaper"
 end
 
 set :migrate_target, :current
