@@ -1,5 +1,7 @@
 *SVN*
 
+* Use process reaper instead of custom reap script for restarting
+
 * Use -S switch to set variables before reading recipe files #2242
 
 * Have setup.rb create a switchtower.cmd file on Win32 platforms #2402
