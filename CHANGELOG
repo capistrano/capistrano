@@ -1,5 +1,7 @@
 *SVN*
 
+* Added ssh_options variable to configure the SSH connection parameters #2734 [jerrett@bravenet.com]
+
 * Require Net::SSH 1.0.3
 
 

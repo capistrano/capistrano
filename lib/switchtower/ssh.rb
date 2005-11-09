@@ -14,12 +14,11 @@ module SwitchTower
       password_value = nil
 
       begin
-        Net::SSH.start(server,
-          :username => config.user,
-          :password => password_value,
-          :port => port,
-          :auth_methods => methods.shift,
-          &block)
+        ssh_options = { :username => config.user,
+                        :password => password_value,
+                        :port => port,
+                        :auth_methods => methods.shift }.merge(config.ssh_options)
+        Net::SSH.start(server,ssh_options,&block)
       rescue Net::SSH::AuthenticationFailed
         raise if methods.empty?
         password_value = config.password

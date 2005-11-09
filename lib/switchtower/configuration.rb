@@ -43,7 +43,9 @@ module SwitchTower
       set :gateway,     nil
       set :user,        nil
       set :password,    nil
-
+      
+      set :ssh_options, Hash.new
+						
       set :deploy_to,   Proc.new { "/u/apps/#{application}" }
 
       set :version_dir, DEFAULT_VERSION_DIR_NAME
