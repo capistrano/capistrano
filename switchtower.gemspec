@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.bindir = "bin"
   s.executables << "switchtower"
 
-  s.add_dependency 'net-ssh', '>= 1.0.2'
+  s.add_dependency 'net-ssh', '>= 1.0.3'
 
   s.author = "Jamis Buck"
   s.email = "jamis@37signals.com"

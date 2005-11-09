@@ -6,7 +6,7 @@ SwitchTower was originally designed to simplify and automate deployment of web a
 
 == Dependencies
 
-SwitchTower depends upon the Net::SSH library by Jamis Buck (http://net-ssh.rubyforge.org). Net::SSH itself depends on the Needle library (http://needle.rubyforge.org), also by Jamis Buck.
+SwitchTower depends upon the Net::SSH library by Jamis Buck (http://net-ssh.rubyforge.org). Net::SSH itself depends on the Needle library (http://needle.rubyforge.org), also by Jamis Buck. If you are on Windows, you must have at least Net::SSH 1.0.3 installed.
 
 == Assumptions
 
