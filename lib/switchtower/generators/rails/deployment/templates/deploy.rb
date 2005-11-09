@@ -39,6 +39,12 @@ role :db,  "db02.example.com", "db03.example.com"
 # set :gateway, "gate.host.com"  # default to no gateway
 
 # =============================================================================
+# SSH OPTIONS
+# =============================================================================
+# ssh_options[:keys] = %w(/path/to/my/key /path/to/another/key)
+# ssh_options[:port] = 25
+
+# =============================================================================
 # TASKS
 # =============================================================================
 # Define tasks that run on all (or only some) of the machines. You can specify
