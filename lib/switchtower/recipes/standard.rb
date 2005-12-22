@@ -173,3 +173,8 @@ task :diff_from_last_deploy do
   puts diff
   puts
 end
+
+desc "Update the currently released version of the software directly via an SCM update operation"
+task :update_current do
+  source.update(self)
+end

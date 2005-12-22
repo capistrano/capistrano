@@ -21,6 +21,10 @@ module SwitchTower
         raise "#{self.class} doesn't support diff(from, to)"
       end
 
+      def update(actor)
+        raise "#{self.class} doesn't support update(actor)"
+      end
+
       private
 
         def run_checkout(actor, guts, &block)
@@ -30,12 +34,27 @@ module SwitchTower
           command = <<-STR
             if [[ ! -d #{configuration.release_path} ]]; then
               #{guts}
-              echo `date +"%Y-%m-%d %H:%M:%S"` $USER #{configuration.revision} #{directory} >> #{log};
-              chmod 666 #{log};
+              #{logging_commands(directory)}
             fi
           STR
 
           actor.run(command, &block)
+        end
+        
+        def run_update(actor, guts, &block)
+          command = <<-STR
+            #{guts}
+            #{logging_commands}
+          STR
+
+          actor.run(command, &block)
+        end
+
+        def logging_commands(directory = nil)
+          log = "#{configuration.deploy_to}/revisions.log"
+
+          "echo `date +\"%Y-%m-%d %H:%M:%S\"` $USER #{configuration.revision} #{directory} >> #{log}; " +
+          "chmod 666 #{log};"
         end
     end
 
