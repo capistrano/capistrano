@@ -25,6 +25,7 @@ class MockConfiguration < Hash
   def initialize(*args)
     super
     self[:release_path] = "/path/to/releases/version"
+    self[:ssh_options] = {}
   end
 
   def logger
