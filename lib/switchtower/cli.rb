@@ -120,7 +120,7 @@ module SwitchTower
         end
 
         opts.separator ""
-        opts.separator <<DETAIL.split(/\n/)
+        opts.separator <<-DETAIL.split(/\n/)
 You can use the --apply-to switch to generate a minimal set of switchtower
 scripts and recipes for an application. Just specify the path to the application
 as the argument to --apply-to, like this:
