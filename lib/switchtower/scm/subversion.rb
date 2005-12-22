@@ -67,9 +67,10 @@ module SwitchTower
       # the requested password is the same as the password for logging into the
       # remote server.)
       def checkout(actor)
-        svn = configuration[:svn] ? configuration[:svn] : "svn"
+        svn = configuration[:svn] || "svn"
+        op  = configuration[:checkout] || "co"
 
-        command = "#{svn} co -q -r#{configuration.revision} #{configuration.repository} #{actor.release_path};"
+        command = "#{svn} #{op} -q -r#{configuration.revision} #{configuration.repository} #{actor.release_path};"
 
         run_checkout(actor, command) do |ch, stream, out|
           prefix = "#{stream} :: #{ch[:host]}"

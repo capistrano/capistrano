@@ -1,5 +1,7 @@
 *SVN*
 
+* Use the :checkout variable to determine what operation to use for svn checkouts (instead of co, like "export").
+
 * The Rails rake tasks now load ST directly, instead of invoking it via system
 
 * Added ssh_options variable to configure the SSH connection parameters #2734 [jerrett@bravenet.com]

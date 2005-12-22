@@ -86,6 +86,14 @@ MSG
     assert_match %r{/path/to/svn}, @actor.command
   end
 
+  def test_checkout_via_export
+    @actor.story = []
+    @config[:checkout] = "export"
+    assert_nothing_raised { @scm.checkout(@actor) }
+    assert_nil @actor.channels.last.sent_data
+    assert_match %r{/path/to/svn export}, @actor.command
+  end
+
   def test_checkout_needs_ssh_password
     @actor.story = [[:out, "Password: "]]
     assert_nothing_raised { @scm.checkout(@actor) }
