@@ -17,7 +17,7 @@ def switchtower_invoke(*actions)
   SwitchTower::CLI.new(args).execute!
 end
 
-desc "Push the latest revision into production using the release manager"
+desc "Push the latest revision into production"
 task :deploy do
   switchtower_invoke :deploy
 end
@@ -37,7 +37,7 @@ task :show_deploy_tasks do
   switchtower_invoke :show_tasks
 end
 
-desc "Execute a specific action using the release manager"
+desc "Execute a specific action using switchtower"
 task :remote_exec do
   unless ENV['ACTION']
     raise "Please specify an action (or comma separated list of actions) via the ACTION environment variable"
