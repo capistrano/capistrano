@@ -67,37 +67,49 @@ module SwitchTower
       # the requested password is the same as the password for logging into the
       # remote server.)
       def checkout(actor)
-        svn = configuration[:svn] || "svn"
-        op  = configuration[:checkout] || "co"
-
+        op = configuration[:checkout] || "co"
         command = "#{svn} #{op} -q -r#{configuration.revision} #{configuration.repository} #{actor.release_path};"
+        run_checkout(actor, command, &svn_stream_handler(actor)) 
+      end
 
-        run_checkout(actor, command) do |ch, stream, out|
-          prefix = "#{stream} :: #{ch[:host]}"
-          actor.logger.info out, prefix
-          if out =~ /^Password.*:/
-            actor.logger.info "subversion is asking for a password", prefix
-            ch.send_data "#{actor.password}\n"
-          elsif out =~ %r{\(yes/no\)}
-            actor.logger.info "subversion is asking whether to connect or not",
-              prefix
-            ch.send_data "yes\n"
-          elsif out =~ %r{passphrase}
-            message = "subversion needs your key's passphrase, sending empty string"
-            actor.logger.info message, prefix
-            ch.send_data "\n"
-          elsif out =~ %r{The entry \'(\w+)\' is no longer a directory}
-            message = "subversion can't update because directory '#{$1}' was replaced. Please add it to svn:ignore."
-            actor.logger.info message, prefix
-            raise message
-          end
-        end
+      # Update the current release in-place. This assumes that the original
+      # deployment was made using checkout, and not something like export.
+      def update(actor)
+        command = "cd #{actor.current_path}; #{svn} up -q;"
+        run_update(actor, command, &svn_stream_handler(actor)) 
       end
 
       private
 
+        def svn
+          configuration[:svn] || "svn"
+        end
+
         def svn_log(path)
           `svn log -q -rhead #{path}`
+        end
+        
+        def svn_stream_handler(actor)
+          Proc.new do |ch, stream, out|
+            prefix = "#{stream} :: #{ch[:host]}"
+            actor.logger.info out, prefix
+            if out =~ /^Password.*:/
+              actor.logger.info "subversion is asking for a password", prefix
+              ch.send_data "#{actor.password}\n"
+            elsif out =~ %r{\(yes/no\)}
+              actor.logger.info "subversion is asking whether to connect or not",
+                prefix
+              ch.send_data "yes\n"
+            elsif out =~ %r{passphrase}
+              message = "subversion needs your key's passphrase, sending empty string"
+              actor.logger.info message, prefix
+              ch.send_data "\n"
+            elsif out =~ %r{The entry \'(\w+)\' is no longer a directory}
+              message = "subversion can't update because directory '#{$1}' was replaced. Please add it to svn:ignore."
+              actor.logger.info message, prefix
+              raise message
+            end
+          end
         end
     end
 

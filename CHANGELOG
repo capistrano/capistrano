@@ -1,5 +1,7 @@
 *SVN*
 
+* Add an "update_current" task that will do an svn up on the current release
+
 * Use the :checkout variable to determine what operation to use for svn checkouts (instead of co, like "export").
 
 * The Rails rake tasks now load ST directly, instead of invoking it via system

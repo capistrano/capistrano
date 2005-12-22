@@ -51,6 +51,7 @@ class ScmSubversionTest < Test::Unit::TestCase
 
   def setup
     @config = MockConfiguration.new
+    @config[:current_path] = "/mwa/ha/ha/current"
     @config[:repository] = "/hello/world"
     @config[:svn] = "/path/to/svn"
     @config[:password] = "chocolatebrownies"
@@ -92,6 +93,14 @@ MSG
     assert_nothing_raised { @scm.checkout(@actor) }
     assert_nil @actor.channels.last.sent_data
     assert_match %r{/path/to/svn export}, @actor.command
+  end
+
+  def test_update
+    @actor.story = []
+    assert_nothing_raised { @scm.update(@actor) }
+    assert_nil @actor.channels.last.sent_data
+puts @actor.command
+    assert_match %r{/path/to/svn up}, @actor.command
   end
 
   def test_checkout_needs_ssh_password
