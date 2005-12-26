@@ -99,7 +99,6 @@ MSG
     @actor.story = []
     assert_nothing_raised { @scm.update(@actor) }
     assert_nil @actor.channels.last.sent_data
-puts @actor.command
     assert_match %r{/path/to/svn up}, @actor.command
   end
 
