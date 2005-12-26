@@ -1,5 +1,6 @@
 require 'erb'
 require 'switchtower/command'
+require 'switchtower/transfer'
 require 'switchtower/gateway'
 require 'switchtower/ssh'
 
@@ -27,10 +28,12 @@ module SwitchTower
     class <<self
       attr_accessor :connection_factory
       attr_accessor :command_factory
+      attr_accessor :transfer_factory
     end
 
     self.connection_factory = DefaultConnectionFactory
     self.command_factory = Command
+    self.transfer_factory = Transfer
 
     # The configuration instance associated with this actor.
     attr_reader :configuration
@@ -131,15 +134,7 @@ module SwitchTower
 
       logger.debug "executing #{cmd.strip.inspect}"
 
-      # get the currently executing task and determine which servers it uses
-      servers = tasks[task_call_frames.last.name].servers(configuration)
-      servers = servers.first if options[:once]
-      logger.trace "servers: #{servers.inspect}"
-
-      if !pretend
-        # establish connections to those servers, as necessary
-        establish_connections(servers)
-
+      execute_on_servers(options) do |servers|
         # execute the command on each server in parallel
         command = self.class.command_factory.new(servers, cmd, block, options, self)
         command.process! # raises an exception if command fails on any server
@@ -158,13 +153,21 @@ module SwitchTower
     # the current task. If <tt>:mode</tt> is specified it is used to set the
     # mode on the file.
     def put(data, path, options={})
-      # Poor-man's SFTP... just run a cat on the remote end, and send data
-      # to it.
+      if SwitchTower::SFTP
+        execute_on_servers(options) do |servers|
+          transfer = self.class.transfer_factory.new(servers, self, path, :data => data,
+            :mode => options[:mode])
+          transfer.process!
+        end
+      else
+        # Poor-man's SFTP... just run a cat on the remote end, and send data
+        # to it.
 
-      cmd = "cat > #{path}"
-      cmd << " && chmod #{options[:mode].to_s(8)} #{path}" if options[:mode]
-      run(cmd, options.merge(:data => data + "\n\4")) do |ch, stream, out|
-        logger.important out, "#{stream} :: #{ch[:host]}" if out == :err
+        cmd = "cat > #{path}"
+        cmd << " && chmod #{options[:mode].to_s(8)} #{path}" if options[:mode]
+        run(cmd, options.merge(:data => data + "\n\4")) do |ch, stream, out|
+          logger.important out, "#{stream} :: #{ch[:host]}" if out == :err
+        end
       end
     end
 
@@ -337,6 +340,18 @@ module SwitchTower
 
       def needs_gateway?
         gateway && !@established_gateway
+      end
+
+      def execute_on_servers(options)
+        servers = tasks[task_call_frames.last.name].servers(configuration)
+        servers = servers.first if options[:once]
+        logger.trace "servers: #{servers.inspect}"
+
+        if !pretend
+          # establish connections to those servers, as necessary
+          establish_connections(servers)
+          yield servers
+        end
       end
 
       def method_missing(sym, *args, &block)
