@@ -4,11 +4,17 @@
 #   application servers.
 # * The :web role has been defined as the set of machines consisting of the
 #   web servers.
-# * The Rails spinner and reaper scripts are being used to manage the FCGI
+# * The :db role has been defined as the set of machines consisting of the
+#   databases, with exactly one set up as the :primary DB server.
+# * The Rails spawner and reaper scripts are being used to manage the FCGI
 #   processes.
-# * There is a script in script/ called "reap" that restarts the FCGI processes
 
 set :rake, "rake"
+
+set :migrate_target, :current
+set :migrate_env, ""
+
+set :restart_via, :sudo
 
 desc "Enumerate and describe every available task."
 task :show_tasks do
@@ -91,13 +97,14 @@ task :symlink, :roles => [:app, :db, :web] do
   run "ln -nfs #{current_release} #{current_path}"
 end
 
-desc "Restart the FCGI processes on the app server."
+desc <<-DESC
+Restart the FCGI processes on the app server. This uses the :restart_via
+variable to determine whether to use sudo or not. By default, :restart_via is
+set to :sudo, but you can set it to :run if you are in a shared environment.
+DESC
 task :restart, :roles => :app do
-  sudo "#{current_path}/script/process/reaper"
+  send(restart_via, "#{current_path}/script/process/reaper")
 end
-
-set :migrate_target, :current
-set :migrate_env, ""
 
 desc <<-DESC
 Run the migrate rake task. By default, it runs this in the version of the app

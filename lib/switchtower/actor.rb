@@ -66,6 +66,7 @@ module SwitchTower
 
       def initialize(name, options)
         @name, @options = name, options
+        @servers = nil
       end
 
       # Returns the list of servers (_not_ connections to servers) that are
@@ -110,7 +111,7 @@ module SwitchTower
         logger.trace "executing task #{name}"
         begin
           push_task_call_frame name
-          result = instance_eval &block
+          result = instance_eval(&block)
         ensure
           pop_task_call_frame
         end

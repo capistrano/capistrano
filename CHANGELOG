@@ -1,5 +1,9 @@
 *SVN*
 
+* Add :restart_via variable for specifying whether restart ought to use :sudo (default, use sudo)
+
+* Use SFTP for file transfers (if available).
+
 * Add an "update_current" task that will do an svn up on the current release
 
 * Use the :checkout variable to determine what operation to use for svn checkouts (instead of co, like "export").
