@@ -24,6 +24,7 @@ module SwitchTower
     def process!
       logger.debug "processing command"
 
+      since = Time.now
       loop do
         active = 0
         @channels.each do |ch|
@@ -33,6 +34,11 @@ module SwitchTower
         end
 
         break if active == 0
+        if Time.now - since >= 1
+          since = Time.now
+          @channels.each { |ch| ping_connection(ch.connection) }
+        end
+        sleep 0.01 # a brief respite, to keep the CPU from going crazy
       end
 
       logger.trace "command finished"
@@ -45,6 +51,13 @@ module SwitchTower
     end
 
     private
+
+      # send an SSH IGNORE packet (this ought to be added to Net::SSH itself,
+      # so that you could just do connection.ping! instead of the cryptic mess
+      # below...
+      def ping_connection(connection)
+        connection.send_message([2, 4, "ping"].pack("cNA*"))
+      end
 
       def open_channels
         @servers.map do |server|
