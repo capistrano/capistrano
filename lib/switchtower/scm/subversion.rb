@@ -68,14 +68,14 @@ module SwitchTower
       # remote server.)
       def checkout(actor)
         op = configuration[:checkout] || "co"
-        command = "#{svn} #{op} -q -r#{configuration.revision} #{configuration.repository} #{actor.release_path};"
+        command = "#{svn} #{op} -q -r#{configuration.revision} #{configuration.repository} #{actor.release_path} &&"
         run_checkout(actor, command, &svn_stream_handler(actor)) 
       end
 
       # Update the current release in-place. This assumes that the original
       # deployment was made using checkout, and not something like export.
       def update(actor)
-        command = "cd #{actor.current_path}; #{svn} up -q;"
+        command = "cd #{actor.current_path} && #{svn} up -q &&"
         run_update(actor, command, &svn_stream_handler(actor)) 
       end
 
