@@ -53,7 +53,7 @@ module SwitchTower
         def logging_commands(directory = nil)
           log = "#{configuration.deploy_to}/revisions.log"
 
-          "echo `date +\"%Y-%m-%d %H:%M:%S\"` $USER #{configuration.revision} #{directory} >> #{log}; " +
+          "echo `date +\"%Y-%m-%d %H:%M:%S\"` $USER #{configuration.revision} #{directory} >> #{log} && " +
           "chmod 666 #{log};"
         end
     end

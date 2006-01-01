@@ -1,5 +1,7 @@
 *SVN*
 
+* Use && as the command separator for the checkouts, so that errors are caught early.
+
 * Ping each SSH connection every 1s during command processing so that long-running commands don't cause the connection to timeout.
 
 * Add a 0.01s sleep during the command loop so that the CPU doesn't go ballistic while ST is doing its thing.
