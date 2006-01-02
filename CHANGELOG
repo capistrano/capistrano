@@ -1,5 +1,13 @@
 *SVN*
 
+* Make CLI#echo available as a class method.
+
+* Add CLI#with_echo.
+
+* Make the default password prompt available as a class method.
+
+# Add documentation for the CLI class.
+
 * Add a sanity check to make sure the correct versions of Net::SSH and Net::SFTP are installed.
 
 * Added a cleanup task to remove unused releases from the deployment directory

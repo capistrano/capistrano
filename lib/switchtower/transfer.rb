@@ -4,7 +4,7 @@ begin
   require 'net/sftp/version'
   sftp_version = [Net::SFTP::Version::MAJOR, Net::SFTP::Version::MINOR, Net::SFTP::Version::TINY]
   required_version = [1,1,0]
-  if !version_check(required_version, sftp_version)
+  if !SwitchTower::Version.check(required_version, sftp_version)
     warn "You have Net::SFTP #{sftp_version.join(".")}, but you need at least #{required_version.join(".")}. Net::SFTP will not be used."
     SwitchTower::SFTP = false
   else
