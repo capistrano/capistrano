@@ -2,11 +2,19 @@ require 'optparse'
 require 'switchtower'
 
 module SwitchTower
+  # The CLI class encapsulates the behavior of switchtower when it is invoked
+  # as a command-line utility. This allows other programs to embed ST and
+  # preserve it's command-line semantics.
   class CLI
+    # Invoke switchtower using the ARGV array as the option parameters. This
+    # is what the command-line switchtower utility does.
     def self.execute!
       new.execute!
     end
 
+    # The following determines whether or not echo-suppression is available.
+    # This requires the termios library to be installed (which, unfortunately,
+    # is not available for Windows).
     begin
       if !defined?(USE_TERMIOS) || USE_TERMIOS
         require 'termios'
@@ -15,7 +23,7 @@ module SwitchTower
       end
 
       # Enable or disable stdin echoing to the terminal.
-      def echo(enable)
+      def self.echo(enable)
         term = Termios::getattr(STDIN)
 
         if enable
@@ -27,13 +35,64 @@ module SwitchTower
         Termios::setattr(STDIN, Termios::TCSANOW, term)
       end
     rescue LoadError
-      def echo(enable)
+      def self.echo(enable)
       end
     end
 
-    attr_reader :options
+    # execute the associated block with echo-suppression enabled. Note that
+    # if termios is not available, echo suppression will not be available
+    # either.
+    def self.with_echo
+      echo(false)
+      yield
+    ensure
+      echo(true)
+    end
+
+    # Prompt for a password using echo suppression.
+    def self.password_prompt(prompt="Password: ")
+      sync = STDOUT.sync
+      begin
+        with_echo do
+          STDOUT.sync = true
+          print(prompt)
+          STDIN.gets.chomp
+        end
+      ensure
+        STDOUT.sync = sync
+        puts
+      end
+    end
+
+    # The array of (unparsed) command-line options
     attr_reader :args
 
+    # The hash of (parsed) command-line options
+    attr_reader :options
+
+    # Create a new CLI instance using the given array of command-line parameters
+    # to initialize it. By default, +ARGV+ is used, but you can specify a
+    # different set of parameters (such as when embedded ST in a program):
+    #
+    #   require 'switchtower/cli'
+    #   SwitchTower::CLI.new(%w(-vvvv -r config/deploy -a update_code)).execute!
+    #
+    # Note that you can also embed ST directly by creating a new Configuration
+    # instance and setting it up, but you'll often wind up duplicating logic
+    # defined in the CLI class. The above snippet, redone using the Configuration
+    # class directly, would look like:
+    #
+    #   require 'switchtower'
+    #   require 'switchtower/cli'
+    #   config = SwitchTower::Configuration.new
+    #   config.logger_level = SwitchTower::Logger::TRACE
+    #   config.set :password, Proc.new { SwitchTower::CLI.password_prompt }
+    #   config.load "standard", "config/deploy"
+    #   config.actor.update_code
+    #
+    # There may be times that you want/need the additional control offered by
+    # manipulating the Configuration directly, but generally interfacing with
+    # the CLI class is recommended.
     def initialize(args = ARGV)
       @args = args
       @options = { :verbose => 0, :recipes => [], :actions => [], :vars => {},
@@ -143,19 +202,7 @@ DETAIL
 
       check_options!
 
-      password_proc = Proc.new do
-        sync = STDOUT.sync
-        begin
-          echo false
-          STDOUT.sync = true
-          print "Password: "
-          STDIN.gets.chomp
-        ensure
-          echo true
-          STDOUT.sync = sync
-          puts
-        end
-      end
+      password_proc = Proc.new { self.class.password_prompt }
 
       if !@options.has_key?(:password)
         @options[:password] = password_proc
@@ -164,6 +211,7 @@ DETAIL
       end
     end
 
+    # Beginning running SwitchTower based on the configured options.
     def execute!
       if !@options[:recipes].empty?
         execute_recipes!
@@ -174,6 +222,8 @@ DETAIL
 
     private
 
+      # Load the recipes specified by the options, and execute the actions
+      # specified.
       def execute_recipes!
         config = SwitchTower::Configuration.new
         config.logger.level = options[:verbose]
@@ -192,6 +242,7 @@ DETAIL
         options[:actions].each { |action| actor.send action }
       end
 
+      # Load the Rails generator and apply it to the specified directory.
       def execute_apply_to!
         require 'switchtower/generators/rails/loader'
         Generators::RailsLoader.load! @options
@@ -200,6 +251,7 @@ DETAIL
       APPLY_TO_OPTIONS = [:apply_to]
       RECIPE_OPTIONS   = [:password]
 
+      # A sanity check to ensure that a valid operation is specified.
       def check_options!
         apply_to_given = !(@options.keys & APPLY_TO_OPTIONS).empty?
         recipe_given   = !(@options.keys & RECIPE_OPTIONS).empty? ||
