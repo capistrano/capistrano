@@ -144,7 +144,7 @@ end
 
 desc <<-DESC
 Similar to deploy, but it runs the migrate task on the new release before
-updating the symlink. (Note that the update in this case is not atomic,
+updating the symlink. (Note that the update in this case it is not atomic,
 and transactions are not used, because migrations are not guaranteed to be
 reversible.)
 DESC
@@ -184,4 +184,22 @@ end
 desc "Update the currently released version of the software directly via an SCM update operation"
 task :update_current do
   source.update(self)
+end
+
+desc <<-DESC
+Removes unused releases from the releases directory. By default, the last 5
+releases are retained, but this can be configured with the 'keep_releases'
+variable.
+DESC
+task :cleanup do
+  count = (self[:keep_releases] || 5).to_i
+  if count >= releases.length
+    logger.important "no old releases to clean up"
+  else
+    logger.info "keeping #{count} of #{releases.length} deployed releases"
+    keepers = (releases - releases.last(count)).map { |release|
+      File.join(releases_path, release) }.join(" ")
+
+    sudo "rm -rf #{keepers}"
+  end
 end

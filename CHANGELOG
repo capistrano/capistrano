@@ -1,5 +1,7 @@
 *SVN*
 
+* Added a cleanup task to remove unused releases from the deployment directory
+
 * Allow password to be reentered on sudo if it was entered incorrectly
 
 * Use && as the command separator for the checkouts, so that errors are caught early.
