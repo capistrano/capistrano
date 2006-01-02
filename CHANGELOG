@@ -1,5 +1,7 @@
 *SVN*
 
+* Handle ssh password prompts like "someone's password:"
+
 * Make CLI#echo available as a class method.
 
 * Add CLI#with_echo.

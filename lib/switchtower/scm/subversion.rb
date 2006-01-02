@@ -93,7 +93,7 @@ module SwitchTower
           Proc.new do |ch, stream, out|
             prefix = "#{stream} :: #{ch[:host]}"
             actor.logger.info out, prefix
-            if out =~ /^Password.*:/
+            if out =~ /\bpassword.*:/i
               actor.logger.info "subversion is asking for a password", prefix
               ch.send_data "#{actor.password}\n"
             elsif out =~ %r{\(yes/no\)}
