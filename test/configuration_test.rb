@@ -207,4 +207,12 @@ class ConfigurationTest < Test::Unit::TestCase
     @config.set :scm, :subversion
     assert_equal "SwitchTower::SCM::Subversion", @config.source.class.name
   end
+
+  def test_get_proc_variable_sets_original_value_hash
+    @config.set :proc, Proc.new { "foo" }
+    assert_nil @config[:original_value][:proc]
+    assert_equal "foo", @config[:proc]
+    assert_not_nil @config[:original_value][:proc]
+    assert @config[:original_value][:proc].respond_to?(:call)
+  end
 end

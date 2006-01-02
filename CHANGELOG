@@ -1,5 +1,7 @@
 *SVN*
 
+* Allow password to be reentered on sudo if it was entered incorrectly
+
 * Use && as the command separator for the checkouts, so that errors are caught early.
 
 * Ping each SSH connection every 1s during command processing so that long-running commands don't cause the connection to timeout.
@@ -18,7 +20,7 @@
 
 * Added ssh_options variable to configure the SSH connection parameters #2734 [jerrett@bravenet.com]
 
-* Require Net::SSH 1.0.3
+* Require Net::SSH 1.0.5
 
 
 *0.9.0* (October 18th, 2005)
