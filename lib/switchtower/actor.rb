@@ -167,7 +167,7 @@ module SwitchTower
         cmd = "cat > #{path}"
         cmd << " && chmod #{options[:mode].to_s(8)} #{path}" if options[:mode]
         run(cmd, options.merge(:data => data + "\n\4")) do |ch, stream, out|
-          logger.important out, "#{stream} :: #{ch[:host]}" if out == :err
+          logger.important out, "#{stream} :: #{ch[:host]}" if stream == :err
         end
       end
     end
@@ -180,9 +180,23 @@ module SwitchTower
         logger.debug(out, "#{stream} :: #{ch[:host]}")
       end
 
+      # in order to prevent _each host_ from prompting when the password was
+      # wrong, let's track which host prompted first and only allow subsequent
+      # prompts from that host.
+      prompt_host = nil
+      
       run "sudo #{command}", options do |ch, stream, out|
         if out =~ /^Password:/
           ch.send_data "#{password}\n"
+        elsif out =~ /try again/
+          if prompt_host.nil? || prompt_host == ch[:host]
+            prompt_host = ch[:host]
+            logger.important out, "#{stream} :: #{ch[:host]}"
+            # reset the password to it's original value and prepare for another
+            # pass (the reset allows the password prompt to be attempted again
+            # if the password variable was originally a proc (the default)
+            set :password, self[:original_value][:password] || self[:password]
+          end
         else
           block.call(ch, stream, out)
         end

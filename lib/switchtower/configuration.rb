@@ -38,6 +38,9 @@ module SwitchTower
       @variables = {}
       @now = Time.now.utc
 
+      # for preserving the original value of Proc-valued variables
+      set :original_value, Hash.new
+
       set :application, nil
       set :repository,  nil
       set :gateway,     nil
@@ -63,10 +66,14 @@ module SwitchTower
 
     alias :[]= :set
 
-    # Access a named variable. If the value of the variable is a Proc instance,
-    # the proc will be invoked and the return value cached and returned.
+    # Access a named variable. If the value of the variable responds_to? :call,
+    # #call will be invoked (without parameters) and the return value cached
+    # and returned.
     def [](variable)
-      set variable, @variables[variable].call if Proc === @variables[variable]
+      if @variables[variable].respond_to?(:call)
+        self[:original_value][variable] = @variables[variable]
+        set variable, @variables[variable].call
+      end
       @variables[variable]
     end
 
