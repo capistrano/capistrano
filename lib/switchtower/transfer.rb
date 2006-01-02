@@ -1,6 +1,15 @@
 begin
+  require 'switchtower/version'
   require 'net/sftp'
-  SwitchTower::SFTP = true
+  require 'net/sftp/version'
+  sftp_version = [Net::SFTP::Version::MAJOR, Net::SFTP::Version::MINOR, Net::SFTP::Version::TINY]
+  required_version = [1,1,0]
+  if !version_check(required_version, sftp_version)
+    warn "You have Net::SFTP #{sftp_version.join(".")}, but you need at least #{required_version.join(".")}. Net::SFTP will not be used."
+    SwitchTower::SFTP = false
+  else
+    SwitchTower::SFTP = true
+  end
 rescue LoadError
   SwitchTower::SFTP = false
 end
