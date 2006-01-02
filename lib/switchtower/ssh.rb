@@ -1,6 +1,16 @@
 require 'net/ssh'
 
 module SwitchTower
+  unless ENV['SKIP_VERSION_CHECK']
+    require 'switchtower/version'
+    require 'net/ssh/version'
+    ssh_version = [Net::SSH::Version::MAJOR, Net::SSH::Version::MINOR, Net::SSH::Version::TINY]
+    required_version = [1,0,5]
+    if !Version.check(required_version, ssh_version)
+      raise "You have Net::SSH #{ssh_version.join(".")}, but you need at least #{required_version.join(".")}"
+    end
+  end
+
   # A helper class for dealing with SSH connections.
   class SSH
     # An abstraction to make it possible to connect to the server via public key

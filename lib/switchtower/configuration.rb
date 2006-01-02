@@ -3,7 +3,6 @@ require 'switchtower/logger'
 require 'switchtower/scm/subversion'
 
 module SwitchTower
-
   # Represents a specific SwitchTower configuration. A Configuration instance
   # may be used to load multiple recipe files, define and describe tasks,
   # define roles, create an actor, and set configuration variables.

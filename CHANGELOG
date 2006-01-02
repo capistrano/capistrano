@@ -1,5 +1,7 @@
 *SVN*
 
+* Add a sanity check to make sure the correct versions of Net::SSH and Net::SFTP are installed.
+
 * Added a cleanup task to remove unused releases from the deployment directory
 
 * Allow password to be reentered on sudo if it was entered incorrectly
