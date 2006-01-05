@@ -56,6 +56,7 @@ module SwitchTower
         @servers.map do |server|
           @actor.sessions[server].open_channel do |channel|
             channel[:host] = server
+            channel[:actor] = @actor # so callbacks can access the actor instance
             channel.request_pty :want_reply => true
 
             channel.on_success do |ch|
