@@ -29,11 +29,17 @@ module SwitchTower
       attr_accessor :connection_factory
       attr_accessor :command_factory
       attr_accessor :transfer_factory
+      attr_accessor :default_io_proc
     end
 
     self.connection_factory = DefaultConnectionFactory
     self.command_factory = Command
     self.transfer_factory = Transfer
+
+    self.default_io_proc = Proc.new do |ch, stream, out|
+      level = out == :error ? :important : :info
+      ch[:actor].logger.send(level, out, "#{stream} :: #{ch[:host]}")
+    end
 
     # The configuration instance associated with this actor.
     attr_reader :configuration
@@ -105,7 +111,7 @@ module SwitchTower
     # Define a new task for this actor. The block will be invoked when this
     # task is called.
     def define_task(name, options={}, &block)
-      @tasks[name] = Task.new(name, options)
+      @tasks[name] = (options[:task_class] || Task).new(name, options)
       define_method(name) do
         send "before_#{name}" if respond_to? "before_#{name}"
         logger.trace "executing task #{name}"
@@ -129,10 +135,7 @@ module SwitchTower
     #
     # If +pretend+ mode is active, this does nothing.
     def run(cmd, options={}, &block)
-      block ||= Proc.new do |ch, stream, out|
-        logger.debug(out, "#{stream} :: #{ch[:host]}")
-      end
-
+      block ||= default_io_proc
       logger.debug "executing #{cmd.strip.inspect}"
 
       execute_on_servers(options) do |servers|
@@ -176,9 +179,7 @@ module SwitchTower
     # the sudo password (if required) is the same as the password for logging
     # in to the server.
     def sudo(command, options={}, &block)
-      block ||= Proc.new do |ch, stream, out|
-        logger.debug(out, "#{stream} :: #{ch[:host]}")
-      end
+      block ||= default_io_proc
 
       # in order to prevent _each host_ from prompting when the password was
       # wrong, let's track which host prompted first and only allow subsequent
@@ -318,6 +319,11 @@ module SwitchTower
     # hook will be executed.
     def on_rollback(&block)
       task_call_frames.last.rollback = block
+    end
+
+    # An instance-level reader for the class' #default_io_proc attribute.
+    def default_io_proc
+      self.class.default_io_proc
     end
 
     private
