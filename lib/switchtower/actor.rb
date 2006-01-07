@@ -326,11 +326,11 @@ module SwitchTower
       self.class.default_io_proc
     end
 
-    private
+    def metaclass
+      class << self; self; end
+    end
 
-      def metaclass
-        class << self; self; end
-      end
+    private
 
       def define_method(name, &block)
         metaclass.send(:define_method, name, &block)
@@ -382,5 +382,6 @@ module SwitchTower
           super
         end
       end
+
   end
 end

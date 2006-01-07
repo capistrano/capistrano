@@ -29,6 +29,9 @@ module SwitchTower
     # determining the release path.
     attr_reader :now
 
+    # The has of variables currently known by the configuration
+    attr_reader :variables
+
     def initialize(actor_class=Actor) #:nodoc:
       @roles = Hash.new { |h,k| h[k] = [] }
       @actor = actor_class.new(self)
@@ -60,6 +63,15 @@ module SwitchTower
 
     # Set a variable to the given value.
     def set(variable, value)
+      # if the variable is uppercase, then we add it as a constant to the
+      # actor. This is to allow uppercase "variables" to be set and referenced
+      # in recipes.
+      if variable.to_s[0].between?(?A, ?Z)
+        klass = @actor.metaclass
+        klass.send(:remove_const, variable) if klass.const_defined?(variable)
+        klass.const_set(variable, value)
+      end
+
       @variables[variable] = value
     end
 
