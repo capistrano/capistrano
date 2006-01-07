@@ -1,5 +1,9 @@
 *0.11.0* *SVN*
 
+* Add default spinner and cold_deploy tasks, and spinner_user variable
+
+* Changed restart_via variable to (boolean) use_sudo
+
 * Only chmod when the revisions.log file is first created
 
 * Make UPPERCASE variables work
