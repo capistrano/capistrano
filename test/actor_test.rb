@@ -4,6 +4,7 @@ require 'stringio'
 require 'test/unit'
 require 'switchtower/actor'
 require 'switchtower/logger'
+require 'switchtower/configuration'
 
 class ActorTest < Test::Unit::TestCase
 
@@ -257,5 +258,13 @@ class ActorTest < Test::Unit::TestCase
 
     @actor.foo
     assert_equal %w(foo after_foo), history
+  end
+
+  def test_uppercase_variables
+    config = SwitchTower::Configuration.new(TestActor)
+    config.set :HELLO, "world"
+    assert_equal "world", config.actor.instance_eval("HELLO")
+    config.set :HELLO, "test"
+    assert_equal "test", config.actor.instance_eval("HELLO")
   end
 end
