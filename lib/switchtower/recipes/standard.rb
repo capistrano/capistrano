@@ -11,6 +11,8 @@
 
 set :rake, "rake"
 
+set :rails_env, :production
+
 set :migrate_target, :current
 set :migrate_env, ""
 
@@ -126,7 +128,7 @@ task :migrate, :roles => :db, :only => { :primary => true } do
   end
 
   run "cd #{directory} && " +
-      "#{rake} RAILS_ENV=production #{migrate_env} migrate"
+      "#{rake} RAILS_ENV=#{rails_env} #{migrate_env} migrate"
 end
 
 desc <<-DESC
