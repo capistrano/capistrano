@@ -4,6 +4,8 @@
 
 * Set :actor key on SSH channel instances
 
+* Added rails_env variable (defaults to production) for use by tasks that employ the RAILS_ENV environment variable
+
 
 *0.10.0* (January 2nd, 2006)
 
