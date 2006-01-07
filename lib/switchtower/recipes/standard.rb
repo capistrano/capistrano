@@ -16,7 +16,10 @@ set :rails_env, :production
 set :migrate_target, :current
 set :migrate_env, ""
 
-set :restart_via, :sudo
+set :use_sudo, true
+set :run_method, Proc.new { use_sudo ? :sudo : :run }
+
+set :spinner_user, :app
 
 desc "Enumerate and describe every available task."
 task :show_tasks do
@@ -100,12 +103,12 @@ task :symlink, :roles => [:app, :db, :web] do
 end
 
 desc <<-DESC
-Restart the FCGI processes on the app server. This uses the :restart_via
-variable to determine whether to use sudo or not. By default, :restart_via is
-set to :sudo, but you can set it to :run if you are in a shared environment.
+Restart the FCGI processes on the app server. This uses the :use_sudo
+variable to determine whether to use sudo or not. By default, :use_sudo is
+set to true, but you can set it to false if you are in a shared environment.
 DESC
 task :restart, :roles => :app do
-  send(restart_via, "#{current_path}/script/process/reaper")
+  send(run_method, "#{current_path}/script/process/reaper")
 end
 
 desc <<-DESC
@@ -191,7 +194,8 @@ end
 desc <<-DESC
 Removes unused releases from the releases directory. By default, the last 5
 releases are retained, but this can be configured with the 'keep_releases'
-variable.
+variable. This will use sudo to do the delete by default, but you can specify
+that run should be used by setting the :use_sudo variable to false.
 DESC
 task :cleanup do
   count = (self[:keep_releases] || 5).to_i
@@ -202,6 +206,26 @@ task :cleanup do
     keepers = (releases - releases.last(count)).map { |release|
       File.join(releases_path, release) }.join(" ")
 
-    sudo "rm -rf #{keepers}"
+    send(run_method, "rm -rf #{keepers}")
   end
+end
+
+desc <<-DESC
+Start the spinner daemon for the application (requires script/spin). This will
+use sudo to start the spinner by default, unless :use_sudo is false. If using
+sudo, you can specify the user that the spinner ought to run as by setting the
+:spinner_user variable (defaults to :app).
+DESC
+task :spinner, :roles => :app do
+  user = (use_sudo && spinner_user) ? "-u #{spinner_user} " : ""
+  send(run_method, "#{user}#{current_path}/script/spin"
+end
+
+desc <<-DESC
+Used only for deploying when the spinner isn't running. It invokes deploy,
+and when it finishes it then invokes the spinner task (to start the spinner).
+DESC
+task :cold_deploy do
+  deploy
+  spinner
 end
