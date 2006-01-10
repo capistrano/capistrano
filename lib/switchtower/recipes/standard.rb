@@ -218,7 +218,7 @@ sudo, you can specify the user that the spinner ought to run as by setting the
 DESC
 task :spinner, :roles => :app do
   user = (use_sudo && spinner_user) ? "-u #{spinner_user} " : ""
-  send(run_method, "#{user}#{current_path}/script/spin"
+  send(run_method, "#{user}#{current_path}/script/spin")
 end
 
 desc <<-DESC
