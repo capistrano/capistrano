@@ -267,4 +267,12 @@ class ActorTest < Test::Unit::TestCase
     config.set :HELLO, "test"
     assert_equal "test", config.actor.instance_eval("HELLO")
   end
+
+  def test_connect_when_no_matching_servers
+    @actor.define_task :foo, :roles => :db, :only => { :fnoofy => true } do
+      run "do this"
+    end
+
+    assert_raises(RuntimeError) { @actor.foo }
+  end
 end

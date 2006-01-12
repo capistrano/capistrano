@@ -364,8 +364,14 @@ module SwitchTower
       end
 
       def execute_on_servers(options)
-        servers = tasks[task_call_frames.last.name].servers(configuration)
-        servers = servers.first if options[:once]
+        task = tasks[task_call_frames.last.name]
+        servers = task.servers(configuration)
+
+        if servers.empty?
+          raise "The #{task.name} task is only run for servers matching #{task.options.inspect}, but no servers matched"
+        end
+
+        servers = [servers.first] if options[:once]
         logger.trace "servers: #{servers.inspect}"
 
         if !pretend
