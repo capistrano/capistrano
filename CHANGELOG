@@ -1,5 +1,7 @@
 *0.11.0* *SVN*
 
+* Add an better error when a task is run and no servers match the required conditions
+
 * Add default spinner and cold_deploy tasks, and spinner_user variable
 
 * Changed restart_via variable to (boolean) use_sudo
