@@ -32,7 +32,7 @@ module SwitchTower
         configuration.logger.debug "querying latest revision..."
         @latest_revision = cvs_log(configuration.local).
           split(/\r?\n/).
-          grep(/^date: (.*?);/) { Time.parse($1).strftime("%F %T") }.
+          grep(/^date: (.*?);/) { Time.parse($1).strftime("%Y-%m-%d %H:%M:%S") }.
           sort.
           last
       end
