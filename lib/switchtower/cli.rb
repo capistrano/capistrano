@@ -86,7 +86,7 @@ module SwitchTower
     #   require 'switchtower/cli'
     #   config = SwitchTower::Configuration.new
     #   config.logger_level = SwitchTower::Logger::TRACE
-    #   config.set :password, Proc.new { SwitchTower::CLI.password_prompt }
+    #   config.set(:password) { SwitchTower::CLI.password_prompt }
     #   config.load "standard", "config/deploy"
     #   config.actor.update_code
     #

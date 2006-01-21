@@ -209,7 +209,7 @@ class ConfigurationTest < Test::Unit::TestCase
   end
 
   def test_get_proc_variable_sets_original_value_hash
-    @config.set :proc, Proc.new { "foo" }
+    @config.set(:proc) { "foo" }
     assert_nil @config[:original_value][:proc]
     assert_equal "foo", @config[:proc]
     assert_not_nil @config[:original_value][:proc]
