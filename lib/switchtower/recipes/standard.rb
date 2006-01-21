@@ -17,7 +17,7 @@ set :migrate_target, :current
 set :migrate_env, ""
 
 set :use_sudo, true
-set :run_method, Proc.new { use_sudo ? :sudo : :run }
+set(:run_method) { use_sudo ? :sudo : :run }
 
 set :spinner_user, :app
 

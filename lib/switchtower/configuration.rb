@@ -51,18 +51,18 @@ module SwitchTower
       
       set :ssh_options, Hash.new
 						
-      set :deploy_to,   Proc.new { "/u/apps/#{application}" }
+      set(:deploy_to)   { "/u/apps/#{application}" }
 
       set :version_dir, DEFAULT_VERSION_DIR_NAME
       set :current_dir, DEFAULT_CURRENT_DIR_NAME
       set :shared_dir,  DEFAULT_SHARED_DIR_NAME
       set :scm,         :subversion
 
-      set :revision,    Proc.new { source.latest_revision }
+      set(:revision)    { source.latest_revision }
     end
 
     # Set a variable to the given value.
-    def set(variable, value)
+    def set(variable, value=nil, &block)
       # if the variable is uppercase, then we add it as a constant to the
       # actor. This is to allow uppercase "variables" to be set and referenced
       # in recipes.
@@ -72,6 +72,7 @@ module SwitchTower
         klass.const_set(variable, value)
       end
 
+      value = block if value.nil? && block_given?
       @variables[variable] = value
     end
 
