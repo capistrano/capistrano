@@ -1,5 +1,7 @@
 *0.11.0* *SVN*
 
+* Add bazaar (v1) SCM module [Edd Dumbill] (#3533)
+
 * Fix stftime format string used in CVS module to be Windows-compatible (fixes #3383)
 
 * Add an better error when a task is run and no servers match the required conditions
