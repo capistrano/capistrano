@@ -203,10 +203,10 @@ task :cleanup do
     logger.important "no old releases to clean up"
   else
     logger.info "keeping #{count} of #{releases.length} deployed releases"
-    keepers = (releases - releases.last(count)).map { |release|
+    directories = (releases - releases.last(count)).map { |release|
       File.join(releases_path, release) }.join(" ")
 
-    send(run_method, "rm -rf #{keepers}")
+    send(run_method, "rm -rf #{directories}")
   end
 end
 
