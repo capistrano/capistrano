@@ -114,7 +114,7 @@ module SwitchTower
       @tasks[name] = (options[:task_class] || Task).new(name, options)
       define_method(name) do
         send "before_#{name}" if respond_to? "before_#{name}"
-        logger.trace "executing task #{name}"
+        logger.debug "executing task #{name}"
         begin
           push_task_call_frame name
           result = instance_eval(&block)
