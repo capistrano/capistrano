@@ -68,7 +68,8 @@ module SwitchTower
       # remote server.)
       def checkout(actor)
         op = configuration[:checkout] || "co"
-        command = "#{svn} #{op} -q -r#{configuration.revision} #{configuration.repository} #{actor.release_path} &&"
+        username = configuration[:svn_username] ? "--username #{configuration[:svn_username]}" : ""
+        command = "#{svn} #{op} #{username} -q -r#{configuration.revision} #{configuration.repository} #{actor.release_path} &&"
         run_checkout(actor, command, &svn_stream_handler(actor)) 
       end
 
@@ -88,14 +89,18 @@ module SwitchTower
         def svn_log(path)
           `svn log -q -rhead #{path}`
         end
-        
+
+        def svn_password
+          configuration[:svn_password] || configuration[:password]
+        end
+
         def svn_stream_handler(actor)
           Proc.new do |ch, stream, out|
             prefix = "#{stream} :: #{ch[:host]}"
             actor.logger.info out, prefix
             if out =~ /\bpassword.*:/i
               actor.logger.info "subversion is asking for a password", prefix
-              ch.send_data "#{actor.password}\n"
+              ch.send_data "#{svn_password}\n"
             elsif out =~ %r{\(yes/no\)}
               actor.logger.info "subversion is asking whether to connect or not",
                 prefix
