@@ -1,5 +1,7 @@
 *0.11.0* *SVN*
 
+* Add optional :svn_username and :svn_password variables
+
 * Allow Proc-valued variables to be set more conveniently (set(:foo) { "bar" })
 
 * Add perforce SCM module [Richard McMahon]

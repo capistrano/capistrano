@@ -84,7 +84,7 @@ MSG
     @actor.story = []
     assert_nothing_raised { @scm.checkout(@actor) }
     assert_nil @actor.channels.last.sent_data
-    assert_match %r{/path/to/svn}, @actor.command
+    assert_match %r{/path/to/svn co\s+-q}, @actor.command
   end
 
   def test_checkout_via_export
@@ -92,7 +92,7 @@ MSG
     @config[:checkout] = "export"
     assert_nothing_raised { @scm.checkout(@actor) }
     assert_nil @actor.channels.last.sent_data
-    assert_match %r{/path/to/svn export}, @actor.command
+    assert_match %r{/path/to/svn export\s+-q}, @actor.command
   end
 
   def test_update
@@ -118,5 +118,20 @@ MSG
     @actor.story = [[:out, "someone's password: "]]
     assert_nothing_raised { @scm.checkout(@actor) }
     assert_equal ["chocolatebrownies\n"], @actor.channels.last.sent_data
+  end
+
+  def test_svn_password
+    @config[:svn_password] = "butterscotchcandies"
+    @actor.story = [[:out, "Password: "]]
+    assert_nothing_raised { @scm.checkout(@actor) }
+    assert_equal ["butterscotchcandies\n"], @actor.channels.last.sent_data
+  end
+
+  def test_svn_username
+    @actor.story = []
+    @config[:svn_username] = "turtledove"
+    assert_nothing_raised { @scm.checkout(@actor) }
+    assert_nil @actor.channels.last.sent_data
+    assert_match %r{/path/to/svn co --username turtledove}, @actor.command
   end
 end
