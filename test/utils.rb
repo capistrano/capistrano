@@ -32,6 +32,14 @@ class MockConfiguration < Hash
     @logger ||= MockLogger.new
   end
 
+  def set(variable, value=nil, &block)
+      self[variable] = value
+  end
+
+  def respond_to?(sym)
+    self.has_key?(sym)
+  end
+
   def method_missing(sym, *args)
     if args.length == 0
       self[sym]

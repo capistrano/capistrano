@@ -9,10 +9,15 @@ class ScmCvsTest < Test::Unit::TestCase
     attr_accessor :story
     attr_reader   :last_path
 
-    def cvs_log(path)
+    def cvs_log(path,branch)
       @last_path = path
       story.shift
     end
+
+    def cvs_branch(path)
+      "deploy-me"
+    end
+
   end
 
   class MockChannel
@@ -160,5 +165,15 @@ MSG
     @actor.story = [[:out, "joetester@rubyforge.org's password: "]]
     assert_nothing_raised { @scm.checkout(@actor) }
     assert_equal ["chocolatebrownies\n"], @actor.channels.last.sent_data
+  end
+
+  def test_current_branch
+    assert_equal "deploy-me", @scm.current_branch
+  end
+
+  def test_default_current_branch
+    @config[:branch] = "default-branch"
+    @scm = CvsTest.new(@config)
+    assert_equal "default-branch", @scm.current_branch
   end
 end
