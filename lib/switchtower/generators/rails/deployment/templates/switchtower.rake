@@ -10,7 +10,11 @@ def switchtower_invoke(*actions)
     # no rubygems to load, so we fail silently
   end
 
-  require 'switchtower/cli'
+  options = actions.last.is_a?(Hash) ? actions.pop : {}
+
+  args = %w[-r config/deploy]
+  verbose = options[:verbose] || "-vvvvv"
+  args << verbose
 
   args = %w[-vvvvv -r config/<%= recipe_file %>]
   args.concat(actions.map { |act| ["-a", act.to_s] }.flatten)
@@ -34,7 +38,7 @@ end
 
 desc "Enumerate all available deployment tasks"
 task :show_deploy_tasks do
-  switchtower_invoke :show_tasks
+  switchtower_invoke :show_tasks, :verbose => ""
 end
 
 desc "Execute a specific action using switchtower"
