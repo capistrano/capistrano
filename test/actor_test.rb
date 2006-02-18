@@ -163,7 +163,7 @@ class ActorTest < Test::Unit::TestCase
       run "do this"
     end
 
-    assert_equal %w(01.example.com 02.example.com 03.example.com 04.example.com 05.example.com 06.example.com 07.example.com all.example.com), @actor.tasks[:foo].servers(@actor.configuration).sort
+    assert_equal %w(01.example.com 02.example.com 03.example.com 04.example.com 05.example.com 06.example.com 07.example.com all.example.com), @actor.tasks[:foo].servers.sort
   end
 
   def test_run_in_task_without_explicit_roles_selects_all_roles
