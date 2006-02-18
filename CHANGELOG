@@ -1,5 +1,7 @@
 *0.11.0* *SVN*
 
+* Add Actor#current_task and simplify Task#servers
+
 * Add Actor#connect! method for working around lazy connection establishing
 
 * Make sure IO::TRUNC is specified for Net::SFTP uploads (#3510)

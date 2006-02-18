@@ -68,18 +68,22 @@ module SwitchTower
 
     # Represents the definition of a single task.
     class Task #:nodoc:
-      attr_reader :name, :options
+      attr_reader :name, :actor, :options
 
-      def initialize(name, options)
-        @name, @options = name, options
+      def initialize(name, actor, options)
+        @name, @actor, @options = name, actor, options
         @servers = nil
       end
 
       # Returns the list of servers (_not_ connections to servers) that are
       # the target of this task.
-      def servers(configuration)
+      def servers
         unless @servers
-          roles = [*(@options[:roles] || configuration.roles.keys)].map { |name| configuration.roles[name] or raise ArgumentError, "task #{self.name.inspect} references non-existant role #{name.inspect}" }.flatten
+          roles = [*(@options[:roles] || actor.configuration.roles.keys)].
+            map { |name|
+              actor.configuration.roles[name] or
+                raise ArgumentError, "task #{self.name.inspect} references non-existant role #{name.inspect}"
+            }.flatten
           only  = @options[:only] || {}
 
           unless only.empty?
@@ -111,7 +115,7 @@ module SwitchTower
     # Define a new task for this actor. The block will be invoked when this
     # task is called.
     def define_task(name, options={}, &block)
-      @tasks[name] = (options[:task_class] || Task).new(name, options)
+      @tasks[name] = (options[:task_class] || Task).new(name, self, options)
       define_method(name) do
         send "before_#{name}" if respond_to? "before_#{name}"
         logger.debug "executing task #{name}"
@@ -334,6 +338,11 @@ module SwitchTower
       execute_on_servers(options) { }
     end
 
+    def current_task
+      return nil if task_call_frames.empty?
+      tasks[task_call_frames.last.name]
+    end
+
     def metaclass
       class << self; self; end
     end
@@ -372,8 +381,8 @@ module SwitchTower
       end
 
       def execute_on_servers(options)
-        task = tasks[task_call_frames.last.name]
-        servers = task.servers(configuration)
+        task = current_task
+        servers = task.servers
 
         if servers.empty?
           raise "The #{task.name} task is only run for servers matching #{task.options.inspect}, but no servers matched"
