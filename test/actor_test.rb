@@ -84,6 +84,12 @@ class ActorTest < Test::Unit::TestCase
     end
   end
 
+  module CustomExtension
+    def do_something_extra(a, b, c)
+      run "echo '#{a} :: #{b} :: #{c}'"
+    end
+  end
+
   def setup
     TestingCommand.reset!
     @actor = TestActor.new(MockConfiguration.new)
@@ -274,5 +280,15 @@ class ActorTest < Test::Unit::TestCase
     end
 
     assert_raises(RuntimeError) { @actor.foo }
+  end
+
+  def test_custom_extension
+    assert SwitchTower.plugin(:custom, CustomExtension)
+    @actor.define_task :foo, :roles => :db do
+      custom.do_something_extra(1, 2, 3)
+    end
+    assert_nothing_raised { @actor.foo }
+    assert TestingCommand.invoked?
+    assert SwitchTower.remove_plugin(:custom)
   end
 end
