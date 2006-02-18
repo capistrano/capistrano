@@ -1,6 +1,7 @@
 require 'switchtower/actor'
 require 'switchtower/logger'
 require 'switchtower/scm/subversion'
+require 'switchtower/extensions'
 
 module SwitchTower
   # Represents a specific SwitchTower configuration. A Configuration instance
