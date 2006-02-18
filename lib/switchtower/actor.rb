@@ -326,6 +326,14 @@ module SwitchTower
       self.class.default_io_proc
     end
 
+    # Used to force connections to be made to the current task's servers.
+    # Connections are normally made lazily in SwitchTower--you can use this
+    # to force them open before performing some operation that might be
+    # time-sensitive.
+    def connect!(options={})
+      execute_on_servers(options) { }
+    end
+
     def metaclass
       class << self; self; end
     end
