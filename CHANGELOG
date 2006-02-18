@@ -1,5 +1,7 @@
 *0.11.0* *SVN*
 
+* Make ST rails rake tasks more configurable
+
 * Add Actor#current_task and simplify Task#servers
 
 * Add Actor#connect! method for working around lazy connection establishing
