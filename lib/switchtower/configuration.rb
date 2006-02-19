@@ -137,7 +137,7 @@ module SwitchTower
 
         load :string => File.read(file), :name => options[:name] || file
       elsif options[:string]
-        logger.debug "loading configuration #{options[:name] || "<eval>"}"
+        logger.trace "loading configuration #{options[:name] || "<eval>"}"
         instance_eval options[:string], options[:name] || "<eval>"
       end
     end
