@@ -1,5 +1,7 @@
 *0.11.0* *SVN*
 
+* Make port selection smarter for gateway connections
+
 * Add extension mechanism for custom ST operations
 
 * Make ST rails rake tasks more configurable

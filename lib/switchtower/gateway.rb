@@ -25,11 +25,14 @@ module SwitchTower
     # The Net::SSH session representing the gateway connection.
     attr_reader :session
 
+    MAX_PORT = 65535
+    MIN_PORT = 1024
+
     def initialize(server, config) #:nodoc:
       @config = config
       @pending_forward_requests = {}
       @mutex = Mutex.new
-      @next_port = 31310
+      @next_port = MAX_PORT
       @terminate_thread = false
 
       waiter = ConditionVariable.new
@@ -79,6 +82,13 @@ module SwitchTower
 
     private
 
+      def next_port
+        port = @next_port
+        @next_port -= 1
+        @next_port = MAX_PORT if @next_port < MIN_PORT
+        port
+      end
+
       def process_next_pending_connection_request
         @mutex.synchronize do
           key = @pending_forward_requests.keys.detect { |k| ConditionVariable === @pending_forward_requests[k] } or return
@@ -86,14 +96,16 @@ module SwitchTower
 
           @config.logger.trace "establishing connection to #{key} via gateway"
 
-          port = @next_port
-          @next_port += 1
+          port = next_port
 
           begin
             @session.forward.local(port, key, 22)
             @pending_forward_requests[key] = SSH.connect('127.0.0.1', @config,
               port)
             @config.logger.trace "connection to #{key} via gateway established"
+          rescue Errno::EADDRINUSE
+            port = next_port
+            retry
           rescue Object
             @pending_forward_requests[key] = nil
             raise
