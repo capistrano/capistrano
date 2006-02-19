@@ -229,3 +229,16 @@ task :cold_deploy do
   deploy
   spinner
 end
+
+desc <<-DESC
+A simple task for performing one-off commands that may not require a full task
+to be written for them. Simply specify the command to execute via the COMMAND
+environment variable. To execute the command only on certain roles, specify
+the ROLES environment variable as a comma-delimited list of role names. Lastly,
+if you want to execute the command via sudo, specify a non-empty value for the
+SUDO environment variable.
+DESC
+task :invoke, :roles => SwitchTower.str2roles(ENV["ROLES"] || "") do
+  method = ENV["SUDO"] ? :sudo : :run
+  send(method, ENV["COMMAND"])
+end
