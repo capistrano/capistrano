@@ -61,7 +61,6 @@ class ScmCvsTest < Test::Unit::TestCase
   def setup
     @config = MockConfiguration.new
     @config[:repository] = ":ext:joetester@rubyforge.org:/hello/world"
-    @config[:local] = "/hello/world"
     @config[:cvs] = "/path/to/cvs"
     @config[:password] = "chocolatebrownies"
     @config[:now] = Time.utc(2005,8,24,12,0,0)
@@ -149,9 +148,17 @@ MSG
   end
 
   def test_latest_revision
+    @config[:local] = "/hello/world"
     @scm.story = [ @log_msg ]
     assert_equal "2004-10-12 02:21:02", @scm.latest_revision
     assert_equal "/hello/world", @scm.last_path
+  end
+
+  def test_latest_with_default_local
+    @config[:local] = nil
+    @scm.story = [ @log_msg ]
+    assert_equal "2004-10-12 02:21:02", @scm.latest_revision
+    assert_equal ".", @scm.last_path
   end
 
   def test_checkout

@@ -32,13 +32,13 @@ module SwitchTower
     # CVS_RSH environment variable locally, or if it is not set, to "ssh".
     class Cvs < Base
       def initialize(configuration)
-          super(configuration)
-          if not @configuration.respond_to?(:branch) then
-              @configuration.set(:branch) { self.current_branch }
-          else
-              @current_branch = @configuration[:branch]
-          end
-      end
+        super(configuration)
+        if not configuration.respond_to?(:branch) then
+          configuration.set(:branch) { self.current_branch }
+        else
+          @current_branch = configuration[:branch]
+        end
+     end
 
       # Return a string representing the date of the last revision (CVS is
       # seriously retarded, in that it does not give you a way to query when
@@ -47,7 +47,7 @@ module SwitchTower
       def latest_revision
         return @latest_revision if @latest_revision
         configuration.logger.debug "querying latest revision..."
-        @latest_revision = cvs_log(configuration.local,configuration.branch).
+        @latest_revision = cvs_log(cvs_local, configuration.branch).
           split(/\r?\n/).
           grep(/^date: (.*?);/) { Time.parse($1).strftime("%Y-%m-%d %H:%M:%S") }.
           sort.
@@ -57,9 +57,9 @@ module SwitchTower
       # Return a string representing the branch that the sandbox
       # relative to <tt>:local</tt> contains.
       def current_branch 
-          return @current_branch if @current_branch
-          configuration.logger.debug "determining current_branch..."
-          @current_branch = cvs_branch(configuration.local)
+        return @current_branch if @current_branch
+        configuration.logger.debug "determining current_branch..."
+        @current_branch = cvs_branch(cvs_local)
       end
 
       # Check out (on all servers associated with the current task) the latest
@@ -100,19 +100,23 @@ module SwitchTower
         # and contains a Line starting with 'T' then this CVS sandbox is
         # 'tagged' with a branch.  In the default case return 'HEAD'
         def cvs_branch(path)
-            branch = "HEAD"
-            branch_file = File.join(path || ".", "CVS", "Tag")
-            if File.exists?(branch_file) then
-                File.open(branch_file) do |f|
-                    possible_branch = f.find { |l| l =~ %r{^T} }
-                    branch = possible_branch.strip[1..-1] if possible_branch
-                end
+          branch = "HEAD"
+          branch_file = File.join(path || ".", "CVS", "Tag")
+          if File.exists?(branch_file) then
+            File.open(branch_file) do |f|
+              possible_branch = f.find { |l| l =~ %r{^T} }
+              branch = possible_branch.strip[1..-1] if possible_branch
             end
-            branch
+          end
+          branch
         end
 
         def cvs_log(path,branch)
           `cd #{path || "."} && cvs -q log -N -r#{branch}`
+        end
+
+        def cvs_local
+          configuration.local || "."
         end
     end
 
