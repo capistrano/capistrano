@@ -3,6 +3,7 @@ require 'switchtower/command'
 require 'switchtower/transfer'
 require 'switchtower/gateway'
 require 'switchtower/ssh'
+require 'switchtower/utils'
 
 module SwitchTower
 
