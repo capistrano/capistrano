@@ -117,11 +117,19 @@ module SwitchTower
     #
     #   load(:string => "set :scm, :subversion"):
     #     Load the given string as a configuration specification.
-    def load(*args)
+    #
+    #   load { ... }
+    #     Load the block in the context of the configuration.
+    def load(*args, &block)
       options = args.last.is_a?(Hash) ? args.pop : {}
       args.each { |arg| load options.merge(:file => arg) }
+      return unless args.empty?
 
-      if options[:file]
+      if block
+        raise "loading a block requires 0 parameters" unless args.empty?
+        load(options.merge(:proc => block))
+
+      elsif options[:file]
         file = options[:file]
         unless file[0] == ?/
           load_paths.each do |path|
@@ -136,9 +144,17 @@ module SwitchTower
         end
 
         load :string => File.read(file), :name => options[:name] || file
+
       elsif options[:string]
         logger.trace "loading configuration #{options[:name] || "<eval>"}"
-        instance_eval options[:string], options[:name] || "<eval>"
+        instance_eval(options[:string], options[:name] || "<eval>")
+
+      elsif options[:proc]
+        logger.trace "loading configuration #{options[:proc].inspect}"
+        instance_eval(&options[:proc])
+
+      else
+        raise ArgumentError, "don't know how to load #{options.inspect}"
       end
     end
 
@@ -176,6 +192,18 @@ module SwitchTower
       end
 
       actor.define_task(name, options, &block)
+    end
+
+    # Require another file. This is identical to the standard require method,
+    # with the exception that it sets the reciever as the "current" configuration
+    # so that third-party task bundles can include themselves relative to
+    # that configuration.
+    def require(*args) #:nodoc:
+      original, SwitchTower.configuration = SwitchTower.configuration, self
+      super
+    ensure
+      # restore the original, so that require's can be nested
+      SwitchTower.configuration = original
     end
 
     # Return the path into which releases should be deployed.
