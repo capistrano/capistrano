@@ -6,7 +6,7 @@ SwitchTower was originally designed to simplify and automate deployment of web a
 
 == Dependencies
 
-SwitchTower depends upon the Net::SSH library by Jamis Buck (http://net-ssh.rubyforge.org). Net::SSH itself depends on the Needle library (http://needle.rubyforge.org), also by Jamis Buck. If you are on Windows, you must have at least Net::SSH 1.0.3 installed.
+SwitchTower depends upon the Net::SSH library by Jamis Buck (http://net-ssh.rubyforge.org). Net::SSH itself depends on the Needle library (http://needle.rubyforge.org), also by Jamis Buck.
 
 == Assumptions
 
@@ -21,7 +21,7 @@ As with the rest of Rails, if you can abide by these assumptions, you can use Sw
 
 == Usage
 
-More documentation is always pending, but you'll want to see the user manual for detailed usage instructions. (The manual is online at http://manuals.rubyonrails.com/read/book/17).
+More documentation is always pending, but you'll want to see the user manual for detailed usage instructions. (The manual is online at http://manuals.rubyonrails.org/read/book/17).
 
 In general, you'll use SwitchTower as follows:
 
@@ -30,6 +30,6 @@ In general, you'll use SwitchTower as follows:
 
 Use the +switchtower+ script as follows:
 
-    switchtower -r deploy -a someaction -vvvv
+    switchtower -r deploy -a someaction -vvv
 
 The <tt>-r</tt> switch specifies the recipe to use, and the <tt>-a</tt> switch specifies which action you want to execute. You can the <tt>-v</tt> switch multiple times (as shown) to increase the verbosity of the output.
