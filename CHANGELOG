@@ -1,5 +1,7 @@
 *0.11.0* *SVN*
 
+* Make CVS module's :local value default to "."
+
 * Add "invoke" task for executing one-off commands
 
 * Make port selection smarter for gateway connections
