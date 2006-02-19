@@ -4,7 +4,7 @@
 
 * Make port selection smarter for gateway connections
 
-* Add extension mechanism for custom ST operations
+* Add extension mechanism for custom ST operations and third-party task libraries
 
 * Make ST rails rake tasks more configurable
 
