@@ -10,6 +10,8 @@ def switchtower_invoke(*actions)
     # no rubygems to load, so we fail silently
   end
 
+  require 'switchtower/cli'
+
   options = actions.last.is_a?(Hash) ? actions.pop : {}
 
   args = %w[-r config/deploy]

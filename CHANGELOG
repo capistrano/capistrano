@@ -1,3 +1,8 @@
+*1.0.1* *SVN*
+
+* Fix broken switchtower_invoke function in switchtower.rake (missing require statement)
+
+
 *1.0.0* (Feburary 18th, 2006)
 
 * Make CVS module's :local value default to "."
