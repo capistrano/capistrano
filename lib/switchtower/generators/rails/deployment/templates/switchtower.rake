@@ -18,7 +18,6 @@ def switchtower_invoke(*actions)
   verbose = options[:verbose] || "-vvvvv"
   args << verbose
 
-  args = %w[-vvvvv -r config/<%= recipe_file %>]
   args.concat(actions.map { |act| ["-a", act.to_s] }.flatten)
   SwitchTower::CLI.new(args).execute!
 end
