@@ -1,4 +1,4 @@
-*1.0.1* *SVN*
+*1.0.1* (February 20th, 2006)
 
 * Fix broken switchtower_invoke function in switchtower.rake (missing require statement)
 
