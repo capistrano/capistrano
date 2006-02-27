@@ -23,15 +23,13 @@ set :spinner_user, :app
 
 desc "Enumerate and describe every available task."
 task :show_tasks do
-  keys = tasks.keys.sort_by { |a| a.to_s }
-  longest = keys.inject(0) { |len,key| key.to_s.length > len ? key.to_s.length : len } + 2
-
   puts "Available tasks"
   puts "---------------"
-  tasks.keys.sort_by { |a| a.to_s }.each do |key|
-    desc = (tasks[key].options[:desc] || "").strip.split(/\r?\n/)
-    puts "%-#{longest}s %s" % [key, desc.shift]
-    puts "%#{longest}s %s" % ["", desc.shift] until desc.empty?
+  each_task do |info|
+    wrap_length = 80 - info[:longest]
+    lines = info[:desc].gsub(/(.{1,#{wrap_length}})(?:\s|\Z)+/, "\\1\n").split(/\n/)
+    puts "%-#{info[:longest]}s %s" % [info[:task], lines.shift]
+    puts "%#{info[:longest]}s %s" % ["", lines.shift] until lines.empty?
     puts
   end
 end

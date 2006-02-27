@@ -1,3 +1,10 @@
+*1.0.2* *SVN*
+
+* Make the generated switchtower.rake file use rake namespaces, and include all default tasks
+
+* Look for config/deploy.rb and stasks file by default
+
+
 *1.0.1* (February 20th, 2006)
 
 * Fix broken switchtower_invoke function in switchtower.rake (missing require statement)
