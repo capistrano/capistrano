@@ -95,7 +95,7 @@ module Capistrano
     # the CLI class is recommended.
     def initialize(args = ARGV)
       @args = args
-      @options = { :verbose => 0, :recipes => [], :actions => [], :vars => {},
+      @options = { :recipes => [], :actions => [], :vars => {},
         :pre_vars => {} }
 
       OptionParser.new do |opts|
@@ -172,7 +172,7 @@ module Capistrano
         opts.on("-v", "--verbose",
           "Specify the verbosity of the output.",
           "May be given multiple times. (Default: silent)"
-        ) { @options[:verbose] += 1 }
+        ) { @options[:verbose] ||= 0; @options[:verbose] += 1 }
 
         opts.on("-V", "--version",
           "Display the version info for this utility"
@@ -254,10 +254,13 @@ DETAIL
 
       APPLY_TO_OPTIONS = [:apply_to]
       RECIPE_OPTIONS   = [:password]
-      DEFAULT_RECIPES  = %w(stasks config/deploy.rb)
+      DEFAULT_RECIPES  = %w(Capfile capfile config/deploy.rb)
 
       # A sanity check to ensure that a valid operation is specified.
       def check_options!
+        # if no verbosity has been specified, be verbose
+        @options[:verbose] = 3 if !@options.has_key?(:verbose)
+
         apply_to_given = !(@options.keys & APPLY_TO_OPTIONS).empty?
         recipe_given   = !(@options.keys & RECIPE_OPTIONS).empty? ||
                          !@options[:recipes].empty? ||
@@ -267,6 +270,7 @@ DETAIL
           abort "You cannot specify both recipe options and framework integration options."
         elsif !apply_to_given
           look_for_default_recipe_file! if @options[:recipes].empty?
+          look_for_raw_actions!
           abort "You must specify at least one recipe" if @options[:recipes].empty?
           abort "You must specify at least one action" if @options[:actions].empty?
         else
@@ -282,6 +286,10 @@ DETAIL
             break
           end
         end
+      end
+
+      def look_for_raw_actions!
+        @options[:actions].concat(@args)
       end
   end
 end
