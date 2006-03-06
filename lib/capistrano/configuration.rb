@@ -1,10 +1,10 @@
-require 'switchtower/actor'
-require 'switchtower/logger'
-require 'switchtower/scm/subversion'
-require 'switchtower/extensions'
+require 'capistrano/actor'
+require 'capistrano/logger'
+require 'capistrano/scm/subversion'
+require 'capistrano/extensions'
 
-module SwitchTower
-  # Represents a specific SwitchTower configuration. A Configuration instance
+module Capistrano
+  # Represents a specific Capistrano configuration. A Configuration instance
   # may be used to load multiple recipe files, define and describe tasks,
   # define roles, create an actor, and set configuration variables.
   class Configuration
@@ -97,8 +97,8 @@ module SwitchTower
         when Class then
           scm.new(self)
         when String, Symbol then
-          require "switchtower/scm/#{scm.to_s.downcase}"
-          SwitchTower::SCM.const_get(scm.to_s.downcase.capitalize).new(self)
+          require "capistrano/scm/#{scm.to_s.downcase}"
+          Capistrano::SCM.const_get(scm.to_s.downcase.capitalize).new(self)
         else
           raise "invalid scm specification: #{scm.inspect}"
       end
@@ -199,11 +199,11 @@ module SwitchTower
     # so that third-party task bundles can include themselves relative to
     # that configuration.
     def require(*args) #:nodoc:
-      original, SwitchTower.configuration = SwitchTower.configuration, self
+      original, Capistrano.configuration = Capistrano.configuration, self
       super
     ensure
       # restore the original, so that require's can be nested
-      SwitchTower.configuration = original
+      Capistrano.configuration = original
     end
 
     # Return the path into which releases should be deployed.

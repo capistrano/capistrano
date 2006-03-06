@@ -1,9 +1,9 @@
 require 'thread'
-require 'switchtower/ssh'
+require 'capistrano/ssh'
 
 Thread.abort_on_exception = true
 
-module SwitchTower
+module Capistrano
 
   # Black magic. It uses threads and Net::SSH to set up a connection to a
   # gateway server, through which connections to other servers may be
@@ -13,8 +13,8 @@ module SwitchTower
   #
   # Usage:
   #
-  #   config = SwitchTower::Configuration.new
-  #   gateway = SwitchTower::Gateway.new('gateway.example.com', config)
+  #   config = Capistrano::Configuration.new
+  #   gateway = Capistrano::Gateway.new('gateway.example.com', config)
   #
   #   sess1 = gateway.connect_to('hidden.example.com')
   #   sess2 = gateway.connect_to('other.example.com')

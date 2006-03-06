@@ -1,20 +1,20 @@
 begin
-  require 'switchtower/version'
+  require 'capistrano/version'
   require 'net/sftp'
   require 'net/sftp/version'
   sftp_version = [Net::SFTP::Version::MAJOR, Net::SFTP::Version::MINOR, Net::SFTP::Version::TINY]
   required_version = [1,1,0]
-  if !SwitchTower::Version.check(required_version, sftp_version)
+  if !Capistrano::Version.check(required_version, sftp_version)
     warn "You have Net::SFTP #{sftp_version.join(".")}, but you need at least #{required_version.join(".")}. Net::SFTP will not be used."
-    SwitchTower::SFTP = false
+    Capistrano::SFTP = false
   else
-    SwitchTower::SFTP = true
+    Capistrano::SFTP = true
   end
 rescue LoadError
-  SwitchTower::SFTP = false
+  Capistrano::SFTP = false
 end
 
-module SwitchTower
+module Capistrano
 
   # This class encapsulates a single file transfer to be performed in parallel
   # across multiple machines, using the SFTP protocol.

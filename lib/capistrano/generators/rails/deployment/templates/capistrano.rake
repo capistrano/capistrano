@@ -1,16 +1,16 @@
 # =============================================================================
-# A set of rake tasks for invoking the SwitchTower automation utility.
+# A set of rake tasks for invoking the Capistrano automation utility.
 # =============================================================================
 
-# Invoke the given actions via SwitchTower
-def switchtower_invoke(*actions)
+# Invoke the given actions via Capistrano
+def capistrano_invoke(*actions)
   begin
     require 'rubygems'
   rescue LoadError
     # no rubygems to load, so we fail silently
   end
 
-  require 'switchtower/cli'
+  require 'capistrano/cli'
 
   options = actions.last.is_a?(Hash) ? actions.pop : {}
 
@@ -19,28 +19,28 @@ def switchtower_invoke(*actions)
   args << verbose
 
   args.concat(actions.map { |act| ["-a", act.to_s] }.flatten)
-  SwitchTower::CLI.new(args).execute!
+  Capistrano::CLI.new(args).execute!
 end
 
 namespace :remote do
-<%- config = SwitchTower::Configuration.new
+<%- config = Capistrano::Configuration.new
     config.load "standard"
     options = { :show_tasks => ", :verbose => ''" }
     config.actor.each_task do |info| -%>
 <%- unless info[:desc].empty? -%>
   desc "<%= info[:desc].scan(/.*?(?:\. |$)/).first.strip.gsub(/"/, "\\\"") %>"
 <%- end -%>
-  task(<%= info[:task].inspect %>) { switchtower_invoke <%= info[:task].inspect %><%= options[info[:task]] %> }
+  task(<%= info[:task].inspect %>) { capistrano_invoke <%= info[:task].inspect %><%= options[info[:task]] %> }
 
 <%- end -%>
-  desc "Execute a specific action using switchtower"
+  desc "Execute a specific action using capistrano"
   task :exec do
     unless ENV['ACTION']
       raise "Please specify an action (or comma separated list of actions) via the ACTION environment variable"
     end
 
     actions = ENV['ACTION'].split(",")
-    switchtower_invoke(*actions)
+    capistrano_invoke(*actions)
   end
 end
 

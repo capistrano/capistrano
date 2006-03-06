@@ -1,11 +1,11 @@
 require 'erb'
-require 'switchtower/command'
-require 'switchtower/transfer'
-require 'switchtower/gateway'
-require 'switchtower/ssh'
-require 'switchtower/utils'
+require 'capistrano/command'
+require 'capistrano/transfer'
+require 'capistrano/gateway'
+require 'capistrano/ssh'
+require 'capistrano/utils'
 
-module SwitchTower
+module Capistrano
 
   # An Actor is the entity that actually does the work of determining which
   # servers should be the target of a particular task, and of executing the
@@ -189,7 +189,7 @@ module SwitchTower
     # the current task. If <tt>:mode</tt> is specified it is used to set the
     # mode on the file.
     def put(data, path, options={})
-      if SwitchTower::SFTP
+      if Capistrano::SFTP
         execute_on_servers(options) do |servers|
           transfer = self.class.transfer_factory.new(servers, self, path, :data => data,
             :mode => options[:mode])
@@ -243,7 +243,7 @@ module SwitchTower
     #
     #   render("something", :foo => "hello")
     #     look for "something.rhtml" in the current directory, or in the
-    #     switchtower/recipes/templates directory, and render it with
+    #     capistrano/recipes/templates directory, and render it with
     #     foo defined as a local variable with the value "hello".
     #
     #   render(:file => "something", :foo => "hello")
@@ -359,7 +359,7 @@ module SwitchTower
     end
 
     # Used to force connections to be made to the current task's servers.
-    # Connections are normally made lazily in SwitchTower--you can use this
+    # Connections are normally made lazily in Capistrano--you can use this
     # to force them open before performing some operation that might be
     # time-sensitive.
     def connect!(options={})

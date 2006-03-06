@@ -1,4 +1,4 @@
-module SwitchTower
+module Capistrano
   module Version #:nodoc:
     # A method for comparing versions of required modules. It expects two
     # arrays as parameters, and returns true if the first is no more than the
