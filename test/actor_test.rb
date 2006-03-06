@@ -2,9 +2,9 @@ $:.unshift File.dirname(__FILE__) + "/../lib"
 
 require 'stringio'
 require 'test/unit'
-require 'switchtower/actor'
-require 'switchtower/logger'
-require 'switchtower/configuration'
+require 'capistrano/actor'
+require 'capistrano/logger'
+require 'capistrano/configuration'
 
 class ActorTest < Test::Unit::TestCase
 
@@ -44,7 +44,7 @@ class ActorTest < Test::Unit::TestCase
     end
   end
 
-  class TestActor < SwitchTower::Actor
+  class TestActor < Capistrano::Actor
     attr_reader :factory
 
     self.connection_factory = TestingConnectionFactory
@@ -80,7 +80,7 @@ class ActorTest < Test::Unit::TestCase
     end
 
     def logger
-      @logger ||= SwitchTower::Logger.new(:output => StringIO.new)
+      @logger ||= Capistrano::Logger.new(:output => StringIO.new)
     end
   end
 
@@ -267,7 +267,7 @@ class ActorTest < Test::Unit::TestCase
   end
 
   def test_uppercase_variables
-    config = SwitchTower::Configuration.new(TestActor)
+    config = Capistrano::Configuration.new(TestActor)
     config.set :HELLO, "world"
     assert_equal "world", config.actor.instance_eval("HELLO")
     config.set :HELLO, "test"
@@ -283,12 +283,12 @@ class ActorTest < Test::Unit::TestCase
   end
 
   def test_custom_extension
-    assert SwitchTower.plugin(:custom, CustomExtension)
+    assert Capistrano.plugin(:custom, CustomExtension)
     @actor.define_task :foo, :roles => :db do
       custom.do_something_extra(1, 2, 3)
     end
     assert_nothing_raised { @actor.foo }
     assert TestingCommand.invoked?
-    assert SwitchTower.remove_plugin(:custom)
+    assert Capistrano.remove_plugin(:custom)
   end
 end

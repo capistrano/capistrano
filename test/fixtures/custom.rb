@@ -1,3 +1,3 @@
-SwitchTower.configuration(:must_exist).load do
+Capistrano.configuration(:must_exist).load do
   set :gateway, "foo"
 end
