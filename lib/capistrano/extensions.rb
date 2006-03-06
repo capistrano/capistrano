@@ -1,6 +1,6 @@
-require 'switchtower/actor'
+require 'capistrano/actor'
 
-module SwitchTower
+module Capistrano
   class ExtensionProxy
     def initialize(actor, mod)
       @actor = actor
@@ -17,9 +17,9 @@ module SwitchTower
   def self.plugin(name, mod)
     return false if EXTENSIONS.has_key?(name)
 
-    SwitchTower::Actor.class_eval <<-STR, __FILE__, __LINE__+1
+    Capistrano::Actor.class_eval <<-STR, __FILE__, __LINE__+1
       def #{name}
-        @__#{name}_proxy ||= SwitchTower::ExtensionProxy.new(self, SwitchTower::EXTENSIONS[#{name.inspect}])
+        @__#{name}_proxy ||= Capistrano::ExtensionProxy.new(self, Capistrano::EXTENSIONS[#{name.inspect}])
       end
     STR
 
@@ -29,7 +29,7 @@ module SwitchTower
 
   def self.remove_plugin(name)
     if EXTENSIONS.delete(name)
-      SwitchTower::Actor.send(:remove_method, name)
+      Capistrano::Actor.send(:remove_method, name)
       return true
     end
 

@@ -1,4 +1,4 @@
-module SwitchTower
+module Capistrano
 
   # This class encapsulates a single command to be executed on a set of remote
   # machines, in parallel.

@@ -1,13 +1,13 @@
 require 'optparse'
-require 'switchtower'
+require 'capistrano'
 
-module SwitchTower
-  # The CLI class encapsulates the behavior of switchtower when it is invoked
+module Capistrano
+  # The CLI class encapsulates the behavior of capistrano when it is invoked
   # as a command-line utility. This allows other programs to embed ST and
   # preserve it's command-line semantics.
   class CLI
-    # Invoke switchtower using the ARGV array as the option parameters. This
-    # is what the command-line switchtower utility does.
+    # Invoke capistrano using the ARGV array as the option parameters. This
+    # is what the command-line capistrano utility does.
     def self.execute!
       new.execute!
     end
@@ -74,19 +74,19 @@ module SwitchTower
     # to initialize it. By default, +ARGV+ is used, but you can specify a
     # different set of parameters (such as when embedded ST in a program):
     #
-    #   require 'switchtower/cli'
-    #   SwitchTower::CLI.new(%w(-vvvv -r config/deploy -a update_code)).execute!
+    #   require 'capistrano/cli'
+    #   Capistrano::CLI.new(%w(-vvvv -r config/deploy -a update_code)).execute!
     #
     # Note that you can also embed ST directly by creating a new Configuration
     # instance and setting it up, but you'll often wind up duplicating logic
     # defined in the CLI class. The above snippet, redone using the Configuration
     # class directly, would look like:
     #
-    #   require 'switchtower'
-    #   require 'switchtower/cli'
-    #   config = SwitchTower::Configuration.new
-    #   config.logger_level = SwitchTower::Logger::TRACE
-    #   config.set(:password) { SwitchTower::CLI.password_prompt }
+    #   require 'capistrano'
+    #   require 'capistrano/cli'
+    #   config = Capistrano::Configuration.new
+    #   config.logger_level = Capistrano::Logger::TRACE
+    #   config.set(:password) { Capistrano::CLI.password_prompt }
     #   config.load "standard", "config/deploy"
     #   config.actor.update_code
     #
@@ -144,7 +144,7 @@ module SwitchTower
 
         opts.on("-A", "--apply-to DIRECTORY",
           "Create a minimal set of scripts and recipes to use",
-          "switchtower with the application at the given",
+          "capistrano with the application at the given",
           "directory. (Currently only works with Rails apps.)"
         ) { |value| @options[:apply_to] = value }
 
@@ -177,21 +177,21 @@ module SwitchTower
         opts.on("-V", "--version",
           "Display the version info for this utility"
         ) do
-          require 'switchtower/version'
-          puts "SwitchTower v#{SwitchTower::Version::STRING}"
+          require 'capistrano/version'
+          puts "Capistrano v#{Capistrano::Version::STRING}"
           exit
         end
 
         opts.separator ""
         opts.separator <<-DETAIL.split(/\n/)
-You can use the --apply-to switch to generate a minimal set of switchtower
+You can use the --apply-to switch to generate a minimal set of capistrano
 scripts and recipes for an application. Just specify the path to the application
 as the argument to --apply-to, like this:
 
-  switchtower --apply-to ~/projects/myapp
+  capistrano --apply-to ~/projects/myapp
 
 You'll wind up with a sample deployment recipe in config/deploy.rb, some new
-rake tasks in config/tasks, and a switchtower script in your script directory.
+rake tasks in config/tasks, and a capistrano script in your script directory.
 
 (Currently, --apply-to only works with Rails applications.)
 DETAIL
@@ -215,7 +215,7 @@ DETAIL
       end
     end
 
-    # Beginning running SwitchTower based on the configured options.
+    # Beginning running Capistrano based on the configured options.
     def execute!
       if !@options[:recipes].empty?
         execute_recipes!
@@ -229,7 +229,7 @@ DETAIL
       # Load the recipes specified by the options, and execute the actions
       # specified.
       def execute_recipes!
-        config = SwitchTower::Configuration.new
+        config = Capistrano::Configuration.new
         config.logger.level = options[:verbose]
         config.set :password, options[:password]
         config.set :pretend, options[:pretend]
@@ -248,7 +248,7 @@ DETAIL
 
       # Load the Rails generator and apply it to the specified directory.
       def execute_apply_to!
-        require 'switchtower/generators/rails/loader'
+        require 'capistrano/generators/rails/loader'
         Generators::RailsLoader.load! @options
       end
 

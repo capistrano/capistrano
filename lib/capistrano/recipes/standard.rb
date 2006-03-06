@@ -236,7 +236,7 @@ the ROLES environment variable as a comma-delimited list of role names. Lastly,
 if you want to execute the command via sudo, specify a non-empty value for the
 SUDO environment variable.
 DESC
-task :invoke, :roles => SwitchTower.str2roles(ENV["ROLES"] || "") do
+task :invoke, :roles => Capistrano.str2roles(ENV["ROLES"] || "") do
   method = ENV["SUDO"] ? :sudo : :run
   send(method, ENV["COMMAND"])
 end

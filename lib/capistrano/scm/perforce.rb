@@ -1,6 +1,6 @@
-require 'switchtower/scm/base'
+require 'capistrano/scm/base'
 
-module SwitchTower
+module Capistrano
   module SCM
 
     # An SCM module for using perforce as your source control tool. 

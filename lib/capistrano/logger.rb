@@ -1,4 +1,4 @@
-module SwitchTower
+module Capistrano
   class Logger #:nodoc:
     attr_accessor :level
 
