@@ -11,7 +11,7 @@ class DeploymentGenerator < Rails::Generator::NamedBase
       m.directory "config"
       m.template "deploy.rb", File.join("config", "#{recipe_file}.rb")
       m.directory "lib/tasks"
-      m.template "switchtower.rake", File.join("lib", "tasks", "switchtower.rake")
+      m.template "capistrano.rake", File.join("lib", "tasks", "capistrano.rake")
     end
   end
 

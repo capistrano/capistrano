@@ -1,7 +1,7 @@
 require 'time'
-require 'switchtower/scm/base'
+require 'capistrano/scm/base'
 
-module SwitchTower
+module Capistrano
   module SCM
 
     # An SCM module for using CVS as your source control tool. You can

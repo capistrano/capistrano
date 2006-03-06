@@ -1,8 +1,8 @@
 require 'net/ssh'
 
-module SwitchTower
+module Capistrano
   unless ENV['SKIP_VERSION_CHECK']
-    require 'switchtower/version'
+    require 'capistrano/version'
     require 'net/ssh/version'
     ssh_version = [Net::SSH::Version::MAJOR, Net::SSH::Version::MINOR, Net::SSH::Version::TINY]
     required_version = [1,0,5]

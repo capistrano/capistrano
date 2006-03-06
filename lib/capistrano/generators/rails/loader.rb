@@ -1,4 +1,4 @@
-module SwitchTower
+module Capistrano
   module Generators
     class RailsLoader
       def self.load!(options)
@@ -7,7 +7,7 @@ module SwitchTower
         require "rails_generator/scripts/generate"
 
         Rails::Generator::Base.sources << Rails::Generator::PathSource.new(
-          :switchtower, File.dirname(__FILE__))
+          :capistrano, File.dirname(__FILE__))
 
         args = ["deployment"]
         args << (options[:application] || "Application")

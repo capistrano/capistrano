@@ -1,4 +1,4 @@
-module SwitchTower
+module Capistrano
   module SCM
 
     # The ancestor class of the various SCM module implementations.
