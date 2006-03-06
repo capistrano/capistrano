@@ -2,10 +2,10 @@ $:.unshift File.dirname(__FILE__) + "/../../lib"
 
 require File.dirname(__FILE__) + "/../utils"
 require 'test/unit'
-require 'switchtower/scm/subversion'
+require 'capistrano/scm/subversion'
 
 class ScmSubversionTest < Test::Unit::TestCase
-  class SubversionTest < SwitchTower::SCM::Subversion
+  class SubversionTest < Capistrano::SCM::Subversion
     attr_accessor :story
     attr_reader   :last_path
 
@@ -61,7 +61,7 @@ class ScmSubversionTest < Test::Unit::TestCase
 ------------------------------------------------------------------------
 r1967 | minam | 2005-08-03 06:59:03 -0600 (Wed, 03 Aug 2005) | 2 lines
 
-Initial commit of the new switchtower utility
+Initial commit of the new capistrano utility
 
 ------------------------------------------------------------------------
 MSG

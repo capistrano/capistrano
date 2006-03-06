@@ -1,7 +1,7 @@
 $:.unshift File.dirname(__FILE__) + "/../lib"
 
 require 'test/unit'
-require 'switchtower/configuration'
+require 'capistrano/configuration'
 require 'flexmock'
 
 class ConfigurationTest < Test::Unit::TestCase
@@ -25,7 +25,7 @@ class ConfigurationTest < Test::Unit::TestCase
   end
 
   def setup
-    @config = SwitchTower::Configuration.new(MockActor)
+    @config = Capistrano::Configuration.new(MockActor)
     @config.set :scm, MockSCM
   end
 
@@ -210,12 +210,12 @@ class ConfigurationTest < Test::Unit::TestCase
 
   def test_set_scm_to_darcs
     @config.set :scm, :darcs
-    assert_equal "SwitchTower::SCM::Darcs", @config.source.class.name
+    assert_equal "Capistrano::SCM::Darcs", @config.source.class.name
   end
 
   def test_set_scm_to_subversion
     @config.set :scm, :subversion
-    assert_equal "SwitchTower::SCM::Subversion", @config.source.class.name
+    assert_equal "Capistrano::SCM::Subversion", @config.source.class.name
   end
 
   def test_get_proc_variable_sets_original_value_hash

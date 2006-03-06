@@ -2,7 +2,7 @@ $:.unshift File.dirname(__FILE__) + "/../lib"
 
 require File.dirname(__FILE__) + "/utils"
 require 'test/unit'
-require 'switchtower/ssh'
+require 'capistrano/ssh'
 
 class SSHTest < Test::Unit::TestCase
   class MockSSH
@@ -30,7 +30,7 @@ class SSHTest < Test::Unit::TestCase
 
   def test_publickey_auth_succeeds_default_port_no_block
     Net.const_during(:SSH, MockSSH) do
-      SwitchTower::SSH.connect('demo.server.i', @config)
+      Capistrano::SSH.connect('demo.server.i', @config)
     end
 
     assert_equal 1, MockSSH.invocations.length
@@ -45,7 +45,7 @@ class SSHTest < Test::Unit::TestCase
 
   def test_publickey_auth_succeeds_explicit_port_no_block
     Net.const_during(:SSH, MockSSH) do
-      SwitchTower::SSH.connect('demo.server.i', @config, 23)
+      Capistrano::SSH.connect('demo.server.i', @config, 23)
     end
 
     assert_equal 1, MockSSH.invocations.length
@@ -55,7 +55,7 @@ class SSHTest < Test::Unit::TestCase
 
   def test_publickey_auth_succeeds_with_block
     Net.const_during(:SSH, MockSSH) do
-      SwitchTower::SSH.connect('demo.server.i', @config) do |session|
+      Capistrano::SSH.connect('demo.server.i', @config) do |session|
       end
     end
 
@@ -67,7 +67,7 @@ class SSHTest < Test::Unit::TestCase
     MockSSH.story << Net::SSH::AuthenticationFailed
 
     Net.const_during(:SSH, MockSSH) do
-      SwitchTower::SSH.connect('demo.server.i', @config)
+      Capistrano::SSH.connect('demo.server.i', @config)
     end
 
     assert_equal 2, MockSSH.invocations.length
@@ -87,7 +87,7 @@ class SSHTest < Test::Unit::TestCase
 
     Net.const_during(:SSH, MockSSH) do
       assert_raises(Net::SSH::AuthenticationFailed) do
-        SwitchTower::SSH.connect('demo.server.i', @config)
+        Capistrano::SSH.connect('demo.server.i', @config)
       end
     end
 
