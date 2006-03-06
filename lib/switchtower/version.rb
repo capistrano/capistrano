@@ -18,13 +18,13 @@ module SwitchTower
       good
     end
 
-    MAJOR = 0
-    MINOR = 10
-    TINY  = 0
+    MAJOR = 1
+    MINOR = 0
+    TINY  = 1
 
     STRING = [MAJOR, MINOR, TINY].join(".")
     
-    SSH_REQUIRED = [1,0,5]
+    SSH_REQUIRED = [1,0,8]
     SFTP_REQUIRED = [1,1,0]
   end
 end

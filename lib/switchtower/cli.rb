@@ -86,7 +86,7 @@ module SwitchTower
     #   require 'switchtower/cli'
     #   config = SwitchTower::Configuration.new
     #   config.logger_level = SwitchTower::Logger::TRACE
-    #   config.set :password, Proc.new { SwitchTower::CLI.password_prompt }
+    #   config.set(:password) { SwitchTower::CLI.password_prompt }
     #   config.load "standard", "config/deploy"
     #   config.actor.update_code
     #
@@ -164,6 +164,10 @@ module SwitchTower
           "of the work that will actually be performed.",
           "Default: don't pretend.)"
         ) { |value| @options[:pretend] = value }
+
+        opts.on("-q", "--quiet",
+          "Make the output as quiet as possible (the default)"
+        ) { @options[:verbose] = 0 }
 
         opts.on("-v", "--verbose",
           "Specify the verbosity of the output.",
@@ -250,6 +254,7 @@ DETAIL
 
       APPLY_TO_OPTIONS = [:apply_to]
       RECIPE_OPTIONS   = [:password]
+      DEFAULT_RECIPES  = %w(stasks config/deploy.rb)
 
       # A sanity check to ensure that a valid operation is specified.
       def check_options!
@@ -261,11 +266,21 @@ DETAIL
         if apply_to_given && recipe_given
           abort "You cannot specify both recipe options and framework integration options."
         elsif !apply_to_given
+          look_for_default_recipe_file! if @options[:recipes].empty?
           abort "You must specify at least one recipe" if @options[:recipes].empty?
           abort "You must specify at least one action" if @options[:actions].empty?
         else
           @options[:application] = args.shift
           @options[:recipe_file] = args.shift
+        end
+      end
+
+      def look_for_default_recipe_file!
+        DEFAULT_RECIPES.each do |file|
+          if File.exist?(file)
+            @options[:recipes] << file
+            break
+          end
         end
       end
   end

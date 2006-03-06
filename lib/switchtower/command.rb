@@ -22,8 +22,6 @@ module SwitchTower
     # fails (non-zero return code) on any of the hosts, this will raise a
     # RuntimeError.
     def process!
-      logger.debug "processing command"
-
       since = Time.now
       loop do
         active = 0

@@ -1,6 +1,7 @@
 require 'switchtower/actor'
 require 'switchtower/logger'
 require 'switchtower/scm/subversion'
+require 'switchtower/extensions'
 
 module SwitchTower
   # Represents a specific SwitchTower configuration. A Configuration instance
@@ -51,18 +52,18 @@ module SwitchTower
       
       set :ssh_options, Hash.new
 						
-      set :deploy_to,   Proc.new { "/u/apps/#{application}" }
+      set(:deploy_to)   { "/u/apps/#{application}" }
 
       set :version_dir, DEFAULT_VERSION_DIR_NAME
       set :current_dir, DEFAULT_CURRENT_DIR_NAME
       set :shared_dir,  DEFAULT_SHARED_DIR_NAME
       set :scm,         :subversion
 
-      set :revision,    Proc.new { source.latest_revision }
+      set(:revision)    { source.latest_revision }
     end
 
     # Set a variable to the given value.
-    def set(variable, value)
+    def set(variable, value=nil, &block)
       # if the variable is uppercase, then we add it as a constant to the
       # actor. This is to allow uppercase "variables" to be set and referenced
       # in recipes.
@@ -72,6 +73,7 @@ module SwitchTower
         klass.const_set(variable, value)
       end
 
+      value = block if value.nil? && block_given?
       @variables[variable] = value
     end
 
@@ -115,11 +117,19 @@ module SwitchTower
     #
     #   load(:string => "set :scm, :subversion"):
     #     Load the given string as a configuration specification.
-    def load(*args)
+    #
+    #   load { ... }
+    #     Load the block in the context of the configuration.
+    def load(*args, &block)
       options = args.last.is_a?(Hash) ? args.pop : {}
       args.each { |arg| load options.merge(:file => arg) }
+      return unless args.empty?
 
-      if options[:file]
+      if block
+        raise "loading a block requires 0 parameters" unless args.empty?
+        load(options.merge(:proc => block))
+
+      elsif options[:file]
         file = options[:file]
         unless file[0] == ?/
           load_paths.each do |path|
@@ -134,9 +144,17 @@ module SwitchTower
         end
 
         load :string => File.read(file), :name => options[:name] || file
+
       elsif options[:string]
-        logger.debug "loading configuration #{options[:name] || "<eval>"}"
-        instance_eval options[:string], options[:name] || "<eval>"
+        logger.trace "loading configuration #{options[:name] || "<eval>"}"
+        instance_eval(options[:string], options[:name] || "<eval>")
+
+      elsif options[:proc]
+        logger.trace "loading configuration #{options[:proc].inspect}"
+        instance_eval(&options[:proc])
+
+      else
+        raise ArgumentError, "don't know how to load #{options.inspect}"
       end
     end
 
@@ -174,6 +192,18 @@ module SwitchTower
       end
 
       actor.define_task(name, options, &block)
+    end
+
+    # Require another file. This is identical to the standard require method,
+    # with the exception that it sets the reciever as the "current" configuration
+    # so that third-party task bundles can include themselves relative to
+    # that configuration.
+    def require(*args) #:nodoc:
+      original, SwitchTower.configuration = SwitchTower.configuration, self
+      super
+    ensure
+      # restore the original, so that require's can be nested
+      SwitchTower.configuration = original
     end
 
     # Return the path into which releases should be deployed.

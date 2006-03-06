@@ -12,37 +12,40 @@ def switchtower_invoke(*actions)
 
   require 'switchtower/cli'
 
-  args = %w[-vvvvv -r config/<%= recipe_file %>]
+  options = actions.last.is_a?(Hash) ? actions.pop : {}
+
+  args = %w[-r config/deploy]
+  verbose = options[:verbose] || "-vvv"
+  args << verbose
+
   args.concat(actions.map { |act| ["-a", act.to_s] }.flatten)
   SwitchTower::CLI.new(args).execute!
 end
 
-desc "Push the latest revision into production"
-task :deploy do
-  switchtower_invoke :deploy
-end
+namespace :remote do
+<%- config = SwitchTower::Configuration.new
+    config.load "standard"
+    options = { :show_tasks => ", :verbose => ''" }
+    config.actor.each_task do |info| -%>
+<%- unless info[:desc].empty? -%>
+  desc "<%= info[:desc].scan(/.*?(?:\. |$)/).first.strip.gsub(/"/, "\\\"") %>"
+<%- end -%>
+  task(<%= info[:task].inspect %>) { switchtower_invoke <%= info[:task].inspect %><%= options[info[:task]] %> }
 
-desc "Rollback to the release before the current release in production"
-task :rollback do
-  switchtower_invoke :rollback
-end
+<%- end -%>
+  desc "Execute a specific action using switchtower"
+  task :exec do
+    unless ENV['ACTION']
+      raise "Please specify an action (or comma separated list of actions) via the ACTION environment variable"
+    end
 
-desc "Describe the differences between HEAD and the last production release"
-task :diff_from_last_deploy do
-  switchtower_invoke :diff_from_last_deploy
-end
-
-desc "Enumerate all available deployment tasks"
-task :show_deploy_tasks do
-  switchtower_invoke :show_tasks
-end
-
-desc "Execute a specific action using switchtower"
-task :remote_exec do
-  unless ENV['ACTION']
-    raise "Please specify an action (or comma separated list of actions) via the ACTION environment variable"
+    actions = ENV['ACTION'].split(",")
+    switchtower_invoke(*actions)
   end
-
-  actions = ENV['ACTION'].split(",")
-  switchtower_invoke(*actions)
 end
+
+desc "Push the latest revision into production (delegates to remote:deploy)"
+task :deploy => "remote:deploy"
+
+desc "Rollback to the release before the current release in production (delegates to remote:rollback)"
+task :rollback => "remote:rollback"

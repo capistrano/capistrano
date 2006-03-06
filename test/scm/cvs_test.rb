@@ -9,10 +9,15 @@ class ScmCvsTest < Test::Unit::TestCase
     attr_accessor :story
     attr_reader   :last_path
 
-    def cvs_log(path)
+    def cvs_log(path,branch)
       @last_path = path
       story.shift
     end
+
+    def cvs_branch(path)
+      "deploy-me"
+    end
+
   end
 
   class MockChannel
@@ -56,7 +61,6 @@ class ScmCvsTest < Test::Unit::TestCase
   def setup
     @config = MockConfiguration.new
     @config[:repository] = ":ext:joetester@rubyforge.org:/hello/world"
-    @config[:local] = "/hello/world"
     @config[:cvs] = "/path/to/cvs"
     @config[:password] = "chocolatebrownies"
     @config[:now] = Time.utc(2005,8,24,12,0,0)
@@ -144,9 +148,17 @@ MSG
   end
 
   def test_latest_revision
+    @config[:local] = "/hello/world"
     @scm.story = [ @log_msg ]
     assert_equal "2004-10-12 02:21:02", @scm.latest_revision
     assert_equal "/hello/world", @scm.last_path
+  end
+
+  def test_latest_with_default_local
+    @config[:local] = nil
+    @scm.story = [ @log_msg ]
+    assert_equal "2004-10-12 02:21:02", @scm.latest_revision
+    assert_equal ".", @scm.last_path
   end
 
   def test_checkout
@@ -160,5 +172,15 @@ MSG
     @actor.story = [[:out, "joetester@rubyforge.org's password: "]]
     assert_nothing_raised { @scm.checkout(@actor) }
     assert_equal ["chocolatebrownies\n"], @actor.channels.last.sent_data
+  end
+
+  def test_current_branch
+    assert_equal "deploy-me", @scm.current_branch
+  end
+
+  def test_default_current_branch
+    @config[:branch] = "default-branch"
+    @scm = CvsTest.new(@config)
+    assert_equal "default-branch", @scm.current_branch
   end
 end

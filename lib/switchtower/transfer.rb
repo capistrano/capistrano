@@ -58,7 +58,7 @@ module SwitchTower
           sftp = @actor.sessions[server].sftp
           sftp.connect unless sftp.state == :open
 
-          sftp.open(@filename, IO::WRONLY | IO::CREAT, @params[:mode] || 0660) do |status, handle|
+          sftp.open(@filename, IO::WRONLY | IO::CREAT | IO::TRUNC, @params[:mode] || 0660) do |status, handle|
             break unless check_status("open #{@filename}", server, status)
             
             logger.info "uploading data to #{server}:#{@filename}"

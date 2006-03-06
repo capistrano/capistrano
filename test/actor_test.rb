@@ -84,6 +84,12 @@ class ActorTest < Test::Unit::TestCase
     end
   end
 
+  module CustomExtension
+    def do_something_extra(a, b, c)
+      run "echo '#{a} :: #{b} :: #{c}'"
+    end
+  end
+
   def setup
     TestingCommand.reset!
     @actor = TestActor.new(MockConfiguration.new)
@@ -163,7 +169,7 @@ class ActorTest < Test::Unit::TestCase
       run "do this"
     end
 
-    assert_equal %w(01.example.com 02.example.com 03.example.com 04.example.com 05.example.com 06.example.com 07.example.com all.example.com), @actor.tasks[:foo].servers(@actor.configuration).sort
+    assert_equal %w(01.example.com 02.example.com 03.example.com 04.example.com 05.example.com 06.example.com 07.example.com all.example.com), @actor.tasks[:foo].servers.sort
   end
 
   def test_run_in_task_without_explicit_roles_selects_all_roles
@@ -274,5 +280,15 @@ class ActorTest < Test::Unit::TestCase
     end
 
     assert_raises(RuntimeError) { @actor.foo }
+  end
+
+  def test_custom_extension
+    assert SwitchTower.plugin(:custom, CustomExtension)
+    @actor.define_task :foo, :roles => :db do
+      custom.do_something_extra(1, 2, 3)
+    end
+    assert_nothing_raised { @actor.foo }
+    assert TestingCommand.invoked?
+    assert SwitchTower.remove_plugin(:custom)
   end
 end

@@ -6,6 +6,8 @@ module SwitchTower
     INFO      = 1
     DEBUG     = 2
     TRACE     = 3
+    
+    MAX_LEVEL = 3
 
     def initialize(options={})
       output = options[:output] || STDERR
@@ -27,12 +29,13 @@ module SwitchTower
 
     def log(level, message, line_prefix=nil)
       if level <= self.level
-        if line_prefix
-          message.split(/\r?\n/).each do |line|
-            @device.print "[#{line_prefix}] #{line.strip}\n"
+        indent = "%*s" % [MAX_LEVEL, "*" * (MAX_LEVEL - level)]
+        message.split(/\r?\n/).each do |line|
+          if line_prefix
+            @device.print "#{indent} [#{line_prefix}] #{line.strip}\n"
+          else
+            @device.puts "#{indent} #{line.strip}\n"
           end
-        else
-          @device.puts message.strip
         end
       end
     end

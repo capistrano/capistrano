@@ -1,4 +1,44 @@
-*0.11.0* *SVN*
+*1.0.2* *SVN*
+
+* Make the generated switchtower.rake file use rake namespaces, and include all default tasks
+
+* Look for config/deploy.rb and stasks file by default
+
+
+*1.0.1* (February 20th, 2006)
+
+* Fix broken switchtower_invoke function in switchtower.rake (missing require statement)
+
+
+*1.0.0* (Feburary 18th, 2006)
+
+* Make CVS module's :local value default to "."
+
+* Add "invoke" task for executing one-off commands
+
+* Make port selection smarter for gateway connections
+
+* Add extension mechanism for custom ST operations and third-party task libraries
+
+* Make ST rails rake tasks more configurable
+
+* Add Actor#current_task and simplify Task#servers
+
+* Add Actor#connect! method for working around lazy connection establishing
+
+* Make sure IO::TRUNC is specified for Net::SFTP uploads (#3510)
+
+* Add branch support to CVS [jeremy@hinegardner.org] (#3596)
+
+* Add bazaar-ng SCM module [Damien Merenne]
+
+* Add optional :svn_username and :svn_password variables
+
+* Allow Proc-valued variables to be set more conveniently (set(:foo) { "bar" })
+
+* Add perforce SCM module [Richard McMahon]
+
+* Add bazaar (v1) SCM module [Edd Dumbill] (#3533)
 
 * Fix stftime format string used in CVS module to be Windows-compatible (fixes #3383)
 

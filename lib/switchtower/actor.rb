@@ -3,6 +3,7 @@ require 'switchtower/command'
 require 'switchtower/transfer'
 require 'switchtower/gateway'
 require 'switchtower/ssh'
+require 'switchtower/utils'
 
 module SwitchTower
 
@@ -68,18 +69,22 @@ module SwitchTower
 
     # Represents the definition of a single task.
     class Task #:nodoc:
-      attr_reader :name, :options
+      attr_reader :name, :actor, :options
 
-      def initialize(name, options)
-        @name, @options = name, options
+      def initialize(name, actor, options)
+        @name, @actor, @options = name, actor, options
         @servers = nil
       end
 
       # Returns the list of servers (_not_ connections to servers) that are
       # the target of this task.
-      def servers(configuration)
+      def servers
         unless @servers
-          roles = [*(@options[:roles] || configuration.roles.keys)].map { |name| configuration.roles[name] or raise ArgumentError, "task #{self.name.inspect} references non-existant role #{name.inspect}" }.flatten
+          roles = [*(@options[:roles] || actor.configuration.roles.keys)].
+            map { |name|
+              actor.configuration.roles[name] or
+                raise ArgumentError, "task #{self.name.inspect} references non-existant role #{name.inspect}"
+            }.flatten
           only  = @options[:only] || {}
 
           unless only.empty?
@@ -111,10 +116,10 @@ module SwitchTower
     # Define a new task for this actor. The block will be invoked when this
     # task is called.
     def define_task(name, options={}, &block)
-      @tasks[name] = (options[:task_class] || Task).new(name, options)
+      @tasks[name] = (options[:task_class] || Task).new(name, self, options)
       define_method(name) do
         send "before_#{name}" if respond_to? "before_#{name}"
-        logger.trace "executing task #{name}"
+        logger.debug "executing task #{name}"
         begin
           push_task_call_frame name
           result = instance_eval(&block)
@@ -124,6 +129,33 @@ module SwitchTower
         send "after_#{name}" if respond_to? "after_#{name}"
         result
       end
+    end
+
+    # Iterates over each task, in alphabetical order. A hash object is
+    # yielded for each task, which includes the task's name (:name), the
+    # length of the longest task name (:longest), and the task's description,
+    # reformatted as a single line (:desc).
+    def each_task
+      keys = tasks.keys.sort_by { |a| a.to_s }
+      longest = keys.inject(0) { |len,key| key.to_s.length > len ? key.to_s.length : len } + 2
+
+      keys.sort_by { |a| a.to_s }.each do |key|
+        desc = (tasks[key].options[:desc] || "").gsub(/(?:\r?\n)+[ \t]*/, " ").strip
+        info = { :task => key, :longest => longest, :desc => desc }
+        yield info
+      end
+    end
+
+    # Dump all tasks and (brief) descriptions in YAML format for consumption
+    # by other processes. Returns a string containing the YAML-formatted data.
+    def dump_tasks
+      data = ""
+      each_task do |info|
+        desc = info[:desc].split(/\. /).first || ""
+        desc << "." if !desc.empty? && desc[-1] != ?.
+        data << "#{info[:task]}: #{desc}\n"
+      end
+      data
     end
 
     # Execute the given command on all servers that are the target of the
@@ -326,6 +358,19 @@ module SwitchTower
       self.class.default_io_proc
     end
 
+    # Used to force connections to be made to the current task's servers.
+    # Connections are normally made lazily in SwitchTower--you can use this
+    # to force them open before performing some operation that might be
+    # time-sensitive.
+    def connect!(options={})
+      execute_on_servers(options) { }
+    end
+
+    def current_task
+      return nil if task_call_frames.empty?
+      tasks[task_call_frames.last.name]
+    end
+
     def metaclass
       class << self; self; end
     end
@@ -364,8 +409,8 @@ module SwitchTower
       end
 
       def execute_on_servers(options)
-        task = tasks[task_call_frames.last.name]
-        servers = task.servers(configuration)
+        task = current_task
+        servers = task.servers
 
         if servers.empty?
           raise "The #{task.name} task is only run for servers matching #{task.options.inspect}, but no servers matched"

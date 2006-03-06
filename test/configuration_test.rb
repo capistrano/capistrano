@@ -125,6 +125,16 @@ class ConfigurationTest < Test::Unit::TestCase
     assert_equal 1, @config.roles[:web].length
   end
 
+  def test_load_proc_explicit
+    @config.load :proc => Proc.new { set :gateway, "nifty.zoo.test" }
+    assert_equal "nifty.zoo.test", @config.gateway
+  end
+
+  def test_load_proc_implicit
+    @config.load { set :gateway, "nifty.zoo.test" }
+    assert_equal "nifty.zoo.test", @config.gateway
+  end
+
   def test_task_without_options
     block = Proc.new { }
     @config.task :hello, &block
@@ -209,10 +219,15 @@ class ConfigurationTest < Test::Unit::TestCase
   end
 
   def test_get_proc_variable_sets_original_value_hash
-    @config.set :proc, Proc.new { "foo" }
+    @config.set(:proc) { "foo" }
     assert_nil @config[:original_value][:proc]
     assert_equal "foo", @config[:proc]
     assert_not_nil @config[:original_value][:proc]
     assert @config[:original_value][:proc].respond_to?(:call)
+  end
+
+  def test_require
+    @config.require "#{File.dirname(__FILE__)}/fixtures/custom"
+    assert_equal "foo", @config.gateway
   end
 end
