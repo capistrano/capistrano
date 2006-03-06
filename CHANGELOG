@@ -1,4 +1,4 @@
-*1.0.2* *SVN*
+*1.1.0* (March 6th, 2006)
 
 * Simplify the generated capistrano.rake file, and make it easier to customize
 
