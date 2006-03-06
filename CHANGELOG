@@ -1,10 +1,12 @@
 *1.0.2* *SVN*
 
+* Use rake-like command-line semantics ("cap deploy", in addition to "cap -a deploy")
+
 * Rename to capistrano
 
 * Make the generated switchtower.rake file use rake namespaces, and include all default tasks
 
-* Look for config/deploy.rb and stasks file by default
+* Look for config/deploy.rb, capfile, and Capfile by default
 
 
 *1.0.1* (February 20th, 2006)
