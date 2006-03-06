@@ -5,11 +5,11 @@ require 'rake/packagetask'
 require 'rake/gempackagetask'
 require 'rake/contrib/rubyforgepublisher'
 
-require "./lib/switchtower/version"
+require "./lib/capistrano/version"
 
-PKG_NAME      = "switchtower"
+PKG_NAME      = "capistrano"
 PKG_BUILD     = ENV['PKG_BUILD'] ? '.' + ENV['PKG_BUILD'] : ''
-PKG_VERSION   = SwitchTower::Version::STRING + PKG_BUILD
+PKG_VERSION   = Capistrano::Version::STRING + PKG_BUILD
 PKG_FILE_NAME = "#{PKG_NAME}-#{PKG_VERSION}"
 
 desc "Default task"
@@ -35,7 +35,7 @@ end
 desc "Build the RDoc API documentation"
 Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = "doc"
-  rdoc.title    = "SwitchTower -- A framework for remote command execution"
+  rdoc.title    = "Capistrano -- A framework for remote command execution"
   rdoc.options << '--line-numbers --inline-source --main README'
   rdoc.rdoc_files.include 'README'
   rdoc.rdoc_files.include 'lib/**/*.rb'

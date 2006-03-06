@@ -1,5 +1,7 @@
 *1.0.2* *SVN*
 
+* Rename to capistrano
+
 * Make the generated switchtower.rake file use rake namespaces, and include all default tasks
 
 * Look for config/deploy.rb and stasks file by default

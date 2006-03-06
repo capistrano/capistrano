@@ -2,10 +2,10 @@ $:.unshift File.dirname(__FILE__) + "/../../lib"
 
 require File.dirname(__FILE__) + "/../utils"
 require 'test/unit'
-require 'switchtower/scm/cvs'
+require 'capistrano/scm/cvs'
 
 class ScmCvsTest < Test::Unit::TestCase
-  class CvsTest < SwitchTower::SCM::Cvs
+  class CvsTest < Capistrano::SCM::Cvs
     attr_accessor :story
     attr_reader   :last_path
 

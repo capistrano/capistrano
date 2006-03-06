@@ -6,6 +6,6 @@ rescue LoadError
   # no rubygems to load, so we fail silently
 end
 
-require 'switchtower/cli'
+require 'capistrano/cli'
 
-SwitchTower::CLI.execute!
+Capistrano::CLI.execute!
