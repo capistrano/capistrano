@@ -1,3 +1,8 @@
+*SVN*
+
+* Fix operator precedence problem in script for touching the revisions.log #3223 [jason.garber@emu.edu]
+
+
 *1.1.0* (March 6th, 2006)
 
 * Simplify the generated capistrano.rake file, and make it easier to customize
