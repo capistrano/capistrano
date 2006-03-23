@@ -93,6 +93,8 @@ class ActorTest < Test::Unit::TestCase
   def setup
     TestingCommand.reset!
     @actor = TestActor.new(MockConfiguration.new)
+    ENV["ROLES"] = nil
+    ENV["HOSTS"] = nil
   end
 
   def test_define_task_creates_method
@@ -190,6 +192,16 @@ class ActorTest < Test::Unit::TestCase
     assert_equal %w(01.example.com 02.example.com all.example.com), @actor.sessions.keys.sort
   end
 
+  def test_run_in_task_with_single_role_selects_that_role_from_environment
+    ENV["ROLES"] = "app"
+    @actor.define_task :foo, :roles => :db do
+      run "do this"
+    end
+
+    @actor.foo
+    assert_equal %w(05.example.com 06.example.com 07.example.com all.example.com), @actor.sessions.keys.sort
+  end
+
   def test_run_in_task_with_multiple_roles_selects_those_roles
     @actor.define_task :foo, :roles => [:db, :web] do
       run "do this"
@@ -199,6 +211,16 @@ class ActorTest < Test::Unit::TestCase
     assert_equal %w(01.example.com 02.example.com 03.example.com 04.example.com all.example.com), @actor.sessions.keys.sort
   end
 
+  def test_run_in_task_with_multiple_roles_selects_those_roles_from_environment
+    ENV["ROLES"] = "app,db"
+    @actor.define_task :foo, :roles => [:db, :web] do
+      run "do this"
+    end
+
+    @actor.foo
+    assert_equal %w(01.example.com 02.example.com 05.example.com 06.example.com 07.example.com all.example.com), @actor.sessions.keys.sort
+  end
+
   def test_run_in_task_with_only_restricts_selected_roles
     @actor.define_task :foo, :roles => :db, :only => { :primary => true } do
       run "do this"
@@ -206,6 +228,44 @@ class ActorTest < Test::Unit::TestCase
 
     @actor.foo
     assert_equal %w(01.example.com), @actor.sessions.keys.sort
+  end
+
+  def test_run_in_task_with_single_host_selected
+    @actor.define_task :foo, :hosts => "01.example.com" do
+      run "do this"
+    end
+
+    @actor.foo
+    assert_equal %w(01.example.com), @actor.sessions.keys.sort
+  end
+
+  def test_run_in_task_with_single_host_selected_from_environment
+    ENV["HOSTS"] = "02.example.com"
+    @actor.define_task :foo, :hosts => "01.example.com" do
+      run "do this"
+    end
+
+    @actor.foo
+    assert_equal %w(02.example.com), @actor.sessions.keys.sort
+  end
+
+  def test_run_in_task_with_multiple_hosts_selected
+    @actor.define_task :foo, :hosts => [ "01.example.com", "07.example.com" ] do
+      run "do this"
+    end
+
+    @actor.foo
+    assert_equal %w(01.example.com 07.example.com), @actor.sessions.keys.sort
+  end
+
+  def test_run_in_task_with_multiple_hosts_selected_from_environment
+    ENV["HOSTS"] = "02.example.com,06.example.com"
+    @actor.define_task :foo, :hosts => [ "01.example.com", "07.example.com" ] do
+      run "do this"
+    end
+
+    @actor.foo
+    assert_equal %w(02.example.com 06.example.com), @actor.sessions.keys.sort
   end
 
   def test_establish_connection_uses_gateway_if_specified

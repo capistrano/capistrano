@@ -1,5 +1,23 @@
 *SVN*
 
+* Added respect for ENV["HOSTS"] that'll be used instead of the roles specified in the task definition [DHH]. Example:
+
+    HOSTS=192.168.0.1 cap setup # one-off setup for that server, doesn't need to be prespecified in the recipes file
+
+* Added respect for ENV["ROLES"] that'll be used instead of the roles specified in the task definition [DHH]. Example:
+
+    task :setup, :roles => [ :app, :web, :db ]
+      # normally this would run every where
+    end
+    
+    ROLES=app cap setup # this will only run for the app role, overwritting the default declaration
+
+* Added :hosts option to task definition that allows you to specify cross-cutting tasks [DHH]. Example:
+
+    task :setup, :hosts => [ "06.example.com", "01.example.com" ] do
+      # this task will happen on 06 and 01 regardless of which roles they belong to
+    end
+
 * Fix operator precedence problem in script for touching the revisions.log #3223 [jason.garber@emu.edu]
 
 
