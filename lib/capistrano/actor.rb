@@ -79,30 +79,49 @@ module Capistrano
       # Returns the list of servers (_not_ connections to servers) that are
       # the target of this task.
       def servers
-        unless @servers
-          roles = [*(@options[:roles] || actor.configuration.roles.keys)].
-            map { |name|
-              actor.configuration.roles[name] or
-                raise ArgumentError, "task #{self.name.inspect} references non-existant role #{name.inspect}"
-            }.flatten
-          only  = @options[:only] || {}
+        @servers ||=
+          begin
+            if hosts = find_hosts
+              @servers = hosts
+            else
+              roles = find_roles
+              only  = @options[:only] || {}
 
-          unless only.empty?
-            roles = roles.delete_if do |role|
-              catch(:done) do
-                only.keys.each do |key|
-                  throw(:done, true) if role.options[key] != only[key]
+              unless only.empty?
+                roles = roles.delete_if do |role|
+                  catch(:done) do
+                    only.keys.each do |key|
+                      throw(:done, true) if role.options[key] != only[key]
+                    end
+                    false
+                  end
                 end
-                false
               end
+
+              @servers = roles.map { |role| role.host }.uniq
             end
           end
-
-          @servers = roles.map { |role| role.host }.uniq
-        end
-
-        @servers
       end
+      
+      private
+        def find_roles
+          role_names = [ *(environment_values(:roles, true) || @options[:roles] || actor.configuration.roles.keys) ]
+          role_names.collect do |name|
+            actor.configuration.roles[name] ||
+              raise(ArgumentError, "task #{self.name.inspect} references non-existant role #{name.inspect}")
+          end.flatten
+        end
+        
+        def find_hosts
+          environment_values(:hosts) || @options[:hosts]
+        end
+        
+        def environment_values(key, use_symbols = false)
+          if variable = ENV[key.to_s.upcase]
+            values = variable.split(",")
+            use_symbols ? values.collect { |e| e.to_sym } : values
+          end
+        end
     end
 
     def initialize(config) #:nodoc:
