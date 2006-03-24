@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix gemspec to include a dependency on rake 0.7 [Jamis Buck]
+
 * Added respect for ENV["HOSTS"] that'll be used instead of the roles specified in the task definition [DHH]. Example:
 
     HOSTS=192.168.0.1 cap setup # one-off setup for that server, doesn't need to be prespecified in the recipes file
