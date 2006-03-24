@@ -110,6 +110,11 @@ module Capistrano
           "be specified, and are loaded in the given order."
         ) { |value| @options[:actions] << value }
 
+        opts.on("-f", "--file FILE",
+          "A recipe file to load. Multiple recipes may",
+          "be specified, and are loaded in the given order."
+        ) { |value| @options[:recipes] << value }
+
         opts.on("-p", "--password [PASSWORD]",
           "The password to use when connecting. If the switch",
           "is given without a password, the password will be",
@@ -119,8 +124,12 @@ module Capistrano
 
         opts.on("-r", "--recipe RECIPE",
           "A recipe file to load. Multiple recipes may",
-          "be specified, and are loaded in the given order."
-        ) { |value| @options[:recipes] << value }
+          "be specified, and are loaded in the given order.",
+          "(This option is deprecated--please use -f instead)"
+        ) do |value|
+          warn "Deprecated -r/--recipe flag used. Please use -f instead"
+          @options[:recipes] << value
+        end
 
         opts.on("-s", "--set NAME=VALUE",
           "Specify a variable and it's value to set. This",
