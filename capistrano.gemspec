@@ -19,6 +19,8 @@ Gem::Specification.new do |s|
   s.bindir = "bin"
   s.executables << "cap"
 
+  s.add_dependency 'rake', ">= 0.7.0"
+
   s.add_dependency 'net-ssh', ">= #{Capistrano::Version::SSH_REQUIRED.join(".")}"
   s.add_dependency 'net-sftp', ">= #{Capistrano::Version::SFTP_REQUIRED.join(".")}"
 
