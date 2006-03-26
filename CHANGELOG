@@ -1,9 +1,24 @@
 *SVN*
 
+* Changed setup, update_code, rollback_code, and symlink to work on all servers instead of only those in the :app, :web, and :db roles. A server can opt out of being part of the release deployment by setting :no_release => true [DHH]
+
+* Added support for :except on task declarations as the opposite of :only [DHH]. Example:
+
+    role :app, "192.168.0.2"
+    role :file, "192.168.0.3", :no_release => true
+
+    task :symlink, :except => { :no_release => true } do
+      on_rollback { run "ln -nfs #{previous_release} #{current_path}" }
+      run "ln -nfs #{current_release} #{current_path}"
+    end
+    
+    cap symlink # will not run on 192.168.0.3
+
 * Deprecate the -r/--recipe switch in favor of -f/--file (for more make/rake-like semantics) [Jamis Buck]
 
 * Fix gemspec to include a dependency on rake 0.7 [Jamis Buck]
 
+>>>>>>> .r4040
 * Added respect for ENV["HOSTS"] that'll be used instead of the roles specified in the task definition [DHH]. Example:
 
     HOSTS=192.168.0.1 cap setup # one-off setup for that server, doesn't need to be prespecified in the recipes file
