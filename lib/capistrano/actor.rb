@@ -85,18 +85,8 @@ module Capistrano
               @servers = hosts
             else
               roles = find_roles
-              only  = @options[:only] || {}
-
-              unless only.empty?
-                roles = roles.delete_if do |role|
-                  catch(:done) do
-                    only.keys.each do |key|
-                      throw(:done, true) if role.options[key] != only[key]
-                    end
-                    false
-                  end
-                end
-              end
+              apply_only!(roles)
+              apply_except!(roles)
 
               @servers = roles.map { |role| role.host }.uniq
             end
@@ -121,6 +111,32 @@ module Capistrano
             values = variable.split(",")
             use_symbols ? values.collect { |e| e.to_sym } : values
           end
+        end
+        
+        def apply_only!(roles)
+          only = @options[:only] || {}
+
+          unless only.empty?
+            roles = roles.delete_if do |role|
+              catch(:done) do
+                only.keys.each { |key| throw(:done, true) if role.options[key] != only[key] }
+                false
+              end
+            end
+          end          
+        end
+        
+        def apply_except!(roles)
+          except = @options[:except] || {}
+
+          unless except.empty?
+            roles = roles.delete_if do |role|
+              catch(:done) do
+                except.keys.each { |key| throw(:done, true) if role.options[key] == except[key] }
+                false
+              end
+            end
+          end          
         end
     end
 

@@ -230,6 +230,15 @@ class ActorTest < Test::Unit::TestCase
     assert_equal %w(01.example.com), @actor.sessions.keys.sort
   end
 
+  def test_run_in_task_with_except_restricts_selected_roles
+    @actor.define_task :foo, :roles => :db, :except => { :primary => true } do
+      run "do this"
+    end
+
+    @actor.foo
+    assert_equal %w(02.example.com all.example.com), @actor.sessions.keys.sort
+  end
+
   def test_run_in_task_with_single_host_selected
     @actor.define_task :foo, :hosts => "01.example.com" do
       run "do this"
