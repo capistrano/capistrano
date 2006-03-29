@@ -110,6 +110,16 @@ task :restart, :roles => :app do
 end
 
 desc <<-DESC
+Updates the code and fixes the symlink under a transaction
+DESC
+task :update do
+  transaction do
+    update_code
+    symlink
+  end
+end
+
+desc <<-DESC
 Run the migrate rake task. By default, it runs this in the version of the app
 indicated by the 'current' symlink. (This means you should not invoke this task
 until the symlink has been updated to the most recent version.) However, you
@@ -137,11 +147,7 @@ A macro-task that updates the code, fixes the symlink, and restarts the
 application servers.
 DESC
 task :deploy do
-  transaction do
-    update_code
-    symlink
-  end
-
+  update
   restart
 end
 
