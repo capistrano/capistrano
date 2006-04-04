@@ -212,19 +212,19 @@ module Capistrano
       end
     end
 
-    # Puts a tail on the file from all servers that are the target of the
-    # current task. All the tails will be joined into a single coherent stream,
-    # so you can watch 10 log files as though they were one. Do note that this
+    # Streams the result of the command from all servers that are the target of the
+    # current task. All these streams will be joined into a single one,
+    # so you can, say, watch 10 log files as though they were one. Do note that this
     # is quite expensive from a bandwidth perspective, so use it with care.
     #
     # Example:
     #
     #   desc "Run a tail on multiple log files at the same time"
     #   task :tail_fcgi, :roles => :app do
-    #     tail "#{shared_path}/log/fastcgi.crash.log"
+    #     stream "tail -f #{shared_path}/log/fastcgi.crash.log"
     #   end
-    def tail(file)
-      run "tail -f #{file}" do |ch, stream, out|
+    def stream(command)
+      run(command) do |ch, stream, out|
         puts out if stream == :out
         if stream == :err
           puts "[err : #{ch[:host]}] #{out}"
