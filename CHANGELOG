@@ -1,10 +1,10 @@
 *SVN*
 
-* Added Actor#tail method that makes it easy to create cross-server tails [DHH]. Example:
+* Added Actor#stream method that makes it easy to create cross-server streams [DHH]. Example:
 
     desc "Run a tail on multiple log files at the same time"
     task :tail_fcgi, :roles => :app do
-      tail "#{shared_path}/log/fastcgi.crash.log"
+      stream "tail -f #{shared_path}/log/fastcgi.crash.log"
     end
 
 * Make update_code and symlink a macro task under the name "update" for easy of deploy to servers that does not run fcgis [DHH]
