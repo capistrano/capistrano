@@ -1,5 +1,12 @@
 *SVN*
 
+* Added Actor#tail method that makes it easy to create cross-server tails [DHH]. Example:
+
+    desc "Run a tail on multiple log files at the same time"
+    task :tail_fcgi, :roles => :app do
+      tail "#{shared_path}/log/fastcgi.crash.log"
+    end
+
 * Make update_code and symlink a macro task under the name "update" for easy of deploy to servers that does not run fcgis [DHH]
 
 * Changed setup, update_code, rollback_code, and symlink to work on all servers instead of only those in the :app, :web, and :db roles. A server can opt out of being part of the release deployment by setting :no_release => true [DHH]
