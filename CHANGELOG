@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix some incorrect usage text (closes #4507) [gerry_shaw@yahoo.com]
+
 * Added Actor#stream method that makes it easy to create cross-server streams [DHH]. Example:
 
     desc "Run a tail on multiple log files at the same time"
