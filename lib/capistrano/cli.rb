@@ -197,10 +197,10 @@ You can use the --apply-to switch to generate a minimal set of capistrano
 scripts and recipes for an application. Just specify the path to the application
 as the argument to --apply-to, like this:
 
-  capistrano --apply-to ~/projects/myapp
+  cap --apply-to ~/projects/myapp
 
-You'll wind up with a sample deployment recipe in config/deploy.rb, some new
-rake tasks in config/tasks, and a capistrano script in your script directory.
+You'll wind up with a sample deployment recipe in config/deploy.rb and some new
+rake tasks in config/tasks.
 
 (Currently, --apply-to only works with Rails applications.)
 DETAIL
