@@ -1,5 +1,7 @@
 *SVN*
 
+* Symlink and setup for shared/pids to tmp/pids [DHH]
+
 * Fix some incorrect usage text (closes #4507) [gerry_shaw@yahoo.com]
 
 * Added Actor#stream method that makes it easy to create cross-server streams [DHH]. Example:
