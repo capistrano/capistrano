@@ -38,7 +38,8 @@ desc "Set up the expected application directory structure on all boxes"
 task :setup, :except => { :no_release => true } do
   run <<-CMD
     mkdir -p -m 775 #{releases_path} #{shared_path}/system &&
-    mkdir -p -m 777 #{shared_path}/log
+    mkdir -p -m 777 #{shared_path}/log &&
+    mkdir -p -m 777 #{shared_path}/pids
   CMD
 end
 
@@ -70,7 +71,8 @@ task :update_code, :except => { :no_release => true } do
   source.checkout(self)
 
   run <<-CMD
-    rm -rf #{release_path}/log #{release_path}/public/system &&
+    rm -rf #{release_path}/log #{release_path}/tmp/pids #{release_path}/public/system &&
+    ln -nfs #{shared_path}/pids #{release_path}/tmp/pids &&
     ln -nfs #{shared_path}/log #{release_path}/log &&
     ln -nfs #{shared_path}/system #{release_path}/public/system
   CMD
