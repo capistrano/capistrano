@@ -71,10 +71,15 @@ task :update_code, :except => { :no_release => true } do
   source.checkout(self)
 
   run <<-CMD
-    rm -rf #{release_path}/log #{release_path}/tmp/pids #{release_path}/public/system &&
-    ln -nfs #{shared_path}/pids #{release_path}/tmp/pids &&
+    rm -rf #{release_path}/log #{release_path}/public/system &&
     ln -nfs #{shared_path}/log #{release_path}/log &&
     ln -nfs #{shared_path}/system #{release_path}/public/system
+  CMD
+  
+  run <<-CMD
+    test -d #{shared_path}/pids && 
+    rm -rf #{release_path}/tmp/pids && 
+    ln -nfs #{shared_path}/pids #{release_path}/tmp/pids; true
   CMD
 end
 

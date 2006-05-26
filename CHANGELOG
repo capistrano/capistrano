@@ -1,5 +1,7 @@
 *SVN*
 
+* Fixed the default recipe to work with setups that haven't yet gone pids [DHH]
+
 * Symlink and setup for shared/pids to tmp/pids [DHH]
 
 * Fix some incorrect usage text (closes #4507) [gerry_shaw@yahoo.com]
