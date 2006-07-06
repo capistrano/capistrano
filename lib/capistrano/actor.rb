@@ -349,16 +349,14 @@ module Capistrano
     # Inspects the remote servers to determine the list of all released versions
     # of the software. Releases are sorted with the most recent release last.
     def releases
-      unless @releases
+      @releases ||= begin
         buffer = ""
         run "ls -x1 #{releases_path}", :once => true do |ch, str, out|
           buffer << out if str == :out
           raise "could not determine releases #{out.inspect}" if str == :err
         end
-        @releases = buffer.split.sort
+        buffer.split.sort
       end
-
-      @releases
     end
 
     # Returns the most recent deployed release
