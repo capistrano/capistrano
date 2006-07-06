@@ -389,10 +389,16 @@ module Capistrano
           logger.important "transaction: rollback", current ? current.name : "transaction start"
           task_call_history.reverse.each do |task|
             begin
+              # throw the task back on the stack so that roles are properly
+              # interpreted in the scope of the task in question.
+              push_task_call_frame(task.name)
+
               logger.debug "rolling back", task.name
               task.rollback.call if task.rollback
             rescue Object => e
               logger.info "exception while rolling back: #{e.class}, #{e.message}", task.name
+            ensure
+              pop_task_call_frame
             end
           end
           raise

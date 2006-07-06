@@ -159,6 +159,26 @@ class ActorTest < Test::Unit::TestCase
     assert_equal [:goodbye, :hello], @actor.history
   end
 
+  def test_rollback_uses_roles_for_associated_task
+    @actor.define_task :inner, :roles => :db do
+      on_rollback { run "error" }
+      run "go"
+      raise "fail"
+    end
+
+    @actor.define_task :outer do
+      transaction do
+        inner
+      end
+      run "done"
+    end
+
+    assert_raise(RuntimeError) { @actor.outer }
+
+    assert TestingCommand.invoked?
+    assert_equal %w(01.example.com 02.example.com all.example.com), @actor.sessions.keys.sort
+  end
+
   def test_delegates_to_configuration
     @actor.define_task :hello do
       delegated_method
