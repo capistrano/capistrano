@@ -113,6 +113,10 @@ module Capistrano
               message = "subversion can't update because directory '#{$1}' was replaced. Please add it to svn:ignore."
               actor.logger.info message, prefix
               raise message
+            elsif out =~ %r{accept \(t\)emporarily}
+              message = "accepting certificate temporarily"
+              actor.logger.info message, prefix
+              ch.send_data "t\n"
             end
           end
         end
