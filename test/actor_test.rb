@@ -55,10 +55,15 @@ class ActorTest < Test::Unit::TestCase
     end
   end
 
-  class MockConfiguration
+  class MockConfiguration < Capistrano::Configuration
     Role = Struct.new(:host, :options)
 
     attr_accessor :gateway, :pretend
+
+    def initialize(*args)
+      super
+      @logger = Capistrano::Logger.new(:output => StringIO.new)
+    end
 
     def delegated_method
       "result of method"
@@ -78,10 +83,6 @@ class ActorTest < Test::Unit::TestCase
     def roles
       ROLES
     end
-
-    def logger
-      @logger ||= Capistrano::Logger.new(:output => StringIO.new)
-    end
   end
 
   module CustomExtension
@@ -97,6 +98,15 @@ class ActorTest < Test::Unit::TestCase
     ENV["HOSTS"] = nil
   end
 
+  def test_previous_release_returns_nil_with_one_release
+    class << @actor
+      def releases
+        ["1234567890"]
+      end
+    end
+    assert_equal @actor.previous_release, nil
+  end
+ 
   def test_define_task_creates_method
     @actor.define_task :hello do
       "result"
