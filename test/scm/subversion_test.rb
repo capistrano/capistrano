@@ -114,6 +114,12 @@ MSG
     assert_equal ["chocolatebrownies\n"], @actor.channels.last.sent_data
   end
 
+  def test_checkout_needs_https_certificate
+    @actor.story = [[:out, "(R)eject, accept (t)emporarily or accept (p)ermanently? "]]
+    assert_nothing_raised { @scm.checkout(@actor) }
+    assert_equal ["t\n"], @actor.channels.last.sent_data
+  end
+
   def test_checkout_needs_alternative_ssh_password
     @actor.story = [[:out, "someone's password: "]]
     assert_nothing_raised { @scm.checkout(@actor) }
