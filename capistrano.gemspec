@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.name = 'capistrano'
   s.version = PKG_VERSION
   s.platform = Gem::Platform::RUBY
-  s.summary = <<-DESC.strip.gsub(/\n/, " ")
+  s.summary = <<-DESC.strip.gsub(/\n\s+/, " ")
     Capistrano is a framework and utility for executing commands in parallel
     on multiple remote machines, via SSH. The primary goal is to simplify and
     automate the deployment of web applications.
