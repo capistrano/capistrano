@@ -183,4 +183,14 @@ MSG
     @scm = CvsTest.new(@config)
     assert_equal "default-branch", @scm.current_branch
   end
+
+  def test_default_local
+    @config = MockConfiguration.new
+    @config[:repository] = ":ext:joetester@rubyforge.org:/hello/world"
+    @config[:cvs] = "/path/to/cvs"
+    @config[:password] = "chocolatebrownies"
+    @config[:now] = Time.utc(2005,8,24,12,0,0)
+    @scm = CvsTest.new(@config)
+    assert_equal ".", @scm.configuration.local
+  end
 end
