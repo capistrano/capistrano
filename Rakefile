@@ -47,3 +47,8 @@ task :pgem => [:package] do
   Rake::SshFilePublisher.new("davidhh@wrath.rubyonrails.org", "public_html/gems/gems", "pkg", "#{PKG_FILE_NAME}.gem").upload
   `ssh davidhh@wrath.rubyonrails.org './gemupdate.sh'`
 end
+
+desc "Clean up generated directories and files"
+task :clean do
+  rm_rf "pkg"
+end
