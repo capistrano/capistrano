@@ -266,6 +266,12 @@ module Capistrano
     # Like #run, but executes the command via <tt>sudo</tt>. This assumes that
     # the sudo password (if required) is the same as the password for logging
     # in to the server.
+    #
+    # Also, this module accepts a <tt>:sudo</tt> configuration variable,
+    # which (if specified) will be used as the full path to the sudo
+    # executable on the remote machine:
+    #
+    #   set :sudo, "/opt/local/bin/sudo"
     def sudo(command, options={}, &block)
       block ||= default_io_proc
 
@@ -274,7 +280,7 @@ module Capistrano
       # prompts from that host.
       prompt_host = nil
       
-      run "sudo #{command}", options do |ch, stream, out|
+      run "#{sudo_command} #{command}", options do |ch, stream, out|
         if out =~ /^Password:/
           ch.send_data "#{password}\n"
         elsif out =~ /try again/
@@ -436,6 +442,10 @@ module Capistrano
     end
 
     private
+    
+      def sudo_command
+        configuration[:sudo] || "sudo"
+      end
 
       def define_method(name, &block)
         metaclass.send(:define_method, name, &block)
