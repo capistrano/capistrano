@@ -33,6 +33,11 @@ module Capistrano
     class Cvs < Base
       def initialize(configuration)
         super(configuration)
+
+        if not @configuration.respond_to?(:local) then
+          @configuration.set(:local,".") 
+        end
+
         if not configuration.respond_to?(:branch) then
           configuration.set(:branch) { self.current_branch }
         else
