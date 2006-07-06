@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix missing default for :local in cvs.rb (closes #3645) [jeremy@hinegardner.org]
+
 * Fix awkward spacing in gemspec file (closes #3888) [grant@antiflux.org]
 
 * Add support for :sudo variable to specify path to sudo (closes #4578) [timothee.peignier@tryphon.org]
