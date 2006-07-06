@@ -81,6 +81,10 @@ task :update_code, :except => { :no_release => true } do
     rm -rf #{release_path}/tmp/pids && 
     ln -nfs #{shared_path}/pids #{release_path}/tmp/pids; true
   CMD
+
+  # uncache the list of releases, so that the next time it is called it will
+  # include the newly released path.
+  @releases = nil
 end
 
 desc <<-DESC
