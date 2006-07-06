@@ -366,7 +366,7 @@ module Capistrano
 
     # Returns the release immediately before the currently deployed one
     def previous_release
-      release_path(releases[-2])
+      release_path(releases[-2]) if releases[-2]
     end
 
     # Invoke a set of tasks in a transaction. If any task fails (raises an

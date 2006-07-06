@@ -1,5 +1,13 @@
 *SVN*
 
+* Make previous_release return nil if there are no previous releases (closes #4959) [bdabney@cavoksolutions.com]
+
+* Uncache releases list after update_code is called so that newly released dir is included (closes #3766) [Jamis Buck]
+
+* Allow the subversion scm to accept HTTPS certificates (closes #4792) [Jamis Buck]
+
+* Make sure rollbacks occur within the scope of the task that triggered them [Jamis Buck]
+
 * Fixed the default recipe to work with setups that haven't yet gone pids [DHH]
 
 * Symlink and setup for shared/pids to tmp/pids [DHH]
