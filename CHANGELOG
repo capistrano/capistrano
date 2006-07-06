@@ -1,5 +1,7 @@
 *SVN*
 
+* Add support for :sudo variable to specify path to sudo (closes #4578) [timothee.peignier@tryphon.org]
+
 * Make previous_release return nil if there are no previous releases (closes #4959) [bdabney@cavoksolutions.com]
 
 * Uncache releases list after update_code is called so that newly released dir is included (closes #3766) [Jamis Buck]
