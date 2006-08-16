@@ -204,6 +204,7 @@ rake tasks in config/tasks.
 
 (Currently, --apply-to only works with Rails applications.)
 DETAIL
+#' # vim syntax highlighting fix
 
         if args.empty?
           puts opts
@@ -226,10 +227,10 @@ DETAIL
 
     # Beginning running Capistrano based on the configured options.
     def execute!
-      if !@options[:recipes].empty?
-        execute_recipes!
-      elsif @options[:apply_to]
+      if @options[:apply_to]
         execute_apply_to!
+      else
+        execute_recipes!
       end
     end
 
@@ -280,7 +281,6 @@ DETAIL
         elsif !apply_to_given
           look_for_default_recipe_file! if @options[:recipes].empty?
           look_for_raw_actions!
-          abort "You must specify at least one recipe" if @options[:recipes].empty?
           abort "You must specify at least one action" if @options[:actions].empty?
         else
           @options[:application] = args.shift
