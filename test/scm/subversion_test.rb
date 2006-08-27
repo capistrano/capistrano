@@ -74,12 +74,6 @@ MSG
     assert_equal "/hello/world", @scm.last_path
   end
 
-  def test_latest_revision_searching_upwards
-    @scm.story = [ "-----------------------------\n", @log_msg ]
-    assert_equal "1967", @scm.latest_revision
-    assert_equal "/hello", @scm.last_path
-  end
-
   def test_checkout
     @actor.story = []
     assert_nothing_raised { @scm.checkout(@actor) }
