@@ -1,5 +1,7 @@
 *SVN*
 
+* Remove unused line in SCM::Base (closes #5619) [chris@seagul.co.uk]
+
 * More efficient "svn log" usage (closes #5620) [Anatol Pomozov]
 
 * Better support for key passphrases in the SVN module (closes #5920) [llasram@gmail.com]
