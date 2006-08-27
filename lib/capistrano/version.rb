@@ -19,8 +19,8 @@ module Capistrano
     end
 
     MAJOR = 1
-    MINOR = 2
-    TINY  = 0
+    MINOR = 1
+    TINY  = 9
 
     STRING = [MAJOR, MINOR, TINY].join(".")
     
