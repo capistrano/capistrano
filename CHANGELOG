@@ -1,5 +1,7 @@
 *SVN*
 
+* Better support for key passphrases in the SVN module (closes #5920) [llasram@gmail.com]
+
 * Fix missing default for :local in cvs.rb (closes #3645) [jeremy@hinegardner.org]
 
 * Fix awkward spacing in gemspec file (closes #3888) [grant@antiflux.org]
