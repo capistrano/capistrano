@@ -1,5 +1,7 @@
 *SVN*
 
+* More efficient "svn log" usage (closes #5620) [Anatol Pomozov]
+
 * Better support for key passphrases in the SVN module (closes #5920) [llasram@gmail.com]
 
 * Fix missing default for :local in cvs.rb (closes #3645) [jeremy@hinegardner.org]

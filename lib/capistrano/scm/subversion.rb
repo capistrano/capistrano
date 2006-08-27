@@ -16,22 +16,14 @@ module Capistrano
     #   set :svn, "/opt/local/bin/svn"
     class Subversion < Base
       # Return an integer identifying the last known revision in the svn
-      # repository. (This integer is currently the revision number.) If latest
-      # revision does not exist in the given repository, this routine will
-      # walk up the directory tree until it finds it.
+      # repository. (This integer is currently the revision number.)
       def latest_revision
-        configuration.logger.debug "querying latest revision..." unless @latest_revision
-        repo = configuration.repository
-        until @latest_revision
-          match = svn_log(repo).scan(/r(\d+)/).first
-          @latest_revision = match ? match.first : nil
-          if @latest_revision.nil?
-            # if a revision number was not reported, move up a level in the path
-            # and try again.
-            repo = File.dirname(repo)
+        @latest_revision ||= begin
+            configuration.logger.debug "querying latest revision..."
+            match = svn_log(configuration.repository).scan(/r(\d+)/).first or
+              raise "Could not determine latest revision"
+            match.first
           end
-        end
-        @latest_revision
       end
 
       # Return the number of the revision currently deployed.
@@ -87,7 +79,7 @@ module Capistrano
         end
 
         def svn_log(path)
-          `svn log -q -rhead #{path}`
+          `svn log -q --limit 1 #{path}`
         end
 
         def svn_password
