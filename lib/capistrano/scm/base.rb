@@ -28,7 +28,6 @@ module Capistrano
       private
 
         def run_checkout(actor, guts, &block)
-          log = "#{configuration.deploy_to}/revisions.log"
           directory = File.basename(configuration.release_path)
 
           command = <<-STR
