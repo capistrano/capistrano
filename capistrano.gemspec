@@ -11,8 +11,7 @@ Gem::Specification.new do |s|
     automate the deployment of web applications.
   DESC
 
-  s.files = Dir.glob("{bin,lib,examples,test}/**/*")
-  s.files.concat %w(README MIT-LICENSE ChangeLog)
+  s.files = Dir.glob("{bin,lib,examples,test}/**/*") + %w(README MIT-LICENSE CHANGELOG THANKS)
   s.require_path = 'lib'
   s.autorequire = 'capistrano'
 
