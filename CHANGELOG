@@ -1,5 +1,7 @@
 *SVN*
 
+* Add SCM module for Mercurial (closes #4150) [Matthew Elder]
+
 * Remove unused line in SCM::Base (closes #5619) [chris@seagul.co.uk]
 
 * More efficient "svn log" usage (closes #5620) [Anatol Pomozov]
