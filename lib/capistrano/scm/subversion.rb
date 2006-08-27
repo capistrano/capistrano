@@ -94,6 +94,10 @@ module Capistrano
           configuration[:svn_password] || configuration[:password]
         end
 
+        def svn_passphrase
+          configuration[:svn_passphrase] || svn_password
+        end
+        
         def svn_stream_handler(actor)
           Proc.new do |ch, stream, out|
             prefix = "#{stream} :: #{ch[:host]}"
@@ -105,10 +109,10 @@ module Capistrano
               actor.logger.info "subversion is asking whether to connect or not",
                 prefix
               ch.send_data "yes\n"
-            elsif out =~ %r{passphrase}
-              message = "subversion needs your key's passphrase, sending empty string"
+            elsif out =~ %r{passphrase}i
+              message = "subversion needs your key's passphrase"
               actor.logger.info message, prefix
-              ch.send_data "\n"
+              ch.send_data "#{svn_passphrase}\n"
             elsif out =~ %r{The entry \'(\w+)\' is no longer a directory}
               message = "subversion can't update because directory '#{$1}' was replaced. Please add it to svn:ignore."
               actor.logger.info message, prefix
