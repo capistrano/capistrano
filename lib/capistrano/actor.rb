@@ -463,9 +463,22 @@ module Capistrano
 
       def establish_connections(servers)
         @factory = establish_gateway if needs_gateway?
-        servers.each do |server|
-          @sessions[server] ||= @factory.connect_to(server)
+        servers = Array(servers)
+
+        # because Net::SSH uses lazy loading for things, we need to make sure
+        # that at least one connection has been made successfully, to kind of
+        # "prime the pump", before we go gung-ho and do mass connection in
+        # parallel. Otherwise, the threads start doing things in wierd orders
+        # and causing Net::SSH to die of confusion.
+
+        if !@establish_gateway && @sessions.empty?
+          server, servers = servers.first, servers[1..-1]
+          @sessions[server] = @factory.connect_to(server)
         end
+
+        servers.map { |server|
+          Thread.new { @sessions[server] ||= @factory.connect_to(server) }
+        }.each { |t| t.join }
       end
 
       def establish_gateway
