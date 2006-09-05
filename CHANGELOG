@@ -1,5 +1,7 @@
 *SVN*
 
+* Connect to multiple servers in parallel, rather than serially. [Jamis Buck]
+
 * Add SCM module for Mercurial (closes #4150) [Matthew Elder]
 
 * Remove unused line in SCM::Base (closes #5619) [chris@seagul.co.uk]

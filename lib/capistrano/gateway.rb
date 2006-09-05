@@ -31,28 +31,23 @@ module Capistrano
     def initialize(server, config) #:nodoc:
       @config = config
       @pending_forward_requests = {}
-      @mutex = Mutex.new
       @next_port = MAX_PORT
       @terminate_thread = false
+      @port_guard = Mutex.new
 
+      mutex = Mutex.new
       waiter = ConditionVariable.new
 
       @thread = Thread.new do
         @config.logger.trace "starting connection to gateway #{server}"
         SSH.connect(server, @config) do |@session|
           @config.logger.trace "gateway connection established"
-          @mutex.synchronize { waiter.signal }
-          connection = @session.registry[:connection][:driver]
-          loop do
-            break if @terminate_thread
-            sleep 0.1 unless connection.reader_ready?
-            connection.process true
-            Thread.new { process_next_pending_connection_request }
-          end
+          mutex.synchronize { waiter.signal }
+          @session.loop { !@terminate_thread }
         end
       end
 
-      @mutex.synchronize { waiter.wait(@mutex) }
+      mutex.synchronize { waiter.wait(mutex) }
     end
 
     # Shuts down all forwarded connections and terminates the gateway.
@@ -73,45 +68,37 @@ module Capistrano
     # host to the server, via the gateway, and then opens and returns a new
     # Net::SSH connection via that port.
     def connect_to(server)
-      @mutex.synchronize do
-        @pending_forward_requests[server] = ConditionVariable.new
-        @pending_forward_requests[server].wait(@mutex)
-        @pending_forward_requests.delete(server)
+      connection = nil
+
+      thread = Thread.new do
+        @config.logger.trace "establishing connection to #{server} via gateway"
+        port = next_port
+
+        begin
+          @session.forward.local(port, server, 22)
+          connection = SSH.connect('127.0.0.1', @config, port)
+          @config.logger.trace "connection to #{server} via gateway established"
+        rescue Errno::EADDRINUSE
+          port = next_port
+          retry
+        rescue Exception => e
+          puts e.class.name
+          puts e.backtrace.join("\n")
+        end
       end
+
+      thread.join
+      connection or raise "Could not establish connection to #{server}"
     end
 
     private
 
       def next_port
-        port = @next_port
-        @next_port -= 1
-        @next_port = MAX_PORT if @next_port < MIN_PORT
-        port
-      end
-
-      def process_next_pending_connection_request
-        @mutex.synchronize do
-          key = @pending_forward_requests.keys.detect { |k| ConditionVariable === @pending_forward_requests[k] } or return
-          var = @pending_forward_requests[key]
-
-          @config.logger.trace "establishing connection to #{key} via gateway"
-
-          port = next_port
-
-          begin
-            @session.forward.local(port, key, 22)
-            @pending_forward_requests[key] = SSH.connect('127.0.0.1', @config,
-              port)
-            @config.logger.trace "connection to #{key} via gateway established"
-          rescue Errno::EADDRINUSE
-            port = next_port
-            retry
-          rescue Object
-            @pending_forward_requests[key] = nil
-            raise
-          ensure
-            var.signal
-          end
+        @port_guard.synchronize do
+          port = @next_port
+          @next_port -= 1
+          @next_port = MAX_PORT if @next_port < MIN_PORT
+          port
         end
       end
   end
