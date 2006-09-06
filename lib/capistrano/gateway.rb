@@ -69,11 +69,10 @@ module Capistrano
     # Net::SSH connection via that port.
     def connect_to(server)
       connection = nil
+      @config.logger.trace "establishing connection to #{server} via gateway"
+      port = next_port
 
       thread = Thread.new do
-        @config.logger.trace "establishing connection to #{server} via gateway"
-        port = next_port
-
         begin
           @session.forward.local(port, server, 22)
           connection = SSH.connect('127.0.0.1', @config, port)

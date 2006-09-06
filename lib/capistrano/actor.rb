@@ -471,14 +471,19 @@ module Capistrano
         # parallel. Otherwise, the threads start doing things in wierd orders
         # and causing Net::SSH to die of confusion.
 
-        if !@establish_gateway && @sessions.empty?
+        if !@established_gateway && @sessions.empty?
           server, servers = servers.first, servers[1..-1]
           @sessions[server] = @factory.connect_to(server)
         end
 
-        servers.map { |server|
-          Thread.new { @sessions[server] ||= @factory.connect_to(server) }
-        }.each { |t| t.join }
+        servers.map { |server| establish_connection_to(server) }.each { |t| t.join }
+      end
+
+      # We establish the connection by creating a thread in a new method--this
+      # prevents problems with the thread's scope seeing the wrong 'server'
+      # variable if the thread just happens to take too long to start up.
+      def establish_connection_to(server)
+        Thread.new { @sessions[server] ||= @factory.connect_to(server) }
       end
 
       def establish_gateway
