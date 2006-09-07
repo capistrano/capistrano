@@ -48,6 +48,14 @@ module Capistrano
       self
     end
 
+    # Force the command to stop processing, by closing all open channels
+    # associated with this command.
+    def stop!
+      @channels.each do |ch|
+        ch.close unless ch[:closed]
+      end
+    end
+
     private
 
       def open_channels

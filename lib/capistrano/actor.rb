@@ -78,18 +78,17 @@ module Capistrano
 
       # Returns the list of servers (_not_ connections to servers) that are
       # the target of this task.
-      def servers
+      def servers(reevaluate=false)
+        @servers = nil if reevaluate
         @servers ||=
-          begin
-            if hosts = find_hosts
-              @servers = hosts
-            else
-              roles = find_roles
-              apply_only!(roles)
-              apply_except!(roles)
+          if hosts = find_hosts
+            hosts
+          else
+            roles = find_roles
+            apply_only!(roles)
+            apply_except!(roles)
 
-              @servers = roles.map { |role| role.host }.uniq
-            end
+            roles.map { |role| role.host }.uniq
           end
       end
       
