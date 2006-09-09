@@ -1,5 +1,7 @@
 *SVN*
 
+* Display file for external configurations, rather than inspected proc. [Jamis Buck]
+
 * Connect to multiple servers in parallel, rather than serially. [Jamis Buck]
 
 * Add SCM module for Mercurial (closes #4150) [Matthew Elder]
