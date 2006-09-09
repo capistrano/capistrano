@@ -5,9 +5,8 @@ module Capistrano
     require 'capistrano/version'
     require 'net/ssh/version'
     ssh_version = [Net::SSH::Version::MAJOR, Net::SSH::Version::MINOR, Net::SSH::Version::TINY]
-    required_version = [1,0,5]
-    if !Version.check(required_version, ssh_version)
-      raise "You have Net::SSH #{ssh_version.join(".")}, but you need at least #{required_version.join(".")}"
+    if !Version.check(Version::SSH_REQUIRED, ssh_version)
+      raise "You have Net::SSH #{ssh_version.join(".")}, but you need at least #{Version::SSH_REQUIRED.join(".")}"
     end
   end
 
