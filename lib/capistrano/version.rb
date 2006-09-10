@@ -24,7 +24,7 @@ module Capistrano
 
     STRING = [MAJOR, MINOR, TINY].join(".")
     
-    SSH_REQUIRED = [1,0,8]
+    SSH_REQUIRED = [1,0,10]
     SFTP_REQUIRED = [1,1,0]
   end
 end
