@@ -1,5 +1,7 @@
 *SVN*
 
+* Add experimental 'shell' task [Jamis Buck]
+
 * Display file for external configurations, rather than inspected proc. [Jamis Buck]
 
 * Connect to multiple servers in parallel, rather than serially. [Jamis Buck]
