@@ -1,3 +1,7 @@
+*SVN*
+
+* Added :as option to sudo, so you can specify who the command is executed as [Mark Imbriaco]
+
 *1.2.0* (September 14, 2006)
 
 * Add experimental 'shell' task [Jamis Buck]
