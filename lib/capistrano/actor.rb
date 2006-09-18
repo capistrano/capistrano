@@ -277,9 +277,10 @@ module Capistrano
       # in order to prevent _each host_ from prompting when the password was
       # wrong, let's track which host prompted first and only allow subsequent
       # prompts from that host.
-      prompt_host = nil
+      prompt_host = nil      
+      user = options[:as].nil? ? '' : "-u #{options[:as]}"
       
-      run "#{sudo_command} #{command}", options do |ch, stream, out|
+      run "#{sudo_command} #{user} #{command}", options do |ch, stream, out|
         if out =~ /^Password:/
           ch.send_data "#{password}\n"
         elsif out =~ /try again/
