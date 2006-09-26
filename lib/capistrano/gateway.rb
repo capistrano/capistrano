@@ -30,7 +30,6 @@ module Capistrano
 
     def initialize(server, config) #:nodoc:
       @config = config
-      @pending_forward_requests = {}
       @next_port = MAX_PORT
       @terminate_thread = false
       @port_guard = Mutex.new
