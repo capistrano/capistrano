@@ -16,11 +16,7 @@ module Capistrano
     # This requires the termios library to be installed (which, unfortunately,
     # is not available for Windows).
     begin
-      if !defined?(USE_TERMIOS) || USE_TERMIOS
-        require 'termios'
-      else
-        raise LoadError
-      end
+      require 'termios'
 
       # Enable or disable stdin echoing to the terminal.
       def self.echo(enable)
@@ -43,6 +39,10 @@ module Capistrano
     # if termios is not available, echo suppression will not be available
     # either.
     def self.with_echo
+      unless @warned_about_echo
+        puts "WARNING: Password will echo -- install the 'termios' gem to hide your password." if !defined?(Termios) && RUBY_PLATFORM !~ /mswin/
+        @warned_about_echo = true
+      end
       echo(false)
       yield
     ensure

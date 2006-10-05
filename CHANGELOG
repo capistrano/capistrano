@@ -1,5 +1,7 @@
 *SVN*
 
+* Added warning if password is prompted for and termios is not installed [John Labovitz]
+
 * Added :as option to sudo, so you can specify who the command is executed as [Mark Imbriaco]
 
 *1.2.0* (September 14, 2006)
