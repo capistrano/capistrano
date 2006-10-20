@@ -82,6 +82,12 @@ task :update_code, :except => { :no_release => true } do
     ln -nfs #{shared_path}/pids #{release_path}/tmp/pids; true
   CMD
 
+  # update the asset timestamps so they are in sync across all servers. This
+  # lets the asset timestamping feature of rails work correctly
+  stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
+  asset_paths = %w(images stylesheets javascripts).map { |p| "#{release_path}/public/#{p}" }
+  run "find #{asset_paths.join(" ")} -exec touch -t #{stamp} {} \\;; true"
+
   # uncache the list of releases, so that the next time it is called it will
   # include the newly released path.
   @releases = nil
