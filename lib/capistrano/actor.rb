@@ -38,7 +38,7 @@ module Capistrano
     self.transfer_factory = Transfer
 
     self.default_io_proc = Proc.new do |ch, stream, out|
-      level = stream == :error ? :important : :info
+      level = stream == :err ? :important : :info
       ch[:actor].logger.send(level, out, "#{stream} :: #{ch[:host]}")
     end
 
