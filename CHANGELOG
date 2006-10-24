@@ -1,5 +1,7 @@
 *SVN*
 
+* Fixed that new checkouts would use 755 instead of 775 [DHH]
+
 * Fixed that cap setup would use 755 on the deploy_to and shared directory roots instead of 775 [DHH]
 
 * Don't run the cleanup task on servers marked no_release [Jamis Buck]
