@@ -70,6 +70,8 @@ task :update_code, :except => { :no_release => true } do
 
   source.checkout(self)
 
+  run "chmod -R 775 #{release_path}"
+
   run <<-CMD
     rm -rf #{release_path}/log #{release_path}/public/system &&
     ln -nfs #{shared_path}/log #{release_path}/log &&
