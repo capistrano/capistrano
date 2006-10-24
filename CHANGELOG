@@ -1,5 +1,7 @@
 *SVN*
 
+* Don't run the cleanup task on servers marked no_release [Jamis Buck]
+
 * Fix typo in default_io_proc so it correctly checks the stream parameter to see if it is the error stream [Stephen Haberman]
 
 * Make sure assets in images, javascripts, and stylesheets are touched after updating the code, to ensure the asset timestamping feature of rails works correctly [Jamis Buck]
