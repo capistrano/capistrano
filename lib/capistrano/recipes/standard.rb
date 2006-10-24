@@ -218,7 +218,7 @@ releases are retained, but this can be configured with the 'keep_releases'
 variable. This will use sudo to do the delete by default, but you can specify
 that run should be used by setting the :use_sudo variable to false.
 DESC
-task :cleanup do
+task :cleanup, :except => { :no_release => true } do
   count = (self[:keep_releases] || 5).to_i
   if count >= releases.length
     logger.important "no old releases to clean up"
