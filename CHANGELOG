@@ -1,6 +1,6 @@
 *SVN*
 
-* Fixed that new checkouts would use 755 instead of 775 [DHH]
+* Fixed that new checkouts were not group-writable [DHH, Jamis Buck]
 
 * Fixed that cap setup would use 755 on the deploy_to and shared directory roots instead of 775 [DHH]
 
