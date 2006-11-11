@@ -42,6 +42,39 @@ class SSHTest < Test::Unit::TestCase
       MockSSH.invocations.first[1][:auth_methods]
     assert_nil MockSSH.invocations.first[2]
   end
+  
+  def test_explicit_ssh_ports_in_server_string_no_block
+    Net.const_during(:SSH, MockSSH) do
+      Capistrano::SSH.connect('demo.server.i:8088', @config)
+    end
+
+    assert_equal 1, MockSSH.invocations.length
+    assert_equal 'demo.server.i', MockSSH.invocations.first[0]
+    assert_equal '8088', MockSSH.invocations.first[1][:port]
+    assert_equal 'demo', MockSSH.invocations.first[1][:username]
+  end
+  
+  def test_explicit_ssh_username_in_server_string_no_block
+    Net.const_during(:SSH, MockSSH) do
+      Capistrano::SSH.connect('bob@demo.server.i', @config)
+    end
+
+    assert_equal 1, MockSSH.invocations.length
+    assert_equal 'demo.server.i', MockSSH.invocations.first[0]
+    assert_equal 22, MockSSH.invocations.first[1][:port]
+    assert_equal 'bob', MockSSH.invocations.first[1][:username]
+  end
+  
+  def test_explicit_ssh_username_and_port_in_server_string_no_block
+    Net.const_during(:SSH, MockSSH) do
+      Capistrano::SSH.connect('bob@demo.server.i:8088', @config)
+    end
+
+    assert_equal 1, MockSSH.invocations.length
+    assert_equal 'demo.server.i', MockSSH.invocations.first[0]
+    assert_equal '8088', MockSSH.invocations.first[1][:port]
+    assert_equal 'bob', MockSSH.invocations.first[1][:username]
+  end
 
   def test_publickey_auth_succeeds_explicit_port_no_block
     Net.const_during(:SSH, MockSSH) do
@@ -52,6 +85,53 @@ class SSHTest < Test::Unit::TestCase
     assert_equal 23, MockSSH.invocations.first[1][:port]
     assert_nil MockSSH.invocations.first[2]
   end
+
+
+  def test_explicit_ssh_ports_in_server_string_with_block
+    Net.const_during(:SSH, MockSSH) do
+      Capistrano::SSH.connect('demo.server.i:8088', @config) do |session|
+      end
+    end
+    assert_equal 'demo.server.i', MockSSH.invocations.first[0]
+    assert_equal '8088', MockSSH.invocations.first[1][:port]
+    assert_equal 1, MockSSH.invocations.length
+    assert_instance_of Proc, MockSSH.invocations.first[2]
+  end
+  
+  def test_explicit_ssh_username_in_server_string_with_block
+    Net.const_during(:SSH, MockSSH) do
+      Capistrano::SSH.connect('bob@demo.server.i', @config) do |session|
+      end
+    end
+    assert_equal 'demo.server.i', MockSSH.invocations.first[0]
+    assert_equal 22, MockSSH.invocations.first[1][:port]
+    assert_equal 1, MockSSH.invocations.length
+    assert_equal 'bob', MockSSH.invocations.first[1][:username]
+    assert_instance_of Proc, MockSSH.invocations.first[2]
+  end
+  
+  def test_explicit_ssh_username_and_port_in_server_string_with_block
+    Net.const_during(:SSH, MockSSH) do
+      Capistrano::SSH.connect('bob@demo.server.i:8088', @config) do |session|
+      end
+    end
+    assert_equal 'demo.server.i', MockSSH.invocations.first[0]
+    assert_equal '8088', MockSSH.invocations.first[1][:port]
+    assert_equal 1, MockSSH.invocations.length
+    assert_equal 'bob', MockSSH.invocations.first[1][:username]
+    assert_instance_of Proc, MockSSH.invocations.first[2]
+  end
+
+  def test_parse_server
+    assert_equal(['bob', 'demo.server.i', '8088'], 
+                 Capistrano::SSH.parse_server("bob@demo.server.i:8088"))
+    assert_equal([nil, 'demo.server.i', '8088'], 
+                 Capistrano::SSH.parse_server("demo.server.i:8088"))                 
+    assert_equal(['bob', 'demo.server.i', nil], 
+                 Capistrano::SSH.parse_server("bob@demo.server.i"))
+    assert_equal([nil, 'demo.server.i', nil], 
+                 Capistrano::SSH.parse_server("demo.server.i"))
+  end  
 
   def test_publickey_auth_succeeds_with_block
     Net.const_during(:SSH, MockSSH) do
