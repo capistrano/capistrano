@@ -27,6 +27,11 @@ module Capistrano
                         :password => password_value,
                         :port => port,
                         :auth_methods => methods.shift }.merge(config.ssh_options)
+                        
+        user, server, port = parse_server(server)         
+        ssh_options[:username] = user if user   
+        ssh_options[:port] = port if port
+        
         Net::SSH.start(server,ssh_options,&block)
       rescue Net::SSH::AuthenticationFailed
         raise if methods.empty?
@@ -34,5 +39,23 @@ module Capistrano
         retry
       end
     end
+    
+    # This regex is used for its byproducts, the $1-9 match vars.
+    # This regex will always match the ssh hostname and if there 
+    # is a username or port they will be matched as well. This 
+    # allows us to set the username and ssh port right in the 
+    # server string:  "username@123.12.123.12:8088"
+    # This remains fully backwards compatible and can still be
+    # intermixed with the old way of doing things. usernames
+    # and ports will be used from the server string if present
+    # but they will fall back to the regular defaults when not
+    # present. Returns and array like:
+    # ['bob', 'demo.server.com', '8088']
+    # will always at least return the server:
+    # [nil, 'demo.server.com', nil]
+    def self.parse_server(server)
+      server =~ /^(?:([^;,:=]+)@|)(.*?)(?::(\d+)|)$/
+      [$1, $2, $3]
+    end  
   end
 end

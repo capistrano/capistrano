@@ -316,6 +316,15 @@ class ActorTest < Test::Unit::TestCase
     @actor.foo
     assert_instance_of GatewayConnectionFactory, @actor.factory
   end
+  
+  def test_establish_connection_uses_gateway_if_specified_with_username_and_port
+    @actor.configuration.gateway = "demo@10.example.com:8088"
+    @actor.define_task :foo, :roles => :db do
+      run "do this"
+    end
+    @actor.foo
+    assert_instance_of GatewayConnectionFactory, @actor.factory
+  end
 
   def test_run_when_not_pretend
     @actor.define_task :foo do
