@@ -158,7 +158,7 @@ task :migrate, :roles => :db, :only => { :primary => true } do
   end
 
   run "cd #{directory} && " +
-      "#{rake} RAILS_ENV=#{rails_env} #{migrate_env} migrate"
+      "#{rake} RAILS_ENV=#{rails_env} #{migrate_env} db:migrate"
 end
 
 desc <<-DESC
