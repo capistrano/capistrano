@@ -73,10 +73,10 @@ module Capistrano
 
       thread = Thread.new do
         begin
-          user, server, port = SSH.parse_server(server)   
+          user, server_stripped, port = SSH.parse_server(server)   
           @config.ssh_options[:username] = user if user
           remote_port = port || 22
-          @session.forward.local(local_port, server, remote_port)
+          @session.forward.local(local_port, server_stripped, remote_port)
           connection = SSH.connect('127.0.0.1', @config, local_port)
           @config.logger.trace "connection to #{server} via gateway established"
         rescue Errno::EADDRINUSE
