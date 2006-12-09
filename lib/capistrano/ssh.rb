@@ -28,11 +28,11 @@ module Capistrano
                         :port => port,
                         :auth_methods => methods.shift }.merge(config.ssh_options)
                         
-        user, server, port = parse_server(server)         
+        user, server_stripped, port = parse_server(server)         
         ssh_options[:username] = user if user   
         ssh_options[:port] = port if port
         
-        Net::SSH.start(server,ssh_options,&block)
+        Net::SSH.start(server_stripped,ssh_options,&block)
       rescue Net::SSH::AuthenticationFailed
         raise if methods.empty?
         password_value = config.password
