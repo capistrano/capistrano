@@ -269,6 +269,8 @@ DETAIL
 
         actor = config.actor
         options[:actions].each { |action| actor.send action }
+      rescue Exception => error
+        handle_error(error)
       end
 
       # Load the Rails generator and apply it to the specified directory.
@@ -324,6 +326,16 @@ DETAIL
 
       def look_for_raw_actions!
         @options[:actions].concat(@args)
+      end
+
+      def handle_error(error)
+        case error
+        when Net::SSH::AuthenticationFailed
+          abort "authentication failed for `#{error.message}'"
+        when Capistrano::Command::Error
+          abort(error.message)
+        else raise error
+        end
       end
   end
 end

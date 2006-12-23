@@ -1,5 +1,7 @@
 *SVN*
 
+* Cleaner error messages for authentication failures and command errors
+
 * Added support for ~/.caprc, also -x and -c switches.
 
 * Updated migrate action to use db:migrate task in Rails instead of the deprecated migrate task [DHH]

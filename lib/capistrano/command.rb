@@ -3,6 +3,8 @@ module Capistrano
   # This class encapsulates a single command to be executed on a set of remote
   # machines, in parallel.
   class Command
+    class Error < RuntimeError; end
+
     attr_reader :servers, :command, :options, :actor
 
     def initialize(servers, command, callback, options, actor) #:nodoc:
@@ -42,7 +44,7 @@ module Capistrano
       logger.trace "command finished"
 
       if failed = @channels.detect { |ch| ch[:status] != 0 }
-        raise "command #{@command.inspect} failed on #{failed[:host]}"
+        raise Error, "command #{@command.inspect} failed on #{failed[:host]}"
       end
 
       self
