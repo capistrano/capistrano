@@ -1,5 +1,7 @@
 *SVN*
 
+* Remove trace messages when loading a file
+
 * Cleaner error messages for authentication failures and command errors
 
 * Added support for ~/.caprc, also -x and -c switches.

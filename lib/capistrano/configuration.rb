@@ -146,11 +146,9 @@ module Capistrano
         load :string => File.read(file), :name => options[:name] || file
 
       elsif options[:string]
-        logger.trace "loading configuration #{options[:name] || "<eval>"}"
         instance_eval(options[:string], options[:name] || "<eval>")
 
       elsif options[:proc]
-        logger.trace "loading configuration #{eval("__FILE__", options[:proc])}"
         instance_eval(&options[:proc])
 
       else
