@@ -117,7 +117,7 @@ module Capistrano
         end
 
         def cvs_log(path,branch)
-          `cd #{path || "."} && cvs -q log -N -r#{branch}`
+          `cd #{path || "."} && cvs -d #{configuration.repository} -q log -N -r#{branch}`
         end
 
         def cvs_local
