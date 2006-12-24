@@ -12,6 +12,9 @@ def cap(*parameters)
 
   require 'capistrano/cli'
 
+  STDERR.puts "Capistrano/Rake integration is deprecated."
+  STDERR.puts "Please invoke the 'cap' command directly: `cap #{parameters.join(" ")}'"
+
   Capistrano::CLI.new(parameters.map { |param| param.to_s }).execute!
 end
 

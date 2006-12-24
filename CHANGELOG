@@ -1,5 +1,7 @@
 *SVN*
 
+* Deprecate rake integration in favor of invoking `cap' directly
+
 * Make sure the CVS module references the repository explicitly in cvs_log [weyus@att.net]
 
 * Remove trace messages when loading a file
