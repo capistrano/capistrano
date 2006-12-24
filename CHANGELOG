@@ -1,14 +1,14 @@
-*SVN*
+*1.3.0* (December 23, 2006)
 
-* Deprecate rake integration in favor of invoking `cap' directly
+* Deprecate rake integration in favor of invoking `cap' directly [Jamis Buck]
 
 * Make sure the CVS module references the repository explicitly in cvs_log [weyus@att.net]
 
-* Remove trace messages when loading a file
+* Remove trace messages when loading a file [Jamis Buck]
 
-* Cleaner error messages for authentication failures and command errors
+* Cleaner error messages for authentication failures and command errors [Jamis Buck]
 
-* Added support for ~/.caprc, also -x and -c switches.
+* Added support for ~/.caprc, also -x and -c switches. [Jamis Buck]
 
 * Updated migrate action to use db:migrate task in Rails instead of the deprecated migrate task [DHH]
 
