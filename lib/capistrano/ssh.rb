@@ -21,16 +21,14 @@ module Capistrano
     def self.connect(server, config, port=22, &block)
       methods = [ %w(publickey hostbased), %w(password keyboard-interactive) ]
       password_value = nil
+      
+      user, server_stripped, pport = parse_server(server)       
 
       begin
-        ssh_options = { :username => config.user,
+        ssh_options = { :username => (user || config.user),
                         :password => password_value,
-                        :port => port,
+                        :port => ((pport && pport != port) ? pport : port),
                         :auth_methods => methods.shift }.merge(config.ssh_options)
-                        
-        user, server_stripped, port = parse_server(server)         
-        ssh_options[:username] = user if user   
-        ssh_options[:port] = port if port
         
         Net::SSH.start(server_stripped,ssh_options,&block)
       rescue Net::SSH::AuthenticationFailed
@@ -40,7 +38,7 @@ module Capistrano
       end
     end
     
-    # This regex is used for its byproducts, the $1-9 match vars.
+    # This regex is used for its byproducts, the $1-3 match vars.
     # This regex will always match the ssh hostname and if there 
     # is a username or port they will be matched as well. This 
     # allows us to set the username and ssh port right in the 
