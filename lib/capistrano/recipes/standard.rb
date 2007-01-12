@@ -26,7 +26,7 @@ task :show_tasks do
   puts "Available tasks"
   puts "---------------"
   each_task do |info|
-    wrap_length = 80 - info[:longest]
+    wrap_length = 80 - info[:longest] - 1
     lines = info[:desc].gsub(/(.{1,#{wrap_length}})(?:\s|\Z)+/, "\\1\n").split(/\n/)
     puts "%-#{info[:longest]}s %s" % [info[:task], lines.shift]
     puts "%#{info[:longest]}s %s" % ["", lines.shift] until lines.empty?
