@@ -88,7 +88,7 @@ task :update_code, :except => { :no_release => true } do
   # lets the asset timestamping feature of rails work correctly
   stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
   asset_paths = %w(images stylesheets javascripts).map { |p| "#{release_path}/public/#{p}" }
-  run "find #{asset_paths.join(" ")} -exec touch -t #{stamp} {} \\;; true"
+  run "TZ=UTC find #{asset_paths.join(" ")} -exec touch -t #{stamp} {} \\;; true"
 
   # uncache the list of releases, so that the next time it is called it will
   # include the newly released path.

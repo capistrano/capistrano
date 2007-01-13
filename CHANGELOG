@@ -1,5 +1,7 @@
 *SVN*
 
+* Make the touch command run by update_code set the TZ to UTC, for consistent setting of asset timestampes. [NeilW]
+
 * Fix off-by-one bug in show_tasks width-computation [NeilW]
 
 *1.3.1* (January 5, 2007)
