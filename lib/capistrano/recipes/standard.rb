@@ -245,11 +245,11 @@ task :spinner, :roles => :app do
 end
 
 desc <<-DESC
-Used only for deploying when the spinner isn't running. It invokes deploy,
+Used only for deploying when the spinner isn't running. It invokes 'update',
 and when it finishes it then invokes the spinner task (to start the spinner).
 DESC
 task :cold_deploy do
-  deploy
+  update
   spinner
 end
 
