@@ -1,6 +1,8 @@
 *SVN*
 
-* Make the touch command run by update_code set the TZ to UTC, for consistent setting of asset timestampes. [NeilW]
+* Make cold_deploy call update instead of deploy (to avoid invoking the restart task).
+
+* Make the touch command run by update_code set the TZ to UTC, for consistent setting of asset timestamps. [NeilW]
 
 * Fix off-by-one bug in show_tasks width-computation [NeilW]
 
