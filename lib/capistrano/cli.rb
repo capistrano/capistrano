@@ -96,7 +96,7 @@ module Capistrano
     def initialize(args = ARGV)
       @args = args
       @options = { :recipes => [], :actions => [], :vars => {},
-        :pre_vars => {}, :dotfile => default_dotfile }
+        :pre_vars => {}, :sysconf => default_sysconf, :dotfile => default_dotfile }
 
       OptionParser.new do |opts|
         opts.banner = "Usage: #{$0} [options] [args]"
@@ -109,15 +109,7 @@ module Capistrano
           "An action to execute. Multiple actions may",
           "be specified, and are loaded in the given order."
         ) { |value| @options[:actions] << value }
-
-        opts.on("-c", "--caprc FILE",
-          "Specify an alternate personal config file to load.",
-          "(Default: #{@options[:dotfile]})"
-        ) do |value|
-          abort "The config file `#{value}' does not exist" unless File.exist?(value)
-          @options[:dotfile] = value
-        end
-
+        
         opts.on("-f", "--file FILE",
           "A recipe file to load. Multiple recipes may",
           "be specified, and are loaded in the given order."
@@ -259,10 +251,15 @@ DETAIL
         config.set :pretend, options[:pretend]
 
         options[:pre_vars].each { |name, value| config.set(name, value) }
-        config.load(@options[:dotfile]) if @options[:dotfile] && File.exist?(@options[:dotfile])
 
         # load the standard recipe definition
         config.load "standard"
+        
+        # load systemwide config/recipe definition
+        config.load(@options[:sysconf]) if @options[:sysconf] && File.exist?(@options[:sysconf])        
+        
+        # load user config/recipe definition
+        config.load(@options[:dotfile]) if @options[:dotfile] && File.exist?(@options[:dotfile])
 
         options[:recipes].each { |recipe| config.load(recipe) }
         options[:vars].each { |name, value| config.set(name, value) }
@@ -305,10 +302,19 @@ DETAIL
         end
       end
 
+      def default_sysconf
+        File.join(sysconf_directory, "capistrano.conf")
+      end
+      
       def default_dotfile
         File.join(home_directory, ".caprc")
       end
 
+      def sysconf_directory
+        # I'm guessing at where Windows users would keep their conf file.
+        ENV["SystemRoot"] || '/etc'
+      end
+      
       def home_directory
         ENV["HOME"] ||
           (ENV["HOMEPATH"] && "#{ENV["HOMEDRIVE"]}#{ENV["HOMEPATH"]}") ||

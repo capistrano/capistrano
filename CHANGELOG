@@ -1,5 +1,11 @@
 *SVN*
 
+* Removed -c/--caprc switch, since the new load order renders it meaningless (just use -f now) [Mike Bailey]
+
+* Make sure the standard recipe loads first, so that .caprc and friends can override what it defines. [Mike Bailey]
+
+* Add support for a system-wide capistrano config file [Mike Bailey]
+
 * Make cold_deploy call update instead of deploy (to avoid invoking the restart task).
 
 * Make the touch command run by update_code set the TZ to UTC, for consistent setting of asset timestamps. [NeilW]
