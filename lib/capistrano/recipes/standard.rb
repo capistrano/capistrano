@@ -37,9 +37,10 @@ end
 desc "Set up the expected application directory structure on all boxes"
 task :setup, :except => { :no_release => true } do
   run <<-CMD
-    mkdir -p -m 775 #{deploy_to} #{releases_path} #{shared_path} #{shared_path}/system &&
-    mkdir -p -m 777 #{shared_path}/log &&
-    mkdir -p -m 777 #{shared_path}/pids
+    umask 02 &&
+    mkdir -p #{deploy_to} #{releases_path} #{shared_path} #{shared_path}/system &&
+    mkdir -p #{shared_path}/log &&
+    mkdir -p #{shared_path}/pids
   CMD
 end
 
