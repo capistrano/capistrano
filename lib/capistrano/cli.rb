@@ -206,7 +206,7 @@ as the argument to --apply-to, like this:
   cap --apply-to ~/projects/myapp
 
 You'll wind up with a sample deployment recipe in config/deploy.rb and some new
-rake tasks in config/tasks.
+rake tasks in lib/tasks.
 
 (Currently, --apply-to only works with Rails applications.)
 DETAIL
