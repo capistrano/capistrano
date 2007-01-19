@@ -63,6 +63,14 @@ task :enable_web, :roles => :web do
 end
 
 desc <<-DESC
+Sets group permissions on checkout. Useful for team environments, bad on
+shared hosts. Override this task if you're on a shared host.
+DESC
+task :set_permissions
+  run "chmod -R g+w #{release_path}"
+end
+
+desc <<-DESC
 Update all servers with the latest release of the source code. All this does
 is do a checkout (as defined by the selected scm module).
 DESC
@@ -71,7 +79,7 @@ task :update_code, :except => { :no_release => true } do
 
   source.checkout(self)
 
-  run "chmod -R g+w #{release_path}"
+  set_permissions
 
   run <<-CMD
     rm -rf #{release_path}/log #{release_path}/public/system &&
