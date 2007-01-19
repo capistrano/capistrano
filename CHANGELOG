@@ -1,5 +1,7 @@
 *SVN*
 
+* Refactor the permissions tweaking in update_code to a separate task so that people on shared hosts can override it as necessary [jaw6]
+
 * Set umask during the setup task, so that intermediate directories are created with the proper permissions [NeilW]
 
 * Removed -c/--caprc switch, since the new load order renders it meaningless (just use -f now) [Mike Bailey]
