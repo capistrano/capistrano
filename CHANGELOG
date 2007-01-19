@@ -1,5 +1,7 @@
 *SVN*
 
+* Set umask during the setup task, so that intermediate directories are created with the proper permissions [NeilW]
+
 * Removed -c/--caprc switch, since the new load order renders it meaningless (just use -f now) [Mike Bailey]
 
 * Make sure the standard recipe loads first, so that .caprc and friends can override what it defines. [Mike Bailey]
