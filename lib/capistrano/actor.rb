@@ -261,6 +261,34 @@ module Capistrano
         end
       end
     end
+    
+    # Get file remote_path from FIRST server targetted by
+    # the current task and transfer it to local machine as path. It will use
+    # SFTP if Net::SFTP is installed; otherwise it will fall back to using
+    # 'cat', which may cause corruption in binary files.
+    #
+    # get "#{deploy_to}/current/log/production.log", "log/production.log.web"
+    def get(remote_path, path, options = {})
+      if Capistrano::SFTP && options.fetch(:sftp, true)
+        execute_on_servers(options.merge(:once => true)) do |servers|
+          logger.debug "downloading #{servers.first}:#{remote_path} to #{path}" 
+          sessions[servers.first].sftp.connect do |tsftp|
+            tsftp.get_file remote_path, path
+          end
+          logger.trace "download finished" 
+        end
+      else
+        logger.important "Net::SFTP is not available; using remote 'cat' to get file, which may cause file corruption"
+        File.open(path, "w") do |destination|
+          run "cat #{remote_path}", :once => true do |ch, stream, data|
+            case stream
+            when :out then destination << data
+            when :err then raise "error while downloading #{remote_path}: #{data.inspect}"
+            end
+          end
+        end
+      end
+    end
 
     # Like #run, but executes the command via <tt>sudo</tt>. This assumes that
     # the sudo password (if required) is the same as the password for logging
