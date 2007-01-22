@@ -1,5 +1,7 @@
 *SVN*
 
+* Add a "get" helper, to pull a file from a remote server to the localhost [bmihelac]
+
 * Fix gateway to actually increment local_port if a port is in use, so that multiple capistrano instances can run at the same time [Mark Imbriaco]
 
 * Refactor the permissions tweaking in update_code to a separate task so that people on shared hosts can override it as necessary [jaw6]
