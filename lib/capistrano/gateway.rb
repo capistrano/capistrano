@@ -80,7 +80,7 @@ module Capistrano
           connection = SSH.connect('127.0.0.1', @config, local_port)
           @config.logger.trace "connection to #{server} via gateway established"
         rescue Errno::EADDRINUSE
-          port = next_port
+          local_port = next_port
           retry
         rescue Exception => e
           puts e.class.name
