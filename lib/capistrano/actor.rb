@@ -290,6 +290,19 @@ module Capistrano
       end
     end
 
+    # Executes the given command on the first server targetted by the current
+    # task, collects it's stdout into a string, and returns the string.
+    def capture(command, options={})
+      output = ""
+      run(command, options.merge(:once => true)) do |ch, stream, data|
+        case stream
+        when :out then output << data
+        when :err then raise "error processing #{command.inspect}: #{data.inspect}"
+        end
+      end
+      output
+    end
+
     # Like #run, but executes the command via <tt>sudo</tt>. This assumes that
     # the sudo password (if required) is the same as the password for logging
     # in to the server.
