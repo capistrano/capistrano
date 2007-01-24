@@ -66,7 +66,7 @@ desc <<-DESC
 Sets group permissions on checkout. Useful for team environments, bad on
 shared hosts. Override this task if you're on a shared host.
 DESC
-task :set_permissions do
+task :set_permissions, :except => { :no_release => true } do
   run "chmod -R g+w #{release_path}"
 end
 
