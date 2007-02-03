@@ -1,5 +1,7 @@
 *SVN*
 
+* Use the auth info for subversion more consistently [Jamis Buck]
+
 * Add a "capture" helper, for capturing the stdout of a remote command and returning it as a string [Jamis Buck]
 
 * Add a "get" helper, to pull a file from a remote server to the localhost [bmihelac]
