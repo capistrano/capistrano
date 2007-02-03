@@ -50,7 +50,7 @@ module Capistrano
         from ||= current_revision(actor)
         to ||= "HEAD"
 
-        `svn diff #{configuration.repository}@#{from} #{configuration.repository}@#{to}`
+        `svn diff #{authorization} #{configuration.repository}@#{from} #{configuration.repository}@#{to}`
       end
 
       # Check out (on all servers associated with the current task) the latest
@@ -60,8 +60,7 @@ module Capistrano
       # remote server.)
       def checkout(actor)
         op = configuration[:checkout] || "co"
-        username = configuration[:svn_username] ? "--username #{configuration[:svn_username]}" : ""
-        command = "#{svn} #{op} #{username} -q -r#{configuration.revision} #{configuration.repository} #{actor.release_path} &&"
+        command = "#{svn} #{op} #{authorization} -q -r#{configuration.revision} #{configuration.repository} #{actor.release_path} &&"
         run_checkout(actor, command, &svn_stream_handler(actor)) 
       end
 
@@ -78,8 +77,14 @@ module Capistrano
           configuration[:svn] || "svn"
         end
 
+        def authorization
+          username = configuration[:svn_username] ? "--username #{configuration[:svn_username]}" : ""
+          password = configuration[:svn_password] ? "--password #{configuration[:svn_password]}" : ""
+          "#{username} #{password}"
+        end
+
         def svn_log(path)
-          `svn log -q --limit 1 #{path}`
+          `svn log #{authorization} -q --limit 1 #{path}`
         end
 
         def svn_password
