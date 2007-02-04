@@ -9,7 +9,7 @@ module Capistrano
 
     def initialize(servers, command, callback, options, actor) #:nodoc:
       @servers = servers
-      @command = command.strip.gsub(/\r?\n/, "\\\n")
+      @command = extract_environment(options) + command.strip.gsub(/\r?\n/, "\\\n")
       @callback = callback
       @options = options
       @actor = actor
@@ -94,6 +94,19 @@ module Capistrano
               ch[:closed] = true
             end
           end
+        end
+      end
+
+      # prepare a space-separated sequence of variables assignments
+      # intended to be prepended to a command, so the shell sets
+      # the environment before running the command.
+      # i.e.: options[:env] = {'PATH' => '/opt/ruby/bin:$PATH',
+      #                        'TEST' => '( "quoted" )'}
+      # extract_environment(options) returns:
+      # "TEST=(\ \"quoted\"\ ) PATH=/opt/ruby/bin:$PATH"
+      def extract_environment(options)
+        Array(options[:env]).inject("") do |string, (name, value)|
+          string << %|#{name}=#{value.gsub(/"/, "\\\"").gsub(/ /, "\\ ")} |
         end
       end
   end
