@@ -1,5 +1,7 @@
 *SVN*
 
+* Make sure Actor#get does not close the SFTP channel (so subsequent SFTP operations work) [Dov Murik]
+
 * Add :env option to 'run' (and friends) so that you can specify environment variables to be injected into the new process' environment [Mathieu Lajugie]
 
 

@@ -272,9 +272,9 @@ module Capistrano
       if Capistrano::SFTP && options.fetch(:sftp, true)
         execute_on_servers(options.merge(:once => true)) do |servers|
           logger.debug "downloading #{servers.first}:#{remote_path} to #{path}" 
-          sessions[servers.first].sftp.connect do |tsftp|
-            tsftp.get_file remote_path, path
-          end
+          sftp = sessions[servers.first].sftp
+          sftp.connect unless sftp.state == :open
+          sftp.get_file remote_path, path
           logger.trace "download finished" 
         end
       else
