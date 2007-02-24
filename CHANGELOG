@@ -1,4 +1,4 @@
-*SVN*
+*1.4.1* (February 24, 2007)
 
 * Use the no-auth-cache option with subversion so that username/password tokens do not get cached by capistrano usage [jonathan]
 
