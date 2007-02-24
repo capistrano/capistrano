@@ -78,7 +78,7 @@ MSG
     @actor.story = []
     assert_nothing_raised { @scm.checkout(@actor) }
     assert_nil @actor.channels.last.sent_data
-    assert_match %r{/path/to/svn co\s+-q}, @actor.command
+    assert_match %r{/path/to/svn\b.*\bco\b.* -q}, @actor.command
   end
 
   def test_checkout_via_export
@@ -86,14 +86,14 @@ MSG
     @config[:checkout] = "export"
     assert_nothing_raised { @scm.checkout(@actor) }
     assert_nil @actor.channels.last.sent_data
-    assert_match %r{/path/to/svn export\s+-q}, @actor.command
+    assert_match %r{/path/to/svn\b.*\bexport\b.* -q}, @actor.command
   end
 
   def test_update
     @actor.story = []
     assert_nothing_raised { @scm.update(@actor) }
     assert_nil @actor.channels.last.sent_data
-    assert_match %r{/path/to/svn up}, @actor.command
+    assert_match %r{/path/to/svn\b.*\bup\b}, @actor.command
   end
 
   def test_checkout_needs_ssh_password
@@ -132,6 +132,6 @@ MSG
     @config[:svn_username] = "turtledove"
     assert_nothing_raised { @scm.checkout(@actor) }
     assert_nil @actor.channels.last.sent_data
-    assert_match %r{/path/to/svn co --username turtledove}, @actor.command
+    assert_match %r{/path/to/svn\b.*\bco\b.* --username turtledove}, @actor.command
   end
 end
