@@ -68,6 +68,7 @@ module Capistrano
       # actor. This is to allow uppercase "variables" to be set and referenced
       # in recipes.
       if variable.to_s[0].between?(?A, ?Z)
+        warn "[DEPRECATION] You setting an upper-cased variable, `#{variable}'. Variables should start with a lower-case letter. Support for upper-cased variables will be removed in version 2."
         klass = @actor.metaclass
         klass.send(:remove_const, variable) if klass.const_defined?(variable)
         klass.const_set(variable, value)
