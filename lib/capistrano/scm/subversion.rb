@@ -80,7 +80,7 @@ module Capistrano
         def authorization
           username = configuration[:svn_username] ? "--username #{configuration[:svn_username]}" : ""
           password = configuration[:svn_password] ? "--password #{configuration[:svn_password]}" : ""
-          "#{username} #{password}"
+          "--no-auth-cache #{username} #{password}"
         end
 
         def svn_log(path)

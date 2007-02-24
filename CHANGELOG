@@ -1,5 +1,7 @@
 *SVN*
 
+* Use the no-auth-cache option with subversion so that username/password tokens do not get cached by capistrano usage [jonathan]
+
 * Deprecated upper-cased variables [Jamis Buck]
 
 * Make sure Actor#get does not close the SFTP channel (so subsequent SFTP operations work) [Dov Murik]
