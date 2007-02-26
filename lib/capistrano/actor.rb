@@ -416,50 +416,6 @@ module Capistrano
       release_path(releases[-2]) if releases[-2]
     end
 
-    # Invoke a set of tasks in a transaction. If any task fails (raises an
-    # exception), all tasks executed within the transaction are inspected to
-    # see if they have an associated on_rollback hook, and if so, that hook
-    # is called.
-    def transaction
-      if task_call_history
-        yield
-      else
-        logger.info "transaction: start"
-        begin
-          @task_call_history = []
-          yield
-          logger.info "transaction: commit"
-        rescue Object => e
-          current = task_call_history.last
-          logger.important "transaction: rollback", current ? current.name : "transaction start"
-          task_call_history.reverse.each do |task|
-            begin
-              # throw the task back on the stack so that roles are properly
-              # interpreted in the scope of the task in question.
-              push_task_call_frame(task.name)
-
-              logger.debug "rolling back", task.name
-              task.rollback.call if task.rollback
-            rescue Object => e
-              logger.info "exception while rolling back: #{e.class}, #{e.message}", task.name
-            ensure
-              pop_task_call_frame
-            end
-          end
-          raise
-        ensure
-          @task_call_history = nil
-        end
-      end
-    end
-
-    # Specifies an on_rollback hook for the currently executing task. If this
-    # or any subsequent task then fails, and a transaction is active, this
-    # hook will be executed.
-    def on_rollback(&block)
-      task_call_frames.last.rollback = block
-    end
-
     # An instance-level reader for the class' #default_io_proc attribute.
     def default_io_proc
       self.class.default_io_proc
@@ -471,11 +427,6 @@ module Capistrano
     # time-sensitive.
     def connect!(options={})
       execute_on_servers(options) { }
-    end
-
-    def current_task
-      return nil if task_call_frames.empty?
-      tasks[task_call_frames.last.name]
     end
 
     def metaclass
@@ -490,16 +441,6 @@ module Capistrano
 
       def define_method(name, &block)
         metaclass.send(:define_method, name, &block)
-      end
-
-      def push_task_call_frame(name)
-        frame = TaskCallFrame.new(name)
-        task_call_frames.push frame
-        task_call_history.push frame if task_call_history
-      end
-
-      def pop_task_call_frame
-        task_call_frames.pop
       end
 
       def establish_connections(servers)
