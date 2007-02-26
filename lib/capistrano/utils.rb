@@ -11,16 +11,14 @@ module Capistrano
   # If +require_config+ is not false, an exception will be raised if the current
   # configuration is not set.
   def self.configuration(require_config=false)
-    config = Thread.current[:capistrano_configuration]
-    if require_config && config.nil?
-      raise "Please require this file from within a Capistrano recipe"
-    end
-    config
+    warn "[DEPRECATION] please use Capistrano::Configuration.instance instead of Capistrano.configuration. (You may be using a Capistrano plugin that is using this deprecated syntax.)"
+    Capistrano::Configuration.instance(require_config)
   end
 
   # Used internally by Capistrano to specify the current configuration before
   # loading a third-party task bundle.
   def self.configuration=(config)
-    Thread.current[:capistrano_configuration] = config
+    warn "[DEPRECATION] please us Capistrano::Configuration.instance= instead of Capistrano.configuration=."
+    Capistrano::Configuration.instance = config
   end
 end
