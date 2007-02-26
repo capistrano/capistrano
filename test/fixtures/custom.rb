@@ -1,3 +1,3 @@
-Capistrano.configuration(:must_exist).load do
-  set :gateway, "foo"
+ConfigurationLoadingTest::MockConfig.instance(:must_exist).load do
+  ping! :custom
 end
