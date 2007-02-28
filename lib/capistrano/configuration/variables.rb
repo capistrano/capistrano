@@ -89,6 +89,8 @@ module Capistrano
         initialize_without_variables
         @variables = {}
         @original_procs = {}
+
+        set :ssh_options, {}
       end
       private :initialize_with_variables
 

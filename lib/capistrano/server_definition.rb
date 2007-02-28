@@ -9,8 +9,10 @@ module Capistrano
       @user, @host, @port = string.match(/^(?:([^;,:=]+)@|)(.*?)(?::(\d+)|)$/)[1,3]
 
       @options = options.dup
-      @user = @options.delete(:user) || @user
-      @port = @options.delete(:port) || @port
+      user_opt, port_opt = @options.delete(:user), @options.delete(:port)
+
+      @user ||= user_opt
+      @port ||= port_opt
 
       @port = @port.to_i if @port
     end

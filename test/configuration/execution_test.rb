@@ -1,7 +1,4 @@
-$:.unshift File.dirname(__FILE__) + "/../../lib"
-
-require 'test/unit'
-require 'mocha'
+require "#{File.dirname(__FILE__)}/../utils"
 require 'capistrano/configuration/execution'
 require 'capistrano/task_definition'
 
@@ -10,10 +7,11 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     include Mocha::AutoVerify
 
     attr_reader :tasks, :namespaces, :fully_qualified_name, :parent
-    attr_reader :state
+    attr_reader :state, :original_initialize_called
     attr_accessor :logger
 
     def initialize(options={})
+      @original_initialize_called = true
       @tasks = {}
       @namespaces = {}
       @state = {}
@@ -31,6 +29,7 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
 
   def test_initialize_should_initialize_collections
     assert_nil @config.rollback_requests
+    assert @config.original_initialize_called
     assert @config.task_call_frames.empty?
   end
 
