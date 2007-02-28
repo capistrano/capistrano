@@ -1,6 +1,4 @@
-$:.unshift "#{File.dirname(__FILE__)}/../lib"
-
-require 'test/unit'
+require "#{File.dirname(__FILE__)}/utils"
 require 'capistrano/server_definition'
 
 class ServerDefinitionTest < Test::Unit::TestCase
@@ -46,11 +44,11 @@ class ServerDefinitionTest < Test::Unit::TestCase
     assert_equal 8080, server.port
   end
 
-  def test_new_with_option_should_override_encoded_value_and_remove_from_options
+  def test_encoded_value_should_override_hash_option
     server = Capistrano::ServerDefinition.new("jamis@www.capistrano.test:8080", :user => "david", :port => 8081)
     assert_equal "www.capistrano.test", server.host
-    assert_equal "david", server.user
-    assert_equal 8081, server.port
+    assert_equal "jamis", server.user
+    assert_equal 8080, server.port
     assert server.options.empty?
   end
 

@@ -1,9 +1,5 @@
-$:.unshift "#{File.dirname(__FILE__)}/../lib"
-
-require 'test/unit'
-require 'mocha'
+require "#{File.dirname(__FILE__)}/utils"
 require 'capistrano/task_definition'
-require 'capistrano/server_definition'
 
 class TaskDefinitionTest < Test::Unit::TestCase
   def setup

@@ -1,10 +1,14 @@
-$:.unshift File.dirname(__FILE__) + "/../../lib"
-
-require 'test/unit'
+require "#{File.dirname(__FILE__)}/../utils"
 require 'capistrano/configuration/variables'
 
 class ConfigurationVariablesTest < Test::Unit::TestCase
   class MockConfig
+    attr_reader :original_initialize_called
+
+    def initialize
+      @original_initialize_called = true
+    end
+
     include Capistrano::Configuration::Variables
   end
 
@@ -13,7 +17,8 @@ class ConfigurationVariablesTest < Test::Unit::TestCase
   end
 
   def test_initialize_should_initialize_variables_hash
-    assert @config.variables.empty?
+    assert @config.original_initialize_called
+    assert_equal({:ssh_options => {}}, @config.variables)
   end
 
   def test_set_should_add_variable_to_hash

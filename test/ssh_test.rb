@@ -1,184 +1,78 @@
-$:.unshift File.dirname(__FILE__) + "/../lib"
-
-require File.dirname(__FILE__) + "/utils"
-require 'test/unit'
+require "#{File.dirname(__FILE__)}/utils"
 require 'capistrano/ssh'
 
 class SSHTest < Test::Unit::TestCase
-  class MockSSH
-    AuthenticationFailed = Net::SSH::AuthenticationFailed
-
-    class <<self
-      attr_accessor :story
-      attr_accessor :invocations
-    end
-
-    def self.start(server, opts, &block)
-      @invocations << [server, opts, block]
-      err = story.shift
-      raise err if err
-    end
-  end
-
   def setup
-    @config = MockConfiguration.new
-    @config[:user] = 'demo'
-    @config[:password] = 'c0c0nutfr0st1ng'
-    MockSSH.story = []
-    MockSSH.invocations = []
+    @options = { :username => nil,
+                 :password => nil,
+                 :port     => 22,
+                 :auth_methods => %w(publickey hostbased) }
+    @server = server("capistrano")
   end
 
-  def test_publickey_auth_succeeds_default_port_no_block
-    Net.const_during(:SSH, MockSSH) do
-      Capistrano::SSH.connect('demo.server.i', @config)
-    end
-
-    assert_equal 1, MockSSH.invocations.length
-    assert_equal 'demo.server.i', MockSSH.invocations.first[0]
-    assert_equal 22, MockSSH.invocations.first[1][:port]
-    assert_equal 'demo', MockSSH.invocations.first[1][:username]
-    assert_nil MockSSH.invocations.first[1][:password]
-    assert_equal %w(publickey hostbased),
-      MockSSH.invocations.first[1][:auth_methods]
-    assert_nil MockSSH.invocations.first[2]
-  end
-  
-  def test_explicit_ssh_ports_in_server_string_no_block
-    Net.const_during(:SSH, MockSSH) do
-      Capistrano::SSH.connect('demo.server.i:8088', @config)
-    end
-
-    assert_equal 1, MockSSH.invocations.length
-    assert_equal 'demo.server.i', MockSSH.invocations.first[0]
-    assert_equal '8088', MockSSH.invocations.first[1][:port]
-    assert_equal 'demo', MockSSH.invocations.first[1][:username]
-  end
-  
-  def test_explicit_ssh_username_in_server_string_no_block
-    Net.const_during(:SSH, MockSSH) do
-      Capistrano::SSH.connect('bob@demo.server.i', @config)
-    end
-
-    assert_equal 1, MockSSH.invocations.length
-    assert_equal 'demo.server.i', MockSSH.invocations.first[0]
-    assert_equal 22, MockSSH.invocations.first[1][:port]
-    assert_equal 'bob', MockSSH.invocations.first[1][:username]
-  end
-  
-  def test_explicit_ssh_username_and_port_in_server_string_no_block
-    Net.const_during(:SSH, MockSSH) do
-      Capistrano::SSH.connect('bob@demo.server.i:8088', @config)
-    end
-
-    assert_equal 1, MockSSH.invocations.length
-    assert_equal 'demo.server.i', MockSSH.invocations.first[0]
-    assert_equal '8088', MockSSH.invocations.first[1][:port]
-    assert_equal 'bob', MockSSH.invocations.first[1][:username]
+  def test_connect_with_bare_server_without_options_or_config_with_public_key_succeeding_should_only_loop_once
+    Net::SSH.expects(:start).with(@server.host, @options).returns(:success)
+    assert_equal :success, Capistrano::SSH.connect(@server)
   end
 
-  def test_publickey_auth_succeeds_explicit_port_no_block
-    Net.const_during(:SSH, MockSSH) do
-      Capistrano::SSH.connect('demo.server.i', @config, 23)
-    end
-
-    assert_equal 1, MockSSH.invocations.length
-    assert_equal 23, MockSSH.invocations.first[1][:port]
-    assert_nil MockSSH.invocations.first[2]
+  def test_connect_with_bare_server_without_options_with_public_key_failing_should_try_password
+    Net::SSH.expects(:start).with(@server.host, @options).raises(Net::SSH::AuthenticationFailed)
+    Net::SSH.expects(:start).with(@server.host, @options.merge(:password => "f4b13n", :auth_methods => %w(password keyboard-interactive))).returns(:success)
+    assert_equal :success, Capistrano::SSH.connect(@server, :password => "f4b13n")
   end
 
-
-  def test_explicit_ssh_ports_in_server_string_with_block
-    Net.const_during(:SSH, MockSSH) do
-      Capistrano::SSH.connect('demo.server.i:8088', @config) do |session|
-      end
+  def test_connect_with_bare_server_without_options_public_key_and_password_failing_should_raise_error
+    Net::SSH.expects(:start).with(@server.host, @options).raises(Net::SSH::AuthenticationFailed)
+    Net::SSH.expects(:start).with(@server.host, @options.merge(:password => "f4b13n", :auth_methods => %w(password keyboard-interactive))).raises(Net::SSH::AuthenticationFailed)
+    assert_raises(Net::SSH::AuthenticationFailed) do
+      Capistrano::SSH.connect(@server, :password => "f4b13n")
     end
-    assert_equal 'demo.server.i', MockSSH.invocations.first[0]
-    assert_equal '8088', MockSSH.invocations.first[1][:port]
-    assert_equal 1, MockSSH.invocations.length
-    assert_instance_of Proc, MockSSH.invocations.first[2]
-  end
-  
-  def test_explicit_ssh_username_in_server_string_with_block
-    Net.const_during(:SSH, MockSSH) do
-      Capistrano::SSH.connect('bob@demo.server.i', @config) do |session|
-      end
-    end
-    assert_equal 'demo.server.i', MockSSH.invocations.first[0]
-    assert_equal 22, MockSSH.invocations.first[1][:port]
-    assert_equal 1, MockSSH.invocations.length
-    assert_equal 'bob', MockSSH.invocations.first[1][:username]
-    assert_instance_of Proc, MockSSH.invocations.first[2]
-  end
-  
-  def test_explicit_ssh_username_and_port_in_server_string_with_block
-    Net.const_during(:SSH, MockSSH) do
-      Capistrano::SSH.connect('bob@demo.server.i:8088', @config) do |session|
-      end
-    end
-    assert_equal 'demo.server.i', MockSSH.invocations.first[0]
-    assert_equal '8088', MockSSH.invocations.first[1][:port]
-    assert_equal 1, MockSSH.invocations.length
-    assert_equal 'bob', MockSSH.invocations.first[1][:username]
-    assert_instance_of Proc, MockSSH.invocations.first[2]
   end
 
-  def test_parse_server
-    assert_equal(['bob', 'demo.server.i', '8088'], 
-                 Capistrano::SSH.parse_server("bob@demo.server.i:8088"))
-    assert_equal([nil, 'demo.server.i', '8088'], 
-                 Capistrano::SSH.parse_server("demo.server.i:8088"))                 
-    assert_equal(['bob', 'demo.server.i', nil], 
-                 Capistrano::SSH.parse_server("bob@demo.server.i"))
-    assert_equal([nil, 'demo.server.i', nil], 
-                 Capistrano::SSH.parse_server("demo.server.i"))
-  end  
-
-  def test_publickey_auth_succeeds_with_block
-    Net.const_during(:SSH, MockSSH) do
-      Capistrano::SSH.connect('demo.server.i', @config) do |session|
-      end
-    end
-
-    assert_equal 1, MockSSH.invocations.length
-    assert_instance_of Proc, MockSSH.invocations.first[2]
+  def test_connect_with_bare_server_and_user_via_public_key_should_pass_user_to_net_ssh
+    Net::SSH.expects(:start).with(@server.host, @options.merge(:username => "jamis")).returns(:success)
+    assert_equal :success, Capistrano::SSH.connect(@server, :user => "jamis")
   end
 
-  def test_publickey_auth_fails
-    MockSSH.story << Net::SSH::AuthenticationFailed
-
-    Net.const_during(:SSH, MockSSH) do
-      Capistrano::SSH.connect('demo.server.i', @config)
-    end
-
-    assert_equal 2, MockSSH.invocations.length
-
-    assert_nil MockSSH.invocations.first[1][:password]
-    assert_equal %w(publickey hostbased),
-      MockSSH.invocations.first[1][:auth_methods]
-
-    assert_equal 'c0c0nutfr0st1ng', MockSSH.invocations.last[1][:password]
-    assert_equal %w(password keyboard-interactive),
-      MockSSH.invocations.last[1][:auth_methods]
+  def test_connect_with_bare_server_and_user_via_password_should_pass_user_to_net_ssh
+    Net::SSH.expects(:start).with(@server.host, @options.merge(:username => "jamis")).raises(Net::SSH::AuthenticationFailed)
+    Net::SSH.expects(:start).with(@server.host, @options.merge(:username => "jamis", :password => "f4b13n", :auth_methods => %w(password keyboard-interactive))).returns(:success)
+    assert_equal :success, Capistrano::SSH.connect(@server, :user => "jamis", :password => "f4b13n")
   end
 
-  def test_password_auth_fails
-    MockSSH.story << Net::SSH::AuthenticationFailed
-    MockSSH.story << Net::SSH::AuthenticationFailed
+  def test_connect_with_bare_server_with_explicit_port_should_pass_port_to_net_ssh
+    Net::SSH.expects(:start).with(@server.host, @options.merge(:port => 1234)).returns(:success)
+    assert_equal :success, Capistrano::SSH.connect(@server, :port => 1234)
+  end
 
-    Net.const_during(:SSH, MockSSH) do
-      assert_raises(Net::SSH::AuthenticationFailed) do
-        Capistrano::SSH.connect('demo.server.i', @config)
-      end
-    end
+  def test_connect_with_server_with_user_should_pass_user_to_net_ssh
+    server = server("jamis@capistrano")
+    Net::SSH.expects(:start).with(server.host, @options.merge(:username => "jamis")).returns(:success)
+    assert_equal :success, Capistrano::SSH.connect(server)
+  end
 
-    assert_equal 2, MockSSH.invocations.length
+  def test_connect_with_server_with_port_should_pass_port_to_net_ssh
+    server = server("capistrano:1235")
+    Net::SSH.expects(:start).with(server.host, @options.merge(:port => 1235)).returns(:success)
+    assert_equal :success, Capistrano::SSH.connect(server)
+  end
 
-    assert_nil MockSSH.invocations.first[1][:password]
-    assert_equal %w(publickey hostbased),
-      MockSSH.invocations.first[1][:auth_methods]
+  def test_connect_with_server_with_user_and_port_should_pass_user_and_port_to_net_ssh
+    server = server("jamis@capistrano:1235")
+    Net::SSH.expects(:start).with(server.host, @options.merge(:username => "jamis", :port => 1235)).returns(:success)
+    assert_equal :success, Capistrano::SSH.connect(server)
+  end
 
-    assert_equal 'c0c0nutfr0st1ng', MockSSH.invocations.last[1][:password]
-    assert_equal %w(password keyboard-interactive),
-      MockSSH.invocations.last[1][:auth_methods]
+  def test_connect_with_ssh_options_should_override_options
+    ssh_options = { :username => "JamisMan", :port => 8125 }
+    Net::SSH.expects(:start).with(@server.host, @options.merge(:username => "JamisMan", :port => 8125)).returns(:success)
+    assert_equal :success, Capistrano::SSH.connect(@server, {:ssh_options => ssh_options, :user => "jamis", :port => 1235})
+  end
+
+  def test_connect_with_ssh_options_should_override_server_options
+    ssh_options = { :username => "JamisMan", :port => 8125 }
+    server = server("jamis@capistrano:1235")
+    Net::SSH.expects(:start).with(server.host, @options.merge(:username => "JamisMan", :port => 8125)).returns(:success)
+    assert_equal :success, Capistrano::SSH.connect(server, {:ssh_options => ssh_options})
   end
 end
