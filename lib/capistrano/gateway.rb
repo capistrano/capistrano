@@ -75,7 +75,7 @@ module Capistrano
     # Net::SSH connection via that port.
     def connect_to(server)
       connection = nil
-      logger.trace "establishing connection to #{server} via gateway" if logger
+      logger.trace "establishing connection to `#{server.host}' via gateway" if logger
       local_port = next_port
 
       thread = Thread.new do

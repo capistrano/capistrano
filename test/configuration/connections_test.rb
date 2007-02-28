@@ -65,7 +65,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
   def test_connection_factory_as_gateway_should_honor_config_options
     @config.values[:gateway] = "capistrano"
     @config.values.update(@ssh_options)
-    Capistrano::SSH.expects(:connect).with { |s,opts| s.host == "capistrano" && opts == @ssh_options }.yields(stub_everything)
+    Capistrano::SSH.expects(:connect).with { |s,opts| s.host == "capistrano" && opts == @ssh_options.merge(:logger => @config.logger) }.yields(stub_everything)
     assert_instance_of Capistrano::Gateway, @config.connection_factory
   end
 
