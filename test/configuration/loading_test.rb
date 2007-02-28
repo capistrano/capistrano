@@ -1,18 +1,20 @@
-$:.unshift File.dirname(__FILE__) + "/../../lib"
-
-require 'test/unit'
-require 'mocha'
+require "#{File.dirname(__FILE__)}/../utils"
 require 'capistrano/configuration/loading'
 
 class ConfigurationLoadingTest < Test::Unit::TestCase
   class MockConfig
-    include Capistrano::Configuration::Loading
-
     attr_accessor :ping
+    attr_reader :original_initialize_called
+
+    def initialize
+      @original_initialize_called = true
+    end
 
     def ping!(value)
       @ping = value
     end
+
+    include Capistrano::Configuration::Loading
   end
 
   def setup
@@ -24,7 +26,8 @@ class ConfigurationLoadingTest < Test::Unit::TestCase
     $".delete "#{File.dirname(__FILE__)}/../fixtures/custom.rb"
   end
 
-  def test_initialize_sets_load_paths
+  def test_initialize_should_init_collections
+    assert @config.original_initialize_called
     assert @config.load_paths.include?(".")
     assert @config.load_paths.detect { |v| v =~ /capistrano\/recipes$/ }
   end

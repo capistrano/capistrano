@@ -1,5 +1,6 @@
 require 'capistrano/logger'
 require 'capistrano/extensions'
+require 'capistrano/configuration/connections'
 require 'capistrano/configuration/execution'
 require 'capistrano/configuration/loading'
 require 'capistrano/configuration/namespaces'
@@ -20,6 +21,6 @@ module Capistrano
 
     # The includes must come at the bottom, since they may redefine methods
     # defined in the base class.
-    include Execution, Loading, Namespaces, Roles, Variables
+    include Connections, Execution, Loading, Namespaces, Roles, Variables
   end
 end

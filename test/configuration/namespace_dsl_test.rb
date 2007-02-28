@@ -1,10 +1,14 @@
-$:.unshift File.dirname(__FILE__) + "/../../lib"
-
-require 'test/unit'
+require "#{File.dirname(__FILE__)}/../utils"
 require 'capistrano/configuration/namespaces'
 
 class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
   class MockConfig
+    attr_reader :original_initialize_called
+
+    def initialize
+      @original_initialize_called = true
+    end
+
     include Capistrano::Configuration::Namespaces
   end
 
@@ -13,6 +17,7 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
   end
 
   def test_initialize_should_initialize_collections
+    assert @config.original_initialize_called
     assert @config.tasks.empty?
     assert @config.namespaces.empty?
   end

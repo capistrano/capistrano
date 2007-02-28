@@ -1,5 +1,6 @@
 require 'thread'
 require 'capistrano/ssh'
+require 'capistrano/server_definition'
 
 Thread.abort_on_exception = true
 
@@ -9,17 +10,19 @@ module Capistrano
   # gateway server, through which connections to other servers may be
   # tunnelled.
   #
-  # It is used internally by Actor, but may be useful on its own, as well.
+  # It is used internally by Capistrano, but may be useful on its own, as well.
   #
   # Usage:
   #
-  #   config = Capistrano::Configuration.new
-  #   gateway = Capistrano::Gateway.new('gateway.example.com', config)
+  #   gateway = Capistrano::Gateway.new(Capistrano::ServerDefinition.new('gateway.example.com'))
   #
-  #   sess1 = gateway.connect_to('hidden.example.com')
-  #   sess2 = gateway.connect_to('other.example.com')
+  #   sess1 = gateway.connect_to(Capistrano::ServerDefinition.new('hidden.example.com'))
+  #   sess2 = gateway.connect_to(Capistrano::ServerDefinition.new('other.example.com'))
   class Gateway
-    # The thread inside which the gateway connection itself is running.
+    # An exception class for reporting Gateway-specific errors.
+    class Error < Exception; end
+
+    # The Thread instance driving the gateway connection.
     attr_reader :thread
 
     # The Net::SSH session representing the gateway connection.
@@ -28,8 +31,8 @@ module Capistrano
     MAX_PORT = 65535
     MIN_PORT = 1024
 
-    def initialize(server, config) #:nodoc:
-      @config = config
+    def initialize(server, options={}) #:nodoc:
+      @options = options
       @next_port = MAX_PORT
       @terminate_thread = false
       @port_guard = Mutex.new
@@ -38,29 +41,33 @@ module Capistrano
       waiter = ConditionVariable.new
 
       @thread = Thread.new do
-        @config.logger.trace "starting connection to gateway #{server}"
-        SSH.connect(server, @config) do |@session|
-          @config.logger.trace "gateway connection established"
+        logger.trace "starting connection to gateway `#{server.host}'" if logger
+        SSH.connect(server, @options) do |@session|
+          logger.trace "gateway connection established" if logger
+          Thread.pass
           mutex.synchronize { waiter.signal }
           @session.loop { !@terminate_thread }
         end
       end
 
-      mutex.synchronize { waiter.wait(mutex) }
+      mutex.synchronize do
+        Thread.pass
+        waiter.wait(mutex)
+      end
     end
 
     # Shuts down all forwarded connections and terminates the gateway.
     def shutdown!
       # cancel all active forward channels
-      @session.forward.active_locals.each do |lport, host, port|
-        @session.forward.cancel_local(lport)
+      session.forward.active_locals.each do |lport, host, port|
+        session.forward.cancel_local(lport)
       end
 
       # terminate the gateway thread
       @terminate_thread = true
 
       # wait for the gateway thread to stop
-      @thread.join
+      thread.join
     end
 
     # Connects to the given server by opening a forwarded port from the local
@@ -68,31 +75,33 @@ module Capistrano
     # Net::SSH connection via that port.
     def connect_to(server)
       connection = nil
-      @config.logger.trace "establishing connection to #{server} via gateway"
+      logger.trace "establishing connection to #{server} via gateway" if logger
       local_port = next_port
 
       thread = Thread.new do
         begin
-          user, server_stripped, port = SSH.parse_server(server)   
-          @config.ssh_options[:username] = user if user
-          remote_port = port || 22
-          @session.forward.local(local_port, server_stripped, remote_port)
-          connection = SSH.connect('127.0.0.1', @config, local_port)
-          @config.logger.trace "connection to #{server} via gateway established"
+          local_host = ServerDefinition.new("127.0.0.1", :user => server.user, :port => local_port)
+          session.forward.local(local_port, server.host, server.port || 22)
+          connection = SSH.connect(local_host, @options)
+          logger.trace "connected: `#{server.host}' (via gateway)" if logger
         rescue Errno::EADDRINUSE
           local_port = next_port
           retry
         rescue Exception => e
-          puts e.class.name
-          puts e.backtrace.join("\n")
+          warn "#{e.class}: #{e.message}"
+          warn e.backtrace.join("\n")
         end
       end
 
       thread.join
-      connection or raise "Could not establish connection to #{server}"
+      connection or raise Error, "could not establish connection to `#{server.host}'"
     end
 
     private
+
+      def logger
+        @options[:logger]
+      end
 
       def next_port
         @port_guard.synchronize do

@@ -1,10 +1,14 @@
-$:.unshift File.dirname(__FILE__) + "/../../lib"
-
-require 'test/unit'
+require "#{File.dirname(__FILE__)}/../utils"
 require 'capistrano/configuration/roles'
 
 class ConfigurationRolesTest < Test::Unit::TestCase
   class MockConfig
+    attr_reader :original_initialize_called
+
+    def initialize
+      @original_initialize_called = true
+    end
+
     include Capistrano::Configuration::Roles
   end
 
@@ -13,6 +17,7 @@ class ConfigurationRolesTest < Test::Unit::TestCase
   end
 
   def test_initialize_should_initialize_roles_collection
+    assert @config.original_initialize_called
     assert @config.roles.empty?
   end
 

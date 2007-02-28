@@ -13,130 +13,13 @@ module Capistrano
   # directly--rather, you create a new Configuration instance, and access the
   # new actor via Configuration#actor.
   class Actor
-
-    # An adaptor for making the SSH interface look and act like that of the
-    # Gateway class.
-    class DefaultConnectionFactory #:nodoc:
-      def initialize(config)
-        @config= config
-      end
-
-      def connect_to(server)
-        SSH.connect(server, @config)
-      end
-    end
-
     class <<self
-      attr_accessor :connection_factory
-      attr_accessor :command_factory
-      attr_accessor :transfer_factory
       attr_accessor :default_io_proc
     end
-
-    self.connection_factory = DefaultConnectionFactory
-    self.command_factory = Command
-    self.transfer_factory = Transfer
 
     self.default_io_proc = Proc.new do |ch, stream, out|
       level = stream == :err ? :important : :info
       ch[:actor].logger.send(level, out, "#{stream} :: #{ch[:host]}")
-    end
-
-    # The configuration instance associated with this actor.
-    attr_reader :configuration
-
-    # A hash of the tasks known to this actor, keyed by name. The values are
-    # instances of Actor::Task.
-    attr_reader :tasks
-
-    # A hash of the SSH sessions that are currently open and available.
-    # Because sessions are constructed lazily, this will only contain
-    # connections to those servers that have been the targets of one or more
-    # executed tasks.
-    attr_reader :sessions
-
-    # The call stack of the tasks. The currently executing task may inspect
-    # this to see who its caller was. The current task is always the last
-    # element of this stack.
-    attr_reader :task_call_frames
-
-    # The history of executed tasks. This will be an array of all tasks that
-    # have been executed, in the order in which they were called.
-    attr_reader :task_call_history
-
-    # A struct for representing a single instance of an invoked task.
-    TaskCallFrame = Struct.new(:name, :rollback)
-
-    # Represents the definition of a single task.
-    class Task #:nodoc:
-      attr_reader :name, :actor, :options
-
-      def initialize(name, actor, options)
-        @name, @actor, @options = name, actor, options
-        @servers = nil
-      end
-
-      # Returns the list of servers (_not_ connections to servers) that are
-      # the target of this task.
-      def servers(reevaluate=false)
-        @servers = nil if reevaluate
-        @servers ||=
-          if hosts = find_hosts
-            hosts
-          else
-            roles = find_roles
-            apply_only!(roles)
-            apply_except!(roles)
-
-            roles.map { |role| role.host }.uniq
-          end
-      end
-      
-      private
-        def find_roles
-          role_names = [ *(environment_values(:roles, true) || @options[:roles] || actor.configuration.roles.keys) ]
-          role_names.collect do |name|
-            actor.configuration.roles[name] ||
-              raise(ArgumentError, "task #{self.name.inspect} references non-existant role #{name.inspect}")
-          end.flatten
-        end
-        
-        def find_hosts
-          environment_values(:hosts) || @options[:hosts]
-        end
-        
-        def environment_values(key, use_symbols = false)
-          if variable = ENV[key.to_s.upcase]
-            values = variable.split(",")
-            use_symbols ? values.collect { |e| e.to_sym } : values
-          end
-        end
-        
-        def apply_only!(roles)
-          only = @options[:only] || {}
-
-          unless only.empty?
-            roles = roles.delete_if do |role|
-              catch(:done) do
-                only.keys.each { |key| throw(:done, true) if role.options[key] != only[key] }
-                false
-              end
-            end
-          end          
-        end
-        
-        def apply_except!(roles)
-          except = @options[:except] || {}
-
-          unless except.empty?
-            roles = roles.delete_if do |role|
-              catch(:done) do
-                except.keys.each { |key| throw(:done, true) if role.options[key] == except[key] }
-                false
-              end
-            end
-          end          
-        end
     end
 
     def initialize(config) #:nodoc:
@@ -145,51 +28,6 @@ module Capistrano
       @task_call_frames = []
       @sessions = {}
       @factory = self.class.connection_factory.new(configuration)
-    end
-
-    # Define a new task for this actor. The block will be invoked when this
-    # task is called.
-    def define_task(name, options={}, &block)
-      @tasks[name] = (options[:task_class] || Task).new(name, self, options)
-      define_method(name) do
-        send "before_#{name}" if respond_to? "before_#{name}"
-        logger.debug "executing task #{name}"
-        begin
-          push_task_call_frame name
-          result = instance_eval(&block)
-        ensure
-          pop_task_call_frame
-        end
-        send "after_#{name}" if respond_to? "after_#{name}"
-        result
-      end
-    end
-
-    # Iterates over each task, in alphabetical order. A hash object is
-    # yielded for each task, which includes the task's name (:name), the
-    # length of the longest task name (:longest), and the task's description,
-    # reformatted as a single line (:desc).
-    def each_task
-      keys = tasks.keys.sort_by { |a| a.to_s }
-      longest = keys.inject(0) { |len,key| key.to_s.length > len ? key.to_s.length : len } + 2
-
-      keys.sort_by { |a| a.to_s }.each do |key|
-        desc = (tasks[key].options[:desc] || "").gsub(/(?:\r?\n)+[ \t]*/, " ").strip
-        info = { :task => key, :longest => longest, :desc => desc }
-        yield info
-      end
-    end
-
-    # Dump all tasks and (brief) descriptions in YAML format for consumption
-    # by other processes. Returns a string containing the YAML-formatted data.
-    def dump_tasks
-      data = ""
-      each_task do |info|
-        desc = info[:desc].split(/\. /).first || ""
-        desc << "." if !desc.empty? && desc[-1] != ?.
-        data << "#{info[:task]}: #{desc}\n"
-      end
-      data
     end
 
     # Execute the given command on all servers that are the target of the
@@ -393,29 +231,6 @@ module Capistrano
       end
     end
 
-    # Inspects the remote servers to determine the list of all released versions
-    # of the software. Releases are sorted with the most recent release last.
-    def releases
-      @releases ||= begin
-        buffer = ""
-        run "ls -x1 #{releases_path}", :once => true do |ch, str, out|
-          buffer << out if str == :out
-          raise "could not determine releases #{out.inspect}" if str == :err
-        end
-        buffer.split.sort
-      end
-    end
-
-    # Returns the most recent deployed release
-    def current_release
-      release_path(releases.last)
-    end
-
-    # Returns the release immediately before the currently deployed one
-    def previous_release
-      release_path(releases[-2]) if releases[-2]
-    end
-
     # An instance-level reader for the class' #default_io_proc attribute.
     def default_io_proc
       self.class.default_io_proc
@@ -441,59 +256,6 @@ module Capistrano
 
       def define_method(name, &block)
         metaclass.send(:define_method, name, &block)
-      end
-
-      def establish_connections(servers)
-        @factory = establish_gateway if needs_gateway?
-        servers = Array(servers)
-
-        # because Net::SSH uses lazy loading for things, we need to make sure
-        # that at least one connection has been made successfully, to kind of
-        # "prime the pump", before we go gung-ho and do mass connection in
-        # parallel. Otherwise, the threads start doing things in wierd orders
-        # and causing Net::SSH to die of confusion.
-
-        if !@established_gateway && @sessions.empty?
-          server, servers = servers.first, servers[1..-1]
-          @sessions[server] = @factory.connect_to(server)
-        end
-
-        servers.map { |server| establish_connection_to(server) }.each { |t| t.join }
-      end
-
-      # We establish the connection by creating a thread in a new method--this
-      # prevents problems with the thread's scope seeing the wrong 'server'
-      # variable if the thread just happens to take too long to start up.
-      def establish_connection_to(server)
-        Thread.new { @sessions[server] ||= @factory.connect_to(server) }
-      end
-
-      def establish_gateway
-        logger.debug "establishing connection to gateway #{gateway}"
-        @established_gateway = true
-        Gateway.new(gateway, configuration)
-      end
-
-      def needs_gateway?
-        gateway && !@established_gateway
-      end
-
-      def execute_on_servers(options)
-        task = current_task
-        servers = task.servers
-
-        if servers.empty?
-          raise "The #{task.name} task is only run for servers matching #{task.options.inspect}, but no servers matched"
-        end
-
-        servers = [servers.first] if options[:once]
-        logger.trace "servers: #{servers.inspect}"
-
-        if !pretend
-          # establish connections to those servers, as necessary
-          establish_connections(servers)
-          yield servers
-        end
       end
 
       def method_missing(sym, *args, &block)
