@@ -52,7 +52,7 @@ module Capistrano
 
           if exists?(:gateway)
             logger.debug "establishing connection to gateway `#{fetch(:gateway)}'"
-            Gateway.new(ServerDefinition.new(fetch(:gateway)), options)
+            Gateway.new(ServerDefinition.new(fetch(:gateway)), options.merge(:logger => logger))
           else
             DefaultConnectionFactory.new(options)
           end
