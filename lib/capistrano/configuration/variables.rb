@@ -85,8 +85,8 @@ module Capistrano
         fetch(variable, nil)
       end
 
-      def initialize_with_variables #:nodoc:
-        initialize_without_variables
+      def initialize_with_variables(*args) #:nodoc:
+        initialize_without_variables(*args)
         @variables = {}
         @original_procs = {}
 

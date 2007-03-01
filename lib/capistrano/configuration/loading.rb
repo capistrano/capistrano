@@ -30,8 +30,8 @@ module Capistrano
       # The load paths used for locating recipe files.
       attr_reader :load_paths
 
-      def initialize_with_loading #:nodoc:
-        initialize_without_loading
+      def initialize_with_loading(*args) #:nodoc:
+        initialize_without_loading(*args)
         @load_paths = [".", File.expand_path(File.join(File.dirname(__FILE__), "../recipes"))]
       end
       private :initialize_with_loading

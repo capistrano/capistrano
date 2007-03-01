@@ -1,20 +1,15 @@
-begin
-  require 'capistrano/version'
-  require 'net/sftp'
-  require 'net/sftp/version'
-  sftp_version = [Net::SFTP::Version::MAJOR, Net::SFTP::Version::MINOR, Net::SFTP::Version::TINY]
-  required_version = [1,1,0]
-  if !Capistrano::Version.check(required_version, sftp_version)
-    warn "You have Net::SFTP #{sftp_version.join(".")}, but you need at least #{required_version.join(".")}. Net::SFTP will not be used."
-    Capistrano::SFTP = false
-  else
-    Capistrano::SFTP = true
-  end
-rescue LoadError
-  Capistrano::SFTP = false
-end
+require 'net/sftp'
 
 module Capistrano
+  unless ENV['SKIP_VERSION_CHECK']
+    require 'capistrano/version' 
+    require 'net/sftp/version'
+    sftp_version = [Net::SFTP::Version::MAJOR, Net::SFTP::Version::MINOR, Net::SFTP::Version::TINY]
+    required_version = [1,1,0]
+    if !Capistrano::Version.check(required_version, sftp_version)
+      raise "You have Net::SFTP #{sftp_version.join(".")}, but you need at least #{required_version.join(".")}. Net::SFTP will not be used."
+    end
+  end
 
   # This class encapsulates a single file transfer to be performed in parallel
   # across multiple machines, using the SFTP protocol.
