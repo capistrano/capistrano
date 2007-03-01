@@ -114,6 +114,12 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     end
   end
 
+  def test_defining_ask_should_add_task_as_method
+    assert !@config.methods.include?("original")
+    @config.task(:original) { puts "foo" }
+    assert @config.methods.include?("original")
+  end
+
   def test_role_inside_namespace_should_raise_error
     assert_raises(NotImplementedError) do
       @config.namespace(:outer) do
