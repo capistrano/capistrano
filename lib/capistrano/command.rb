@@ -5,19 +5,18 @@ module Capistrano
   class Command
     class Error < RuntimeError; end
 
-    attr_reader :servers, :command, :options, :actor
+    attr_reader :command, :sessions, :options
 
-    def initialize(servers, command, callback, options, actor) #:nodoc:
-      @servers = servers
+    def initialize(command, sessions, options={}, &block) #:nodoc:
       @command = extract_environment(options) + command.strip.gsub(/\r?\n/, "\\\n")
-      @callback = callback
+      @sessions = sessions
       @options = options
-      @actor = actor
+      @callback = block
       @channels = open_channels
     end
 
     def logger #:nodoc:
-      actor.logger
+      options[:logger]
     end
 
     # Processes the command in parallel on all specified hosts. If the command
@@ -41,10 +40,10 @@ module Capistrano
         sleep 0.01 # a brief respite, to keep the CPU from going crazy
       end
 
-      logger.trace "command finished"
+      logger.trace "command finished" if logger
 
       if failed = @channels.detect { |ch| ch[:status] != 0 }
-        raise Error, "command #{@command.inspect} failed on #{failed[:host]}"
+        raise Error, "command #{command.inspect} failed on #{failed[:host]}"
       end
 
       self
@@ -61,20 +60,23 @@ module Capistrano
     private
 
       def open_channels
-        @servers.map do |server|
-          @actor.sessions[server].open_channel do |channel|
-            channel[:host] = server
-            channel[:actor] = @actor # so callbacks can access the actor instance
+        sessions.map do |session|
+          session.open_channel do |channel|
+            channel[:host] = session.host
+            channel[:options] = options
             channel.request_pty :want_reply => true
 
             channel.on_success do |ch|
-              logger.trace "executing command", ch[:host]
+              logger.trace "executing command", ch[:host] if logger
               ch.exec command
               ch.send_data options[:data] if options[:data]
             end
 
             channel.on_failure do |ch|
-              logger.important "could not open channel", ch[:host]
+              # just log it, don't actually raise an exception, since the
+              # process method will see that the status is not zero and will
+              # raise an exception then.
+              logger.important "could not open channel", ch[:host] if logger
               ch.close
             end
 
@@ -105,8 +107,11 @@ module Capistrano
       # extract_environment(options) returns:
       # "TEST=(\ \"quoted\"\ ) PATH=/opt/ruby/bin:$PATH"
       def extract_environment(options)
-        Array(options[:env]).inject("") do |string, (name, value)|
-          string << %|#{name}=#{value.gsub(/"/, "\\\"").gsub(/ /, "\\ ")} |
+        env = options[:env]
+        return "#{env} " if String === env
+        Array(env).inject("") do |string, (name, value)|
+          value = value.to_s.gsub(/[ "]/) { |m| "\\#{m}" }
+          string << "#{name}=#{value} "
         end
       end
   end
