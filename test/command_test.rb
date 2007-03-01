@@ -1,43 +1,233 @@
-$:.unshift File.dirname(__FILE__) + "/../lib"
-
-require 'stringio'
-require 'test/unit'
+require "#{File.dirname(__FILE__)}/utils"
 require 'capistrano/command'
 
 class CommandTest < Test::Unit::TestCase
-  class MockSession
-    def open_channel
-      { :closed => true, :status => 0 }
+  def test_command_should_open_channels_on_all_sessions
+    s1 = mock(:open_channel => nil)
+    s2 = mock(:open_channel => nil)
+    s3 = mock(:open_channel => nil)
+    assert_equal "ls", Capistrano::Command.new("ls", [s1, s2, s3]).command
+  end
+
+  def test_command_with_newlines_should_be_properly_escaped
+    cmd = Capistrano::Command.new("ls\necho", [mock(:open_channel => nil)])
+    assert_equal "ls\\\necho", cmd.command
+  end
+
+  def test_command_with_windows_newlines_should_be_properly_escaped
+    cmd = Capistrano::Command.new("ls\r\necho", [mock(:open_channel => nil)])
+    assert_equal "ls\\\necho", cmd.command
+  end
+
+  def test_command_with_env_key_should_have_environment_constructed_and_prepended
+    cmd = Capistrano::Command.new("ls", [mock(:open_channel => nil)], :env => { "FOO" => "bar" })
+    assert_equal "FOO=bar ls", cmd.command
+  end
+
+  def test_env_with_symbolic_key_should_be_accepted_as_a_string
+    cmd = Capistrano::Command.new("ls", [mock(:open_channel => nil)], :env => { :FOO => "bar" })
+    assert_equal "FOO=bar ls", cmd.command
+  end
+
+  def test_env_as_string_should_be_substituted_in_directly
+    cmd = Capistrano::Command.new("ls", [mock(:open_channel => nil)], :env => "HOWDY" )
+    assert_equal "HOWDY ls", cmd.command
+  end
+
+  def test_env_with_symbolic_value_should_be_accepted_as_string
+    cmd = Capistrano::Command.new("ls", [mock(:open_channel => nil)], :env => { "FOO" => :bar })
+    assert_equal "FOO=bar ls", cmd.command
+  end
+
+  def test_env_value_should_be_escaped
+    cmd = Capistrano::Command.new("ls", [mock(:open_channel => nil)], :env => { "FOO" => '( "bar" )' })
+    assert_equal "FOO=(\\ \\\"bar\\\"\\ ) ls", cmd.command
+  end
+
+  def test_env_with_multiple_keys_should_chain_the_entries_together
+    cmd = Capistrano::Command.new("ls", [mock(:open_channel => nil)], :env => { :a => :b, :c => :d, :e => :f })
+    env = cmd.command[/^(.*) ls$/, 1]
+    assert_match(/\ba=b\b/, env)
+    assert_match(/\bc=d\b/, env)
+    assert_match(/\be=f\b/, env)
+  end
+
+  def test_open_channel_should_set_host_key_on_channel
+    session = mock(:host => "capistrano")
+    channel = stub_everything
+
+    session.expects(:open_channel).yields(channel)
+    channel.expects(:[]=).with(:host, "capistrano")
+
+    Capistrano::Command.new("ls", [session])
+  end
+
+  def test_open_channel_should_set_options_key_on_channel
+    session = mock(:host => "capistrano")
+    channel = stub_everything
+
+    session.expects(:open_channel).yields(channel)
+    channel.expects(:[]=).with(:options, {:data => "here we go"})
+
+    Capistrano::Command.new("ls", [session], :data => "here we go")
+  end
+
+  def test_open_channel_should_request_pty
+    session = mock(:host => "capistrano")
+    channel = stub_everything
+
+    session.expects(:open_channel).yields(channel)
+    channel.expects(:request_pty).with(:want_reply => true)
+
+    Capistrano::Command.new("ls", [session])
+  end
+
+  def test_successful_channel_should_send_command
+    session = setup_for_extracting_channel_action(:on_success) do |ch|
+      ch.expects(:exec).with("ls")
     end
+    Capistrano::Command.new("ls", [session])
   end
 
-  class MockActor
-    attr_reader :sessions
-
-    def initialize
-      @sessions = Hash.new { |h,k| h[k] = MockSession.new }
+  def test_successful_channel_should_send_data_if_data_key_is_present
+    session = setup_for_extracting_channel_action(:on_success) do |ch|
+      ch.expects(:exec).with("ls")
+      ch.expects(:send_data).with("here we go")
     end
+    Capistrano::Command.new("ls", [session], :data => "here we go")
   end
 
-  def setup
-    @actor = MockActor.new
+  def test_unsuccessful_channel_should_close_channel
+    session = setup_for_extracting_channel_action(:on_failure) do |ch|
+      ch.expects(:close)
+    end
+    Capistrano::Command.new("ls", [session])
   end
 
-  def test_command_executes_on_all_servers
-    command = Capistrano::Command.new(%w(server1 server2 server3),
-      "hello", nil, {}, @actor)
-    assert_equal %w(server1 server2 server3), @actor.sessions.keys.sort
+  def test_on_data_should_invoke_callback_as_stdout
+    session = setup_for_extracting_channel_action(:on_data, "hello")
+    called = false
+    Capistrano::Command.new("ls", [session]) do |ch, stream, data|
+      called = true
+      assert_equal :out, stream
+      assert_equal "hello", data
+    end
+    assert called
   end
 
-  def test_command_with_newlines
-    command = Capistrano::Command.new(%w(server1), "hello\nworld", nil, {},
-      @actor)
-    assert_equal "hello\\\nworld", command.command
+  def test_on_extended_data_should_invoke_callback_as_stderr
+    session = setup_for_extracting_channel_action(:on_extended_data, 2, "hello")
+    called = false
+    Capistrano::Command.new("ls", [session]) do |ch, stream, data|
+      called = true
+      assert_equal :err, stream
+      assert_equal "hello", data
+    end
+    assert called
   end
 
-  def test_command_with_windows_newlines
-    command = Capistrano::Command.new(%w(server1), "hello\r\nworld", nil, {},
-      @actor)
-    assert_equal "hello\\\nworld", command.command
+  def test_on_request_should_record_exit_status
+    data = mock(:read_long => 5)
+    session = setup_for_extracting_channel_action(:on_request, "exit-status", nil, data) do |ch|
+      ch.expects(:[]=).with(:status, 5)
+    end
+    Capistrano::Command.new("ls", [session])
   end
+
+  def test_on_close_should_set_channel_closed
+    session = setup_for_extracting_channel_action(:on_close) do |ch|
+      ch.expects(:[]=).with(:closed, true)
+    end
+    Capistrano::Command.new("ls", [session])
+  end
+
+  def test_stop_should_close_all_open_channels
+    sessions = [mock("session", :open_channel => new_channel(false)),
+                mock("session", :open_channel => new_channel(true)),
+                mock("session", :open_channel => new_channel(false))]
+
+    cmd = Capistrano::Command.new("ls", sessions)
+    cmd.stop!
+  end
+
+  def test_process_should_return_cleanly_if_all_channels_have_zero_exit_status
+    sessions = [mock("session", :open_channel => new_channel(true, 0)),
+                mock("session", :open_channel => new_channel(true, 0)),
+                mock("session", :open_channel => new_channel(true, 0))]
+    cmd = Capistrano::Command.new("ls", sessions)
+    assert_nothing_raised { cmd.process! }
+  end
+
+  def test_process_should_raise_error_if_any_channel_has_non_zero_exit_status
+    sessions = [mock("session", :open_channel => new_channel(true, 0)),
+                mock("session", :open_channel => new_channel(true, 0)),
+                mock("session", :open_channel => new_channel(true, 1))]
+    cmd = Capistrano::Command.new("ls", sessions)
+    assert_raises(Capistrano::Command::Error) { cmd.process! }
+  end
+
+  def test_process_should_loop_until_all_channels_are_closed
+    new_channel = Proc.new do |times|
+      ch = mock("channel")
+      returns = [false] * (times-1)
+      ch.stubs(:[]).with(:closed).returns(lambda { returns.empty? ? true : returns.pop })
+      con = mock("connection")
+      con.expects(:process).with(true).times(times-1)
+      ch.expects(:connection).times(times-1).returns(con)
+      ch.expects(:[]).with(:status).returns(0)
+      ch
+    end
+
+    sessions = [mock("session", :open_channel => new_channel[5]),
+                mock("session", :open_channel => new_channel[10]),
+                mock("session", :open_channel => new_channel[7])]
+    cmd = Capistrano::Command.new("ls", sessions)
+    assert_nothing_raised { cmd.process! }
+  end
+
+  def test_process_should_ping_all_connections_each_second
+    now = Time.now
+
+    new_channel = Proc.new do
+      ch = mock("channel")
+      ch.stubs(:[]).with(:closed).returns(lambda { Time.now - now < 1.1 ? false : true })
+      ch.stubs(:[]).with(:status).returns(0)
+      con = mock("connection")
+      con.stubs(:process)
+      con.expects(:ping!)
+      ch.stubs(:connection).returns(con)
+      ch
+    end
+
+    sessions = [mock("session", :open_channel => new_channel[]),
+                mock("session", :open_channel => new_channel[]),
+                mock("session", :open_channel => new_channel[])]
+    cmd = Capistrano::Command.new("ls", sessions)
+    assert_nothing_raised { cmd.process! }
+  end
+
+  private
+
+    def new_channel(closed, status=nil)
+      ch = mock("channel")
+      ch.expects(:[]).with(:closed).returns(closed)
+      ch.expects(:[]).with(:status).returns(status) if status
+      ch.expects(:close) unless closed
+      ch.stubs(:[]).with(:host).returns("capistrano")
+      ch
+    end
+
+    def setup_for_extracting_channel_action(action, *args)
+      session = mock(:host => "capistrano")
+
+      channel = stub_everything
+      session.expects(:open_channel).yields(channel)
+
+      ch = mock
+      channel.expects(action).yields(ch, *args)
+
+      yield ch if block_given?
+
+      session
+    end
 end
