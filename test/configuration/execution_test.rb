@@ -2,10 +2,8 @@ require "#{File.dirname(__FILE__)}/../utils"
 require 'capistrano/configuration/execution'
 require 'capistrano/task_definition'
 
-class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
+class ConfigurationExecutionTest < Test::Unit::TestCase
   class MockConfig
-    include Mocha::AutoVerify
-
     attr_reader :tasks, :namespaces, :fully_qualified_name, :parent
     attr_reader :state, :original_initialize_called
     attr_accessor :logger
@@ -17,14 +15,14 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
       @state = {}
       @fully_qualified_name = options[:fqn]
       @parent = options[:parent]
-      @logger = stub(:debug => nil, :info => nil, :important => nil)
+      @logger = options.delete(:logger)
     end
 
     include Capistrano::Configuration::Execution
   end
 
   def setup
-    @config = MockConfig.new
+    @config = MockConfig.new(:logger => stub(:debug => nil, :info => nil, :important => nil))
   end
 
   def test_initialize_should_initialize_collections

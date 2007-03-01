@@ -19,8 +19,8 @@ module Capistrano
       # A struct for representing a single instance of an invoked task.
       TaskCallFrame = Struct.new(:task, :rollback)
 
-      def initialize_with_execution #:nodoc:
-        initialize_without_execution
+      def initialize_with_execution(*args) #:nodoc:
+        initialize_without_execution(*args)
         @task_call_frames = []
       end
       private :initialize_with_execution

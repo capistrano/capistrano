@@ -13,8 +13,8 @@ module Capistrano
       # role.
       attr_reader :roles
 
-      def initialize_with_roles #:nodoc:
-        initialize_without_roles
+      def initialize_with_roles(*args) #:nodoc:
+        initialize_without_roles(*args)
         @roles = Hash.new { |h,k| h[k] = [] }
       end
 

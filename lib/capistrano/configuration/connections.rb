@@ -27,8 +27,8 @@ module Capistrano
       # executed tasks.
       attr_reader :sessions
 
-      def initialize_with_connections #:nodoc:
-        initialize_without_connections
+      def initialize_with_connections(*args) #:nodoc:
+        initialize_without_connections(*args)
         @sessions = {}
       end
 
