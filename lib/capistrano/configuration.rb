@@ -1,11 +1,14 @@
 require 'capistrano/logger'
 require 'capistrano/extensions'
+
 require 'capistrano/configuration/connections'
 require 'capistrano/configuration/execution'
 require 'capistrano/configuration/loading'
 require 'capistrano/configuration/namespaces'
 require 'capistrano/configuration/roles'
 require 'capistrano/configuration/variables'
+
+require 'capistrano/configuration/actions/invocation'
 
 module Capistrano
   # Represents a specific Capistrano configuration. A Configuration instance
@@ -22,5 +25,8 @@ module Capistrano
     # The includes must come at the bottom, since they may redefine methods
     # defined in the base class.
     include Connections, Execution, Loading, Namespaces, Roles, Variables
+
+    # Mix in the actions
+    include Actions::FileTransfer, Actions::Invocation
   end
 end

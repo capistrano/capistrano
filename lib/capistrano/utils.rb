@@ -11,14 +11,14 @@ module Capistrano
   # If +require_config+ is not false, an exception will be raised if the current
   # configuration is not set.
   def self.configuration(require_config=false)
-    warn "[DEPRECATION] please use Capistrano::Configuration.instance instead of Capistrano.configuration. (You may be using a Capistrano plugin that is using this deprecated syntax.)"
+    warn "[DEPRECATION] use Capistrano::Configuration.instance instead of Capistrano.configuration. (You may be using a Capistrano plugin that is using this deprecated syntax.)"
     Capistrano::Configuration.instance(require_config)
   end
 
   # Used internally by Capistrano to specify the current configuration before
   # loading a third-party task bundle.
   def self.configuration=(config)
-    warn "[DEPRECATION] please us Capistrano::Configuration.instance= instead of Capistrano.configuration=."
+    warn "[DEPRECATION] use Capistrano::Configuration.instance= instead of Capistrano.configuration=."
     Capistrano::Configuration.instance = config
   end
 end

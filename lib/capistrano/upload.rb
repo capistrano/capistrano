@@ -30,6 +30,10 @@ module Capistrano
     # the requested data.
     class Error < RuntimeError; end
 
+    def self.process(sessions, filename, options)
+      new(sessions, filename, options).process!
+    end
+  
     attr_reader :sessions, :filename, :options
     attr_reader :failed, :completed
 
