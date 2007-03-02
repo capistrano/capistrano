@@ -25,6 +25,11 @@ class UploadTest < Test::Unit::TestCase
     Capistrano::Upload.new(sessions, "test.txt", :data => "data")
   end
 
+  def test_self_process_should_instantiate_uploader_and_start_process
+    Capistrano::Upload.expects(:new).with([:s1, :s2], "test.txt", :data => "data").returns(mock(:process! => nil))
+    Capistrano::Upload.process([:s1, :s2], "test.txt", :data => "data")
+  end
+
   def test_process_when_sftp_open_fails_should_raise_error
     channel = mock("channel")
     channel.expects(:[]=).with(:done, true)
