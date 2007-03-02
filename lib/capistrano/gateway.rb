@@ -1,4 +1,5 @@
 require 'thread'
+require 'capistrano/errors'
 require 'capistrano/ssh'
 require 'capistrano/server_definition'
 
@@ -19,9 +20,6 @@ module Capistrano
   #   sess1 = gateway.connect_to(Capistrano::ServerDefinition.new('hidden.example.com'))
   #   sess2 = gateway.connect_to(Capistrano::ServerDefinition.new('other.example.com'))
   class Gateway
-    # An exception class for reporting Gateway-specific errors.
-    class Error < Exception; end
-
     # The Thread instance driving the gateway connection.
     attr_reader :thread
 
@@ -94,7 +92,7 @@ module Capistrano
       end
 
       thread.join
-      connection or raise Error, "could not establish connection to `#{server.host}'"
+      connection or raise ConnectionError, "could not establish connection to `#{server.host}'"
     end
 
     private

@@ -1,7 +1,7 @@
 module Capistrano
   class Configuration
     module Loading
-      def self.included(base)
+      def self.included(base) #:nodoc:
         base.send :alias_method, :initialize_without_loading, :initialize
         base.send :alias_method, :initialize, :initialize_with_loading
         base.extend ClassMethods

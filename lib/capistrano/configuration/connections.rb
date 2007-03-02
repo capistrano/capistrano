@@ -4,7 +4,7 @@ require 'capistrano/ssh'
 module Capistrano
   class Configuration
     module Connections
-      def self.included(base)
+      def self.included(base) #:nodoc:
         base.send :alias_method, :initialize_without_connections, :initialize
         base.send :alias_method, :initialize, :initialize_with_connections
       end

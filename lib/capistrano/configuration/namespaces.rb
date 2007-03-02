@@ -3,7 +3,7 @@ require 'capistrano/task_definition'
 module Capistrano
   class Configuration
     module Namespaces
-      def self.included(base)
+      def self.included(base) #:nodoc:
         base.send :alias_method, :initialize_without_namespaces, :initialize
         base.send :alias_method, :initialize, :initialize_with_namespaces
       end

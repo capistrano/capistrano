@@ -68,7 +68,7 @@ class GatewayTest < Test::Unit::TestCase
     gateway = new_gateway
     expect_connect_to(:host => "127.0.0.1").raises(RuntimeError)
     gateway.expects(:warn).times(2)
-    assert_raises(Capistrano::Gateway::Error) { gateway.connect_to(server("app1")) }
+    assert_raises(Capistrano::ConnectionError) { gateway.connect_to(server("app1")) }
   end
 
   private
