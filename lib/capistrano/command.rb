@@ -1,10 +1,10 @@
+require 'capistrano/errors'
+
 module Capistrano
 
   # This class encapsulates a single command to be executed on a set of remote
   # machines, in parallel.
   class Command
-    class Error < RuntimeError; end
-
     attr_reader :command, :sessions, :options
 
     def self.process(command, sessions, options={}, &block)
@@ -30,7 +30,7 @@ module Capistrano
 
     # Processes the command in parallel on all specified hosts. If the command
     # fails (non-zero return code) on any of the hosts, this will raise a
-    # RuntimeError.
+    # Capistrano::CommandError.
     def process!
       since = Time.now
       loop do
@@ -52,7 +52,7 @@ module Capistrano
       logger.trace "command finished" if logger
 
       if failed = @channels.detect { |ch| ch[:status] != 0 }
-        raise Error, "command #{command.inspect} failed on #{failed[:host]}"
+        raise CommandError, "command #{command.inspect} failed on #{failed[:host]}"
       end
 
       self

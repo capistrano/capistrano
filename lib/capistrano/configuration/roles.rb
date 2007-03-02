@@ -3,7 +3,7 @@ require 'capistrano/server_definition'
 module Capistrano
   class Configuration
     module Roles
-      def self.included(base)
+      def self.included(base) #:nodoc:
         base.send :alias_method, :initialize_without_roles, :initialize
         base.send :alias_method, :initialize, :initialize_with_roles
       end

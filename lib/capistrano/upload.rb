@@ -1,4 +1,5 @@
 require 'net/sftp'
+require 'capistrano/errors'
 
 module Capistrano
   unless ENV['SKIP_VERSION_CHECK']
@@ -22,14 +23,10 @@ module Capistrano
   #     uploader = Capistrano::Upload.new(sessions, "remote-file.txt",
   #         :data => "the contents of the file to upload")
   #     uploader.process!
-  #   rescue Capistrano::Upload::Error => e
+  #   rescue Capistrano::UploadError => e
   #     warn "Could not upload the file: #{e.message}"
   #   end
   class Upload
-    # A custom exception that is raised when the uploader is unable to upload
-    # the requested data.
-    class Error < RuntimeError; end
-
     def self.process(sessions, filename, options)
       new(sessions, filename, options).process!
     end
@@ -59,7 +56,7 @@ module Capistrano
     end
     
     # Uploads to all specified servers in parallel. If any one of the servers
-    # fails, an exception will be raised (Upload::Error).
+    # fails, an exception will be raised (UploadError).
     def process!
       logger.debug "uploading #{filename}" if logger
       while running?
@@ -70,7 +67,7 @@ module Capistrano
       end
       logger.trace "upload finished" if logger
 
-      raise Error, "upload of #{filename} failed on one or more hosts" if failed > 0
+      raise UploadError, "upload of #{filename} failed on one or more hosts" if failed > 0
 
       self
     end

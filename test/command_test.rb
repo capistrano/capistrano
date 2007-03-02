@@ -163,7 +163,7 @@ class CommandTest < Test::Unit::TestCase
                 mock("session", :open_channel => new_channel(true, 0)),
                 mock("session", :open_channel => new_channel(true, 1))]
     cmd = Capistrano::Command.new("ls", sessions)
-    assert_raises(Capistrano::Command::Error) { cmd.process! }
+    assert_raises(Capistrano::CommandError) { cmd.process! }
   end
 
   def test_process_should_loop_until_all_channels_are_closed

@@ -125,6 +125,16 @@ class ConfigurationActionsRunTest < Test::Unit::TestCase
     callback[a, b, c]
   end
 
+  def test_invoke_should_default_to_run
+    @config.expects(:run).with("ls", :once => true)
+    @config.invoke("ls", :once => true)
+  end
+
+  def test_invoke_should_delegate_to_method_identified_by_via
+    @config.expects(:foobar).with("ls", :once => true)
+    @config.invoke("ls", :once => true, :via => :foobar)
+  end
+
   private
 
     def inspectable_proc

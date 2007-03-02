@@ -13,48 +13,6 @@ module Capistrano
   # directly--rather, you create a new Configuration instance, and access the
   # new actor via Configuration#actor.
   class Actor
-    # Streams the result of the command from all servers that are the target of the
-    # current task. All these streams will be joined into a single one,
-    # so you can, say, watch 10 log files as though they were one. Do note that this
-    # is quite expensive from a bandwidth perspective, so use it with care.
-    #
-    # Example:
-    #
-    #   desc "Run a tail on multiple log files at the same time"
-    #   task :tail_fcgi, :roles => :app do
-    #     stream "tail -f #{shared_path}/log/fastcgi.crash.log"
-    #   end
-    def stream(command)
-      run(command) do |ch, stream, out|
-        puts out if stream == :out
-        if stream == :err
-          puts "[err : #{ch[:host]}] #{out}"
-          break
-        end
-      end
-    end
-
-    # Deletes the given file from all servers targetted by the current task.
-    # If <tt>:recursive => true</tt> is specified, it may be used to remove
-    # directories.
-    def delete(path, options={})
-      cmd = "rm -%sf #{path}" % (options[:recursive] ? "r" : "")
-      run(cmd, options)
-    end
-
-    # Executes the given command on the first server targetted by the current
-    # task, collects it's stdout into a string, and returns the string.
-    def capture(command, options={})
-      output = ""
-      run(command, options.merge(:once => true)) do |ch, stream, data|
-        case stream
-        when :out then output << data
-        when :err then raise "error processing #{command.inspect}: #{data.inspect}"
-        end
-      end
-      output
-    end
-
     # Renders an ERb template and returns the result. This is useful for
     # dynamically building documents to store on the remote servers.
     #
