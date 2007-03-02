@@ -7,16 +7,25 @@ module Capistrano
 
     attr_reader :command, :sessions, :options
 
-    def initialize(command, sessions, options={}, &block) #:nodoc:
+    def self.process(command, sessions, options={}, &block)
+      new(command, sessions, options, &block).process!
+    end
+
+    # Instantiates a new command object. The +command+ must be a string
+    # containing the command to execute. +sessions+ is an array of Net::SSH
+    # session instances, and +options+ must be a hash containing any of the
+    # following keys:
+    #
+    # * +logger+: (optional), a Capistrano::Logger instance
+    # * +data+: (optional), a string to be sent to the command via it's stdin
+    # * +env+: (optional), a string or hash to be interpreted as environment
+    #   variables that should be defined for this command invocation.
+    def initialize(command, sessions, options={}, &block)
       @command = extract_environment(options) + command.strip.gsub(/\r?\n/, "\\\n")
       @sessions = sessions
       @options = options
       @callback = block
       @channels = open_channels
-    end
-
-    def logger #:nodoc:
-      options[:logger]
     end
 
     # Processes the command in parallel on all specified hosts. If the command
@@ -58,6 +67,10 @@ module Capistrano
     end
 
     private
+
+      def logger
+        options[:logger]
+      end
 
       def open_channels
         sessions.map do |session|
