@@ -1,7 +1,7 @@
 module Capistrano
   class Configuration
     module Variables
-      def self.included(base)
+      def self.included(base) #:nodoc:
         %w(initialize respond_to? method_missing).each do |m|
           base_name = m[/^\w+/]
           punct     = m[/\W+$/]

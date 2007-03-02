@@ -8,6 +8,8 @@ require 'capistrano/configuration/namespaces'
 require 'capistrano/configuration/roles'
 require 'capistrano/configuration/variables'
 
+require 'capistrano/configuration/actions/file_transfer'
+require 'capistrano/configuration/actions/inspect'
 require 'capistrano/configuration/actions/invocation'
 
 module Capistrano
@@ -27,6 +29,6 @@ module Capistrano
     include Connections, Execution, Loading, Namespaces, Roles, Variables
 
     # Mix in the actions
-    include Actions::FileTransfer, Actions::Invocation
+    include Actions::FileTransfer, Actions::Inspect, Actions::Invocation
   end
 end

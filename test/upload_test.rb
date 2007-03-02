@@ -37,7 +37,7 @@ class UploadTest < Test::Unit::TestCase
     sftp.expects(:open).with("test.txt", @mode, 0660).yields(mock("status", :code => "bad status", :message => "bad status"), :file_handle)
     session = mock("session", :sftp => sftp, :host => "capistrano")
     upload = Capistrano::Upload.new([session], "test.txt", :data => "data", :logger => stub_everything)
-    assert_raises(Capistrano::Upload::Error) { upload.process! }
+    assert_raises(Capistrano::UploadError) { upload.process! }
     assert_equal 1, upload.failed
     assert_equal 1, upload.completed
   end
@@ -50,7 +50,7 @@ class UploadTest < Test::Unit::TestCase
     sftp.expects(:write).with(:file_handle, "data").yields(mock("status2", :code => "bad status", :message => "bad status"))
     session = mock("session", :sftp => sftp, :host => "capistrano")
     upload = Capistrano::Upload.new([session], "test.txt", :data => "data", :logger => stub_everything)
-    assert_raises(Capistrano::Upload::Error) { upload.process! }
+    assert_raises(Capistrano::UploadError) { upload.process! }
     assert_equal 1, upload.failed
     assert_equal 1, upload.completed
   end
