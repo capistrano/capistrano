@@ -1,3 +1,5 @@
+require 'capistrano/errors'
+
 module Capistrano
   class Configuration
     module Execution
@@ -70,15 +72,9 @@ module Capistrano
 
       # Executes the task with the given name, including the before and after
       # hooks.
-      def execute_task(name, namespace, fail_silently=false)
-        name = name.to_sym
-        unless task = namespace.tasks[name]
-          return if fail_silently
-          fqn = " in `#{namespace.fully_qualified_name}'" if namespace.parent
-          raise NoMethodError, "no such task `#{name}'#{fqn}"
-        end
-
-        execute_task("before_#{name}", namespace, true)
+      def execute_task(task)
+        before = task.namespace.tasks[:"before_#{task.name}"]
+        execute_task(before) if before
         logger.debug "executing `#{task.fully_qualified_name}'"
 
         begin
@@ -88,8 +84,17 @@ module Capistrano
           pop_task_call_frame
         end
 
-        execute_task("after_#{name}", namespace, true)
+        after = task.namespace.tasks[:"after_#{task.name}"]
+        execute_task(after) if after
         result
+      end
+
+      # Attempts to locate the task at the given fully-qualified path, and
+      # execute it. If no such task exists, a Capistrano::NoSuchTaskError will
+      # be raised.
+      def find_and_execute_task(path)
+        task = find_task(path) or raise NoSuchTaskError, "the task `#{path}' does not exist"
+        execute_task(task)
       end
 
       protected

@@ -11,7 +11,7 @@ module Capistrano
         # one. Do note that this is quite expensive from a bandwidth
         # perspective, so use it with care.
         #
-        # The command is invoked via #invoke.
+        # The command is invoked via #invoke_command.
         #
         # Usage:
         #
@@ -20,7 +20,7 @@ module Capistrano
         #     stream "tail -f #{shared_path}/log/fastcgi.crash.log"
         #   end
         def stream(command, options={})
-          invoke(command, options) do |ch, stream, out|
+          invoke_command(command, options) do |ch, stream, out|
             puts out if stream == :out
             warn "[err :: #{ch[:host]}] #{out}" if stream == :err
           end
@@ -28,10 +28,10 @@ module Capistrano
 
         # Executes the given command on the first server targetted by the
         # current task, collects it's stdout into a string, and returns the
-        # string. The command is invoked via #invoke.
+        # string. The command is invoked via #invoke_command.
         def capture(command, options={})
           output = ""
-          invoke(command, options.merge(:once => true)) do |ch, stream, data|
+          invoke_command(command, options.merge(:once => true)) do |ch, stream, data|
             case stream
             when :out then output << data
             when :err then raise CaptureError, "error processing #{command.inspect}: #{data.inspect}"

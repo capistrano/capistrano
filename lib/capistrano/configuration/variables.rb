@@ -91,6 +91,7 @@ module Capistrano
         @original_procs = {}
 
         set :ssh_options, {}
+        set :logger, logger
       end
       private :initialize_with_variables
 
