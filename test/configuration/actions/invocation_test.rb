@@ -1,7 +1,7 @@
 require "#{File.dirname(__FILE__)}/../../utils"
 require 'capistrano/configuration/actions/invocation'
 
-class ConfigurationActionsRunTest < Test::Unit::TestCase
+class ConfigurationActionsInvocationTest < Test::Unit::TestCase
   class MockConfig
     attr_reader :options
 
@@ -125,14 +125,14 @@ class ConfigurationActionsRunTest < Test::Unit::TestCase
     callback[a, b, c]
   end
 
-  def test_invoke_should_default_to_run
+  def test_invoke_command_should_default_to_run
     @config.expects(:run).with("ls", :once => true)
-    @config.invoke("ls", :once => true)
+    @config.invoke_command("ls", :once => true)
   end
 
-  def test_invoke_should_delegate_to_method_identified_by_via
+  def test_invoke_command_should_delegate_to_method_identified_by_via
     @config.expects(:foobar).with("ls", :once => true)
-    @config.invoke("ls", :once => true, :via => :foobar)
+    @config.invoke_command("ls", :once => true, :via => :foobar)
   end
 
   private

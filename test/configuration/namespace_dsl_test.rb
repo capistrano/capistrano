@@ -159,4 +159,78 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     @config.namespace(:outer) { namespace(:inner) {} }
     assert_equal @config.namespaces[:outer], @config.namespaces[:outer].namespaces[:inner].parent
   end
+
+  def test_find_task_should_dereference_nested_tasks
+    @config.namespace(:outer) do
+      namespace(:inner) { task(:nested) { puts "nested" } }
+    end
+
+    task = @config.find_task("outer:inner:nested")
+    assert_not_nil task
+    assert_equal "outer:inner:nested", task.fully_qualified_name
+  end
+
+  def test_find_task_should_return_nil_if_no_task_matches
+    assert_nil @config.find_task("outer:inner:nested")
+  end
+
+  def test_find_task_should_return_default_if_deferences_to_namespace_and_namespace_has_default
+    @config.namespace(:outer) do
+      namespace(:inner) { task(:default) { puts "nested" } }
+    end
+
+    task = @config.find_task("outer:inner")
+    assert_not_nil task
+    assert_equal :default, task.name
+    assert_equal "outer:inner", task.namespace.fully_qualified_name
+  end
+
+  def test_find_task_should_return_nil_if_deferences_to_namespace_and_namespace_has_no_default
+    @config.namespace(:outer) do
+      namespace(:inner) { task(:nested) { puts "nested" } }
+    end
+
+    assert_nil @config.find_task("outer:inner")
+  end
+
+  def test_default_task_should_return_nil_for_top_level
+    @config.task(:default) {}
+    assert_nil @config.default_task
+  end
+
+  def test_default_task_should_return_nil_for_namespace_without_default
+    @config.namespace(:outer) { task(:nested) { puts "nested" } }
+    assert_nil @config.namespaces[:outer].default_task
+  end
+
+  def test_default_task_should_return_task_for_namespace_with_default
+    @config.namespace(:outer) { task(:default) { puts "nested" } }
+    task = @config.namespaces[:outer].default_task
+    assert_not_nil task
+    assert_equal :default, task.name
+  end
+
+  def test_task_list_should_return_only_tasks_immediately_within_namespace
+    @config.task(:first) { puts "here" }
+    @config.namespace(:outer) do
+      task(:second) { puts "here" }
+      namespace(:inner) do
+        task(:third) { puts "here" }
+      end
+    end
+
+    assert_equal %w(first), @config.task_list.map { |t| t.fully_qualified_name }
+  end
+
+  def test_task_list_with_all_should_return_all_tasks_under_this_namespace_recursively
+    @config.task(:first) { puts "here" }
+    @config.namespace(:outer) do
+      task(:second) { puts "here" }
+      namespace(:inner) do
+        task(:third) { puts "here" }
+      end
+    end
+
+    assert_equal %w(first outer:inner:third outer:second), @config.task_list(:all).map { |t| t.fully_qualified_name }.sort
+  end
 end

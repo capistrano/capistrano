@@ -11,7 +11,7 @@ module Capistrano
     attr_reader :actor
 
     # Instantiate a new shell and begin executing it immediately.
-    def self.run!(actor)
+    def self.run(actor)
       new(actor).run!
     end
 

@@ -13,7 +13,13 @@ module Capistrano
 
     # Returns the task's fully-qualified name, including the namespace
     def fully_qualified_name
-      @fully_qualified_name ||= [namespace.fully_qualified_name, name].compact.join(":")
+      @fully_qualified_name ||= begin
+        if namespace.default_task == self
+          namespace.fully_qualified_name
+        else
+          [namespace.fully_qualified_name, name].compact.join(":")
+        end
+      end
     end
 
     # Returns the list of server definitions (_not_ connections to servers)
@@ -27,7 +33,33 @@ module Capistrano
           apply_except(apply_only(find_servers_by_role)).uniq
         end
     end
-    
+
+    # Returns the description for this task, with newlines collapsed and
+    # whitespace stripped. Returns the empty string if there is no
+    # description for this task.
+    def description(rebuild=false)
+      @description = nil if rebuild
+      @description ||= begin
+        description = options[:desc] || ""
+        description.strip.
+          gsub(/\r\n/, "\n").
+          gsub(/\\\n/, " ")
+      end
+    end
+
+    # Returns the first sentence of the full description. If +max_length+ is
+    # given, the result will be truncated if it is longer than +max_length+,
+    # and an ellipsis appended.
+    def brief_description(max_length=nil)
+      brief = description[/^.*?\./] || description
+
+      if max_length && brief.length > max_length
+        brief = brief[0,max_length-3] + "..."
+      end
+
+      brief
+    end
+
     private
       def find_servers_by_role
         roles = namespace.roles

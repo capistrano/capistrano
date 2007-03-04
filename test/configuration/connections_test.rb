@@ -16,6 +16,10 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
       @values.fetch(*args)
     end
 
+    def [](key)
+      @values[key]
+    end
+
     def exists?(key)
       @values.key?(key)
     end
@@ -49,9 +53,8 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
   end
 
   def test_default_connection_factory_honors_config_options
-    @config.values.update(@ssh_options)
     server = server("capistrano")
-    Capistrano::SSH.expects(:connect).with(server, @ssh_options).returns(:session)
+    Capistrano::SSH.expects(:connect).with(server, @config).returns(:session)
     assert_equal :session, @config.connection_factory.connect_to(server)
   end
 
@@ -65,7 +68,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
   def test_connection_factory_as_gateway_should_honor_config_options
     @config.values[:gateway] = "capistrano"
     @config.values.update(@ssh_options)
-    Capistrano::SSH.expects(:connect).with { |s,opts| s.host == "capistrano" && opts == @ssh_options.merge(:logger => @config.logger) }.yields(stub_everything)
+    Capistrano::SSH.expects(:connect).with { |s,opts| s.host == "capistrano" && opts == @config }.yields(stub_everything)
     assert_instance_of Capistrano::Gateway, @config.connection_factory
   end
 

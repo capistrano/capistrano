@@ -1,5 +1,6 @@
+#require 'capistrano/extensions'
 require 'capistrano/logger'
-require 'capistrano/extensions'
+require 'capistrano/utils'
 
 require 'capistrano/configuration/connections'
 require 'capistrano/configuration/execution'

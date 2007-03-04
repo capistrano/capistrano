@@ -7,8 +7,7 @@ Gem::Specification.new do |s|
   s.platform = Gem::Platform::RUBY
   s.summary = <<-DESC.strip.gsub(/\n\s+/, " ")
     Capistrano is a framework and utility for executing commands in parallel
-    on multiple remote machines, via SSH. The primary goal is to simplify and
-    automate the deployment of web applications.
+    on multiple remote machines, via SSH.
   DESC
 
   s.files = Dir.glob("{bin,lib,examples,test}/**/*") + %w(README MIT-LICENSE CHANGELOG THANKS)
@@ -18,10 +17,9 @@ Gem::Specification.new do |s|
   s.bindir = "bin"
   s.executables << "cap"
 
-  s.add_dependency 'rake', ">= 0.7.0"
-
   s.add_dependency 'net-ssh', ">= #{Capistrano::Version::SSH_REQUIRED.join(".")}"
   s.add_dependency 'net-sftp', ">= #{Capistrano::Version::SFTP_REQUIRED.join(".")}"
+  s.add_dependency 'highline'
 
   s.author = "Jamis Buck"
   s.email = "jamis@37signals.com"
