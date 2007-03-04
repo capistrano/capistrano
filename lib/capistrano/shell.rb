@@ -1,11 +1,10 @@
 require 'thread'
 
-# The Capistrano::Shell class is the guts of the "shell" task. It implements
-# an interactive REPL interface that users can employ to execute tasks and
-# commands. It makes for a GREAT way to monitor systems, and perform quick
-# maintenance on one or more machines.
-
 module Capistrano
+  # The Capistrano::Shell class is the guts of the "shell" task. It implements
+  # an interactive REPL interface that users can employ to execute tasks and
+  # commands. It makes for a GREAT way to monitor systems, and perform quick
+  # maintenance on one or more machines.
   class Shell
     # The actor instance employed by this shell
     attr_reader :actor

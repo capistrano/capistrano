@@ -1,6 +1,7 @@
 module Capistrano
   class Logger #:nodoc:
     attr_accessor :level
+    attr_reader   :device
 
     IMPORTANT = 0
     INFO      = 1
@@ -11,12 +12,11 @@ module Capistrano
 
     def initialize(options={})
       output = options[:output] || STDERR
-      case
-        when output.respond_to?(:puts)
-          @device = output
-        else
-          @device = File.open(output.to_str, "a")
-          @needs_close = true
+      if output.respond_to?(:puts)
+        @device = output
+      else
+        @device = File.open(output.to_str, "a")
+        @needs_close = true
       end
 
       @options = options
@@ -24,17 +24,17 @@ module Capistrano
     end
 
     def close
-      @device.close if @needs_close
+      device.close if @needs_close
     end
 
     def log(level, message, line_prefix=nil)
       if level <= self.level
         indent = "%*s" % [MAX_LEVEL, "*" * (MAX_LEVEL - level)]
-        message.split(/\r?\n/).each do |line|
+        message.each do |line|
           if line_prefix
-            @device.print "#{indent} [#{line_prefix}] #{line.strip}\n"
+            device.puts "#{indent} [#{line_prefix}] #{line.strip}\n"
           else
-            @device.puts "#{indent} #{line.strip}\n"
+            device.puts "#{indent} #{line.strip}\n"
           end
         end
       end
