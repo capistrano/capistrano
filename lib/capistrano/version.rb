@@ -1,21 +1,13 @@
 module Capistrano
   module Version #:nodoc:
     # A method for comparing versions of required modules. It expects two
-    # arrays as parameters, and returns true if the first is no more than the
-    # second.
-    def self.check(expected, actual) #:nodoc:
-      good = false
-      if actual[0] > expected[0]
-        good = true
-      elsif actual[0] == expected[0]
-        if actual[1] > expected[1]
-          good = true
-        elsif actual[1] == expected[1] && actual[2] >= expected[2]
-          good = true
-        end
-      end
-    
-      good
+    # arrays of integers as parameters, the first being the minimum version
+    # required, and the second being the actual version available. It returns
+    # true if the actual version is at least equal to the required version.
+    def self.check(required, actual) #:nodoc:
+      required = required.map { |v| "%06d" % v }.join(".")
+      actual   = actual.map { |v| "%06d" % v }.join(".")
+      return actual >= required
     end
 
     MAJOR = 1
