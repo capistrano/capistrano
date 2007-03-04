@@ -26,4 +26,44 @@ class ConfigurationTest < Test::Unit::TestCase
 
     @config.testing.example
   end
+
+  def test_tasks_in_nested_namespace_should_be_able_to_call_tasks_in_same_namespace
+    @config.namespace(:outer) do
+      task(:first) { set :called_first, true }
+      namespace(:inner) do
+        task(:first) { set :called_inner_first, true }
+        task(:second) { first }
+      end
+    end
+
+    @config.outer.inner.second
+    assert !@config[:called_first]
+    assert @config[:called_inner_first]
+  end
+
+  def test_tasks_in_nested_namespace_should_be_able_to_call_tasks_in_parent_namespace
+    @config.namespace(:outer) do
+      task(:first) { set :called_first, true }
+      namespace(:inner) do
+        task(:second) { first }
+      end
+    end
+
+    @config.outer.inner.second
+    assert @config[:called_first]
+  end
+
+  def test_tasks_in_nested_namespace_should_be_able_to_call_shadowed_tasks_in_parent_namespace
+    @config.namespace(:outer) do
+      task(:first) { set :called_first, true }
+      namespace(:inner) do
+        task(:first) { set :called_inner_first, true }
+        task(:second) { parent.first }
+      end
+    end
+
+    @config.outer.inner.second
+    assert @config[:called_first]
+    assert !@config[:called_inner_first]
+  end
 end

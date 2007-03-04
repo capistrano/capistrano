@@ -63,6 +63,13 @@ class ConfigurationExecutionTest < Test::Unit::TestCase
     assert_equal %w(testing after_testing), @config.state[:trail]
   end
 
+  def test_execute_task_should_execute_in_scope_of_tasks_parent
+    ns = stub("namespace", :tasks => {}, :default_task => nil, :fully_qualified_name => "ns")
+    ns.expects(:instance_eval)
+    testing = new_task ns, :testing
+    @config.execute_task(testing)
+  end
+
   def test_transaction_outside_of_task_should_raise_exception
     assert_raises(ScriptError) { @config.transaction {} }
   end
