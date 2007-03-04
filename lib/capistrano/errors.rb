@@ -5,4 +5,5 @@ module Capistrano
   class CommandError < Error; end
   class ConnectionError < Error; end
   class UploadError < Error; end
+  class NoSuchTaskError < Error; end
 end

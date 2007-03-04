@@ -45,16 +45,11 @@ module Capistrano
       # establish connections to servers defined via ServerDefinition objects.
       def connection_factory
         @connection_factory ||= begin
-          options = { :user => fetch(:user, nil),
-            :password => fetch(:password, nil),
-            :port => fetch(:port, nil),
-            :ssh_options => fetch(:ssh_options, nil) }
-
           if exists?(:gateway)
             logger.debug "establishing connection to gateway `#{fetch(:gateway)}'"
-            Gateway.new(ServerDefinition.new(fetch(:gateway)), options.merge(:logger => logger))
+            Gateway.new(ServerDefinition.new(fetch(:gateway)), self)
           else
-            DefaultConnectionFactory.new(options)
+            DefaultConnectionFactory.new(self)
           end
         end
       end

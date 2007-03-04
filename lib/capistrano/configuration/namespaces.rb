@@ -3,6 +3,8 @@ require 'capistrano/task_definition'
 module Capistrano
   class Configuration
     module Namespaces
+      DEFAULT_TASK = :default
+
       def self.included(base) #:nodoc:
         base.send :alias_method, :initialize_without_namespaces, :initialize
         base.send :alias_method, :initialize, :initialize_with_namespaces
@@ -91,36 +93,76 @@ module Capistrano
         end
       end
 
+      # Find the task with the given name, where name is the fully-qualified
+      # name of the task. This will search into the namespaces and return
+      # the referenced task, or nil if no such task can be found. If the name
+      # refers to a namespace, the task in that namespace named "default"
+      # will be returned instead, if one exists.
+      def find_task(name)
+        parts = name.to_s.split(/:/)
+        tail = parts.pop.to_sym
+
+        ns = self
+        until parts.empty?
+          ns = ns.namespaces[parts.shift.to_sym]
+          return nil if ns.nil?
+        end
+
+        if ns.namespaces.key?(tail)
+          ns = ns.namespaces[tail]
+          tail = DEFAULT_TASK
+        end
+
+        ns.tasks[tail]
+      end
+
+      # Returns the default task for this namespace. This will be +nil+ if
+      # the namespace is at the top-level, and will otherwise return the
+      # task named "default". If no such task exists, +nil+ will be returned.
+      def default_task
+        return nil if parent.nil?
+        return tasks[DEFAULT_TASK]
+      end
+  
+      # Returns the tasks in this namespace as an array of TaskDefinition
+      # objects. If a non-false parameter is given, all tasks in all
+      # namespaces under this namespace will be returned as well.
+      def task_list(all=false)
+        list = tasks.values
+        namespaces.each { |name,space| list.concat(space.task_list(:all)) } if all
+        list
+      end
+
       private
 
         def all_methods
           public_methods.concat(protected_methods).concat(private_methods)
         end
 
-      class Namespace
-        def initialize(name, parent)
-          @parent = parent
-          @name = name
-        end
-
-        def role(*args)
-          raise NotImplementedError, "roles cannot be defined in a namespace"
-        end
-
-        def respond_to?(sym)
-          super || parent.respond_to?(sym)
-        end
-
-        def method_missing(sym, *args, &block)
-          if parent.respond_to?(sym)
-            parent.send(sym, *args, &block)
-          else
-            super
+        class Namespace
+          def initialize(name, parent)
+            @parent = parent
+            @name = name
           end
-        end
 
-        include Capistrano::Configuration::Namespaces
-      end
+          def role(*args)
+            raise NotImplementedError, "roles cannot be defined in a namespace"
+          end
+
+          def respond_to?(sym)
+            super || parent.respond_to?(sym)
+          end
+
+          def method_missing(sym, *args, &block)
+            if parent.respond_to?(sym)
+              parent.send(sym, *args, &block)
+            else
+              super
+            end
+          end
+
+          include Capistrano::Configuration::Namespaces
+        end
     end
   end
 end

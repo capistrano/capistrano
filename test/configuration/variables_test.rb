@@ -13,12 +13,13 @@ class ConfigurationVariablesTest < Test::Unit::TestCase
   end
 
   def setup
+    MockConfig.any_instance.stubs(:logger).returns(stub_everything)
     @config = MockConfig.new
   end
 
   def test_initialize_should_initialize_variables_hash
     assert @config.original_initialize_called
-    assert_equal({:ssh_options => {}}, @config.variables)
+    assert_equal({:ssh_options => {}, :logger => @config.logger}, @config.variables)
   end
 
   def test_set_should_add_variable_to_hash

@@ -21,7 +21,7 @@ module Capistrano
         # to determine what method to use to invoke the command. It defaults
         # to :run, but may be :sudo, or any other method that conforms to the
         # same interface as run and sudo.
-        def invoke(cmd, options={}, &block)
+        def invoke_command(cmd, options={}, &block)
           options = options.dup
           via = options.delete(:via) || :run
           send(via, cmd, options, &block)

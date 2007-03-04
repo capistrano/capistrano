@@ -1,11 +1,4 @@
 #!/usr/bin/env ruby
 
-begin
-  require 'rubygems'
-rescue LoadError
-  # no rubygems to load, so we fail silently
-end
-
 require 'capistrano/cli'
-
-Capistrano::CLI.execute!
+Capistrano::CLI.execute
