@@ -89,7 +89,7 @@ module Capistrano
 
         if !task_already_defined
           metaclass = class << self; self; end
-          metaclass.send(:define_method, name) { execute_task(name, self) }
+          metaclass.send(:define_method, name) { execute_task(tasks[name]) }
         end
       end
 
