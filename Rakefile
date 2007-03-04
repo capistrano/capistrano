@@ -57,4 +57,6 @@ end
 desc "Clean up generated directories and files"
 task :clean do
   rm_rf "pkg"
+  rm_rf "doc"
+  rm_rf "coverage"
 end

@@ -233,4 +233,22 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
 
     assert_equal %w(first outer:inner:third outer:second), @config.task_list(:all).map { |t| t.fully_qualified_name }.sort
   end
+
+  def test_namespace_should_respond_to_its_parents_methods
+    @config.namespace(:outer) {}
+    ns = @config.namespaces[:outer]
+    assert ns.respond_to?(:original_initialize_called)
+  end
+
+  def test_namespace_should_delegate_unknown_messages_to_its_parent
+    @config.namespace(:outer) {}
+    ns = @config.namespaces[:outer]
+    assert ns.original_initialize_called
+  end
+
+  def test_namespace_should_not_understand_messages_that_neither_it_nor_its_parent_understands
+    @config.namespace(:outer) {}
+    ns = @config.namespaces[:outer]
+    assert_raises(NoMethodError) { ns.alskdfjlsf }
+  end
 end

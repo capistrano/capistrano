@@ -183,4 +183,10 @@ class CLIOptionsTest < Test::Unit::TestCase
     @cli.parse_options!
     assert_equal %w(capfile), @cli.options[:recipes]
   end
+
+  def test_parse_should_instantiate_new_cli_and_call_parse_options
+    cli = mock("cli", :parse_options! => nil)
+    MockCLI.expects(:new).with(%w(a b c)).returns(cli)
+    assert_equal cli, MockCLI.parse(%w(a b c))
+  end
 end

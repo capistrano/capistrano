@@ -206,6 +206,14 @@ class CommandTest < Test::Unit::TestCase
     assert_nothing_raised { cmd.process! }
   end
 
+  def test_process_should_instantiate_command_and_process!
+    cmd = mock("command", :process! => nil)
+    Capistrano::Command.expects(:new).with("ls -l", %w(a b c), {:foo => "bar"}).yields(:command).returns(cmd)
+    parameter = nil
+    Capistrano::Command.process("ls -l", %w(a b c), :foo => "bar") { |cmd| parameter = cmd }
+    assert_equal :command, parameter
+  end
+
   private
 
     def new_channel(closed, status=nil)
