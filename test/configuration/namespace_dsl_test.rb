@@ -3,10 +3,11 @@ require 'capistrano/configuration/namespaces'
 
 class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
   class MockConfig
-    attr_reader :original_initialize_called
+    attr_reader :original_initialize_called, :options
 
     def initialize
       @original_initialize_called = true
+      @options = {}
     end
 
     include Capistrano::Configuration::Namespaces

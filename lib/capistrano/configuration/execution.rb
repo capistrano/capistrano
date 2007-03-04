@@ -79,7 +79,7 @@ module Capistrano
 
         begin
           push_task_call_frame(task)
-          result = instance_eval(&task.body)
+          result = task.namespace.instance_eval(&task.body)
         ensure
           pop_task_call_frame
         end
