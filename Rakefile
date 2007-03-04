@@ -23,6 +23,13 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
+desc "Run code-coverage analysis using rcov"
+task :coverage do
+  rm_rf "coverage"
+  files = Dir["test/**/*_test.rb"]
+  system "rcov #{files.join(' ')}"
+end
+
 GEM_SPEC = eval(File.read("#{File.dirname(__FILE__)}/#{PKG_NAME}.gemspec"))
 
 Rake::GemPackageTask.new(GEM_SPEC) do |p|
@@ -35,7 +42,7 @@ desc "Build the RDoc API documentation"
 Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_dir = "doc"
   rdoc.title    = "Capistrano -- A framework for remote command execution"
-  rdoc.options << '--line-numbers --inline-source --main README'
+  rdoc.options += %w(--line-numbers --inline-source --main README)
   rdoc.rdoc_files.include 'README'
   rdoc.rdoc_files.include 'lib/**/*.rb'
   rdoc.template = "jamis"
