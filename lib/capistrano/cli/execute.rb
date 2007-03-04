@@ -18,6 +18,8 @@ module Capistrano
       # Using the options build when the command-line was parsed, instantiate
       # a new Capistrano configuration, initialize it, and execute the
       # requested actions.
+      #
+      # Returns the Configuration instance used, if successful.
       def execute!
         config = instantiate_configuration
         config.logger.level = options[:verbose]
@@ -26,6 +28,8 @@ module Capistrano
         load_recipes(config)
 
         execute_requested_actions(config)
+
+        config
       rescue Exception => error
         handle_error(error)
       end
