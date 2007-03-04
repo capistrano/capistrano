@@ -120,6 +120,12 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     assert @config.methods.include?("original")
   end
 
+  def test_calling_defined_task_should_delegate_to_execute_task
+    @config.task(:original) { puts "foo" }
+    @config.expects(:execute_task).with(@config.tasks[:original])
+    @config.original
+  end
+
   def test_role_inside_namespace_should_raise_error
     assert_raises(NotImplementedError) do
       @config.namespace(:outer) do

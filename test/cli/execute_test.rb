@@ -89,6 +89,10 @@ class CLIExecuteTest < Test::Unit::TestCase
     @cli.execute!
   end
 
+  def test_execute_should_return_config_instance
+    assert_equal @config, @cli.execute!
+  end
+
   def test_instantiate_configuration_should_return_new_configuration_instance
     assert_instance_of Capistrano::Configuration, MockCLI.new.instantiate_configuration
   end
