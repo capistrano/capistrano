@@ -6,17 +6,17 @@ module Capistrano
   # commands. It makes for a GREAT way to monitor systems, and perform quick
   # maintenance on one or more machines.
   class Shell
-    # The actor instance employed by this shell
-    attr_reader :actor
+    # The configuration instance employed by this shell
+    attr_reader :configuration
 
     # Instantiate a new shell and begin executing it immediately.
-    def self.run(actor)
-      new(actor).run!
+    def self.run(config)
+      new(config).run!
     end
 
     # Instantiate a new shell
-    def initialize(actor)
-      @actor = actor
+    def initialize(config)
+      @configuration = config
     end
 
     # Start the shell running. This method will block until the shell
@@ -27,17 +27,17 @@ module Capistrano
       puts <<-INTRO
 ====================================================================
 Welcome to the interactive Capistrano shell! This is an experimental
-feature, and is liable to change in future releases.
+feature, and is liable to change in future releases. Type 'help' for
+a summary of how to use the shell.
 --------------------------------------------------------------------
 INTRO
 
       loop do
-        command = @reader.readline("cap> ", true)
+        command = read_line
 
-        case command ? command.strip : command
-          when "" then next
-          when "help"  then help
-          when nil, "quit", "exit" then
+        case command
+          when "?", "help" then help
+          when "quit", "exit" then
             puts if command.nil?
             puts "exiting"
             break
@@ -55,10 +55,30 @@ INTRO
 
     private
 
+      def read_line
+        loop do
+          command = reader.readline("cap> ")
+
+          if command.nil?
+            command = "exit"
+            puts(command)
+          else
+            command.strip!
+          end
+
+          unless command.empty?
+            reader::HISTORY << command
+            return command
+          end
+        end
+      end
+
       # A Readline replacement for platforms where readline is either
       # unavailable, or has not been installed.
       class ReadlineFallback
-        def self.readline(prompt, *args)
+        HISTORY = []
+
+        def self.readline(prompt)
           STDOUT.print(prompt)
           STDOUT.flush
           STDIN.gets
@@ -107,10 +127,10 @@ HELP
       # servers (names).
       def connect(task)
         servers = task.servers(:refresh)
-        needing_connections = servers - actor.sessions.keys
+        needing_connections = servers.reject { |s| configuration.sessions.key?(s.host) }
         unless needing_connections.empty?
-          puts "[establishing connection(s) to #{needing_connections.join(', ')}]"
-          actor.send(:establish_connections, servers)
+          puts "[establishing connection(s) to #{needing_connections.map { |s| s.host }.join(', ')}]"
+          configuration.establish_connections_to(needing_connections)
         end
         servers
       end
@@ -123,7 +143,7 @@ HELP
         if command[0] == ?!
           exec_tasks(command[1..-1].split)
         else
-          servers = connect(actor.current_task)
+          servers = connect(configuration.current_task)
           exec_command(command, servers)
         end
       ensure
@@ -133,10 +153,13 @@ HELP
       # Given an array of task names, invoke them in sequence.
       def exec_tasks(list)
         list.each do |task_name|
-          task = task_name.to_sym
-          connect(actor.tasks[task])
-          actor.send(task)
+          task = configuration.find_task(task_name)
+          raise Capistrano::NoSuchTaskError, "no such task `#{task_name}'" unless task
+          connect(task)
+          configuration.execute_task(task)
         end
+      rescue Capistrano::NoSuchTaskError => error
+        warn "error: #{error.message}"
       end
 
       # Execute a command on the given list of servers.
@@ -146,7 +169,7 @@ HELP
           out.each do |line|
             if stream == :out
               if out =~ /Password:\s*/i
-                ch.send_data "#{actor.password}\n"
+                ch.send_data "#{configuration[:password]}\n"
               else
                 puts "[#{ch[:host]}] #{line.chomp}"
               end
@@ -156,26 +179,33 @@ HELP
           end
         end
 
-        cmd = Command.new(servers, command, processor, {}, actor)
         previous = trap("INT") { cmd.stop! }
-        cmd.process! rescue nil
+        sessions = servers.map { |server| configuration.sessions[server.host] }
+        Command.process(command, sessions, :logger => configuration.logger, &Capistrano::Configuration.default_io_proc)
+      rescue Capistrano::Error => error
+        warn "error: #{error.message}"
+      ensure
         trap("INT", previous)
+      end
+
+      def reader
+        @reader ||= begin
+          require 'readline'
+          Readline
+        rescue LoadError
+          ReadlineFallback
+        end
       end
 
       # Prepare every little thing for the shell. Starts the background
       # thread and generally gets things ready for the REPL.
       def setup
-        begin
-          require 'readline'
-          @reader = Readline
-        rescue LoadError
-          @reader = ReadlineFallback
-        end
+        configuration.logger.level = Capistrano::Logger::INFO
 
         @mutex = Mutex.new
         @bgthread = Thread.new do
             loop do
-              ready = actor.sessions.values.select { |sess| sess.connection.reader_ready? }
+              ready = configuration.sessions.values.select { |sess| sess.connection.reader_ready? }
               if ready.empty?
                 sleep 0.1
               else
@@ -192,9 +222,20 @@ HELP
         case opt
           when "v" then
             puts "setting log verbosity to #{value.to_i}"
-            actor.logger.level = value.to_i
+            configuration.logger.level = value.to_i
+          when "o" then
+            case value
+            when "vi" then
+              puts "using vi edit mode"
+              reader.vi_editing_mode
+            when "emacs" then
+              puts "using emacs edit mode"
+              reader.emacs_editing_mode
+            else
+              puts "unknown -o option #{value.inspect}"
+            end
           else
-            puts "unknown setting #{value.inspect}"
+            puts "unknown setting #{opt.inspect}"
         end
       end
 
