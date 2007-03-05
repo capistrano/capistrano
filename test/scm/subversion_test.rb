@@ -134,4 +134,12 @@ MSG
     assert_nil @actor.channels.last.sent_data
     assert_match %r{/path/to/svn\b.*\bco\b.* --username turtledove}, @actor.command
   end
+  
+  def test_svn_no_auth_cache
+    @actor.story = []
+    @config[:svn_username] = "turtledove"
+    assert_nothing_raised { @scm.checkout(@actor) }
+    assert_nil @actor.channels.last.sent_data
+    assert_match %r{/path/to/svn\b.*\bco\b.* --no-auth-cache --username turtledove}, @actor.command
+  end
 end

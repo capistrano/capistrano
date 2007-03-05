@@ -1,6 +1,10 @@
+*SVN*
+
+* Don't send no-auth-cache if no auth credentials are given [Jonathan Younger]
+
 *1.4.1* (February 24, 2007)
 
-* Use the no-auth-cache option with subversion so that username/password tokens do not get cached by capistrano usage [jonathan]
+* Use the no-auth-cache option with subversion so that username/password tokens do not get cached by capistrano usage [Jonathan Younger]
 
 * Deprecated upper-cased variables [Jamis Buck]
 
