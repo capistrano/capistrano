@@ -84,6 +84,7 @@ module Capistrano
           sftp = session.sftp
           sftp.connect unless sftp.state == :open
 
+          sftp.channel[:done] = false
           sftp.open(filename, IO::WRONLY | IO::CREAT | IO::TRUNC, options[:mode] || 0660) do |status, handle|
             break unless check_status(sftp, "open #{filename}", host, status)
             
