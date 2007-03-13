@@ -26,6 +26,11 @@ module Capistrano
         if tasks.empty?
           warn "There are no tasks available. Please specify a recipe file to load."
         else
+          all_tasks_length = tasks.length
+          if options[:verbose].to_i < 1
+            tasks = tasks.reject { |t| t.description.empty? || t.description =~ /^\[internal\]/ }
+          end
+
           tasks = tasks.sort_by { |task| task.fully_qualified_name }
 
           longest = tasks.map { |task| task.fully_qualified_name.length }.max
@@ -36,8 +41,15 @@ module Capistrano
             puts "cap %-#{longest}s # %s" % [task.fully_qualified_name, task.brief_description(max_length)]
           end
 
+          if all_tasks_length > tasks.length
+            puts
+            puts "Some tasks were not listed, either because they have no description,"
+            puts "or because they are only used internally by other tasks. To see all"
+            puts "tasks, type `#{$0} -Tv'."
+          end
+
           puts
-          puts "Extended help may be available for any of these tasks."
+          puts "Extended help may be available for these tasks."
           puts "Type `#{$0} -e taskname' to view it."
         end
       end

@@ -64,7 +64,10 @@ module Capistrano
 
           opts.on("-T", "--tasks",
             "List all tasks in the loaded recipe files."
-          ) { |value| options[:tasks] = true }
+          ) do 
+            options[:tasks] = true
+            options[:verbose] ||= 0
+          end
 
           opts.on("-V", "--version",
             "Display the Capistrano version, and exit."
