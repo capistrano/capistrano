@@ -80,10 +80,11 @@ class CLIOptionsTest < Test::Unit::TestCase
     assert_equal "bar", @cli.options[:vars][:foo]
   end
 
-  def test_parse_options_with_T_should_set_tasks_option
+  def test_parse_options_with_T_should_set_tasks_option_and_set_verbose_off
     @cli.args << "-T"
     @cli.parse_options!
     assert @cli.options[:tasks]
+    assert_equal 0, @cli.options[:verbose]
   end
 
   def test_parse_options_with_V_should_show_version_and_exit
@@ -130,7 +131,7 @@ class CLIOptionsTest < Test::Unit::TestCase
   end
 
   def test_parse_options_without_q_or_v_should_set_verbose_to_3
-    @cli.args << "-T"
+    @cli.args << "-x"
     @cli.parse_options!
     assert_equal 3, @cli.options[:verbose]
   end
