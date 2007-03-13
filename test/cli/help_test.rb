@@ -19,6 +19,7 @@ class CLIHelpTest < Test::Unit::TestCase
 
   def setup
     @cli = MockCLI.new
+    @cli.options[:verbose] = 0
     @ui = stub("ui", :output_cols => 80)
     MockCLI.stubs(:ui).returns(@ui)
   end
@@ -72,6 +73,35 @@ class CLIHelpTest < Test::Unit::TestCase
     @cli.task_list(config)
   end
 
+  def test_task_list_should_not_include_tasks_with_blank_description_or_internal_by_default
+    t1 = task("c")
+    t1.expects(:brief_description).returns("hello")
+    t2 = task("d", "d", "[internal] howdy")
+    t2.expects(:brief_description).never
+    t3 = task("e", "e", "")
+    t3.expects(:brief_description).never
+
+    config = mock("config", :task_list => [t1, t2, t3])
+    @cli.stubs(:puts)
+    @cli.expects(:puts).never.with { |s,| (s || "").include?("[internal]") || s =~ /#\s*$/ }
+    @cli.task_list(config)
+  end
+
+  def test_task_list_should_include_tasks_with_blank_descriptions_and_internal_when_verbose
+    t1 = task("c")
+    t1.expects(:brief_description).returns("hello")
+    t2 = task("d", "d", "[internal] howdy")
+    t2.expects(:brief_description).returns("[internal] howdy")
+    t3 = task("e", "e", "")
+    t3.expects(:brief_description).returns("")
+
+    config = mock("config", :task_list => [t1, t2, t3])
+    @cli.options[:verbose] = 1
+    @cli.stubs(:puts)
+    @cli.expects(:puts).with { |s,| (s || "").include?("[internal]") || s =~ /#\s*$/ }.at_least_once
+    @cli.task_list(config)
+  end
+
   def test_explain_task_should_warn_if_task_does_not_exist
     config = mock("config", :find_task => nil)
     @cli.expects(:warn).with { |s,| s =~ /`deploy_with_niftiness'/ }
@@ -96,7 +126,7 @@ class CLIHelpTest < Test::Unit::TestCase
 
   private
 
-    def task(name, fqn=name)
-      stub("task", :name => name, :fully_qualified_name => fqn)
+    def task(name, fqn=name, desc="a description")
+      stub("task", :name => name, :fully_qualified_name => fqn, :description => desc)
     end
 end
