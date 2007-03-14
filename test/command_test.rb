@@ -214,6 +214,20 @@ class CommandTest < Test::Unit::TestCase
     assert_equal :command, parameter
   end
 
+  def test_process_with_host_placeholder_should_substitute_placeholder_with_each_host
+    session = setup_for_extracting_channel_action(:on_success) do |ch|
+      ch.expects(:exec).with("echo capistrano")
+    end
+    Capistrano::Command.new("echo $CAPISTRANO:HOST$", [session])
+  end
+
+  def test_process_with_unknown_placeholder_should_not_replace_placeholder
+    session = setup_for_extracting_channel_action(:on_success) do |ch|
+      ch.expects(:exec).with("echo $CAPISTRANO:OTHER$")
+    end
+    Capistrano::Command.new("echo $CAPISTRANO:OTHER$", [session])
+  end
+
   private
 
     def new_channel(closed, status=nil)
@@ -232,6 +246,7 @@ class CommandTest < Test::Unit::TestCase
       session.expects(:open_channel).yields(channel)
 
       ch = mock
+      ch.stubs(:[]).with(:host).returns("capistrano")
       channel.expects(action).yields(ch, *args)
 
       yield ch if block_given?

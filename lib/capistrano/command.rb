@@ -81,8 +81,8 @@ module Capistrano
 
             channel.on_success do |ch|
               logger.trace "executing command", ch[:host] if logger
-              ch.exec command
-              ch.send_data options[:data] if options[:data]
+              ch.exec(replace_placeholders(command, ch))
+              ch.send_data(options[:data]) if options[:data]
             end
 
             channel.on_failure do |ch|
@@ -110,6 +110,10 @@ module Capistrano
             end
           end
         end
+      end
+
+      def replace_placeholders(command, channel)
+        command.gsub(/\$CAPISTRANO:HOST\$/, channel[:host])
       end
 
       # prepare a space-separated sequence of variables assignments
