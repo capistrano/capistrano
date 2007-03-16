@@ -53,7 +53,7 @@ class CommandTest < Test::Unit::TestCase
   end
 
   def test_open_channel_should_set_host_key_on_channel
-    session = mock(:host => "capistrano")
+    session = mock(:real_host => "capistrano")
     channel = stub_everything
 
     session.expects(:open_channel).yields(channel)
@@ -63,7 +63,7 @@ class CommandTest < Test::Unit::TestCase
   end
 
   def test_open_channel_should_set_options_key_on_channel
-    session = mock(:host => "capistrano")
+    session = mock(:real_host => "capistrano")
     channel = stub_everything
 
     session.expects(:open_channel).yields(channel)
@@ -73,7 +73,7 @@ class CommandTest < Test::Unit::TestCase
   end
 
   def test_open_channel_should_request_pty
-    session = mock(:host => "capistrano")
+    session = mock(:real_host => "capistrano")
     channel = stub_everything
 
     session.expects(:open_channel).yields(channel)
@@ -240,7 +240,7 @@ class CommandTest < Test::Unit::TestCase
     end
 
     def setup_for_extracting_channel_action(action, *args)
-      session = mock(:host => "capistrano")
+      session = mock(:real_host => "capistrano")
 
       channel = stub_everything
       session.expects(:open_channel).yields(channel)

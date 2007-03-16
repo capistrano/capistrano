@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
     on multiple remote machines, via SSH.
   DESC
 
-  s.files = Dir.glob("{bin,lib,examples,test}/**/*") + %w(README MIT-LICENSE CHANGELOG THANKS)
+  s.files = Dir.glob("{bin,lib,examples,test}/**/*") + %w(README MIT-LICENSE CHANGELOG)
   s.require_path = 'lib'
   s.autorequire = 'capistrano'
 

@@ -1,4 +1,3 @@
-#require 'capistrano/extensions'
 require 'capistrano/logger'
 
 require 'capistrano/configuration/connections'
