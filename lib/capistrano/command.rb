@@ -75,7 +75,7 @@ module Capistrano
       def open_channels
         sessions.map do |session|
           session.open_channel do |channel|
-            channel[:host] = session.host
+            channel[:host] = session.real_host
             channel[:options] = options
             channel.request_pty :want_reply => true
 

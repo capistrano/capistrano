@@ -81,6 +81,7 @@ module Capistrano
           local_host = ServerDefinition.new("127.0.0.1", :user => server.user, :port => local_port)
           session.forward.local(local_port, server.host, server.port || 22)
           connection = SSH.connect(local_host, @options)
+          connection.real_host = server.host
           logger.trace "connected: `#{server.host}' (via gateway)" if logger
         rescue Errno::EADDRINUSE
           local_port = next_port

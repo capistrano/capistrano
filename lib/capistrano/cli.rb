@@ -1,3 +1,4 @@
+require 'capistrano'
 require 'capistrano/cli/execute'
 require 'capistrano/cli/help'
 require 'capistrano/cli/options'
