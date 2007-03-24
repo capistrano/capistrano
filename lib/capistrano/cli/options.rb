@@ -25,7 +25,7 @@ module Capistrano
       # are.
       def option_parser #:nodoc:
         @option_parser ||= OptionParser.new do |opts|
-          opts.banner = "Usage: #{$0} [options] action ..."
+          opts.banner = "Usage: #{File.basename($0)} [options] action ..."
 
           opts.on("-e", "--explain TASK",
             "Displays help (if available) for the task."
@@ -131,12 +131,22 @@ module Capistrano
 
       # Looks for a default recipe file in the current directory.
       def look_for_default_recipe_file! #:nodoc:
-        %w(Capfile capfile).each do |file|
-          if File.file?(file)
-            options[:recipes] << file
-            break
+        current = Dir.pwd
+
+        loop do
+          %w(Capfile capfile).each do |file|
+            if File.file?(file)
+              options[:recipes] << file
+              return
+            end
           end
+
+          pwd = Dir.pwd
+          Dir.chdir("..")
+          break if pwd == Dir.pwd # if changing the directory made no difference, then we're at the top
         end
+
+        Dir.chdir(current)
       end
 
       def default_sysconf #:nodoc:

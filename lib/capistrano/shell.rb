@@ -6,6 +6,18 @@ module Capistrano
   # commands. It makes for a GREAT way to monitor systems, and perform quick
   # maintenance on one or more machines.
   class Shell
+    # A Readline replacement for platforms where readline is either
+    # unavailable, or has not been installed.
+    class ReadlineFallback #:nodoc:
+      HISTORY = []
+
+      def self.readline(prompt)
+        STDOUT.print(prompt)
+        STDOUT.flush
+        STDIN.gets
+      end
+    end
+
     # The configuration instance employed by this shell
     attr_reader :configuration
 
@@ -33,28 +45,37 @@ a summary of how to use the shell.
 INTRO
 
       loop do
-        command = read_line
-
-        case command
-          when "?", "help" then help
-          when "quit", "exit" then
-            puts if command.nil?
-            puts "exiting"
-            break
-          when /^set -(\w)\s*(\S+)/
-            set_option($1, $2)
-          when /^(?:(with|on)\s*(\S+))?\s*(\S.*)?/i
-            process_command($1, $2, $3)
-          else
-            raise "eh?"
-        end
+        break if !read_and_execute
       end
 
       @bgthread.kill
     end
 
+    def read_and_execute
+      command = read_line
+
+      case command
+        when "?", "help" then help
+        when "quit", "exit" then
+          puts "exiting"
+          return false
+        when /^set -(\w)\s*(\S+)/
+          set_option($1, $2)
+        when /^(?:(with|on)\s*(\S+))?\s*(\S.*)?/i
+          process_command($1, $2, $3)
+        else
+          raise "eh?"
+      end
+
+      return true
+    end
+
     private
 
+      # Present the prompt and read a single line from the console. It also
+      # detects ^D and returns "exit" in that case. Adds the input to the
+      # history, unless the input is empty. Loops repeatedly until a non-empty
+      # line is input.
       def read_line
         loop do
           command = reader.readline("cap> ")
@@ -73,52 +94,33 @@ INTRO
         end
       end
 
-      # A Readline replacement for platforms where readline is either
-      # unavailable, or has not been installed.
-      class ReadlineFallback
-        HISTORY = []
-
-        def self.readline(prompt)
-          STDOUT.print(prompt)
-          STDOUT.flush
-          STDIN.gets
-        end
-      end
-
       # Display a verbose help message.
       def help
         puts <<-HELP
-Welcome to the interactive Capistrano shell! To quit, just type quit,
-or exit. Or press ctrl-D. This shell is still experimental, so expect
-it to change (or even disappear!) in future releases.
+--- HELP! ---------------------------------------------------
+"Get me out of this thing. I just want to quit."
+-> Easy enough. Just type "exit", or "quit". Or press ctrl-D.
 
-To execute a command on all servers, just type it directly, like:
+"I want to execute a command on all servers."
+-> Just type the command, and press enter. It will be passed,
+   verbatim, to all defined servers.
 
-  cap> echo ping
+"What if I only want it to execute on a subset of them?"
+-> No problem, just specify the list of servers, separated by
+   commas, before the command, with the `on' keyword:
 
-To execute a command on a specific set of servers, specify an 'on' clause.
-Note that if you specify more than one host name, they must be comma-
-delimited, with NO SPACES between them.
+   cap> on app1.foo.com,app2.foo.com echo ping
 
-  cap> on app1.foo.com,app2.foo.com echo ping
+"Nice, but can I specify the servers by role?"
+-> You sure can. Just use the `with' keyword, followed by the
+   comma-delimited list of role names:
 
-To execute a command on all servers matching a set of roles:
+   cap> with app,db echo ping
 
-  cap> with app,db echo ping
+"Can I execute a Capistrano task from within this shell?"
+-> Yup. Just prefix the task with an exclamation mark:
 
-To execute a Capistrano task, prefix the name with a bang:
-
-  cap> !deploy
-
-You can specify multiple tasks to execute, separated by spaces:
-
-  cap> !update_code symlink
-
-And, lastly, you can specify 'on' or 'with' with tasks:
-
-  cap> on app6.foo.com !setup
-
-Enjoy!  
+   cap> !deploy
 HELP
       end
 
@@ -188,6 +190,8 @@ HELP
         trap("INT", previous)
       end
 
+      # Return the object that will be used to query input from the console.
+      # The returned object will quack (more or less) like Readline.
       def reader
         @reader ||= begin
           require 'readline'
@@ -260,5 +264,5 @@ HELP
           puts "scoping #{scope_type} #{scope_value}"
         end
       end
-  end
+    end
 end
