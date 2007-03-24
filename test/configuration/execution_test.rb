@@ -23,7 +23,7 @@ class ConfigurationExecutionTest < Test::Unit::TestCase
 
   def setup
     @config = MockConfig.new(:logger => stub(:debug => nil, :info => nil, :important => nil))
-    @config.stubs(:find_task).returns(nil)
+    @config.stubs(:search_task).returns(nil)
   end
 
   def test_initialize_should_initialize_collections
@@ -53,7 +53,7 @@ class ConfigurationExecutionTest < Test::Unit::TestCase
   def test_execute_task_should_execute_before_hook_if_defined
     testing = new_task @config, :testing
     before = new_task @config, :before_testing
-    @config.expects(:find_task).with("before_testing").returns(before)
+    @config.expects(:search_task).with("before_testing").returns(before)
     @config.execute_task(testing)
     assert_equal %w(before_testing testing), @config.state[:trail]
   end
@@ -61,7 +61,7 @@ class ConfigurationExecutionTest < Test::Unit::TestCase
   def test_execute_task_should_execute_after_hook_if_defined
     testing = new_task @config, :testing
     after = new_task @config, :after_testing
-    @config.expects(:find_task).with("after_testing").returns(after)
+    @config.expects(:search_task).with("after_testing").returns(after)
     @config.execute_task(testing)
     assert_equal %w(testing after_testing), @config.state[:trail]
   end
@@ -69,7 +69,7 @@ class ConfigurationExecutionTest < Test::Unit::TestCase
   def test_execute_task_should_execute_in_scope_of_tasks_parent
     ns = stub("namespace", :tasks => {}, :default_task => nil, :fully_qualified_name => "ns")
     ns.expects(:instance_eval)
-    ns.expects(:find_task).returns(nil).times(2) # before and after hooks
+    ns.expects(:search_task).returns(nil).times(2) # before and after hooks
     testing = new_task ns, :testing
     @config.execute_task(testing)
   end

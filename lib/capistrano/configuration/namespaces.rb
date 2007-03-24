@@ -116,6 +116,21 @@ module Capistrano
         ns.tasks[tail]
       end
 
+      # Given a task name, this will search the current namespace, and all
+      # parent namespaces, looking for a task that matches the name, exactly.
+      # It returns the task, if found, or nil, if not.
+      def search_task(name)
+        name = name.to_sym
+        ns = self
+
+        until ns.nil?
+          return ns.tasks[name] if ns.tasks.key?(name)
+          ns = ns.parent
+        end
+
+        return nil
+      end
+
       # Returns the default task for this namespace. This will be +nil+ if
       # the namespace is at the top-level, and will otherwise return the
       # task named "default". If no such task exists, +nil+ will be returned.

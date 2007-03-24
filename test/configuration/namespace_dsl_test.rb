@@ -258,4 +258,34 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     ns = @config.namespaces[:outer]
     assert_raises(NoMethodError) { ns.alskdfjlsf }
   end
+
+  def test_search_task_should_find_tasks_in_current_namespace
+    @config.namespace(:outer) do
+      namespace(:inner) do
+        task(:third) { puts "here" }
+      end
+    end
+
+    inner = @config.namespaces[:outer].namespaces[:inner]
+    assert_equal inner.tasks[:third], inner.search_task(:third)
+  end
+
+  def test_search_task_should_find_tasks_in_parent_namespace
+    @config.task(:first) { puts "here" }
+    @config.namespace(:outer) do
+      task(:second) { puts "here" }
+      namespace(:inner) do
+        task(:third) { puts "here" }
+      end
+    end
+
+    inner = @config.namespaces[:outer].namespaces[:inner]
+    assert_equal @config.tasks[:first], inner.search_task(:first)
+  end
+
+  def test_search_task_should_return_nil_if_no_tasks_are_found
+    @config.namespace(:outer) { namespace(:inner) {} }
+    inner = @config.namespaces[:outer].namespaces[:inner]
+    assert_nil inner.search_task(:first)
+  end
 end
