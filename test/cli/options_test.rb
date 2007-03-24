@@ -185,6 +185,26 @@ class CLIOptionsTest < Test::Unit::TestCase
     assert_equal %w(capfile), @cli.options[:recipes]
   end
 
+  def test_search_for_default_recipe_should_hike_up_the_directory_tree_until_it_finds_default_recipe
+    File.stubs(:file?).returns(false)
+    File.expects(:file?).with("capfile").times(2).returns(false,true)
+    Dir.expects(:pwd).times(3).returns(*%w(/bar/baz /bar/baz /bar))
+    Dir.expects(:chdir).with("..")
+    @cli.args << "-v"
+    @cli.parse_options!
+    assert_equal %w(capfile), @cli.options[:recipes]
+  end
+
+  def test_search_for_default_recipe_should_halt_at_root_directory
+    File.stubs(:file?).returns(false)
+    Dir.expects(:pwd).times(7).returns(*%w(/bar/baz /bar/baz /bar /bar / / /))
+    Dir.expects(:chdir).with("..").times(3)
+    Dir.expects(:chdir).with("/bar/baz")
+    @cli.args << "-v"
+    @cli.parse_options!
+    assert @cli.options[:recipes].empty?
+  end
+
   def test_parse_should_instantiate_new_cli_and_call_parse_options
     cli = mock("cli", :parse_options! => nil)
     MockCLI.expects(:new).with(%w(a b c)).returns(cli)

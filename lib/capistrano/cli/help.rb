@@ -45,12 +45,12 @@ module Capistrano
             puts
             puts "Some tasks were not listed, either because they have no description,"
             puts "or because they are only used internally by other tasks. To see all"
-            puts "tasks, type `#{$0} -Tv'."
+            puts "tasks, type `#{File.basename($0)} -Tv'."
           end
 
           puts
           puts "Extended help may be available for these tasks."
-          puts "Type `#{$0} -e taskname' to view it."
+          puts "Type `#{File.basename($0)} -e taskname' to view it."
         end
       end
 
