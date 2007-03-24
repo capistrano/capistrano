@@ -73,7 +73,7 @@ module Capistrano
       # Executes the task with the given name, including the before and after
       # hooks.
       def execute_task(task)
-        before = task.namespace.tasks[:"before_#{task.name}"]
+        before = task.namespace.find_task("before_#{task.name}")
         execute_task(before) if before
         logger.debug "executing `#{task.fully_qualified_name}'"
 
@@ -84,7 +84,7 @@ module Capistrano
           pop_task_call_frame
         end
 
-        after = task.namespace.tasks[:"after_#{task.name}"]
+        after = task.namespace.find_task("after_#{task.name}")
         execute_task(after) if after
         result
       end
