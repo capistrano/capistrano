@@ -137,6 +137,7 @@ class ConfigurationExecutionTest < Test::Unit::TestCase
     @config.expects(:execute_task).with(:found)
     assert_nothing_raised { @config.find_and_execute_task("path:to:task") }
   end
+
   private
 
     def stack_inspector
