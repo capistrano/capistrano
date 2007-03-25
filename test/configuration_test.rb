@@ -66,4 +66,16 @@ class ConfigurationTest < Test::Unit::TestCase
     assert @config[:called_first]
     assert !@config[:called_inner_first]
   end
+
+  def test_hooks_for_default_task_should_be_found_if_named_after_the_namespace
+    @config.namespace(:outer) do
+      task(:default) { set :called_default, true }
+      task(:before_outer) { set :called_before_outer, true }
+      task(:after_outer) { set :called_after_outer, true }
+    end
+    @config.outer.default
+    assert @config[:called_before_outer]
+    assert @config[:called_default]
+    assert @config[:called_after_outer]
+  end
 end

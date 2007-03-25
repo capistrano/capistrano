@@ -73,7 +73,7 @@ module Capistrano
       # Executes the task with the given name, including the before and after
       # hooks.
       def execute_task(task)
-        before = task.namespace.search_task("before_#{task.name}")
+        before = find_hook(task, :before)
         execute_task(before) if before
         logger.debug "executing `#{task.fully_qualified_name}'"
 
@@ -84,7 +84,7 @@ module Capistrano
           pop_task_call_frame
         end
 
-        after = task.namespace.search_task("after_#{task.name}")
+        after = find_hook(task, :after)
         execute_task(after) if after
         result
       end
@@ -97,32 +97,41 @@ module Capistrano
         execute_task(task)
       end
 
-      protected
+    protected
 
-        def rollback!
-          # throw the task back on the stack so that roles are properly
-          # interpreted in the scope of the task in question.
-          rollback_requests.reverse.each do |frame|
-            begin
-              push_task_call_frame(frame.task)
-              logger.important "rolling back", frame.task.fully_qualified_name
-              frame.rollback.call
-            rescue Object => e
-              logger.info "exception while rolling back: #{e.class}, #{e.message}", frame.task.fully_qualified_name
-            ensure
-              pop_task_call_frame
-            end
+      def find_hook(task, hook)
+        if task == task.namespace.default_task
+          result = task.namespace.search_task("#{hook}_#{task.namespace.name}")
+          return result if result
+        end
+
+        task.namespace.search_task("#{hook}_#{task.name}")
+      end
+
+      def rollback!
+        # throw the task back on the stack so that roles are properly
+        # interpreted in the scope of the task in question.
+        rollback_requests.reverse.each do |frame|
+          begin
+            push_task_call_frame(frame.task)
+            logger.important "rolling back", frame.task.fully_qualified_name
+            frame.rollback.call
+          rescue Object => e
+            logger.info "exception while rolling back: #{e.class}, #{e.message}", frame.task.fully_qualified_name
+          ensure
+            pop_task_call_frame
           end
         end
+      end
 
-        def push_task_call_frame(task)
-          frame = TaskCallFrame.new(task)
-          task_call_frames.push frame
-        end
+      def push_task_call_frame(task)
+        frame = TaskCallFrame.new(task)
+        task_call_frames.push frame
+      end
 
-        def pop_task_call_frame
-          task_call_frames.pop
-        end
+      def pop_task_call_frame
+        task_call_frames.pop
+      end
     end
   end
 end
