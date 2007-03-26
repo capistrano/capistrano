@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.autorequire = 'capistrano'
 
   s.bindir = "bin"
-  s.executables << "cap"
+  s.executables << "cap" << "deployify"
 
   s.add_dependency 'net-ssh', ">= #{Capistrano::Version::SSH_REQUIRED.join(".")}"
   s.add_dependency 'net-sftp', ">= #{Capistrano::Version::SFTP_REQUIRED.join(".")}"
