@@ -1,5 +1,7 @@
 *SVN*
 
+* The deployment recipes are now opt-in. Just do 'load "deploy"' in your recipe script. [Jamis Buck]
+
 * Added $CAPISTRANO:HOST$ placeholder in commands, which will be replaced with the name of the host on which the command is executing [Jamis Buck]
 
 * Added -e switch to explain specific task. Added -X to extend -x. Made -h much briefer. Added -T to list known tasks. [Jamis Buck]
