@@ -1,0 +1,52 @@
+module Capistrano
+  module Deploy
+    module Strategy
+
+      # This class defines the abstract interface for all Capistrano
+      # deployment strategies. Subclasses must implement at least the
+      # #deploy! method.
+      class Base
+        attr_reader :configuration
+
+        # Instantiates a strategy with a reference to the given configuration.
+        def initialize(config={})
+          @configuration = config
+        end
+
+        # Executes the necessary commands to deploy the revision of the source
+        # code identified by the +revision+ variable. Additionally, this
+        # should write the value of the +revision+ variable to a file called
+        # REVISION, in the base of the deployed revision. This file is used by
+        # other tasks, to perform diffs and such.
+        def deploy!
+          raise NotImplementedError, "`deploy!' is not implemented by #{self.class.name}"
+        end
+
+        protected
+
+          # This is to allow helper methods like "run" and "put" to be more
+          # easily accessible to strategy implementations.
+          def method_missing(sym, *args, &block)
+            if configuration.respond_to?(sym)
+              configuration.send(sym, *args, &block)
+            else
+              super
+            end
+          end
+
+        private
+
+          def logger
+            @logger ||= configuration[:logger] || Capistrano::Logger.new(STDOUT)
+          end
+
+          # The revision to deploy. Must return a real revision identifier,
+          # and not a pseudo-id.
+          def revision
+            configuration[:real_revision]
+          end
+      end
+
+    end
+  end
+end
