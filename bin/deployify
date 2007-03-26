@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+
+if ARGV.empty?
+  abort "Please specify the directory to deployify, e.g. `#{File.basename($0)} .'"
+elsif !File.exists?(ARGV.first)
+  abort "`#{ARGV.first}' does not exist."
+elsif !File.directory?(ARGV.first)
+  abort "`#{ARGV.first}' is not a directory."
+elsif ARGV.length > 1
+  abort "Too many arguments; please specify only the directory to deployify."
+end
+
+base = ARGV.shift
+
+files = {}
+current_file = nil
+
+DATA.each do |line|
+  if line =~ /^#file: (.*)/
+    current_file = $1
+  elsif current_file
+    (files[current_file] ||= "") << line
+  else
+    abort "[bug] data is corrupt"
+  end
+end
+
+files.each do |file, content|
+  file = File.join(base, file)
+  if File.exists?(file)
+    warn "[skip] `#{file}' already exists"
+  elsif File.exists?(file.downcase)
+    warn "[skip] `#{file.downcase}' exists, which could conflict with `#{file}'"
+  elsif !File.exists?(File.dirname(file))
+    warn "[skip] directory `#{File.dirname(file)}' does not exist"
+  else
+    puts "[add] writing `#{file}'"
+    File.open(file, "w") { |f| f.write(content) }
+  end
+end
+
+puts "[done] deployified!"
+
+__END__
+#file: Capfile
+require 'capistrano/version'
+load 'deploy' if Capistrano::Version::MAJOR >= 2 || Capistrano::Version::MAJOR == 1 && Capistrano::Version::MINOR >= 99
+load 'config/deploy'
+
+#file: config/deploy.rb
+set :application, "set your application name here"
+set :repository,  "set your repository location here"
+
+# If you aren't using Subversion to manage your source code, specify
+# your SCM below:
+# set :scm, :subversion
+
+role :app, "your app-server here"
+role :web, "your web-server here"
+role :db,  "your db-server here", :primary => true
