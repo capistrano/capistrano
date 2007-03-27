@@ -51,8 +51,11 @@ module Capistrano
 
       logger.trace "command finished" if logger
 
-      if failed = @channels.detect { |ch| ch[:status] != 0 }
-        raise CommandError, "command #{command.inspect} failed on #{failed[:host]}"
+      if (failed = @channels.select { |ch| ch[:status] != 0 }).any?
+        hosts = failed.map { |ch| ch[:host] }
+        error = CommandError.new("command #{command.inspect} failed on #{hosts.join(',')}")
+        error.hosts = hosts
+        raise error
       end
 
       self
