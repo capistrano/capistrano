@@ -103,6 +103,12 @@ class ConfigurationExecutionTest < Test::Unit::TestCase
     @config.execute_task(first)
   end
 
+  def test_on_rollback_should_have_no_effect_outside_of_transaction
+    aaa = new_task(@config, :aaa) { on_rollback { state[:rollback] = true }; raise "boom" }
+    assert_raises(RuntimeError) { @config.execute_task(aaa) }
+    assert_nil @config.state[:rollback]
+  end
+
   def test_exception_raised_in_transaction_should_call_all_registered_rollback_handlers_in_reverse_order
     aaa = new_task(@config, :aaa) { on_rollback { (state[:rollback] ||= []) << :aaa } }
     bbb = new_task(@config, :bbb) { on_rollback { (state[:rollback] ||= []) << :bbb } }

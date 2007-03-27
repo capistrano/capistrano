@@ -4,38 +4,20 @@
 # Depends on the deployment system
 load 'deploy'
 
-desc "DEPRECATED: See deploy:pending:diff."
-task :diff_from_last_deploy do
-  warn "[DEPRECATION] `diff_from_last_deploy' is deprecated. Use `deploy:pending:diff' instead."
-  deploy.pending.diff
-end
+map = { "diff_from_last_deploy" => "deploy:pending:diff",
+        "update"                => "deploy:update",
+        "update_code"           => "deploy:update_code",
+        "symlink"               => "deploy:symlink",
+        "restart"               => "deploy:restart",
+        "rollback"              => "deploy:rollback",
+        "cleanup"               => "deploy:cleanup",
+        "disable_web"           => "deploy:web:disable",
+        "enable_web"            => "deploy:web:enable" }
 
-desc "DEPRECATED: See deploy:update."
-task :update do
-  warn "[DEPRECATION] `update' is deprecated. Use `deploy:update' instead."
-  deploy.update
-end
-
-desc "DEPRECATED: See deploy:update_code."
-task :update_code do
-  warn "[DEPRECATION] `update_code' is deprecated. Use `deploy:update_code' instead."
-  deploy.update_code
-end
-
-desc "DEPRECATED: See deploy:symlink."
-task :symlink do
-  warn "[DEPRECATION] `symlink' is deprecated. Use `deploy:symlink' instead."
-  deploy.symlink
-end
-
-desc "DEPRECATED: See deploy:restart."
-task :restart do
-  warn "[DEPRECATION] `restart' is deprecated. Use `deploy:restart' instead."
-  deploy.restart
-end
-
-desc "DEPRECATED: See deploy:rollback."
-task :rollback do
-  warn "[DEPRECATION] `rollback' is deprecated. Use `deploy:rollback' instead."
-  deploy.rollback
+map.each do |old, new|
+  desc "DEPRECATED: See #{new}."
+  eval "task(#{old.inspect}) do
+    warn \"[DEPRECATED] `#{old}' is deprecated. Use `#{new}' instead.\"
+    find_and_execute_task(#{new.inspect})
+  end"
 end
