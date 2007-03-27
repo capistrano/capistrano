@@ -44,7 +44,7 @@ puts "[done] deployified!"
 __END__
 #file: Capfile
 require 'capistrano/version'
-load 'deploy' if Capistrano::Version::MAJOR >= 2 || Capistrano::Version::MAJOR == 1 && Capistrano::Version::MINOR >= 99
+load 'deploy' if respond_to?(:namespace) # cap2 differentiator
 load 'config/deploy'
 
 #file: config/deploy.rb

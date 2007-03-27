@@ -1,5 +1,7 @@
 *SVN*
 
+* Added opt-in "compat" and "upgrade" recipes for tasks to aid in the upgrade process to Capistrano 2 [Jamis Buck]
+
 * The deployment recipes are now opt-in. Just do 'load "deploy"' in your recipe script. [Jamis Buck]
 
 * Added $CAPISTRANO:HOST$ placeholder in commands, which will be replaced with the name of the host on which the command is executing [Jamis Buck]
