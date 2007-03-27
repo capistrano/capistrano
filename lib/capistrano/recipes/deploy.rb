@@ -18,9 +18,6 @@ set(:repository)  { abort "Please specify the repository that houses your applic
 set :scm, :subversion
 set :deploy_via, :checkout
 
-set :restart_via, :sudo
-set :group_writable, true
-
 set(:deploy_to) { "/u/apps/#{application}" }
 set(:revision)  { source.head } unless exists?(:revision)
 
@@ -115,7 +112,7 @@ will lastly touch all assets in public/images, public/stylesheets, and \
 public/javascripts so that the times are consistent (so that asset timestamping \
 works)."
   task :finalize_update, :except => { :no_release => true } do
-    run "chmod -R g+w #{release_path}" if group_writable
+    run "chmod -R g+w #{release_path}" if fetch(:group_writable, true)
 
     run <<-CMD
       rm -rf #{release_path}/log #{release_path}/public/system #{release_path}/tmp/pids &&
@@ -174,7 +171,7 @@ you can indicate that restarts should use `run' instead by setting the \
 
   set :restart_via, :run"
   task :restart, :roles => :app, :except => { :no_release => true } do
-    invoke_command "#{current_path}/script/process/reaper", :via => restart_via
+    invoke_command "#{current_path}/script/process/reaper", :via => fetch(:restart_via, :sudo)
   end
 
 desc "Rolls back to the previously deployed version. The `current' symlink will \
@@ -197,6 +194,67 @@ where you were, on the previously deployed version."
     restart
   end
 
+desc "Run the migrate rake task. By default, it runs this in most recently \
+deployed version of the app. However, you can specify a different release \ 
+via the migrate_target variable, which must be one of :latest (for the \
+default behavior), or :current (for the release indicated by the `current' \
+symlink). latest release to be deployed with the update_code task). Strings will work \
+for those values instead of symbols, too. You can also specify additional \
+environment variables to pass to rake via the migrate_env variable. Finally, \
+you can specify the full path to the rake executable by setting the rake \
+variable. The defaults are:
+
+  set :rake,           \"rake\"
+  set :rails_env,      \"production\"
+  set :migrate_env,    \"\"
+  set :migrate_target, :latest"
+  task :migrate, :roles => :db, :only => { :primary => true } do
+    rake = fetch(:rake, "rake")
+    rails_env = fetch(:rails_env, "production")
+    migrate_env = fetch(:migrate_env, "")
+    migrate_target = fetch(:migrate_target, :latest)
+
+    directory = case migrate_target.to_sym
+      when :current then current_path
+      when :latest  then current_release
+      else raise ArgumentError, "unknown migration target #{migrate_target.inspect}"
+      end
+
+    run "cd #{directory}; #{rake} RAILS_ENV=#{rails_env} #{migrate_env} db:migrate"
+  end
+
+desc "Deploy and run pending migrations. This will work similarly to the \
+`deploy' task, but will also run any pending migrations (via the `deploy:migrate' \
+task) prior to updating the symlink. Note that the update in this case it is \
+not atomic, and transactions are not used, because migrations are not \
+guaranteed to be reversible."
+  task :with_migrations do
+    set :migrate_target, :latest
+    update_code
+    migrate
+    symlink
+    restart
+  end
+
+desc "Clean up old releases. By default, the last 5 releases are kept on each \
+server (though you can change this with the keep_releases variable). All other \
+deployed revisions are removed from the servers. By default, this will use \
+sudo to clean up the old releases, but if sudo is not available for your \
+environment, set the :cleanup_via variable to :run instead."
+  task :cleanup, :except => { :no_release => true } do
+    count = fetch(:keep_releases, 5).to_i
+    if count >= releases.length
+      logger.important "no old releases to clean up"
+    else
+      logger.info "keeping #{count} of #{releases.length} deployed releases"
+
+      directories = (releases - releases.last(count)).map { |release|
+        File.join(releases_path, release) }.join(" ")
+
+      invoke_command "rm -rf #{directories}", :via => fetch(:cleanup_via, :sudo)
+    end
+  end
+
   namespace :pending do
 desc "Displays the `diff' since your last deploy. This is useful if you want \
 to examine what changes are about to be deployed. Note that this might not be \
@@ -210,6 +268,41 @@ of the changes that have occurred since the last deploy. Note that this might \
 not be supported on all SCM's."
     task :default, :except => { :no_release => true } do
       system(source.log(current_revision))
+    end
+  end
+
+  namespace :web do
+desc "Present a maintenance page to visitors. Disables your application's web \
+interface by writing a \"maintenance.html\" file to each web server. The \
+servers must be configured to detect the presence of this file, and if it is \
+present, always display it instead of performing the request.
+
+By default, the maintenance page will just say the site is down for \
+\"maintenance\", and will be back \"shortly\", but you can customize the page \
+by specifying the REASON and UNTIL environment variables:
+
+  $ cap deploy:web:disable BECAUSE=\"hardware upgrade\" \\
+        UNTIL=\"12pm Central Time\"
+
+Further customization will require that you write your own task."
+    task :disable, :roles => :web, :except => { :no_release => true } do
+      require 'erb'
+      on_rollback { run "rm #{shared_path}/system/maintenance.html" }
+
+      reason = ENV['REASON']
+      deadline = ENV['UNTIL']
+
+      template = File.read(File.join(File.dirname(__FILE__), "templates", "maintenance.rhtml"))
+      result = ERB.new(template).result(binding)
+
+      put result, "#{shared_path}/system/maintenance.html", :mode => 0644
+    end
+
+desc "Makes the application web-accessible again. Removes the \"maintenance.html\" \
+page generated by deploy:web:disable, which (if your web servers are \
+configured correclty) will make your application web-accessible again."
+    task :enable, :roles => :web, :except => { :no_release => true } do
+      run "rm #{shared_path}/system/maintenance.html"
     end
   end
 end

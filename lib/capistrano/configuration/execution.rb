@@ -59,8 +59,10 @@ module Capistrano
       # or any subsequent task then fails, and a transaction is active, this
       # hook will be executed.
       def on_rollback(&block)
-        task_call_frames.last.rollback = block
-        rollback_requests << task_call_frames.last
+        if transaction?
+          task_call_frames.last.rollback = block
+          rollback_requests << task_call_frames.last
+        end
       end
 
       # Returns the TaskDefinition object for the currently executing task.
