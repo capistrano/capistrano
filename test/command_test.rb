@@ -166,6 +166,21 @@ class CommandTest < Test::Unit::TestCase
     assert_raises(Capistrano::CommandError) { cmd.process! }
   end
 
+  def test_command_error_should_include_accessor_with_host_array
+    sessions = [mock("session", :open_channel => new_channel(true, 0)),
+                mock("session", :open_channel => new_channel(true, 0)),
+                mock("session", :open_channel => new_channel(true, 1))]
+    cmd = Capistrano::Command.new("ls", sessions)
+
+    begin
+      cmd.process!
+      flunk "expected an exception to be raised"
+    rescue Capistrano::CommandError => e
+      assert e.respond_to?(:hosts)
+      assert_equal %w(capistrano), e.hosts
+    end
+  end
+
   def test_process_should_loop_until_all_channels_are_closed
     new_channel = Proc.new do |times|
       ch = mock("channel")
