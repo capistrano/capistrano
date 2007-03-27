@@ -148,6 +148,12 @@ class CLIOptionsTest < Test::Unit::TestCase
     @cli.parse_options!
   end
 
+  def test_F_should_search_for_default_recipes_even_if_f_is_given
+    @cli.expects(:look_for_default_recipe_file!)
+    @cli.args << "-Ff" << "hello"
+    @cli.parse_options!
+  end
+
   def test_should_extract_env_vars_from_command_line
     assert_nil ENV["HELLO"]
     assert_nil ENV["ANOTHER"]

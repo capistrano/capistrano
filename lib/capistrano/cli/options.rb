@@ -31,6 +31,10 @@ module Capistrano
             "Displays help (if available) for the task."
           ) { |value| options[:explain] = value }
 
+          opts.on("-F", "--default-config",
+            "Always use default config, even with -f."
+          ) { options[:default_config] = true }
+
           opts.on("-f", "--file FILE",
             "A recipe file to load. May be given more than once."
           ) { |value| options[:recipes] << value }
@@ -110,7 +114,7 @@ module Capistrano
         # if no verbosity has been specified, be verbose
         options[:verbose] = 3 if !options.has_key?(:verbose)
 
-        look_for_default_recipe_file! if options[:recipes].empty?
+        look_for_default_recipe_file! if options[:default_config] || options[:recipes].empty?
         extract_environment_variables!
 
         options[:actions].concat(args)
