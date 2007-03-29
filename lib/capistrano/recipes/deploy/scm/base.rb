@@ -84,6 +84,13 @@ module Capistrano
           nil
         end
 
+        # Returns the name of the command-line utility for this SCM. It first
+        # looks at the :scm_command variable, and if it does not exist, it
+        # then falls back to whatever was defined by +default_command+.
+        def command
+          configuration[:scm_command] || default_command
+        end
+
         private
 
           # A reference to a Logger instance that the SCM can use to log
@@ -103,13 +110,6 @@ module Capistrano
           # with the scm command prefixed onto it.
           def scm(*args)
             [command, *args].compact.join(" ")
-          end
-
-          # Returns the name of the command-line utility for this SCM. It first
-          # looks at the :scm_command variable, and if it does not exist, it
-          # then falls back to whatever was defined by +default_command+.
-          def command
-            configuration[:scm_command] || default_command
           end
 
           # A convenience method for accessing the declared repository value.

@@ -38,6 +38,14 @@ module Capistrano
           FileUtils.rm_rf destination rescue nil
         end
 
+        def check!
+          super.check do |d|
+            d.local.expects_in_path(source.command)
+            d.local.expects_in_path(compress(nil, nil).first)
+            d.remote.expects_in_path(decompress(nil).first)
+          end
+        end
+
         private
 
           # Returns the basename of the release_path, which will be used to
@@ -92,23 +100,28 @@ module Capistrano
           end
 
           # Returns the command necessary to compress the given directory
-          # into the given file.
+          # into the given file. The command is returned as an array, where
+          # the first element is the utility to be used to perform the compression.
           def compress(directory, file)
             case compression
-            when :gzip, :gz   then "tar czf #{file} #{directory}"
-            when :bzip2, :bz2 then "tar cjf #{file} #{directory}"
-            when :zip         then "zip -qr #{file} #{directory}"
+            when :gzip, :gz   then ["tar", "czf", file, directory]
+            when :bzip2, :bz2 then ["tar", "cjf", file, directory]
+            when :zip         then ["zip", "-qr", file, directory]
+            else raise ArgumentError, "invalid compression type #{compression.inspect}"
             end
           end
 
           # Returns the command necessary to decompress the given file,
           # relative to the current working directory. It must also
-          # preserve the directory structure in the file.
+          # preserve the directory structure in the file. The command is returned
+          # as an array, where the first element is the utility to be used to
+          # perform the decompression.
           def decompress(file)
             case compression
-            when :gzip, :gz   then "tar xzf #{file}"
-            when :bzip2, :bz2 then "tar xjf #{file}"
-            when :zip         then "unzip -q #{file}"
+            when :gzip, :gz   then ["tar", "xzf", file]
+            when :bzip2, :bz2 then ["tar", "xjf", file]
+            when :zip         then ["unzip", "-q", file]
+            else raise ArgumentError, "invalid compression type #{compression.inspect}"
             end
           end
       end
