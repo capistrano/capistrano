@@ -1,3 +1,5 @@
+require 'capistrano/recipes/deploy/dependencies'
+
 module Capistrano
   module Deploy
     module Strategy
@@ -22,6 +24,16 @@ module Capistrano
           raise NotImplementedError, "`deploy!' is not implemented by #{self.class.name}"
         end
 
+        # Performs a check on the remote hosts to determine whether everything
+        # is setup such that a deploy could succeed.
+        def check!
+          Dependencies.new(configuration) do |d|
+            d.remote.expect_directory(configuration[:releases_path]).or("`#{configuration[:releases_path]}' does not exist. Please run `cap deploy:setup'.")
+            d.remote.expect_writable(configuration[:deploy_to]).or("You do not have permissions to write to `#{configuration[:deploy_to]}'.")
+            d.remote.expect_writable(configuration[:releases_path]).or("You do not have permissions to write to `#{configuration[:releases_path]}'.")
+          end
+        end
+          
         protected
 
           # This is to allow helper methods like "run" and "put" to be more

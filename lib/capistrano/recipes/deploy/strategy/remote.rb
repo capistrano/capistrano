@@ -15,6 +15,11 @@ module Capistrano
           scm_run "#{command} && #{mark}"
         end
 
+        def check!
+          result = super
+          test("type -p #{source.command}", "could not find `#{source.command}'") && result
+        end
+
         protected
 
           # Runs the given command, filtering output back through the
