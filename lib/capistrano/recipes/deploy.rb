@@ -46,6 +46,8 @@ set(:current_revision)  { capture("cat #{current_path}/REVISION").chomp }
 set(:latest_revision)   { capture("cat #{current_release}/REVISION").chomp }
 set(:previous_revision) { capture("cat #{previous_release}/REVISION").chomp }
 
+set(:run_method)        { fetch(:use_sudo, true) ? :sudo : :run }
+
 namespace :deploy do
 desc "Deploys your project. This calls both `update' and `restart'. Note that \
 this will generally only work for applications that have already been deployed \
@@ -167,11 +169,11 @@ desc "Restarts your application. This works by calling the script/process/reaper
 script under the current path. By default, this will be invoked via sudo, but \
 if you are in an environment where sudo is not an option, or is not allowed, \
 you can indicate that restarts should use `run' instead by setting the \
-`restart_via' variable:
+`use_sudo' variable to false:
 
-  set :restart_via, :run"
+  set :use_sudo, false"
   task :restart, :roles => :app, :except => { :no_release => true } do
-    invoke_command "#{current_path}/script/process/reaper", :via => fetch(:restart_via, :sudo)
+    invoke_command "#{current_path}/script/process/reaper", :via => run_method
   end
 
 desc "Rolls back to the previously deployed version. The `current' symlink will \
@@ -240,7 +242,7 @@ desc "Clean up old releases. By default, the last 5 releases are kept on each \
 server (though you can change this with the keep_releases variable). All other \
 deployed revisions are removed from the servers. By default, this will use \
 sudo to clean up the old releases, but if sudo is not available for your \
-environment, set the :cleanup_via variable to :run instead."
+environment, set the :use_sudo variable to false instead."
   task :cleanup, :except => { :no_release => true } do
     count = fetch(:keep_releases, 5).to_i
     if count >= releases.length
@@ -251,7 +253,7 @@ environment, set the :cleanup_via variable to :run instead."
       directories = (releases - releases.last(count)).map { |release|
         File.join(releases_path, release) }.join(" ")
 
-      invoke_command "rm -rf #{directories}", :via => fetch(:cleanup_via, :sudo)
+      invoke_command "rm -rf #{directories}", :via => run_method
     end
   end
 
