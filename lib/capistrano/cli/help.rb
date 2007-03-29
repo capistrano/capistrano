@@ -66,18 +66,32 @@ module Capistrano
           if task.description.empty?
             puts "There is no description for this task."
           else
-            task.description.each_line do |line|
-              lines = line.gsub(/(.{1,#{output_columns}})(?:\s+|\Z)/, "\\1\n").split(/\n/)
-              if lines.empty?
-                puts
-              else
-                puts lines
-              end
-            end
+            puts format_text(task.description)
           end
 
           puts
         end
+      end
+
+      def long_help #:nodoc:
+        help_text = File.read(File.join(File.dirname(__FILE__), "help.txt"))
+        self.class.ui.page_at = self.class.ui.output_rows - 2
+        self.class.ui.say format_text(help_text)
+      end
+
+      def format_text(text) #:nodoc:
+        formatted = ""
+        text.each_line do |line|
+          indentation = line[/^\s+/] || ""
+          indentation_size = indentation.split(//).inject(0) { |c,s| c + (s[0] == ?\t ? 8 : 1) }
+          lines = line.strip.gsub(/(.{1,#{output_columns - indentation_size}})(?:\s+|\Z)/, "\\1\n").split(/\n/)
+          if lines.empty?
+            formatted << "\n"
+          else
+            formatted << lines.map { |l| "#{indentation}#{l}\n" }.join
+          end
+        end
+        formatted
       end
 
       def output_columns #:nodoc:
