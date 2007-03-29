@@ -148,8 +148,8 @@ comma-delimited list in the FILES environment variable. All directories will \
 be processed recursively, with all files being pushed to the deployment \
 servers. Any file or directory starting with a '.' character will be ignored.
 
-  $ cap deploy:update_files FILES=templates,controller.rb"
-  task :update_files, :except => { :no_release => true } do
+  $ cap deploy:upload FILES=templates,controller.rb"
+  task :upload, :except => { :no_release => true } do
     files = (ENV["FILES"] || "").
       split(",").
       map { |f| f.strip!; File.directory?(f) ? Dir["#{f}/**/*"] : f }.
@@ -252,6 +252,22 @@ environment, set the :cleanup_via variable to :run instead."
         File.join(releases_path, release) }.join(" ")
 
       invoke_command "rm -rf #{directories}", :via => fetch(:cleanup_via, :sudo)
+    end
+  end
+
+desc "Test deployment dependencies. Checks things like directory permissions, \
+necessary utilities, and so forth, reporting on the things that appear to be \
+incorrect or missing. This is good for making sure a deploy has a chance of \
+working before you actually run `cap deploy'!"
+  task :check, :except => { :no_release => true } do
+    dependencies = strategy.check!
+    if dependencies.pass?
+      puts "You appear to have all necessary dependencies installed"
+    else
+      puts "The following dependencies failed. Please check them and try again:"
+      dependencies.reject { |d| d.pass? }.each do |d|
+        puts "--> #{d.message}"
+      end
     end
   end
 
