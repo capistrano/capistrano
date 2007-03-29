@@ -20,7 +20,7 @@ class CLIHelpTest < Test::Unit::TestCase
   def setup
     @cli = MockCLI.new
     @cli.options[:verbose] = 0
-    @ui = stub("ui", :output_cols => 80)
+    @ui = stub("ui", :output_cols => 80, :output_rows => 20, :page_at= => nil)
     MockCLI.stubs(:ui).returns(@ui)
   end
 
@@ -122,6 +122,13 @@ class CLIHelpTest < Test::Unit::TestCase
     config = mock("config", :find_task => t)
     @cli.stubs(:puts)
     @cli.explain_task(config, "deploy_with_niftiness")
+  end
+
+  def test_long_help_should_load_and_format_help_txt_file
+    File.expects(:dirname).returns "a/b/c"
+    File.expects(:read).with("a/b/c/help.txt").returns("text")
+    @ui.expects(:say).with("text\n")
+    @cli.long_help
   end
 
   private

@@ -42,6 +42,13 @@ class CLIOptionsTest < Test::Unit::TestCase
     assert_equal %w(deploy monitor), @cli.options[:recipes]
   end
 
+  def test_parse_options_with_H_should_show_verbose_help_and_exit
+    @cli.expects(:exit).raises(ExitException)
+    @cli.expects(:long_help)
+    @cli.args << "-H"
+    assert_raises(ExitException) { @cli.parse_options! }
+  end
+
   def test_parse_options_with_h_should_show_options_and_exit
     @cli.expects(:puts).with(@cli.option_parser)
     @cli.expects(:exit).raises(ExitException)
