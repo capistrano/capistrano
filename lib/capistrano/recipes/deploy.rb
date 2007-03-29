@@ -230,7 +230,7 @@ desc "Deploy and run pending migrations. This will work similarly to the \
 task) prior to updating the symlink. Note that the update in this case it is \
 not atomic, and transactions are not used, because migrations are not \
 guaranteed to be reversible."
-  task :with_migrations do
+  task :migrations do
     set :migrate_target, :latest
     update_code
     migrate
@@ -270,6 +270,50 @@ working before you actually run `cap deploy'!"
       dependencies.reject { |d| d.pass? }.each do |d|
         puts "--> #{d.message}"
       end
+    end
+  end
+
+desc "Deploys and starts a `cold' application. This is useful if you have not \
+deployed your application before, or if your application is (for some other \
+reason) not currently running. It will deploy the code, and then instead of \
+invoking `deploy:restart', it will invoke `deploy:app:start' to fire up the \
+application servers."
+  task :cold do
+    update
+    app.start
+  end
+
+  namespace :app do
+desc "Start the application servers. This will attempt to invoke a script \
+in your application called `script/spin', which must know how to start your \
+application listeners. For Rails applications, you might just have that script \
+invoke `script/process/spawner' with the appropriate arguments.
+
+By default, the script will be executed via sudo as the `app' user. If you \
+wish to run it as a different user, set the :runner variable to that user. \
+If you are in an environment where you can't use sudo, set the :use_sudo \
+variable to false."
+    task :start, :roles => :app do
+      as = fetch(:runner, "app")
+      via = fetch(:run_method, :sudo)
+      invoke_command "sh -c 'cd #{current_path} && nohup script/spin'", :via => via, :as => as
+    end
+
+desc "Stop the application servers. This will call script/process/reaper for \
+both the spawner process, and all of the application processes it has spawned. \
+As such, it is fairly Rails specific and may need to be overridden for other \
+systems.
+
+By default, the script will be executed via sudo as the `app' user. If you \
+wish to run it as a different user, set the :runner variable to that user. \
+If you are in an environment where you can't use sudo, set the :use_sudo \
+variable to false."
+    task :stop, :roles => :app do
+      as = fetch(:runner, "app")
+      via = fetch(:run_method, :sudo)
+
+      invoke_command "#{current_path}/script/process/reaper -a kill -r dispatch.spawner.pid", :via => via, :as => as
+      invoke_command "#{current_path}/script/process/reaper -a kill", :via => via, :as => as
     end
   end
 
