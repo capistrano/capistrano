@@ -2,12 +2,14 @@
 # Capistrano 2.x.
 
 namespace :upgrade do
-desc "Migrate from the revisions log to REVISION. Capistrano 1.x recorded each \
-deployment to a revisions.log file. Capistrano 2.x is cleaner, and just puts \
-a REVISION file in the root of the deployed revision. This task migrates \
-from the revisions.log used in Capistrano 1.x, to the REVISION tag file used \
-in Capistrano 2.x. It is non-destructive and may be safely run any number of \
-times."
+  desc <<-DESC
+    Migrate from the revisions log to REVISION. Capistrano 1.x recorded each \
+    deployment to a revisions.log file. Capistrano 2.x is cleaner, and just \
+    puts a REVISION file in the root of the deployed revision. This task \
+    migrates from the revisions.log used in Capistrano 1.x, to the REVISION \
+    tag file used in Capistrano 2.x. It is non-destructive and may be safely \
+    run any number of times.
+  DESC
   task :revisions do
     revisions = capture("cat #{deploy_to}/revisions.log")
 

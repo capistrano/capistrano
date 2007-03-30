@@ -41,9 +41,19 @@ module Capistrano
       @description = nil if rebuild
       @description ||= begin
         description = options[:desc] || ""
-        description.strip.
-          gsub(/\r\n/, "\n").
-          gsub(/\\\n/, " ")
+
+        indentation = description[/\A\s+/]
+        if indentation
+          reformatted_description = ""
+          description.strip.each_line do |line|
+            line = line.chomp.sub(/^#{indentation}/, "")
+            line = line.gsub(/#{indentation}\s*/, " ") if line[/^\S/]
+            reformatted_description << line << "\n"
+          end
+          description = reformatted_description
+        end
+
+        description.strip.gsub(/\r\n/, "\n")
       end
     end
 
