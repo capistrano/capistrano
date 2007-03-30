@@ -38,18 +38,18 @@ module Capistrano
       mutex = Mutex.new
       waiter = ConditionVariable.new
 
-      @thread = Thread.new do
-        logger.trace "starting connection to gateway `#{server.host}'" if logger
-        SSH.connect(server, @options) do |@session|
-          logger.trace "gateway connection established" if logger
-          Thread.pass
-          mutex.synchronize { waiter.signal }
-          @session.loop { !@terminate_thread }
-        end
-      end
-
       mutex.synchronize do
-        Thread.pass
+        @thread = Thread.new do
+          logger.trace "starting connection to gateway `#{server.host}'" if logger
+          SSH.connect(server, @options) do |@session|
+            logger.trace "gateway connection established" if logger
+            mutex.synchronize { waiter.signal }
+            @session.loop do
+              !@terminate_thread
+            end
+          end
+        end
+
         waiter.wait(mutex)
       end
     end
