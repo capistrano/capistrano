@@ -108,6 +108,34 @@ class TaskDefinitionTest < Test::Unit::TestCase
     assert_equal "a\nb\nc", new_task(:testing, @namespace, :desc => "a\nb\r\nc").description
   end
 
+  def test_description_should_detect_and_remove_indentation
+    desc = <<-DESC
+      Here is some indented text \
+      and I want all of this to \
+      run together on a single line, \
+      without any extraneous spaces.
+
+        additional indentation will
+        be preserved.
+    DESC
+
+    task = new_task(:testing, @namespace, :desc => desc)
+    assert_equal "Here is some indented text and I want all of this to run together on a single line, without any extraneous spaces.\n\n  additional indentation will\n  be preserved.", task.description
+  end
+
+  def test_description_munging_should_be_sensitive_to_code_blocks
+    desc = <<-DESC
+      Here is a line \
+      wrapped      with spacing in it.
+
+        foo         bar
+        baz         bang
+    DESC
+
+    task = new_task(:testing, @namespace, :desc => desc)
+    assert_equal "Here is a line wrapped with spacing in it.\n\n  foo         bar\n  baz         bang", task.description
+  end
+
   def test_task_brief_description_should_return_first_sentence_in_description
     desc = "This is the task. It does all kinds of things."
     task = new_task(:testing, @namespace, :desc => desc)
