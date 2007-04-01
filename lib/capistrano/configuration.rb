@@ -5,6 +5,7 @@ require 'capistrano/configuration/execution'
 require 'capistrano/configuration/loading'
 require 'capistrano/configuration/namespaces'
 require 'capistrano/configuration/roles'
+require 'capistrano/configuration/servers'
 require 'capistrano/configuration/variables'
 
 require 'capistrano/configuration/actions/file_transfer'
@@ -25,7 +26,7 @@ module Capistrano
 
     # The includes must come at the bottom, since they may redefine methods
     # defined in the base class.
-    include Connections, Execution, Loading, Namespaces, Roles, Variables
+    include Connections, Execution, Loading, Namespaces, Roles, Servers, Variables
 
     # Mix in the actions
     include Actions::FileTransfer, Actions::Inspect, Actions::Invocation

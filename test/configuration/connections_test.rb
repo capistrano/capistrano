@@ -97,16 +97,23 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     assert_raises(ArgumentError) { @config.execute_on_servers }
   end
 
-  def test_execute_on_servers_should_raise_an_error_if_there_is_no_current_task
-    assert_raises(ScriptError) do
-      @config.execute_on_servers do
-        flunk "should not get here"
-      end
+  def test_execute_on_servers_without_current_task_should_call_find_servers
+    list = [server("first"), server("second")]
+    @config.expects(:find_servers).with(:a => :b, :c => :d).returns(list)
+    @config.expects(:establish_connections_to).with(list).returns(:done)
+    @config.execute_on_servers(:a => :b, :c => :d) do |result|
+      assert_equal list, result
     end
   end
 
+  def test_execute_on_servers_without_current_task_should_raise_error_if_no_matching_servers
+    @config.expects(:find_servers).with(:a => :b, :c => :d).returns([])
+    assert_raises(ScriptError) { @config.execute_on_servers(:a => :b, :c => :d) { |list| } }
+  end
+
   def test_execute_on_servers_should_raise_an_error_if_the_current_task_has_no_matching_servers
-    @config.current_task = stub(:servers => [], :fully_qualified_name => "name", :options => {})
+    @config.current_task = stub("task", :fully_qualified_name => "name", :options => {})
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([])
     assert_raises(ScriptError) do
       @config.execute_on_servers do
         flunk "should not get here"
@@ -116,7 +123,8 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
 
   def test_execute_on_servers_should_determine_server_list_from_active_task
     assert @config.sessions.empty?
-    @config.current_task = stub(:servers => %w(cap1 cap2 cap3).map { |s| server(s) })
+    @config.current_task = stub("task")
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([server("cap1"), server("cap2"), server("cap3")])
     Capistrano::SSH.expects(:connect).times(3).returns(:success)
     @config.execute_on_servers {}
     assert_equal %w(cap1 cap2 cap3), @config.sessions.keys.sort
@@ -124,7 +132,8 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
 
   def test_execute_on_servers_should_yield_server_list_to_block
     assert @config.sessions.empty?
-    @config.current_task = stub(:servers => %w(cap1 cap2 cap3).map { |s| server(s) })
+    @config.current_task = stub("task")
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([server("cap1"), server("cap2"), server("cap3")])
     Capistrano::SSH.expects(:connect).times(3).returns(:success)
     block_called = false
     @config.execute_on_servers do |servers|
@@ -139,7 +148,8 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
 
   def test_execute_on_servers_with_once_option_should_establish_connection_to_and_yield_only_the_first_server
     assert @config.sessions.empty?
-    @config.current_task = stub(:servers => %w(cap1 cap2 cap3).map { |s| server(s) })
+    @config.current_task = stub("task")
+    @config.expects(:find_servers_for_task).with(@config.current_task, :once => true).returns([server("cap1"), server("cap2"), server("cap3")])
     Capistrano::SSH.expects(:connect).returns(:success)
     block_called = false
     @config.execute_on_servers(:once => true) do |servers|
@@ -152,7 +162,8 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
 
   def test_connect_should_establish_connections_to_all_servers_in_scope
     assert @config.sessions.empty?
-    @config.current_task = stub(:servers => %w(cap1 cap2 cap3).map { |s| server(s) })
+    @config.current_task = stub("task")
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([server("cap1"), server("cap2"), server("cap3")])
     Capistrano::SSH.expects(:connect).times(3).returns(:success)
     @config.connect!
     assert_equal %w(cap1 cap2 cap3), @config.sessions.keys.sort
@@ -160,7 +171,8 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
 
   def test_connect_should_honor_once_option
     assert @config.sessions.empty?
-    @config.current_task = stub(:servers => %w(cap1 cap2 cap3).map { |s| server(s) })
+    @config.current_task = stub("task")
+    @config.expects(:find_servers_for_task).with(@config.current_task, :once => true).returns([server("cap1"), server("cap2"), server("cap3")])
     Capistrano::SSH.expects(:connect).returns(:success)
     @config.connect! :once => true
     assert_equal %w(cap1), @config.sessions.keys.sort
