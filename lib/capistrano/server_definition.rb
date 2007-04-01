@@ -20,13 +20,17 @@ module Capistrano
     # Redefined, so that Array#uniq will work to remove duplicate server
     # definitions, based solely on their host names.
     def eql?(server)
-      host == server.host
+      host == server.host &&
+        user == server.user &&
+        port == server.port
     end
+
+    alias :== :eql?
 
     # Redefined, so that Array#uniq will work to remove duplicate server
     # definitions, based solely on their host names.
     def hash
-      host.hash
+      @hash ||= [host, user, port].hash
     end
   end
 end

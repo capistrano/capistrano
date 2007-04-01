@@ -48,6 +48,12 @@ set(:previous_revision) { capture("cat #{previous_release}/REVISION").chomp }
 
 set(:run_method)        { fetch(:use_sudo, true) ? :sudo : :run }
 
+# =========================================================================
+# These are the tasks that are available to help with deploying web apps,
+# and specifically, Rails applications. You can have cap give you a summary
+# of them with `cap -T'.
+# =========================================================================
+
 namespace :deploy do
   desc <<-DESC
     Deploys your project. This calls both `update' and `restart'. Note that \

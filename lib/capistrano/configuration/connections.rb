@@ -79,13 +79,15 @@ module Capistrano
       def execute_on_servers(options={})
         raise ArgumentError, "expected a block" unless block_given?
 
-        task = current_task
-        raise ScriptError, "there is no active task" if task.nil?
+        if task = current_task
+          servers = find_servers_for_task(task, options)
 
-        servers = task.servers
-
-        if servers.empty?
-          raise ScriptError, "`#{task.fully_qualified_name}' is only run for servers matching #{task.options.inspect}, but no servers matched"
+          if servers.empty?
+            raise ScriptError, "`#{task.fully_qualified_name}' is only run for servers matching #{task.options.inspect}, but no servers matched"
+          end
+        else
+          servers = find_servers(options)
+          raise ScriptError, "no servers found to match #{options.inspect}" if servers.empty?
         end
 
         servers = [servers.first] if options[:once]
