@@ -62,4 +62,25 @@ class ServerDefinitionTest < Test::Unit::TestCase
     server = Capistrano::ServerDefinition.new("www.capistrano.test", :primary => true)
     assert_equal true, server.options[:primary]
   end
+
+  def test_comparison_should_match_when_host_user_port_are_same
+    s1 = server("jamis@www.capistrano.test:8080")
+    s2 = server("www.capistrano.test", :user => "jamis", :port => 8080)
+    assert_equal s1, s2
+    assert_equal s1.hash, s2.hash
+    assert s1.eql?(s2)
+  end
+
+  def test_comparison_should_not_match_when_any_of_host_user_port_differ
+    s1 = server("jamis@www.capistrano.test:8080")
+    s2 = server("bob@www.capistrano.test:8080")
+    s3 = server("jamis@www.capistrano.test:8081")
+    s4 = server("jamis@app.capistrano.test:8080")
+    assert_not_equal s1, s2
+    assert_not_equal s1, s3
+    assert_not_equal s1, s4
+    assert_not_equal s2, s3
+    assert_not_equal s2, s4
+    assert_not_equal s3, s4
+  end
 end
