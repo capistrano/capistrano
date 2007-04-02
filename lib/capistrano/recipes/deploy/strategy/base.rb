@@ -28,9 +28,9 @@ module Capistrano
         # is setup such that a deploy could succeed.
         def check!
           Dependencies.new(configuration) do |d|
-            d.remote.expect_directory(configuration[:releases_path]).or("`#{configuration[:releases_path]}' does not exist. Please run `cap deploy:setup'.")
-            d.remote.expect_writable(configuration[:deploy_to]).or("You do not have permissions to write to `#{configuration[:deploy_to]}'.")
-            d.remote.expect_writable(configuration[:releases_path]).or("You do not have permissions to write to `#{configuration[:releases_path]}'.")
+            d.remote.directory(configuration[:releases_path]).or("`#{configuration[:releases_path]}' does not exist. Please run `cap deploy:setup'.")
+            d.remote.writable(configuration[:deploy_to]).or("You do not have permissions to write to `#{configuration[:deploy_to]}'.")
+            d.remote.writable(configuration[:releases_path]).or("You do not have permissions to write to `#{configuration[:releases_path]}'.")
           end
         end
           

@@ -9,21 +9,28 @@ module Capistrano
         @success = true
       end
 
-      def expect_directory(path)
+      def directory(path, options={})
         @message ||= "`#{path}' is not a directory"
-        try("test -d #{path}")
+        try("test -d #{path}", options)
         self
       end
 
-      def expect_writable(path)
+      def writable(path, options={})
         @message ||= "`#{path}' is not writable"
-        try("test -w #{path}")
+        try("test -w #{path}", options)
         self
       end
 
-      def expects_in_path(command)
+      def command(command, options={})
         @message ||= "`#{command}' could not be found in the path"
-        try("type -p #{command}")
+        try("type -p #{command}", options)
+        self
+      end
+
+      def gem(name, version, options={})
+        @message ||= "gem `#{name}' #{version} could not be found"
+        gem_cmd = configuration.fetch(:gem_command, "gem")
+        try("#{gem_cmd} specification --version \"#{version}\" #{name} 2>&1 | awk 'BEGIN { s = 0 }; /^name:/ { s = 1; exit }; END { if(s == 0) exit 1 }'", options)
         self
       end
 
@@ -44,9 +51,9 @@ module Capistrano
 
     private
 
-      def try(command)
+      def try(command, options)
         return unless @success # short-circuit evaluation
-        configuration.run(command) do |ch,stream,out|
+        configuration.run(command, options) do |ch,stream,out|
           warn "#{ch[:host]}: #{out}" if stream == :err
         end
       rescue Capistrano::CommandError => e
