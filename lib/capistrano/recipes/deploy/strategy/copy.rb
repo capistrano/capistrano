@@ -40,9 +40,9 @@ module Capistrano
 
         def check!
           super.check do |d|
-            d.local.expects_in_path(source.command)
-            d.local.expects_in_path(compress(nil, nil).first)
-            d.remote.expects_in_path(decompress(nil).first)
+            d.local.command(source.command)
+            d.local.command(compress(nil, nil).first)
+            d.remote.command(decompress(nil).first)
           end
         end
 

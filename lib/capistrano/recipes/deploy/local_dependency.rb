@@ -9,7 +9,7 @@ module Capistrano
         @success = true
       end
 
-      def expects_in_path(command)
+      def command(command)
         @message ||= "`#{command}' could not be found in the path on the local host"
         @success = find_in_path(command)
         self

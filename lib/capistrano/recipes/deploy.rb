@@ -49,6 +49,20 @@ set(:previous_revision) { capture("cat #{previous_release}/REVISION").chomp }
 set(:run_method)        { fetch(:use_sudo, true) ? :sudo : :run }
 
 # =========================================================================
+# These are helper methods that will be available to your recipes.
+# =========================================================================
+
+# Auxiliary helper method for the `deploy:check' task. Lets you set up your
+# own dependencies.
+def depend(location, type, *args)
+  deps = fetch(:dependencies, {})
+  deps[location] ||= {}
+  deps[location][type] ||= []
+  deps[location][type] << args
+  set :dependencies, deps
+end
+
+# =========================================================================
 # These are the tasks that are available to help with deploying web apps,
 # and specifically, Rails applications. You can have cap give you a summary
 # of them with `cap -T'.
@@ -297,9 +311,29 @@ namespace :deploy do
     necessary utilities, and so forth, reporting on the things that appear to \
     be incorrect or missing. This is good for making sure a deploy has a \
     chance of working before you actually run `cap deploy'.
+
+    You can define your own dependencies, as well, using the `depend' method:
+
+      depend :remote, :gem, "tzinfo", ">=0.3.3"
+      depend :local, :command, "svn"
+      depend :remote, :directory, "/u/depot/files"
   DESC
   task :check, :except => { :no_release => true } do
     dependencies = strategy.check!
+
+    other = fetch(:dependencies, {})
+    other.each do |location, types|
+      types.each do |type, calls|
+        if type == :gem
+          dependencies.send(location).command(fetch(:gem_command, "gem")).or("`gem' command could not be found. Try setting :gem_command")
+        end
+
+        calls.each do |args|
+          dependencies.send(location).send(type, *args)
+        end
+      end
+    end
+
     if dependencies.pass?
       puts "You appear to have all necessary dependencies installed"
     else
