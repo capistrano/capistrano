@@ -93,6 +93,13 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     @config.sudo_behavior_callback(nil)[ch, nil, "Password: "]
   end
 
+  def test_sudo_behavior_callback_should_send_password_when_prompted_with_SuSE_dialect
+    ch = mock("channel")
+    ch.expects(:send_data).with("g00b3r\n")
+    @config.options[:password] = "g00b3r"
+    @config.sudo_behavior_callback(nil)[ch, nil, "user's password: "]
+  end
+
   def test_sudo_behavior_callback_with_incorrect_password_on_first_prompt
     ch = mock("channel")
     ch.stubs(:[]).with(:host).returns("capistrano")
