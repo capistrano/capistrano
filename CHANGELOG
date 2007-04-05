@@ -1,5 +1,7 @@
 *SVN*
 
+* Make sure the sudo helper understands the SuSE dialect of the sudo password prompt [Steven Wisener]
+
 * Fix synchronization issue with Gateway initialization [Doug Barth]
 
 * Added opt-in "compat" and "upgrade" recipes for tasks to aid in the upgrade process to Capistrano 2 [Jamis Buck]
