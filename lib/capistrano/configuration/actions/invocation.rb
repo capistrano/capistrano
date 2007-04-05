@@ -75,7 +75,7 @@ module Capistrano
           prompt_host = nil
           
           Proc.new do |ch, stream, out|
-            if out =~ /^Password:/
+            if out =~ /password:/i
               ch.send_data "#{self[:password]}\n"
             elsif out =~ /try again/
               if prompt_host.nil? || prompt_host == ch[:host]
