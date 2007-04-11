@@ -1,3 +1,14 @@
+if RUBY_VERSION == "1.8.6"
+  begin
+    require 'fastthread'
+  rescue LoadError
+    warn "You are running Ruby 1.8.6, which has a bug in its threading implementation."
+    warn "You are liable to encounter deadlocks running Capistrano, unless you install"
+    warn "the fastthread library, which is available as a gem:"
+    warn "   gem install fastthread"
+  end
+end
+
 require 'thread'
 require 'capistrano/errors'
 require 'capistrano/ssh'
