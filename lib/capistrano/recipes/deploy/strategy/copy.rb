@@ -29,10 +29,10 @@ module Capistrano
           File.open(File.join(destination, "REVISION"), "w") { |f| f.puts(revision) }
 
           logger.trace "compressing #{destination} to #{filename}"
-          system(compress(destination, filename))
+          system(compress(destination, filename).join(" "))
 
           put File.read(filename), remote_filename
-          run "cd #{configuration[:releases_path]} && #{decompress(remote_filename)} && rm #{remote_filename}"
+          run "cd #{configuration[:releases_path]} && #{decompress(remote_filename).join(" ")} && rm #{remote_filename}"
         ensure
           FileUtils.rm filename rescue nil
           FileUtils.rm_rf destination rescue nil
