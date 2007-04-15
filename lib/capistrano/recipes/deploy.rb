@@ -151,7 +151,7 @@ namespace :deploy do
       rm -rf #{release_path}/log #{release_path}/public/system #{release_path}/tmp/pids &&
       ln -s #{shared_path}/log #{release_path}/log &&
       ln -s #{shared_path}/system #{release_path}/public/system &&
-      ln -s #{shared_path}pids #{release_path}/tmp/pids
+      ln -s #{shared_path}/pids #{release_path}/tmp/pids
     CMD
 
     stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
