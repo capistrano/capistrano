@@ -1,5 +1,7 @@
 *SVN*
 
+* Add `capify' script to make it easier to prepare a project for deployment using cap [Jamis Buck]
+
 * Make sure the sudo helper understands the SuSE dialect of the sudo password prompt [Steven Wisener]
 
 * Fix synchronization issue with Gateway initialization [Doug Barth]
