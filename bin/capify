@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 
 if ARGV.empty?
-  abort "Please specify the directory to deployify, e.g. `#{File.basename($0)} .'"
+  abort "Please specify the directory to capify, e.g. `#{File.basename($0)} .'"
 elsif !File.exists?(ARGV.first)
   abort "`#{ARGV.first}' does not exist."
 elsif !File.directory?(ARGV.first)
   abort "`#{ARGV.first}' is not a directory."
 elsif ARGV.length > 1
-  abort "Too many arguments; please specify only the directory to deployify."
+  abort "Too many arguments; please specify only the directory to capify."
 end
 
 def unindent(string)
@@ -51,4 +51,4 @@ files.each do |file, content|
   end
 end
 
-puts "[done] deployified!"
+puts "[done] capified!"
