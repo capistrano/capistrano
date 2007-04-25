@@ -23,6 +23,6 @@ Gem::Specification.new do |s|
 
   s.author = "Jamis Buck"
   s.email = "jamis@37signals.com"
-  s.homepage = "http://www.rubyonrails.org"
+  s.homepage = "http://www.capify.org"
 
 end
