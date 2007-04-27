@@ -1,5 +1,6 @@
 require 'capistrano/recipes/deploy/strategy/base'
 require 'fileutils'
+require 'tempfile'  # Dir.tmpdir
 
 module Capistrano
   module Deploy
@@ -51,7 +52,7 @@ module Capistrano
           # Returns the basename of the release_path, which will be used to
           # name the local copy and archive file.
           def destination
-            @destination ||= File.basename(configuration[:release_path])
+            @destination ||= File.join(tmpdir, File.basename(configuration[:release_path]))
           end
 
           # Returns the value of the :copy_strategy variable, defaulting to
@@ -74,13 +75,18 @@ module Capistrano
           # Returns the name of the file that the source code will be
           # compressed to.
           def filename
-            @filename ||= "#{destination}.#{compression_extension}"
+            @filename ||= File.join(tmpdir, "#{File.basename(destination)}.#{compression_extension}")
+          end
+
+          # The directory to which the copy should be checked out
+          def tmpdir
+            @tmpdir ||= configuration[:copy_dir] || Dir.tmpdir
           end
 
           # The location on the remote server where the file should be
           # temporarily stored.
           def remote_filename
-            @remote_filename ||= "/tmp/#{filename}"
+            @remote_filename ||= "/tmp/#{File.basename(filename)}"
           end
 
           # The compression method to use, defaults to :gzip.

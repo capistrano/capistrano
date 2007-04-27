@@ -50,8 +50,8 @@ end
 
 desc "Publish the beta gem"
 task :pgem => [:package] do 
-  Rake::SshFilePublisher.new("davidhh@wrath.rubyonrails.org", "public_html/gems/gems", "pkg", "#{PKG_FILE_NAME}.gem").upload
-  `ssh davidhh@wrath.rubyonrails.org './gemupdate.sh'`
+  Rake::SshFilePublisher.new("wrath.rubyonrails.org", "public_html/gems/gems", "pkg", "#{PKG_FILE_NAME}.gem").upload
+  `ssh wrath.rubyonrails.org './gemupdate.sh'`
 end
 
 desc "Clean up generated directories and files"

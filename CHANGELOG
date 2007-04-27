@@ -1,5 +1,10 @@
 *SVN*
 
+* Make the copy strategy check out to a temporary directory [Jamis Buck]
+
+
+*1.99.0 (2.0 Preview 1)* April 24, 2007
+
 * Add `capify' script to make it easier to prepare a project for deployment using cap [Jamis Buck]
 
 * Make sure the sudo helper understands the SuSE dialect of the sudo password prompt [Steven Wisener]
@@ -17,6 +22,7 @@
 * Added namespaces for tasks [Jamis Buck]
 
 * Merged the Configuration and Actor classes, performed various other massive refactorings of the code [Jamis Buck]
+
 
 *1.4.1* (February 24, 2007)
 
