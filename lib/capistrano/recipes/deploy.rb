@@ -244,11 +244,10 @@ namespace :deploy do
     deployed version of the app. However, you can specify a different release \
     via the migrate_target variable, which must be one of :latest (for the \
     default behavior), or :current (for the release indicated by the \
-    `current' symlink). latest release to be deployed with the update_code \
-    task). Strings will work for those values instead of symbols, too. You \
-    can also specify additional environment variables to pass to rake via the \
-    migrate_env variable. Finally, you can specify the full path to the rake \
-    executable by setting the rake variable. The defaults are:
+    `current' symlink). Strings will work for those values instead of symbols,
+    too. You can also specify additional environment variables to pass to rake
+    via the migrate_env variable. Finally, you can specify the full path to the
+    rake executable by setting the rake variable. The defaults are:
 
       set :rake,           "rake"
       set :rails_env,      "production"
@@ -347,12 +346,13 @@ namespace :deploy do
   desc <<-DESC
     Deploys and starts a `cold' application. This is useful if you have not \
     deployed your application before, or if your application is (for some \
-    other reason) not currently running. It will deploy the code, and then \
-    instead of invoking `deploy:restart', it will invoke `deploy:app:start' \
-    to fire up the application servers.
+    other reason) not currently running. It will deploy the code, run any \
+    pending migrations, and then instead of invoking `deploy:restart', it will
+    invoke `deploy:app:start' to fire up the application servers.
   DESC
   task :cold do
     update
+    migrate
     app.start
   end
 
