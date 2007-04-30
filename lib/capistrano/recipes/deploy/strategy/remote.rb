@@ -16,8 +16,9 @@ module Capistrano
         end
 
         def check!
-          result = super
-          test("type -p #{source.command}", "could not find `#{source.command}'") && result
+          super.check do |d|
+            d.remote.command(source.command)
+          end
         end
 
         protected
