@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix broken check! method for some deployment strategies. [Jamis Buck]
+
 * deploy:cold should also run migrations before starting the app [Jamis Buck]
 
 * Make the copy strategy check out to a temporary directory [Jamis Buck]
