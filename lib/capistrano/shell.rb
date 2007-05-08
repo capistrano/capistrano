@@ -128,8 +128,7 @@ HELP
       # establish connections to them if necessary. Return the list of
       # servers (names).
       def connect(task)
-        # FIXME this is broken!
-        servers = task.servers(:refresh)
+        servers = configuration.find_servers_for_task(task)
         needing_connections = servers.reject { |s| configuration.sessions.key?(s.host) }
         unless needing_connections.empty?
           puts "[establishing connection(s) to #{needing_connections.map { |s| s.host }.join(', ')}]"
