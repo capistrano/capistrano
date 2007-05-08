@@ -1,5 +1,6 @@
 require 'capistrano/logger'
 
+require 'capistrano/configuration/callbacks'
 require 'capistrano/configuration/connections'
 require 'capistrano/configuration/execution'
 require 'capistrano/configuration/loading'
@@ -30,5 +31,8 @@ module Capistrano
 
     # Mix in the actions
     include Actions::FileTransfer, Actions::Inspect, Actions::Invocation
+
+    # Must mix last, because it hooks into previously defined methods
+    include Callbacks
   end
 end

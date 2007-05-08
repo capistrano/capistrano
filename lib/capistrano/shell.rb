@@ -128,6 +128,7 @@ HELP
       # establish connections to them if necessary. Return the list of
       # servers (names).
       def connect(task)
+        # FIXME this is broken!
         servers = task.servers(:refresh)
         needing_connections = servers.reject { |s| configuration.sessions.key?(s.host) }
         unless needing_connections.empty?
