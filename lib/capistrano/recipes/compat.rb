@@ -24,9 +24,9 @@ map.each do |old, new|
   end"
 end
 
-desc "DEPRECATED: See deploy:app:start."
+desc "DEPRECATED: See deploy:start."
 task :spinner do
-  warn "[DEPRECATED] `spinner' is deprecated. Use `deploy:app:start' instead."
+  warn "[DEPRECATED] `spinner' is deprecated. Use `deploy:start' instead."
   set :runner, fetch(:spinner_user, "app")
-  deploy.app.start
+  deploy.start
 end
