@@ -75,20 +75,11 @@ module Capistrano
       # Executes the task with the given name, including the before and after
       # hooks.
       def execute_task(task)
-        before = find_hook(task, :before)
-        execute_task(before) if before
         logger.debug "executing `#{task.fully_qualified_name}'"
-
-        begin
-          push_task_call_frame(task)
-          result = task.namespace.instance_eval(&task.body)
-        ensure
-          pop_task_call_frame
-        end
-
-        after = find_hook(task, :after)
-        execute_task(after) if after
-        result
+        push_task_call_frame(task)
+        task.namespace.instance_eval(&task.body)
+      ensure
+        pop_task_call_frame
       end
 
       # Attempts to locate the task at the given fully-qualified path, and
@@ -100,15 +91,6 @@ module Capistrano
       end
 
     protected
-
-      def find_hook(task, hook)
-        if task == task.namespace.default_task
-          result = task.namespace.search_task("#{hook}_#{task.namespace.name}")
-          return result if result
-        end
-
-        task.namespace.search_task("#{hook}_#{task.name}")
-      end
 
       def rollback!
         # throw the task back on the stack so that roles are properly
