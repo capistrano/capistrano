@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix shell so that servers for a task are correctly discovered. [Jamis Buck]
+
 * Added before(), after(), and on() callback creation methods. [Jamis Buck]
 
 * Fix broken check! method for some deployment strategies. [Jamis Buck]
