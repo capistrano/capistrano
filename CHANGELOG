@@ -1,5 +1,7 @@
 *SVN*
 
+* Make sure 'desc' applies to the next defined task, in any namespace. [Jamis Buck]
+
 * Fix shell so that servers for a task are correctly discovered. [Jamis Buck]
 
 * Added before(), after(), and on() callback creation methods. [Jamis Buck]
