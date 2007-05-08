@@ -54,26 +54,18 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     assert @config.namespaces[:outer].namespaces[:inner].tasks.key?(:nested)
   end
 
-  def test_pending_desc_should_disappear_when_enclosing_namespace_terminates
-    @config.namespace :outer do
-      desc "Something to say"
-    end
-
-    @config.namespace :outer do
-      task :testing do
-        puts "testing"
-      end
-    end
-
-    assert_nil @config.namespaces[:outer].tasks[:testing].options[:desc]
-  end
-
   def test_pending_desc_should_apply_only_to_immediately_subsequent_task
     @config.desc "A description"
     @config.task(:testing) { puts "foo" }
     @config.task(:another) { puts "bar" }
     assert_equal "A description", @config.tasks[:testing].options[:desc]
     assert_nil @config.tasks[:another].options[:desc]
+  end
+
+  def test_pending_desc_should_apply_only_to_next_task_in_any_namespace
+    @config.desc "A description"
+    @config.namespace(:outer) { task(:testing) { puts "foo" } }
+    assert_equal "A description", @config.namespaces[:outer].tasks[:testing].options[:desc]
   end
 
   def test_defining_task_without_block_should_raise_error

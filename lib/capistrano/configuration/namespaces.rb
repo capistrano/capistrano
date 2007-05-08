@@ -29,7 +29,6 @@ module Capistrano
         initialize_without_namespaces(*args)
         @tasks = {}
         @namespaces = {}
-        @next_description = nil
       end
       private :initialize_with_namespaces
 
@@ -44,6 +43,14 @@ module Capistrano
       # the next task that is defined and used as its description.
       def desc(text)
         @next_description = text
+      end
+
+      # Returns the value set by the last, pending "desc" call. If +reset+ is
+      # not false, the value will be reset immediately afterwards.
+      def next_description(reset=false)
+        @next_description
+      ensure
+        @next_description = nil if reset
       end
 
       # Open a namespace in which to define new tasks. If the namespace was
@@ -84,8 +91,7 @@ module Capistrano
           raise ArgumentError, "defining a task named `#{name}' would shadow an existing #{thing} with that name"
         end
 
-        tasks[name] = TaskDefinition.new(name, self, {:desc => @next_description}.merge(options), &block)
-        @next_description = nil
+        tasks[name] = TaskDefinition.new(name, self, {:desc => next_description(:reset)}.merge(options), &block)
 
         if !task_already_defined
           metaclass = class << self; self; end
@@ -177,6 +183,7 @@ module Capistrano
           end
 
           include Capistrano::Configuration::Namespaces
+          undef :desc, :next_description
         end
     end
   end
