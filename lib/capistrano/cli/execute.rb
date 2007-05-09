@@ -36,7 +36,10 @@ module Capistrano
 
       def execute_requested_actions(config)
         Array(options[:vars]).each { |name, value| config.set(name, value) }
-        Array(options[:actions]).each { |action| config.find_and_execute_task(action) }
+
+        Array(options[:actions]).each do |action|
+          config.find_and_execute_task(action, :before => :start, :after => :finish)
+        end
       end
 
       def set_pre_vars(config) #:nodoc:

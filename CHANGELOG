@@ -1,5 +1,7 @@
 *SVN*
 
+* Added support for start and finish callbacks, which get invoked when any task is called via the command-line [Jamis Buck]
+
 * Make `capify' understand simple command-line switches [Jamis Buck]
 
 * Make the server definition itself available to SSH channels, rather than just the host name [Jamis Buck]

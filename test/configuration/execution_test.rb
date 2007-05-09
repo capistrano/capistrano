@@ -127,6 +127,20 @@ class ConfigurationExecutionTest < Test::Unit::TestCase
     assert_nothing_raised { @config.find_and_execute_task("path:to:task") }
   end
 
+  def test_find_and_execute_task_with_before_option_should_trigger_callback
+    @config.expects(:find_task).with("path:to:task").returns(:found)
+    @config.expects(:trigger).with(:incoming, :found)
+    @config.expects(:execute_task).with(:found)
+    @config.find_and_execute_task("path:to:task", :before => :incoming)
+  end
+
+  def test_find_and_execute_task_with_after_option_should_trigger_callback
+    @config.expects(:find_task).with("path:to:task").returns(:found)
+    @config.expects(:trigger).with(:outgoing, :found)
+    @config.expects(:execute_task).with(:found)
+    @config.find_and_execute_task("path:to:task", :after => :outgoing)
+  end
+
   private
 
     def stack_inspector
