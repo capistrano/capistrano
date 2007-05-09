@@ -78,8 +78,8 @@ class CLIExecuteTest < Test::Unit::TestCase
     @cli.options[:actions] = %w(first second)
     @config.expects(:set).with(:foo, "bar")
     @config.expects(:set).with(:baz, "bang")
-    @config.expects(:find_and_execute_task).with("first")
-    @config.expects(:find_and_execute_task).with("second")
+    @config.expects(:find_and_execute_task).with("first", :before => :start, :after => :finish)
+    @config.expects(:find_and_execute_task).with("second", :before => :start, :after => :finish)
     @cli.execute!
   end
 
