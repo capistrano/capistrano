@@ -25,7 +25,7 @@ class GatewayTest < Test::Unit::TestCase
 
   def test_connect_to_should_start_local_ports_at_65535
     gateway = new_gateway
-    expect_connect_to(:host => "127.0.0.1", :port => 65535).returns(result = sess_with_real_host("app1"))
+    expect_connect_to(:host => "127.0.0.1", :port => 65535).returns(result = sess_with_xserver("app1"))
     newsess = gateway.connect_to(server("app1"))
     assert_equal result, newsess
     assert_equal [65535, "app1", 22], gateway.session.forward.active_locals[65535]
@@ -33,7 +33,7 @@ class GatewayTest < Test::Unit::TestCase
 
   def test_connect_to_should_decrement_port_and_retry_if_ports_are_in_use
     gateway = new_gateway(:reserved => lambda { |n| n > 65000 })
-    expect_connect_to(:host => "127.0.0.1", :port => 65000).returns(result = sess_with_real_host("app1"))
+    expect_connect_to(:host => "127.0.0.1", :port => 65000).returns(result = sess_with_xserver("app1"))
     newsess = gateway.connect_to(server("app1"))
     assert_equal result, newsess
     assert_equal [65000, "app1", 22], gateway.session.forward.active_locals[65000]
@@ -41,7 +41,7 @@ class GatewayTest < Test::Unit::TestCase
 
   def test_connect_to_should_honor_user_specification_in_server_definition
     gateway = new_gateway
-    expect_connect_to(:host => "127.0.0.1", :user => "jamis", :port => 65535).returns(result = sess_with_real_host("app1"))
+    expect_connect_to(:host => "127.0.0.1", :user => "jamis", :port => 65535).returns(result = sess_with_xserver("app1"))
     newsess = gateway.connect_to(server("jamis@app1"))
     assert_equal result, newsess
     assert_equal [65535, "app1", 22], gateway.session.forward.active_locals[65535]
@@ -49,22 +49,22 @@ class GatewayTest < Test::Unit::TestCase
 
   def test_connect_to_should_honor_port_specification_in_server_definition
     gateway = new_gateway
-    expect_connect_to(:host => "127.0.0.1", :port => 65535).returns(result = sess_with_real_host("app1"))
+    expect_connect_to(:host => "127.0.0.1", :port => 65535).returns(result = sess_with_xserver("app1"))
     newsess = gateway.connect_to(server("app1:1234"))
     assert_equal result, newsess
     assert_equal [65535, "app1", 1234], gateway.session.forward.active_locals[65535]
   end
 
-  def test_connect_to_should_set_real_host_to_tunnel_target
+  def test_connect_to_should_set_xserver_to_tunnel_target
     gateway = new_gateway
-    expect_connect_to(:host => "127.0.0.1", :port => 65535).returns(result = sess_with_real_host("app1"))
+    expect_connect_to(:host => "127.0.0.1", :port => 65535).returns(result = sess_with_xserver("app1"))
     newsess = gateway.connect_to(server("app1:1234"))
     assert_equal result, newsess
   end
 
   def test_shutdown_should_cancel_active_forwarded_ports
     gateway = new_gateway
-    expect_connect_to(:host => "127.0.0.1", :port => 65535).returns(sess_with_real_host("app1"))
+    expect_connect_to(:host => "127.0.0.1", :port => 65535).returns(sess_with_xserver("app1"))
     gateway.connect_to(server("app1"))
     assert !gateway.session.forward.active_locals.empty?
     gateway.shutdown!
@@ -80,9 +80,10 @@ class GatewayTest < Test::Unit::TestCase
 
   private
 
-    def sess_with_real_host(host)
+    def sess_with_xserver(host)
+      s = server(host)
       sess = mock("session")
-      sess.expects(:real_host=).with(host)
+      sess.expects(:xserver=).with { |v| v.host == host }
       sess
     end
 

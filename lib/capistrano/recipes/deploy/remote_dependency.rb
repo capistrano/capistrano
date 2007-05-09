@@ -54,7 +54,7 @@ module Capistrano
       def try(command, options)
         return unless @success # short-circuit evaluation
         configuration.run(command, options) do |ch,stream,out|
-          warn "#{ch[:host]}: #{out}" if stream == :err
+          warn "#{ch[:server]}: #{out}" if stream == :err
         end
       rescue Capistrano::CommandError => e
         @success = false

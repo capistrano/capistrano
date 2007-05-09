@@ -52,7 +52,7 @@ module Capistrano
       logger.trace "command finished" if logger
 
       if (failed = @channels.select { |ch| ch[:status] != 0 }).any?
-        hosts = failed.map { |ch| ch[:host] }
+        hosts = failed.map { |ch| ch[:server] }
         error = CommandError.new("command #{command.inspect} failed on #{hosts.join(',')}")
         error.hosts = hosts
         raise error
@@ -78,12 +78,15 @@ module Capistrano
       def open_channels
         sessions.map do |session|
           session.open_channel do |channel|
-            channel[:host] = session.real_host
+            server = session.xserver
+
+            channel[:server] = server
+            channel[:host] = server.host
             channel[:options] = options
             channel.request_pty :want_reply => true
 
             channel.on_success do |ch|
-              logger.trace "executing command", ch[:host] if logger
+              logger.trace "executing command", ch[:server] if logger
               ch.exec(replace_placeholders(command, ch))
               ch.send_data(options[:data]) if options[:data]
             end
@@ -92,7 +95,7 @@ module Capistrano
               # just log it, don't actually raise an exception, since the
               # process method will see that the status is not zero and will
               # raise an exception then.
-              logger.important "could not open channel", ch[:host] if logger
+              logger.important "could not open channel", ch[:server] if logger
               ch.close
             end
 
