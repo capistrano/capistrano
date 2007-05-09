@@ -115,10 +115,12 @@ module Capistrano
 
       # Trigger the named event for the named task. All associated callbacks
       # will be fired, in the order they were defined.
-      def trigger(event, task)
+      def trigger(event, task=nil)
         pending = Array(callbacks[event]).select { |c| c.applies_to?(task) }
         if pending.any?
-          logger.trace "triggering #{event} callbacks for `#{task.fully_qualified_name}'"
+          msg = "triggering #{event} callbacks"
+          msg << " for `#{task.fully_qualified_name}'" if task
+          logger.trace(msg)
           pending.each { |callback| callback.call }
         end
       end

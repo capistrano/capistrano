@@ -18,6 +18,7 @@ class CLIExecuteTest < Test::Unit::TestCase
     @config = stub(:logger => @logger)
     @config.stubs(:set)
     @config.stubs(:load)
+    @config.stubs(:trigger)
     @cli.stubs(:instantiate_configuration).returns(@config)
   end
 
@@ -80,6 +81,16 @@ class CLIExecuteTest < Test::Unit::TestCase
     @config.expects(:set).with(:baz, "bang")
     @config.expects(:find_and_execute_task).with("first", :before => :start, :after => :finish)
     @config.expects(:find_and_execute_task).with("second", :before => :start, :after => :finish)
+    @cli.execute!
+  end
+
+  def test_execute_should_call_load_and_exit_triggers
+    @cli.options[:actions] = %w(first second)
+    @config.expects(:find_and_execute_task).with("first", :before => :start, :after => :finish)
+    @config.expects(:find_and_execute_task).with("second", :before => :start, :after => :finish)
+    @config.expects(:trigger).never
+    @config.expects(:trigger).with(:load)
+    @config.expects(:trigger).with(:exit)
     @cli.execute!
   end
 
