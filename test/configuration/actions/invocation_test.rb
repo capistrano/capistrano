@@ -36,7 +36,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
   end
 
   def test_run_without_block_should_use_default_io_proc
-    @config.expects(:execute_on_servers).yields(%w(s1 s2 s3).map { |s| mock(:host => s) })
+    @config.expects(:execute_on_servers).yields(%w(s1 s2 s3).map { |s| server(s) })
     @config.expects(:sessions).returns(Hash.new { |h,k| h[k] = k.host.to_sym }).times(3)
     prepare_command("ls", [:s1, :s2, :s3], {:logger => @config.logger})
     MockConfig.default_io_proc = inspectable_proc
@@ -53,6 +53,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
 
   def test_default_io_proc_should_log_stdout_arguments_as_info
     ch = { :host => "capistrano",
+           :server => server("capistrano"),
            :options => { :logger => mock("logger") } }
     ch[:options][:logger].expects(:info).with("data stuff", "out :: capistrano")
     MockConfig.default_io_proc[ch, :out, "data stuff"]
@@ -60,6 +61,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
 
   def test_default_io_proc_should_log_stderr_arguments_as_important
     ch = { :host => "capistrano",
+           :server => server("capistrano"),
            :options => { :logger => mock("logger") } }
     ch[:options][:logger].expects(:important).with("data stuff", "err :: capistrano")
     MockConfig.default_io_proc[ch, :err, "data stuff"]
@@ -103,6 +105,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
   def test_sudo_behavior_callback_with_incorrect_password_on_first_prompt
     ch = mock("channel")
     ch.stubs(:[]).with(:host).returns("capistrano")
+    ch.stubs(:[]).with(:server).returns(server("capistrano"))
     @config.expects(:reset!).with(:password)
     @config.sudo_behavior_callback(nil)[ch, nil, "blah blah try again blah blah"]
   end
@@ -112,8 +115,10 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
 
     ch = mock("channel")
     ch.stubs(:[]).with(:host).returns("capistrano")
+    ch.stubs(:[]).with(:server).returns(server("capistrano"))
     ch2 = mock("channel")
     ch2.stubs(:[]).with(:host).returns("cap2")
+    ch2.stubs(:[]).with(:server).returns(server("cap2"))
 
     @config.expects(:reset!).with(:password).times(2)
 

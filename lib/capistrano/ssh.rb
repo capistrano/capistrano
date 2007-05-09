@@ -12,18 +12,18 @@ module Capistrano
 
   # A helper class for dealing with SSH connections.
   class SSH
-    # Patch an accessor onto an SSH connection so that we can record the "real"
-    # host behind the connection. This is useful because the gateway returns
-    # connections whose "host" is 127.0.0.1, instead of the host on the other
-    # side of the tunnel.
-    module RealHost #:nodoc:
-      def self.apply_to(connection, host)
-        connection.extend(RealHost)
-        connection.real_host = host
+    # Patch an accessor onto an SSH connection so that we can record the server
+    # definition object that defines the connection. This is useful because
+    # the gateway returns connections whose "host" is 127.0.0.1, instead of
+    # the host on the other side of the tunnel.
+    module Server #:nodoc:
+      def self.apply_to(connection, server)
+        connection.extend(Server)
+        connection.xserver = server
         connection
       end
 
-      attr_accessor :real_host
+      attr_accessor :xserver
     end
 
     # The default port for SSH.
@@ -49,7 +49,7 @@ module Capistrano
         ssh_options.update(options[:ssh_options]) if options[:ssh_options]
         
         connection = Net::SSH.start(server.host, ssh_options, &block)
-        RealHost.apply_to(connection, server.host)
+        Server.apply_to(connection, server)
 
       rescue Net::SSH::AuthenticationFailed
         raise if methods.empty?

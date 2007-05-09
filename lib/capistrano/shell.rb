@@ -131,7 +131,7 @@ HELP
         servers = configuration.find_servers_for_task(task)
         needing_connections = servers - configuration.sessions.keys
         unless needing_connections.empty?
-          puts "[establishing connection(s) to #{needing_connections.map { |s| s.host }.join(', ')}]"
+          puts "[establishing connection(s) to #{needing_connections.join(', ')}]"
           configuration.establish_connections_to(needing_connections)
         end
         servers
@@ -173,10 +173,10 @@ HELP
               if out =~ /Password:\s*/i
                 ch.send_data "#{configuration[:password]}\n"
               else
-                puts "[#{ch[:host]}] #{line.chomp}"
+                puts "[#{ch[:server]}] #{line.chomp}"
               end
             elsif stream == :err
-              puts "[#{ch[:host]} ERR] #{line.chomp}"
+              puts "[#{ch[:server]} ERR] #{line.chomp}"
             end
           end
         end

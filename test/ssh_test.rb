@@ -76,11 +76,11 @@ class SSHTest < Test::Unit::TestCase
     assert_equal success, Capistrano::SSH.connect(server, {:ssh_options => ssh_options})
   end
 
-  def test_connect_should_add_real_host_accessor_to_connection
+  def test_connect_should_add_xserver_accessor_to_connection
     Net::SSH.expects(:start).with(@server.host, @options).returns(success = Object.new)
     assert_equal success, Capistrano::SSH.connect(@server)
-    assert success.respond_to?(:real_host)
-    assert success.respond_to?(:real_host=)
-    assert_equal success.real_host, @server.host
+    assert success.respond_to?(:xserver)
+    assert success.respond_to?(:xserver)
+    assert_equal success.xserver, @server
   end
 end

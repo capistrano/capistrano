@@ -38,5 +38,14 @@ module Capistrano
     def hash
       @hash ||= [host, user, port].hash
     end
+
+    def to_s
+      @to_s ||= begin
+        s = host
+        s = "#{user}@#{s}" if user
+        s = "#{s}:#{port}" if port && port != 22
+        s
+      end
+    end
   end
 end
