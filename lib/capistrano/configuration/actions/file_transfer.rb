@@ -10,7 +10,7 @@ module Capistrano
         # set the mode on the file.
         def put(data, path, options={})
           execute_on_servers(options) do |servers|
-            targets = servers.map { |s| sessions[s.host] }
+            targets = servers.map { |s| sessions[s] }
             Upload.process(targets, path, :data => data, :mode => options[:mode], :logger => logger)
           end
         end
@@ -24,7 +24,7 @@ module Capistrano
         def get(remote_path, path, options = {})
           execute_on_servers(options.merge(:once => true)) do |servers|
             logger.info "downloading `#{servers.first.host}:#{remote_path}' to `#{path}'"
-            sftp = sessions[servers.first.host].sftp
+            sftp = sessions[servers.first].sftp
             sftp.connect unless sftp.state == :open
             sftp.get_file remote_path, path
             logger.debug "download finished" 

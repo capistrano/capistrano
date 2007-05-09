@@ -37,7 +37,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
 
   def test_run_without_block_should_use_default_io_proc
     @config.expects(:execute_on_servers).yields(%w(s1 s2 s3).map { |s| mock(:host => s) })
-    @config.expects(:sessions).returns(Hash.new { |h,k| h[k] = k.to_sym }).times(3)
+    @config.expects(:sessions).returns(Hash.new { |h,k| h[k] = k.host.to_sym }).times(3)
     prepare_command("ls", [:s1, :s2, :s3], {:logger => @config.logger})
     MockConfig.default_io_proc = inspectable_proc
     @config.run "ls"
@@ -45,7 +45,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
 
   def test_run_with_block_should_use_block
     @config.expects(:execute_on_servers).yields(%w(s1 s2 s3).map { |s| mock(:host => s) })
-    @config.expects(:sessions).returns(Hash.new { |h,k| h[k] = k.to_sym }).times(3)
+    @config.expects(:sessions).returns(Hash.new { |h,k| h[k] = k.host.to_sym }).times(3)
     prepare_command("ls", [:s1, :s2, :s3], {:logger => @config.logger})
     MockConfig.default_io_proc = Proc.new { |a,b,c| raise "shouldn't get here" }
     @config.run("ls", &inspectable_proc)
