@@ -28,7 +28,7 @@ set(:revision)  { source.head } unless exists?(:revision)
 # =========================================================================
 
 set(:source)            { Capistrano::Deploy::SCM.new(scm, self) }
-set(:real_revision)     { source.query_revision(revision) { |cmd| `#{cmd}` } }
+set(:real_revision)     { source.local.query_revision(revision) { |cmd| `#{cmd}` } }
 
 set(:strategy)          { Capistrano::Deploy::Strategy.new(deploy_via, self) }
 
@@ -400,7 +400,7 @@ namespace :deploy do
       not be supported on all SCM's.
     DESC
     task :diff, :except => { :no_release => true } do
-      system(source.diff(current_revision))
+      system(source.local.diff(current_revision))
     end
 
     desc <<-DESC
@@ -409,7 +409,7 @@ namespace :deploy do
       might not be supported on all SCM's.
     DESC
     task :default, :except => { :no_release => true } do
-      system(source.log(current_revision))
+      system(source.local.log(current_revision))
     end
   end
 
