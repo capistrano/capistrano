@@ -1,6 +1,8 @@
 *SVN*
 
-* Make the server definition itself available to SSH channels, rather that just the host name [Jamis Buck]
+* Make `capify' understand simple command-line switches [Jamis Buck]
+
+* Make the server definition itself available to SSH channels, rather than just the host name [Jamis Buck]
 
 * Identify servers by their complete credentials in logs, rather than simply by hostname [Jamis Buck]
 
