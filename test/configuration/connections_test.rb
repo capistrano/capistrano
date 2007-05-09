@@ -88,9 +88,9 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
 
   def test_establish_connections_to_should_not_attempt_to_reestablish_existing_connections
     Capistrano::SSH.expects(:connect).times(2).returns(:success)
-    @config.sessions["cap1"] = :ok
+    @config.sessions[server("cap1")] = :ok
     @config.establish_connections_to(%w(cap1 cap2 cap3).map { |s| server(s) })
-    assert %w(cap1 cap2 cap3), @config.sessions.keys.sort
+    assert %w(cap1 cap2 cap3), @config.sessions.keys.sort.map { |s| s.host }
   end
 
   def test_execute_on_servers_should_require_a_block
@@ -127,7 +127,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([server("cap1"), server("cap2"), server("cap3")])
     Capistrano::SSH.expects(:connect).times(3).returns(:success)
     @config.execute_on_servers {}
-    assert_equal %w(cap1 cap2 cap3), @config.sessions.keys.sort
+    assert_equal %w(cap1 cap2 cap3), @config.sessions.keys.sort.map { |s| s.host }
   end
 
   def test_execute_on_servers_should_yield_server_list_to_block
@@ -141,7 +141,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
       assert servers.detect { |s| s.host == "cap1" }
       assert servers.detect { |s| s.host == "cap2" }
       assert servers.detect { |s| s.host == "cap3" }
-      assert servers.all? { |s| @config.sessions[s.host] }
+      assert servers.all? { |s| @config.sessions[s] }
     end
     assert block_called
   end
@@ -157,7 +157,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
       assert_equal %w(cap1), servers.map { |s| s.host }
     end
     assert block_called
-    assert_equal %w(cap1), @config.sessions.keys.sort
+    assert_equal %w(cap1), @config.sessions.keys.sort.map { |s| s.host }
   end
 
   def test_connect_should_establish_connections_to_all_servers_in_scope
@@ -166,7 +166,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([server("cap1"), server("cap2"), server("cap3")])
     Capistrano::SSH.expects(:connect).times(3).returns(:success)
     @config.connect!
-    assert_equal %w(cap1 cap2 cap3), @config.sessions.keys.sort
+    assert_equal %w(cap1 cap2 cap3), @config.sessions.keys.sort.map { |s| s.host }
   end
 
   def test_connect_should_honor_once_option
@@ -175,6 +175,6 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     @config.expects(:find_servers_for_task).with(@config.current_task, :once => true).returns([server("cap1"), server("cap2"), server("cap3")])
     Capistrano::SSH.expects(:connect).returns(:success)
     @config.connect! :once => true
-    assert_equal %w(cap1), @config.sessions.keys.sort
+    assert_equal %w(cap1), @config.sessions.keys.sort.map { |s| s.host }
   end
 end

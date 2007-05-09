@@ -67,7 +67,7 @@ module Capistrano
 
         if sessions.empty?
           server, servers = servers.first, servers[1..-1]
-          sessions[server.host] = connection_factory.connect_to(server)
+          sessions[server] = connection_factory.connect_to(server)
         end
 
         servers.map { |server| establish_connection_to(server) }.each { |t| t.join }
@@ -104,7 +104,7 @@ module Capistrano
         # prevents problems with the thread's scope seeing the wrong 'server'
         # variable if the thread just happens to take too long to start up.
         def establish_connection_to(server)
-          Thread.new { sessions[server.host] ||= connection_factory.connect_to(server) }
+          Thread.new { sessions[server] ||= connection_factory.connect_to(server) }
         end
     end
   end

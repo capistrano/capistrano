@@ -1,5 +1,7 @@
 *SVN*
 
+* Uniquely identify servers based on hostname, IP address, and username, instead of merely on hostname [Jamis Buck]
+
 * Allow (e.g.) scm_command and local_scm_command to be set in the event of different paths to the scm command on local vs. remote hosts. [Jamis Buck]
 
 * Kill the "deploy:app" namespace and move those tasks into deploy, directly. [Jamis Buck]

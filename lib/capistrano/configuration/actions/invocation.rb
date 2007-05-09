@@ -38,7 +38,7 @@ module Capistrano
           logger.debug "executing #{cmd.strip.inspect}"
 
           execute_on_servers(options) do |servers|
-            targets = servers.map { |s| sessions[s.host] }
+            targets = servers.map { |s| sessions[s] }
             Command.process(cmd, targets, options.merge(:logger => logger), &block)
           end
         end
