@@ -71,6 +71,20 @@ class ServerDefinitionTest < Test::Unit::TestCase
     assert s1.eql?(s2)
   end
 
+  def test_servers_should_be_comparable
+    s1 = server("jamis@www.capistrano.test:8080")
+    s2 = server("www.alphabet.test:1234")
+    s3 = server("jamis@www.capistrano.test:8075")
+    s4 = server("billy@www.capistrano.test:8080")
+
+    assert s2 < s1
+    assert s3 < s1
+    assert s4 < s1
+    assert s2 < s3
+    assert s2 < s4
+    assert s3 < s4
+  end
+
   def test_comparison_should_not_match_when_any_of_host_user_port_differ
     s1 = server("jamis@www.capistrano.test:8080")
     s2 = server("bob@www.capistrano.test:8080")

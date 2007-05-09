@@ -1,5 +1,7 @@
 module Capistrano
   class ServerDefinition
+    include Comparable
+
     attr_reader :host
     attr_reader :user
     attr_reader :port
@@ -17,6 +19,10 @@ module Capistrano
       @port = @port.to_i if @port
     end
 
+    def <=>(server)
+      [host, port, user] <=> [server.host, server.port, server.user]
+    end
+
     # Redefined, so that Array#uniq will work to remove duplicate server
     # definitions, based solely on their host names.
     def eql?(server)
@@ -28,7 +34,7 @@ module Capistrano
     alias :== :eql?
 
     # Redefined, so that Array#uniq will work to remove duplicate server
-    # definitions, based solely on their host names.
+    # definitions, based on their connection information.
     def hash
       @hash ||= [host, user, port].hash
     end

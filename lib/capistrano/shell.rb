@@ -129,7 +129,7 @@ HELP
       # servers (names).
       def connect(task)
         servers = configuration.find_servers_for_task(task)
-        needing_connections = servers.reject { |s| configuration.sessions.key?(s.host) }
+        needing_connections = servers - configuration.sessions.keys
         unless needing_connections.empty?
           puts "[establishing connection(s) to #{needing_connections.map { |s| s.host }.join(', ')}]"
           configuration.establish_connections_to(needing_connections)
@@ -182,7 +182,7 @@ HELP
         end
 
         previous = trap("INT") { cmd.stop! }
-        sessions = servers.map { |server| configuration.sessions[server.host] }
+        sessions = servers.map { |server| configuration.sessions[server] }
         Command.process(command, sessions, :logger => configuration.logger, &Capistrano::Configuration.default_io_proc)
       rescue Capistrano::Error => error
         warn "error: #{error.message}"
