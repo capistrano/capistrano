@@ -23,6 +23,19 @@ module Capistrano
           end
         end
 
+        # Wraps an SCM instance and forces all messages sent to it to be
+        # relayed to the underlying SCM instance, in "local" mode. See
+        # Base#local.
+        class LocalProxy
+          def initialize(scm)
+            @scm = scm
+          end
+
+          def method_missing(sym, *args, &block)
+            @scm.local { return @scm.send(sym, *args, &block) }
+          end
+        end
+
         # The options available for this SCM instance to reference. Should be
         # treated like a hash.
         attr_reader :configuration
@@ -30,6 +43,35 @@ module Capistrano
         # Creates a new SCM instance with the given configuration options.
         def initialize(configuration={})
           @configuration = configuration
+        end
+
+        # Returns a proxy that wraps the SCM instance and forces it to operate
+        # in "local" mode, which changes how variables are looked up in the
+        # configuration. Normally, if the value of a variable "foo" is needed,
+        # it is queried for in the configuration as "foo". However, in "local"
+        # mode, first "local_foo" would be looked for, and only if it is not
+        # found would "foo" be used. This allows for both (e.g.) "scm_command"
+        # and "local_scm_command" to be set, if the two differ.
+        #
+        # Alternatively, it may be called with a block, and for the duration of
+        # the block, all requests on this configuration object will be 
+        # considered local.
+        def local
+          if block_given?
+            begin
+              saved, @local_mode = @local_mode, true
+              yield
+            ensure
+              @local_mode = saved
+            end
+          else
+            LocalProxy.new(self)
+          end
+        end
+
+        # Returns true if running in "local" mode. See #local.
+        def local?
+          @local_mode
         end
 
         # Returns the string used to identify the latest revision in the
@@ -87,16 +129,31 @@ module Capistrano
         # Returns the name of the command-line utility for this SCM. It first
         # looks at the :scm_command variable, and if it does not exist, it
         # then falls back to whatever was defined by +default_command+.
+        #
+        # If scm_command is set to :default, the default_command will be
+        # returned.
         def command
-          configuration[:scm_command] || default_command
+          command = variable(:scm_command)
+          command = nil if command == :default
+          command || default_command
         end
 
         private
 
+          # A helper for accessing variable values, which takes into
+          # consideration the current mode ("normal" vs. "local").
+          def variable(name)
+            if local? && configuration.exists?("local_#{name}".to_sym)
+              return configuration["local_#{name}".to_sym]
+            else
+              configuration[name]
+            end
+          end
+
           # A reference to a Logger instance that the SCM can use to log
           # activity.
           def logger
-            @logger ||= configuration[:logger] || Capistrano::Logger.new(STDOUT)
+            @logger ||= variable(:logger) || Capistrano::Logger.new(STDOUT)
           end
 
           # A helper for accessing the default command name for this SCM. It
@@ -114,7 +171,7 @@ module Capistrano
 
           # A convenience method for accessing the declared repository value.
           def repository
-            configuration[:repository]
+            variable(:repository)
           end
       end
 

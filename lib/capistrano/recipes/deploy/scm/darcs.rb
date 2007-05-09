@@ -72,7 +72,7 @@ module Capistrano
         private
 
           def verbose
-            case configuration[:scm_verbose]
+            case variable(:scm_verbose)
             when nil then "-q"
             when false then nil
             else "-v"

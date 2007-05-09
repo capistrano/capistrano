@@ -64,13 +64,13 @@ module Capistrano
           case text
           when /\bpassword.*:/i
             # subversion is prompting for a password
-            "#{configuration[:scm_password] || configuration[:password]}\n"
+            "#{variable(:scm_password) || variable(:password)}\n"
           when %r{\(yes/no\)}
             # subversion is asking whether or not to connect
             "yes\n"
           when /passphrase/i
             # subversion is asking for the passphrase for the user's key
-            "#{configuration[:scm_passphrase]}\n"
+            "#{variable(:scm_passphrase)}\n"
           when /The entry \'(.+?)\' is no longer a directory/
             raise Capisrano::Error, "subversion can't update because directory '#{$1}' was replaced. Please add it to svn:ignore."
           when /accept \(t\)emporarily/
@@ -85,8 +85,8 @@ module Capistrano
           # command-line switches for those values.
           def authentication
             auth = ""
-            auth << "--username #{configuration[:scm_username]} " if configuration[:scm_username]
-            auth << "--password #{configuration[:scm_password]} " if configuration[:scm_password]
+            auth << "--username #{variable(:scm_username)} " if variable(:scm_username)
+            auth << "--password #{variable(:scm_password)} " if variable(:scm_password)
             auth << "--no-auth-cache" if !auth.empty?
             auth
           end
@@ -94,7 +94,7 @@ module Capistrano
           # If verbose output is requested, return nil, otherwise return the
           # command-line switch for "quiet" ("-q").
           def verbose
-            configuration[:scm_verbose] ? nil : "-q"
+            variable(:scm_verbose) ? nil : "-q"
           end
       end
 

@@ -94,19 +94,19 @@ module Capistrano
           end
 
           def p4client
-            configuration[:p4client]
+            variable(:p4client)
           end
 
           def p4port
-            configuration[:p4port]
+            variable(:p4port)
           end
 
           def p4user
-            configuration[:p4user] || configuration[:scm_username]
+            variable(:p4user) || variable(:scm_username)
           end
           
           def p4passwd
-            configuration[:p4passwd] || configuration[:scm_password]
+            variable(:p4passwd) || variable(:scm_password)
           end
           
           def rev_no(revision)                     
