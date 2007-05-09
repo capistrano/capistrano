@@ -10,9 +10,9 @@ module Capistrano
     end
 
     def applies_to?(task)
-      if only.any?
+      if task && only.any?
         return only.include?(task.fully_qualified_name)
-      elsif except.any?
+      elsif task && except.any?
         return !except.include?(task.fully_qualified_name)
       else
         return true
