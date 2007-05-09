@@ -1,5 +1,24 @@
 #!/usr/bin/env ruby
 
+require 'optparse'
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: #{File.basename($0)} [path]"
+
+  opts.on("-h", "--help", "Displays this help info") do
+    puts opts
+    exit 0
+  end
+
+  begin
+    opts.parse!(ARGV)
+  rescue OptionParser::ParseError => e
+    warn e.message
+    puts opts
+    exit 1
+  end
+end
+
 if ARGV.empty?
   abort "Please specify the directory to capify, e.g. `#{File.basename($0)} .'"
 elsif !File.exists?(ARGV.first)
