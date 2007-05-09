@@ -136,6 +136,20 @@ class ConfigurationCallbacksTest < Test::Unit::TestCase
     @config.trigger(:before, task)
   end
 
+  def test_trigger_without_task_should_invoke_all_callbacks_for_that_event
+    task = stub(:fully_qualified_name => "any:old:thing")
+    @config.on(:before, :first)
+    @config.on(:before, "second:third", :except => "any:old:thing")
+    @config.on(:before, "this:too", :except => "any:other:thing")
+    @config.on(:after, :another, "and:another")
+    @config.expects(:find_and_execute_task).with(:first)
+    @config.expects(:find_and_execute_task).with("second:third")
+    @config.expects(:find_and_execute_task).with("this:too")
+    @config.expects(:find_and_execute_task).with(:another).never
+    @config.expects(:find_and_execute_task).with("and:another").never
+    @config.trigger(:before)
+  end
+
   def test_execute_task_without_named_hooks_should_just_call_task
     ns = stub("namespace", :default_task => nil, :name => "old", :fully_qualified_name => "any:old")
     task = stub(:fully_qualified_name => "any:old:thing", :name => "thing", :namespace => ns)

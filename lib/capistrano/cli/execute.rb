@@ -27,7 +27,9 @@ module Capistrano
         set_pre_vars(config)
         load_recipes(config)
 
+        config.trigger(:load)
         execute_requested_actions(config)
+        config.trigger(:exit)
 
         config
       rescue Exception => error
