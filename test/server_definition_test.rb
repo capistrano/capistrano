@@ -97,4 +97,12 @@ class ServerDefinitionTest < Test::Unit::TestCase
     assert_not_equal s2, s4
     assert_not_equal s3, s4
   end
+
+  def test_to_s
+    assert_equal "www.capistrano.test", server("www.capistrano.test").to_s
+    assert_equal "www.capistrano.test", server("www.capistrano.test:22").to_s
+    assert_equal "www.capistrano.test:1234", server("www.capistrano.test:1234").to_s
+    assert_equal "jamis@www.capistrano.test", server("jamis@www.capistrano.test").to_s
+    assert_equal "jamis@www.capistrano.test:1234", server("jamis@www.capistrano.test:1234").to_s
+  end
 end

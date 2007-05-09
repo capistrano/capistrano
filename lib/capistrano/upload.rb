@@ -80,19 +80,19 @@ module Capistrano
 
       def setup_sftp
         sessions.map do |session|
-          host = session.host
+          server = session.xserver
           sftp = session.sftp
           sftp.connect unless sftp.state == :open
 
           sftp.channel[:done] = false
           sftp.open(filename, IO::WRONLY | IO::CREAT | IO::TRUNC, options[:mode] || 0660) do |status, handle|
-            break unless check_status(sftp, "open #{filename}", host, status)
+            break unless check_status(sftp, "open #{filename}", server, status)
             
-            logger.info "uploading data to #{host}:#{filename}" if logger
+            logger.info "uploading data to #{server}:#{filename}" if logger
             sftp.write(handle, options[:data] || "") do |status|
-              break unless check_status(sftp, "write to #{host}:#{filename}", host, status)
+              break unless check_status(sftp, "write to #{server}:#{filename}", server, status)
               sftp.close_handle(handle) do
-                logger.debug "done uploading data to #{host}:#{filename}" if logger
+                logger.debug "done uploading data to #{server}:#{filename}" if logger
                 completed!(sftp)
               end
             end

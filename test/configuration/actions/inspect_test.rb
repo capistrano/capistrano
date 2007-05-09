@@ -1,7 +1,7 @@
 require "#{File.dirname(__FILE__)}/../../utils"
 require 'capistrano/configuration/actions/inspect'
 
-class ConfigurationActionsRunTest < Test::Unit::TestCase
+class ConfigurationActionsInspectTest < Test::Unit::TestCase
   class MockConfig
     include Capistrano::Configuration::Actions::Inspect
   end
@@ -25,7 +25,7 @@ class ConfigurationActionsRunTest < Test::Unit::TestCase
 
   def test_stream_should_emit_stderr_via_warn
     ch = mock("channel")
-    ch.expects(:[]).with(:host).returns("capistrano")
+    ch.expects(:[]).with(:server).returns(server("capistrano"))
     @config.expects(:invoke_command).yields(ch, :err, "something streamed")
     @config.expects(:puts).never
     @config.expects(:warn).with("[err :: capistrano] something streamed")

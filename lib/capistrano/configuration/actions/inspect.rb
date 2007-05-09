@@ -22,7 +22,7 @@ module Capistrano
         def stream(command, options={})
           invoke_command(command, options) do |ch, stream, out|
             puts out if stream == :out
-            warn "[err :: #{ch[:host]}] #{out}" if stream == :err
+            warn "[err :: #{ch[:server]}] #{out}" if stream == :err
           end
         end
 

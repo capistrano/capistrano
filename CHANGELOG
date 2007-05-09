@@ -1,5 +1,9 @@
 *SVN*
 
+* Make the server definition itself available to SSH channels, rather that just the host name [Jamis Buck]
+
+* Identify servers by their complete credentials in logs, rather than simply by hostname [Jamis Buck]
+
 * Uniquely identify servers based on hostname, port, and username, instead of merely on hostname [Jamis Buck]
 
 * Allow (e.g.) scm_command and local_scm_command to be set in the event of different paths to the scm command on local vs. remote hosts. [Jamis Buck]

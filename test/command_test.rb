@@ -53,7 +53,7 @@ class CommandTest < Test::Unit::TestCase
   end
 
   def test_open_channel_should_set_host_key_on_channel
-    session = mock(:real_host => "capistrano")
+    session = mock(:xserver => server("capistrano"))
     channel = stub_everything
 
     session.expects(:open_channel).yields(channel)
@@ -63,7 +63,7 @@ class CommandTest < Test::Unit::TestCase
   end
 
   def test_open_channel_should_set_options_key_on_channel
-    session = mock(:real_host => "capistrano")
+    session = mock(:xserver => server("capistrano"))
     channel = stub_everything
 
     session.expects(:open_channel).yields(channel)
@@ -73,7 +73,7 @@ class CommandTest < Test::Unit::TestCase
   end
 
   def test_open_channel_should_request_pty
-    session = mock(:real_host => "capistrano")
+    session = mock(:xserver => server("capistrano"))
     channel = stub_everything
 
     session.expects(:open_channel).yields(channel)
@@ -177,7 +177,7 @@ class CommandTest < Test::Unit::TestCase
       flunk "expected an exception to be raised"
     rescue Capistrano::CommandError => e
       assert e.respond_to?(:hosts)
-      assert_equal %w(capistrano), e.hosts
+      assert_equal %w(capistrano), e.hosts.map { |h| h.to_s }
     end
   end
 
@@ -251,17 +251,20 @@ class CommandTest < Test::Unit::TestCase
       ch.expects(:[]).with(:status).returns(status) if status
       ch.expects(:close) unless closed
       ch.stubs(:[]).with(:host).returns("capistrano")
+      ch.stubs(:[]).with(:server).returns(server("capistrano"))
       ch
     end
 
     def setup_for_extracting_channel_action(action, *args)
-      session = mock(:real_host => "capistrano")
+      s = server("capistrano")
+      session = mock("session", :xserver => s)
 
       channel = stub_everything
       session.expects(:open_channel).yields(channel)
 
       ch = mock
-      ch.stubs(:[]).with(:host).returns("capistrano")
+      ch.stubs(:[]).with(:server).returns(s)
+      ch.stubs(:[]).with(:host).returns(s.host)
       channel.expects(action).yields(ch, *args)
 
       yield ch if block_given?
