@@ -7,7 +7,7 @@ require 'capistrano/cli/ui'
 module Capistrano
   # The CLI class encapsulates the behavior of capistrano when it is invoked
   # as a command-line utility. This allows other programs to embed Capistrano
-  # and preserve it's command-line semantics.
+  # and preserve its command-line semantics.
   class CLI
     # The array of (unparsed) command-line options
     attr_reader :args
@@ -19,7 +19,7 @@ module Capistrano
     #   require 'capistrano/cli'
     #   Capistrano::CLI.parse(%w(-vvvv -r config/deploy update_code)).execute!
     #
-    # Note that you can also embed cao directly by creating a new Configuration
+    # Note that you can also embed cap directly by creating a new Configuration
     # instance and setting it up, but you'll often wind up duplicating logic
     # defined in the CLI class. The above snippet, redone using the Configuration
     # class directly, would look like:
