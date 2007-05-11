@@ -1,6 +1,12 @@
 unless defined?(TestExtensions)
   $:.unshift "#{File.dirname(__FILE__)}/../lib"
 
+  begin
+    require 'rubygems'
+    gem     'mocha'
+  rescue LoadError
+  end
+
   require 'test/unit'
   require 'mocha'
   require 'capistrano/server_definition'
