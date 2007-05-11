@@ -15,10 +15,11 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
 
   def test_deploy_with_defaults_should_use_tar_gz_and_checkout
     Dir.expects(:tmpdir).returns("/temp/dir")
+    Dir.expects(:chdir).with("/temp/dir").yields
     @source.expects(:checkout).with("154", "/temp/dir/1234567890").returns(:local_checkout)
 
     @strategy.expects(:system).with(:local_checkout)
-    @strategy.expects(:system).with("tar czf /temp/dir/1234567890.tar.gz /temp/dir/1234567890")
+    @strategy.expects(:system).with("tar czf 1234567890.tar.gz 1234567890")
     @strategy.expects(:put).with(:mock_file_contents, "/tmp/1234567890.tar.gz")
     @strategy.expects(:run).with("cd /u/apps/test/releases && tar xzf /tmp/1234567890.tar.gz && rm /tmp/1234567890.tar.gz")
 
@@ -35,11 +36,12 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
 
   def test_deploy_with_export_should_use_tar_gz_and_export
     Dir.expects(:tmpdir).returns("/temp/dir")
+    Dir.expects(:chdir).with("/temp/dir").yields
     @config[:copy_strategy] = :export
     @source.expects(:export).with("154", "/temp/dir/1234567890").returns(:local_export)
 
     @strategy.expects(:system).with(:local_export)
-    @strategy.expects(:system).with("tar czf /temp/dir/1234567890.tar.gz /temp/dir/1234567890")
+    @strategy.expects(:system).with("tar czf 1234567890.tar.gz 1234567890")
     @strategy.expects(:put).with(:mock_file_contents, "/tmp/1234567890.tar.gz")
     @strategy.expects(:run).with("cd /u/apps/test/releases && tar xzf /tmp/1234567890.tar.gz && rm /tmp/1234567890.tar.gz")
 
@@ -56,11 +58,12 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
 
   def test_deploy_with_zip_should_use_zip_and_checkout
     Dir.expects(:tmpdir).returns("/temp/dir")
+    Dir.expects(:chdir).with("/temp/dir").yields
     @config[:copy_compression] = :zip
     @source.expects(:checkout).with("154", "/temp/dir/1234567890").returns(:local_checkout)
 
     @strategy.expects(:system).with(:local_checkout)
-    @strategy.expects(:system).with("zip -qr /temp/dir/1234567890.zip /temp/dir/1234567890")
+    @strategy.expects(:system).with("zip -qr 1234567890.zip 1234567890")
     @strategy.expects(:put).with(:mock_file_contents, "/tmp/1234567890.zip")
     @strategy.expects(:run).with("cd /u/apps/test/releases && unzip -q /tmp/1234567890.zip && rm /tmp/1234567890.zip")
 
@@ -77,11 +80,12 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
 
   def test_deploy_with_bzip2_should_use_zip_and_checkout
     Dir.expects(:tmpdir).returns("/temp/dir")
+    Dir.expects(:chdir).with("/temp/dir").yields
     @config[:copy_compression] = :bzip2
     @source.expects(:checkout).with("154", "/temp/dir/1234567890").returns(:local_checkout)
 
     @strategy.expects(:system).with(:local_checkout)
-    @strategy.expects(:system).with("tar cjf /temp/dir/1234567890.tar.bz2 /temp/dir/1234567890")
+    @strategy.expects(:system).with("tar cjf 1234567890.tar.bz2 1234567890")
     @strategy.expects(:put).with(:mock_file_contents, "/tmp/1234567890.tar.bz2")
     @strategy.expects(:run).with("cd /u/apps/test/releases && tar xjf /tmp/1234567890.tar.bz2 && rm /tmp/1234567890.tar.bz2")
 
@@ -98,11 +102,12 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
 
   def test_deploy_with_custom_copy_dir_should_use_that_as_tmpdir
     Dir.expects(:tmpdir).never
+    Dir.expects(:chdir).with("/other/path").yields
     @config[:copy_dir] = "/other/path"
     @source.expects(:checkout).with("154", "/other/path/1234567890").returns(:local_checkout)
 
     @strategy.expects(:system).with(:local_checkout)
-    @strategy.expects(:system).with("tar czf /other/path/1234567890.tar.gz /other/path/1234567890")
+    @strategy.expects(:system).with("tar czf 1234567890.tar.gz 1234567890")
     @strategy.expects(:put).with(:mock_file_contents, "/tmp/1234567890.tar.gz")
     @strategy.expects(:run).with("cd /u/apps/test/releases && tar xzf /tmp/1234567890.tar.gz && rm /tmp/1234567890.tar.gz")
 
