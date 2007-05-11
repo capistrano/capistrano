@@ -52,7 +52,7 @@ module Capistrano
         Server.apply_to(connection, server)
 
       rescue Net::SSH::AuthenticationFailed
-        raise if methods.empty?
+        raise if methods.empty? || options[:ssh_options] && options[:ssh_options][:auth_methods]
         password_value = options[:password]
         retry
       end
