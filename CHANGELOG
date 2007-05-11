@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix some documentation typos [eventualbuddha]
+
 * Don't retry failed connections if an explicit auth_methods list is given [Chris Farms]
 
 * Added support for load and exit callbacks, which get invoked when all recipes have been loaded and when all requested tasks have been executed [Jamis Buck]
