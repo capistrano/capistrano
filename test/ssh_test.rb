@@ -83,4 +83,9 @@ class SSHTest < Test::Unit::TestCase
     assert success.respond_to?(:xserver)
     assert_equal success.xserver, @server
   end
+
+  def test_connect_should_not_retry_if_custom_auth_methods_are_given
+    Net::SSH.expects(:start).with(@server.host, @options.merge(:auth_methods => %w(publickey))).raises(Net::SSH::AuthenticationFailed)
+    assert_raises(Net::SSH::AuthenticationFailed) { Capistrano::SSH.connect(@server, :ssh_options => { :auth_methods => %w(publickey) }) }
+  end
 end
