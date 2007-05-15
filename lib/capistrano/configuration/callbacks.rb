@@ -77,6 +77,10 @@ module Capistrano
       #
       # * :before, triggered before a task is invoked
       # * :after, triggered after a task is invoked
+      # * :start, triggered before a top-level task is invoked via the command-line
+      # * :finish, triggered when a top-level task completes
+      # * :load, triggered after all recipes have loaded
+      # * :exit, triggered after all tasks have completed
       #
       # Specify the (fully-qualified) task names that you want invoked in
       # response to the event. Alternatively, you can specify a block to invoke
