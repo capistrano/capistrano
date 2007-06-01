@@ -147,8 +147,12 @@ namespace :deploy do
   task :finalize_update, :except => { :no_release => true } do
     run "chmod -R g+w #{release_path}" if fetch(:group_writable, true)
 
+    # mkdir -p is making sure that the directories are there for some SCM's that don't
+    # save empty folders
     run <<-CMD
       rm -rf #{release_path}/log #{release_path}/public/system #{release_path}/tmp/pids &&
+      mkdir -p #{release_path}/public &&
+      mkdir -p #{release_path}/tmp &&
       ln -s #{shared_path}/log #{release_path}/log &&
       ln -s #{shared_path}/system #{release_path}/public/system &&
       ln -s #{shared_path}/pids #{release_path}/tmp/pids
