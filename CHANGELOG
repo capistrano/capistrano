@@ -1,5 +1,7 @@
 *SVN*
 
+* Make sure all directories exist on each deploy which are necessary for subsequent commands to succeed, since some SCM's won't save empty directories [Matthew Elder]
+
 * Add :default_environment variable, which is applied to every command
 
 
