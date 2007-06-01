@@ -7,6 +7,9 @@ module Capistrano
         def self.included(base) #:nodoc:
           base.extend(ClassMethods)
 
+          base.send :alias_method, :initialize_without_invocation, :initialize
+          base.send :alias_method, :initialize, :initialize_with_invocation
+
           base.default_io_proc = Proc.new do |ch, stream, out|
             level = stream == :err ? :important : :info
             ch[:options][:logger].send(level, out, "#{stream} :: #{ch[:server]}")
@@ -15,6 +18,11 @@ module Capistrano
 
         module ClassMethods
           attr_accessor :default_io_proc
+        end
+
+        def initialize_with_invocation(*args) #:nodoc:
+          initialize_without_invocation(*args)
+          set :default_environment, {}
         end
 
         # Invokes the given command. If a +via+ key is given, it will be used
@@ -36,6 +44,8 @@ module Capistrano
         def run(cmd, options={}, &block)
           block ||= self.class.default_io_proc
           logger.debug "executing #{cmd.strip.inspect}"
+
+          options = add_default_environment(options)
 
           execute_on_servers(options) do |servers|
             targets = servers.map { |s| sessions[s] }
@@ -87,6 +97,20 @@ module Capistrano
               fallback.call(ch, stream, out)
             end
           end
+        end
+
+        # Merges the default environment into options as the :env key. If the
+        # :env key already exists, the :env key is merged into default_environment
+        # and then added back into options.
+        def add_default_environment(options)
+          return options if self[:default_environment].empty?
+
+          options = options.dup
+          env = self[:default_environment]
+          env = env.merge(options[:env]) if options[:env]
+
+          options[:env] = env
+          options
         end
       end
     end

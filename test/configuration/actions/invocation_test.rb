@@ -13,6 +13,10 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
       @options[*args]
     end
 
+    def set(name, value)
+      @options[name] = value
+    end
+
     def fetch(*args)
       @options.fetch(*args)
     end
@@ -49,6 +53,21 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     prepare_command("ls", [:s1, :s2, :s3], {:logger => @config.logger})
     MockConfig.default_io_proc = Proc.new { |a,b,c| raise "shouldn't get here" }
     @config.run("ls", &inspectable_proc)
+  end
+
+  def test_add_default_environment_should_simply_return_options_if_default_environment_is_blank
+    assert_equal({:foo => "bar"}, @config.add_default_environment(:foo => "bar"))
+  end
+
+  def test_add_default_environment_should_merge_default_environment_as_env
+    @config[:default_environment][:bang] = "baz"
+    assert_equal({:foo => "bar", :env => { :bang => "baz" }}, @config.add_default_environment(:foo => "bar"))
+  end
+
+  def test_add_default_environment_should_merge_env_with_default_environment
+    @config[:default_environment][:bang] = "baz"
+    @config[:default_environment][:bacon] = "crunchy"
+    assert_equal({:foo => "bar", :env => { :bang => "baz", :bacon => "chunky", :flip => "flop" }}, @config.add_default_environment(:foo => "bar", :env => {:bacon => "chunky", :flip => "flop"}))
   end
 
   def test_default_io_proc_should_log_stdout_arguments_as_info
