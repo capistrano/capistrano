@@ -45,7 +45,7 @@ module Capistrano
           block ||= self.class.default_io_proc
           logger.debug "executing #{cmd.strip.inspect}"
 
-          options = add_default_environment(options)
+          options = add_default_command_options(options)
 
           execute_on_servers(options) do |servers|
             targets = servers.map { |s| sessions[s] }
@@ -99,17 +99,26 @@ module Capistrano
           end
         end
 
-        # Merges the default environment into options as the :env key. If the
-        # :env key already exists, the :env key is merged into default_environment
-        # and then added back into options.
-        def add_default_environment(options)
-          return options if self[:default_environment].empty?
-
+        # Merges the various default command options into the options hash and
+        # returns the result. The default command options that are understand
+        # are:
+        #
+        # * :default_environment: If the :env key already exists, the :env
+        #   key is merged into default_environment and then added back into
+        #   options.
+        # * :default_shell: if the :shell key already exists, it will be used.
+        #   Otherwise, if the :default_shell key exists in the configuration,
+        #   it will be used. Otherwise, no :shell key is added.
+        def add_default_command_options(options)
           options = options.dup
+
           env = self[:default_environment]
           env = env.merge(options[:env]) if options[:env]
+          options[:env] = env unless env.empty?
 
-          options[:env] = env
+          shell = options[:shell] || self[:default_shell]
+          options[:shell] = shell if shell
+
           options
         end
       end

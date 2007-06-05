@@ -87,7 +87,9 @@ module Capistrano
 
             channel.on_success do |ch|
               logger.trace "executing command", ch[:server] if logger
-              ch.exec(replace_placeholders(command, ch))
+              escaped = replace_placeholders(command, ch).gsub(/["\\]/) { |m| "\\#{m}" }
+              shell = options[:shell] || "sh"
+              ch.exec("#{shell} -c \"#{escaped}\"")
               ch.send_data(options[:data]) if options[:data]
             end
 
