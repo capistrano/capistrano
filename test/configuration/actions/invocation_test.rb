@@ -55,19 +55,29 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     @config.run("ls", &inspectable_proc)
   end
 
-  def test_add_default_environment_should_simply_return_options_if_default_environment_is_blank
-    assert_equal({:foo => "bar"}, @config.add_default_environment(:foo => "bar"))
+  def test_add_default_command_options_should_return_bare_options_if_there_is_no_env_or_shell_specified
+    assert_equal({:foo => "bar"}, @config.add_default_command_options(:foo => "bar"))
   end
 
-  def test_add_default_environment_should_merge_default_environment_as_env
+  def test_add_default_command_options_should_merge_default_environment_as_env
     @config[:default_environment][:bang] = "baz"
-    assert_equal({:foo => "bar", :env => { :bang => "baz" }}, @config.add_default_environment(:foo => "bar"))
+    assert_equal({:foo => "bar", :env => { :bang => "baz" }}, @config.add_default_command_options(:foo => "bar"))
   end
 
-  def test_add_default_environment_should_merge_env_with_default_environment
+  def test_add_default_command_options_should_merge_env_with_default_environment
     @config[:default_environment][:bang] = "baz"
     @config[:default_environment][:bacon] = "crunchy"
-    assert_equal({:foo => "bar", :env => { :bang => "baz", :bacon => "chunky", :flip => "flop" }}, @config.add_default_environment(:foo => "bar", :env => {:bacon => "chunky", :flip => "flop"}))
+    assert_equal({:foo => "bar", :env => { :bang => "baz", :bacon => "chunky", :flip => "flop" }}, @config.add_default_command_options(:foo => "bar", :env => {:bacon => "chunky", :flip => "flop"}))
+  end
+
+  def test_add_default_command_options_should_use_default_shell_if_present
+    @config.set :default_shell, "/bin/bash"
+    assert_equal({:foo => "bar", :shell => "/bin/bash"}, @config.add_default_command_options(:foo => "bar"))
+  end
+
+  def test_add_default_command_options_should_use_shell_in_preference_of_default_shell
+    @config.set :default_shell, "/bin/bash"
+    assert_equal({:foo => "bar", :shell => "/bin/sh"}, @config.add_default_command_options(:foo => "bar", :shell => "/bin/sh"))
   end
 
   def test_default_io_proc_should_log_stdout_arguments_as_info

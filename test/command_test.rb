@@ -84,14 +84,21 @@ class CommandTest < Test::Unit::TestCase
 
   def test_successful_channel_should_send_command
     session = setup_for_extracting_channel_action(:on_success) do |ch|
-      ch.expects(:exec).with("ls")
+      ch.expects(:exec).with(%(sh -c "ls"))
     end
     Capistrano::Command.new("ls", [session])
   end
 
+  def test_successful_channel_with_shell_option_should_send_command_via_specified_shell
+    session = setup_for_extracting_channel_action(:on_success) do |ch|
+      ch.expects(:exec).with(%(/bin/bash -c "ls"))
+    end
+    Capistrano::Command.new("ls", [session], :shell => "/bin/bash")
+  end
+
   def test_successful_channel_should_send_data_if_data_key_is_present
     session = setup_for_extracting_channel_action(:on_success) do |ch|
-      ch.expects(:exec).with("ls")
+      ch.expects(:exec).with(%(sh -c "ls"))
       ch.expects(:send_data).with("here we go")
     end
     Capistrano::Command.new("ls", [session], :data => "here we go")
@@ -231,14 +238,14 @@ class CommandTest < Test::Unit::TestCase
 
   def test_process_with_host_placeholder_should_substitute_placeholder_with_each_host
     session = setup_for_extracting_channel_action(:on_success) do |ch|
-      ch.expects(:exec).with("echo capistrano")
+      ch.expects(:exec).with(%(sh -c "echo capistrano"))
     end
     Capistrano::Command.new("echo $CAPISTRANO:HOST$", [session])
   end
 
   def test_process_with_unknown_placeholder_should_not_replace_placeholder
     session = setup_for_extracting_channel_action(:on_success) do |ch|
-      ch.expects(:exec).with("echo $CAPISTRANO:OTHER$")
+      ch.expects(:exec).with(%(sh -c "echo $CAPISTRANO:OTHER$"))
     end
     Capistrano::Command.new("echo $CAPISTRANO:OTHER$", [session])
   end
