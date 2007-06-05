@@ -429,7 +429,7 @@ namespace :deploy do
       page by specifying the REASON and UNTIL environment variables:
 
         $ cap deploy:web:disable \\
-              BECAUSE="hardware upgrade" \\
+              REASON="hardware upgrade" \\
               UNTIL="12pm Central Time"
 
       Further customization will require that you write your own task.
