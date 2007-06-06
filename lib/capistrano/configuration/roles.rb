@@ -43,7 +43,6 @@ module Capistrano
       #   role :web, "web2", "web3", :user => "www", :port => 2345
       def role(which, *args)
         options = args.last.is_a?(Hash) ? args.pop : {}
-        raise ArgumentError, "must give at least one host" if args.empty?
         which = which.to_sym
         args.each { |host| roles[which] << ServerDefinition.new(host, options) }
       end

@@ -21,10 +21,9 @@ class ConfigurationRolesTest < Test::Unit::TestCase
     assert @config.roles.empty?
   end
 
-  def test_role_should_require_at_least_one_server
-    assert_raises ArgumentError do
-      @config.role :app
-    end
+  def test_role_should_allow_empty_list
+    @config.role :app
+    assert @config.roles[:app].empty?
   end
 
   def test_role_with_one_argument_should_add_to_roles_collection
