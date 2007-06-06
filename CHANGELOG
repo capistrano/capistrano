@@ -1,5 +1,7 @@
 *SVN*
 
+* Allow "empty" roles to be declared [Jamis Buck]
+
 * Mercurial SCM module [Tobias Luetke, Matthew Elder]
 
 * Invoke all commands via sh (customizable via :default_shell) [Jamis Buck]
