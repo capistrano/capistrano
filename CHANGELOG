@@ -1,5 +1,7 @@
 *SVN*
 
+* Make the UploadError exception include an array of the hosts that failed [rob@inversepath.com]
+
 * Allow "empty" roles to be declared [Jamis Buck]
 
 * Mercurial SCM module [Tobias Luetke, Matthew Elder]
