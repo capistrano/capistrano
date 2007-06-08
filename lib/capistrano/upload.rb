@@ -1,4 +1,5 @@
 require 'net/sftp'
+require 'net/sftp/operations/errors'
 require 'capistrano/errors'
 
 module Capistrano
@@ -62,12 +63,22 @@ module Capistrano
       while running?
         @sftps.each do |sftp|
           next if sftp.channel[:done]
-          sftp.channel.connection.process(true)
+          begin
+            sftp.channel.connection.process(true)
+          rescue Net::SFTP::Operations::StatusException => error
+            logger.important "uploading failed: #{error.description}", sftp.channel[:server] if logger
+            failed!(sftp)
+          end
         end
       end
       logger.trace "upload finished" if logger
 
-      raise UploadError, "upload of #{filename} failed on one or more hosts" if failed > 0
+      if (failed = @sftps.select { |sftp| sftp.channel[:failed] }).any?
+        hosts = failed.map { |sftp| sftp.channel[:server] }
+        error = UploadError.new("upload of #{filename} failed on #{hosts.join(',')}")
+        error.hosts = hosts
+        raise error
+      end
 
       self
     end
@@ -84,7 +95,9 @@ module Capistrano
           sftp = session.sftp
           sftp.connect unless sftp.state == :open
 
+          sftp.channel[:server] = server
           sftp.channel[:done] = false
+          sftp.channel[:failed] = false
           sftp.open(filename, IO::WRONLY | IO::CREAT | IO::TRUNC, options[:mode] || 0660) do |status, handle|
             break unless check_status(sftp, "open #{filename}", server, status)
             
@@ -118,6 +131,7 @@ module Capistrano
       def failed!(sftp)
         completed!(sftp)
         @failed += 1
+        sftp.channel[:failed] = true
       end
 
       def completed!(sftp)
