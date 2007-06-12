@@ -1,5 +1,7 @@
 *SVN*
 
+* Use cp -RPp instead of -a in the remote cache strategy
+
 * Make the UploadError exception include an array of the hosts that failed [rob@inversepath.com]
 
 * Allow "empty" roles to be declared [Jamis Buck]
