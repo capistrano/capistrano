@@ -32,7 +32,7 @@ module Capistrano
 
           def copy_repository_cache
             logger.trace "copying the cached version to #{configuration[:release_path]}"
-            run "cp -a #{repository_cache} #{configuration[:release_path]} && #{mark}"
+            run "cp -RPp #{repository_cache} #{configuration[:release_path]} && #{mark}"
           end
       end
 
