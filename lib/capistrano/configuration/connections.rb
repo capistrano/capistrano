@@ -56,21 +56,8 @@ module Capistrano
 
       # Ensures that there are active sessions for each server in the list.
       def establish_connections_to(servers)
-        servers = Array(servers)
-
-        # because Net::SSH uses lazy loading for things, we need to make sure
-        # that at least one connection has been made successfully, to kind of
-        # "prime the pump", before we go gung-ho and do mass connection in
-        # parallel. Otherwise, the threads start doing things in wierd orders
-        # and causing Net::SSH to die of confusion.
-        # TODO investigate Net::SSH and see if this can't be solved there
-
-        if sessions.empty?
-          server, servers = servers.first, servers[1..-1]
-          sessions[server] = connection_factory.connect_to(server)
-        end
-
-        servers.map { |server| establish_connection_to(server) }.each { |t| t.join }
+        threads = Array(servers).map { |server| establish_connection_to(server) }
+        threads.each { |t| t.join }
       end
 
       # Determines the set of servers within the current task's scope and

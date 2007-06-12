@@ -10,6 +10,29 @@ module Capistrano
     end
   end
 
+  # Now, Net::SSH is kind of silly, and tries to lazy-load everything. This
+  # wreaks havoc with the parallel connection trick that Capistrano wants to
+  # use, so we're going to do something hideously ugly here and force all the
+  # files that Net::SSH uses to load RIGHT NOW, rather than lazily.
+
+  net_ssh_dependencies = %w(connection/services connection/channel connection/driver
+    service/agentforward/services service/agentforward/driver
+    service/forward/services service/forward/driver service/forward/local-network-handler service/forward/remote-network-handler
+    lenient-host-key-verifier
+    transport/compress/services transport/compress/zlib-compressor transport/compress/none-compressor transport/compress/zlib-decompressor transport/compress/none-decompressor
+    transport/kex/services transport/kex/dh transport/kex/dh-gex
+    transport/ossl/services
+    transport/ossl/hmac/services transport/ossl/hmac/sha1 transport/ossl/hmac/sha1-96 transport/ossl/hmac/md5 transport/ossl/hmac/md5-96 transport/ossl/hmac/none
+    transport/ossl/cipher-factory transport/ossl/hmac-factory transport/ossl/buffer-factory transport/ossl/key-factory transport/ossl/digest-factory
+    transport/identity-cipher transport/packet-stream transport/version-negotiator transport/algorithm-negotiator transport/session
+    userauth/methods/services userauth/methods/password userauth/methods/keyboard-interactive userauth/methods/publickey userauth/methods/hostbased
+    userauth/services userauth/agent userauth/userkeys userauth/driver
+    transport/services
+  )
+
+  net_ssh_dependencies << "userauth/pageant" if File::ALT_SEPARATOR
+  net_ssh_dependencies.each { |path| require "net/ssh/#{path}" }
+
   # A helper class for dealing with SSH connections.
   class SSH
     # Patch an accessor onto an SSH connection so that we can record the server
