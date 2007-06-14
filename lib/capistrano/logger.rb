@@ -11,7 +11,7 @@ module Capistrano
     MAX_LEVEL = 3
 
     def initialize(options={})
-      output = options[:output] || STDERR
+      output = options[:output] || $stderr
       if output.respond_to?(:puts)
         @device = output
       else

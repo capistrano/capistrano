@@ -1,5 +1,7 @@
 *SVN*
 
+* Logger defaults to $stderr instead of STDERR [lhartley]
+
 * Use cp -RPp instead of -a in the remote cache strategy
 
 * Make the UploadError exception include an array of the hosts that failed [rob@inversepath.com]
