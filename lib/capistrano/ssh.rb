@@ -60,22 +60,30 @@ module Capistrano
     #
     # If a block is given, the new session is yielded to it, otherwise the new
     # session is returned.
+    #
+    # If an :ssh_options key exists in +options+, it is passed to the Net::SSH
+    # constructor. Values in +options+ are then merged into it, and any
+    # connection information in +server+ is added last, so that +server+ info
+    # takes precedence over +options+, which takes precendence over ssh_options.
     def self.connect(server, options={}, &block)
       methods = [ %w(publickey hostbased), %w(password keyboard-interactive) ]
       password_value = nil
       
+      ssh_options = (options[:ssh_options] || {}).dup
+      ssh_options[:username] = server.user || options[:user] || ssh_options[:username]
+      ssh_options[:port]     = server.port || options[:port] || ssh_options[:port] || DEFAULT_PORT
+
       begin
-        ssh_options = { :username => (server.user || options[:user]),
-                        :password => password_value,
-                        :port => (server.port || options[:port] || DEFAULT_PORT),
-                        :auth_methods => methods.shift }
-        ssh_options.update(options[:ssh_options]) if options[:ssh_options]
+        connection_options = ssh_options.merge(
+          :password => password_value,
+          :auth_methods => ssh_options[:auth_methods] || methods.shift
+        )
         
-        connection = Net::SSH.start(server.host, ssh_options, &block)
+        connection = Net::SSH.start(server.host, connection_options, &block)
         Server.apply_to(connection, server)
 
       rescue Net::SSH::AuthenticationFailed
-        raise if methods.empty? || options[:ssh_options] && options[:ssh_options][:auth_methods]
+        raise if methods.empty? || ssh_options[:auth_methods]
         password_value = options[:password]
         retry
       end

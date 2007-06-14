@@ -63,16 +63,22 @@ class SSHTest < Test::Unit::TestCase
     assert_equal success, Capistrano::SSH.connect(server)
   end
 
-  def test_connect_with_ssh_options_should_override_options
+  def test_connect_with_ssh_options_should_use_ssh_options
     ssh_options = { :username => "JamisMan", :port => 8125 }
     Net::SSH.expects(:start).with(@server.host, @options.merge(:username => "JamisMan", :port => 8125)).returns(success = Object.new)
+    assert_equal success, Capistrano::SSH.connect(@server, {:ssh_options => ssh_options})
+  end
+
+  def test_connect_with_options_and_ssh_options_should_see_options_override_ssh_options
+    ssh_options = { :username => "JamisMan", :port => 8125, :forward_agent => true }
+    Net::SSH.expects(:start).with(@server.host, @options.merge(:username => "jamis", :port => 1235, :forward_agent => true)).returns(success = Object.new)
     assert_equal success, Capistrano::SSH.connect(@server, {:ssh_options => ssh_options, :user => "jamis", :port => 1235})
   end
 
-  def test_connect_with_ssh_options_should_override_server_options
-    ssh_options = { :username => "JamisMan", :port => 8125 }
+  def test_connect_with_ssh_options_should_see_server_options_override_ssh_options
+    ssh_options = { :username => "JamisMan", :port => 8125, :forward_agent => true }
     server = server("jamis@capistrano:1235")
-    Net::SSH.expects(:start).with(server.host, @options.merge(:username => "JamisMan", :port => 8125)).returns(success = Object.new)
+    Net::SSH.expects(:start).with(server.host, @options.merge(:username => "jamis", :port => 1235, :forward_agent => true)).returns(success = Object.new)
     assert_equal success, Capistrano::SSH.connect(server, {:ssh_options => ssh_options})
   end
 
