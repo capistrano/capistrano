@@ -1,5 +1,7 @@
 *SVN*
 
+* ssh_options < server options when connecting [Jamis Buck]
+
 * Logger defaults to $stderr instead of STDERR [lhartley]
 
 * Use cp -RPp instead of -a in the remote cache strategy
