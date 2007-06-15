@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix typo in Perforce SCM module [Chris Bailey]
+
 * ssh_options < server options when connecting [Jamis Buck]
 
 * Logger defaults to $stderr instead of STDERR [lhartley]
