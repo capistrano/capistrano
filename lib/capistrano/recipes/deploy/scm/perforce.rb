@@ -54,7 +54,7 @@ module Capistrano
 
         def query_revision(revision)
           return revision if revision.to_s =~ /^\d+$/
-          command = scm(authentication, :changes, "-s submitted", "-m 1", "//#{p4client}/...#{revno(revision)}")
+          command = scm(authentication, :changes, "-s submitted", "-m 1", "//#{p4client}/...#{rev_no(revision)}")
           yield(command)[/Change (\d+) on/, 1]
         end
 
