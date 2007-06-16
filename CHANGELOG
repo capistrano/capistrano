@@ -1,5 +1,7 @@
 *SVN*
 
+* Use `whence' to test whether a command exists in the remote path, instead of `test -p' [Jamis Buck]
+
 * Make sure the connection factory is established synchronously, to avoid multiple gateway instances being spawned [Jamis Buck]
 
 * Make sure symlink and finalize_update tasks reference the most recent release when called by themselves [Jamis Buck]
