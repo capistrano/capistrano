@@ -32,7 +32,7 @@ set(:real_revision)     { source.local.query_revision(revision) { |cmd| `#{cmd}`
 
 set(:strategy)          { Capistrano::Deploy::Strategy.new(deploy_via, self) }
 
-set(:release_name)      { Time.now.utc.strftime("%Y%m%d%H%M%S") }
+set(:release_name)      { set :deploy_timestamped, true; Time.now.utc.strftime("%Y%m%d%H%M%S") }
 set(:releases_path)     { File.join(deploy_to, "releases") }
 set(:shared_path)       { File.join(deploy_to, "shared") }
 set(:current_path)      { File.join(deploy_to, "current") }
@@ -47,6 +47,13 @@ set(:latest_revision)   { capture("cat #{current_release}/REVISION").chomp }
 set(:previous_revision) { capture("cat #{previous_release}/REVISION").chomp }
 
 set(:run_method)        { fetch(:use_sudo, true) ? :sudo : :run }
+
+# some tasks, like symlink, need to always point at the latest release, but
+# they can also (occassionally) be called standalone. In the standalone case,
+# the timestamped release_path will be inaccurate, since the directory won't
+# actually exist. This variable lets tasks like symlink work either in the
+# standalone case, or during deployment.
+set(:latest_release) { exists?(:deploy_timestamped) ? release_path : current_release }
 
 # =========================================================================
 # These are helper methods that will be available to your recipes.
@@ -145,28 +152,28 @@ namespace :deploy do
     consistent (so that asset timestamping works).
   DESC
   task :finalize_update, :except => { :no_release => true } do
-    run "chmod -R g+w #{release_path}" if fetch(:group_writable, true)
+    run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
 
     # mkdir -p is making sure that the directories are there for some SCM's that don't
     # save empty folders
     run <<-CMD
-      rm -rf #{release_path}/log #{release_path}/public/system #{release_path}/tmp/pids &&
-      mkdir -p #{release_path}/public &&
-      mkdir -p #{release_path}/tmp &&
-      ln -s #{shared_path}/log #{release_path}/log &&
-      ln -s #{shared_path}/system #{release_path}/public/system &&
-      ln -s #{shared_path}/pids #{release_path}/tmp/pids
+      rm -rf #{latest_release}/log #{latest_release}/public/system #{latest_release}/tmp/pids &&
+      mkdir -p #{latest_release}/public &&
+      mkdir -p #{latest_release}/tmp &&
+      ln -s #{shared_path}/log #{latest_release}/log &&
+      ln -s #{shared_path}/system #{latest_release}/public/system &&
+      ln -s #{shared_path}/pids #{latest_release}/tmp/pids
     CMD
 
     stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
-    asset_paths = %w(images stylesheets javascripts).map { |p| "#{release_path}/public/#{p}" }.join(" ")
+    asset_paths = %w(images stylesheets javascripts).map { |p| "#{latest_release}/public/#{p}" }.join(" ")
     run "find #{asset_paths} -exec touch -t #{stamp} {} \\;; true", :env => { "TZ" => "UTC" }
   end
 
   desc <<-DESC
-    Updates the symlink to the deployed version. Capistrano works by putting \
-    each new release of your application in its own directory. When you \
-    deploy a new version, this task's job is to update the `current' symlink \
+    Updates the symlink to the most recently deployed version. Capistrano works
+    by putting each new release of your application in its own directory. When
+    you deploy a new version, this task's job is to update the `current' symlink \
     to point at the new version. You will rarely need to call this task \
     directly; instead, use the `deploy' task (which performs a complete \
     deploy, including `restart') or the 'update' task (which does everything \
@@ -174,7 +181,7 @@ namespace :deploy do
   DESC
   task :symlink, :except => { :no_release => true } do
     on_rollback { run "rm -f #{current_path}; ln -s #{previous_release} #{current_path}; true" }
-    run "rm -f #{current_path} && ln -s #{release_path} #{current_path}"
+    run "rm -f #{current_path} && ln -s #{latest_release} #{current_path}"
   end
 
   desc <<-DESC
