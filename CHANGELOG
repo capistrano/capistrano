@@ -1,5 +1,7 @@
 *SVN*
 
+* CVS SCM module [Brian Phillips]
+
 * Fix typo in Perforce SCM module [Chris Bailey]
 
 * ssh_options < server options when connecting [Jamis Buck]
