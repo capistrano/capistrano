@@ -23,7 +23,7 @@ module Capistrano
 
       def command(command, options={})
         @message ||= "`#{command}' could not be found in the path"
-        try("type -p #{command}", options)
+        try("which #{command}", options)
         self
       end
 
