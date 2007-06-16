@@ -91,6 +91,10 @@ module Capistrano
         # prevents problems with the thread's scope seeing the wrong 'server'
         # variable if the thread just happens to take too long to start up.
         def establish_connection_to(server)
+          # force the connection factory to be instantiated synchronously,
+          # otherwise we wind up with multiple gateway instances, because
+          # each connection is done in parallel.
+          connection_factory
           Thread.new { sessions[server] ||= connection_factory.connect_to(server) }
         end
     end
