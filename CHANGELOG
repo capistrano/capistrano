@@ -1,6 +1,6 @@
 *SVN*
 
-* Use `whence' to test whether a command exists in the remote path, instead of `test -p' [Jamis Buck]
+* Use `which' to test whether a command exists in the remote path, instead of `test -p' [Jamis Buck]
 
 * Make sure the connection factory is established synchronously, to avoid multiple gateway instances being spawned [Jamis Buck]
 
