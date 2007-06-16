@@ -1,5 +1,10 @@
-*1.99.2 (2.0 Preview 3)* June 15, 2007
+*SVN*
 
+* Make sure symlink and finalize_update tasks reference the most recent release when called by themselves [Jamis Buck]
+
+
+*1.99.2 (2.0 Preview 3)* June 15, 2007
+ 
 * CVS SCM module [Brian Phillips]
 
 * Fix typo in Perforce SCM module [Chris Bailey]
