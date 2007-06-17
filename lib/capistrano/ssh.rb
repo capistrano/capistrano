@@ -93,7 +93,7 @@ module Capistrano
           :password => password_value,
           :auth_methods => ssh_options[:auth_methods] || methods.shift
         )
-        
+
         connection = Net::SSH.start(server.host, connection_options, &block)
         Server.apply_to(connection, server)
 

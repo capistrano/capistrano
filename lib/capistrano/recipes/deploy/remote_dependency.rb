@@ -30,7 +30,7 @@ module Capistrano
       def gem(name, version, options={})
         @message ||= "gem `#{name}' #{version} could not be found"
         gem_cmd = configuration.fetch(:gem_command, "gem")
-        try("#{gem_cmd} specification --version \"#{version}\" #{name} 2>&1 | awk 'BEGIN { s = 0 }; /^name:/ { s = 1; exit }; END { if(s == 0) exit 1 }'", options)
+        try("#{gem_cmd} specification --version '#{version}' #{name} 2>&1 | awk 'BEGIN { s = 0 }; /^name:/ { s = 1; exit }; END { if(s == 0) exit 1 }'", options)
         self
       end
 
