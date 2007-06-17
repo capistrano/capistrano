@@ -31,7 +31,22 @@ module Capistrano
   )
 
   net_ssh_dependencies << "userauth/pageant" if File::ALT_SEPARATOR
-  net_ssh_dependencies.each { |path| require "net/ssh/#{path}" }
+  net_ssh_dependencies.each do |path|
+    begin
+      require "net/ssh/#{path}"
+    rescue LoadError
+      # Ignore load errors from this, since some files are in the list which
+      # do not exist in different (supported) versions of Net::SSH. We know
+      # (by this point) that Net::SSH is installed, though, since we do a
+      # require 'net/ssh' at the very top of this file, and we know the
+      # installed version meets the minimum version requirements because of
+      # the version check, also at the top of this file. So, if we get a
+      # LoadError, it's simply because the file in question does not exist in
+      # the version of Net::SSH that is installed.
+      #
+      # Whew!
+    end
+  end
 
   # A helper class for dealing with SSH connections.
   class SSH

@@ -1,5 +1,7 @@
 *SVN*
 
+* Make sure Net::SSH versions prior to 1.1.0 still work [Jamis Buck]
+
 * Allow the :hosts and :roles keys to accept lambdas, which will be evaluated lazily to allow runtime selection of hosts and roles in tasks [Jamis Buck]
 
 * Use `which' to test whether a command exists in the remote path, instead of `test -p' [Jamis Buck]
