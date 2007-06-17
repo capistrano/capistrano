@@ -53,16 +53,22 @@ module Capistrano
 
       def server_list_from(hosts)
         hosts = hosts.split(/,/) if String === hosts
-        Array(hosts).map { |s| String === s ? ServerDefinition.new(s.strip) : s }
+        hosts = build_list(hosts)
+        hosts.map { |s| String === s ? ServerDefinition.new(s.strip) : s }
       end
 
       def role_list_from(roles)
         roles = roles.split(/,/) if String === roles
-        Array(roles).map do |role|
+        roles = build_list(roles)
+        roles.map do |role|
           role = String === role ? role.strip.to_sym : role
           raise ArgumentError, "unknown role `#{role}'" unless self.roles.key?(role)
           role
         end
+      end
+
+      def build_list(list)
+        Array(list).map { |item| item.respond_to?(:call) ? item.call : item }.flatten
       end
     end
   end
