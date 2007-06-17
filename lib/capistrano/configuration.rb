@@ -25,6 +25,9 @@ module Capistrano
       @logger = Logger.new
     end
 
+    # make the DSL easier to read when using lazy evaluation via lambdas
+    alias lazy lambda
+
     # The includes must come at the bottom, since they may redefine methods
     # defined in the base class.
     include Connections, Execution, Loading, Namespaces, Roles, Servers, Variables
