@@ -26,7 +26,7 @@ module Capistrano
     end
 
     # make the DSL easier to read when using lazy evaluation via lambdas
-    alias lazy lambda
+    alias defer lambda
 
     # The includes must come at the bottom, since they may redefine methods
     # defined in the base class.
