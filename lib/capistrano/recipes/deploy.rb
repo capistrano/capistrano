@@ -167,7 +167,7 @@ namespace :deploy do
 
     stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
     asset_paths = %w(images stylesheets javascripts).map { |p| "#{latest_release}/public/#{p}" }.join(" ")
-    run "find #{asset_paths} -exec touch -t #{stamp} {} \\;; true", :env => { "TZ" => "UTC" }
+    run "find #{asset_paths} -exec touch -t #{stamp} {} ';'; true", :env => { "TZ" => "UTC" }
   end
 
   desc <<-DESC

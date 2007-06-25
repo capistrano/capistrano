@@ -1,5 +1,7 @@
 *SVN*
 
+* Use single quotes to escape semicolon in find command, instead of a backslash [via michael.italia@gmail.com]
+
 * Better quoting of reserved characters in commands [Jamis Buck]
 
 * Make sure Net::SSH versions prior to 1.1.0 still work [Jamis Buck]
