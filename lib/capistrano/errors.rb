@@ -5,11 +5,10 @@ module Capistrano
   class ConnectionError < Error; end
   class NoSuchTaskError < Error; end
 
-  class UploadError < Error
+  class RemoteError < Error
     attr_accessor :hosts
   end
 
-  class CommandError < Error
-    attr_accessor :hosts
-  end
+  class UploadError < RemoteError; end
+  class CommandError < RemoteError; end
 end

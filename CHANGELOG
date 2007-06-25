@@ -1,5 +1,7 @@
 *SVN*
 
+* Better quoting of reserved characters in commands [Jamis Buck]
+
 * Make sure Net::SSH versions prior to 1.1.0 still work [Jamis Buck]
 
 * Allow the :hosts and :roles keys to accept lambdas, which will be evaluated lazily to allow runtime selection of hosts and roles in tasks [Jamis Buck]
