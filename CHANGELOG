@@ -1,5 +1,7 @@
 *SVN*
 
+* Make user input for yes/no prompts work correctly in the Mercurial module [Matthew Elder]
+
 * Use single quotes to escape semicolon in find command, instead of a backslash [via michael.italia@gmail.com]
 
 * Better quoting of reserved characters in commands [Jamis Buck]
