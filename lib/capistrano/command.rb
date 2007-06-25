@@ -21,7 +21,7 @@ module Capistrano
     # * +env+: (optional), a string or hash to be interpreted as environment
     #   variables that should be defined for this command invocation.
     def initialize(command, sessions, options={}, &block)
-      @command = extract_environment(options) + command.strip.gsub(/\r?\n/, "\\\n")
+      @command = command.strip.gsub(/\r?\n/, "\\\n")
       @sessions = sessions
       @options = options
       @callback = block
@@ -87,9 +87,9 @@ module Capistrano
 
             channel.on_success do |ch|
               logger.trace "executing command", ch[:server] if logger
-              escaped = replace_placeholders(command, ch).gsub(/["\\]/) { |m| "\\#{m}" }
-              shell = options[:shell] || "sh"
-              ch.exec("#{shell} -c \"#{escaped}\"")
+              escaped = replace_placeholders(command, ch).gsub(/[$\\`"]/) { |m| "\\#{m}" }
+              command_line = [environment, options[:shell] || "sh", "-c", "\"#{escaped}\""].compact.join(" ")
+              ch.exec(command_line)
               ch.send_data(options[:data]) if options[:data]
             end
 
@@ -129,15 +129,18 @@ module Capistrano
       # the environment before running the command.
       # i.e.: options[:env] = {'PATH' => '/opt/ruby/bin:$PATH',
       #                        'TEST' => '( "quoted" )'}
-      # extract_environment(options) returns:
-      # "TEST=(\ \"quoted\"\ ) PATH=/opt/ruby/bin:$PATH"
-      def extract_environment(options)
-        env = options[:env]
-        return "#{env} " if String === env
-        Array(env).inject("") do |string, (name, value)|
-          value = value.to_s.gsub(/[ "]/) { |m| "\\#{m}" }
-          string << "#{name}=#{value} "
-        end
+      # environment returns:
+      # "env TEST=(\ \"quoted\"\ ) PATH=/opt/ruby/bin:$PATH"
+      def environment
+        return if options[:env].nil? || options[:env].empty?
+        @environment ||= if String === options[:env]
+            "env #{options[:env]}"
+          else
+            options[:env].inject("env") do |string, (name, value)|
+              value = value.to_s.gsub(/[ "]/) { |m| "\\#{m}" }
+              string << " #{name}=#{value}"
+            end
+          end
       end
   end
 end

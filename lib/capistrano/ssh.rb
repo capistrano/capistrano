@@ -17,6 +17,7 @@ module Capistrano
 
   net_ssh_dependencies = %w(connection/services connection/channel connection/driver
     service/agentforward/services service/agentforward/driver
+    service/process/driver
     service/forward/services service/forward/driver service/forward/local-network-handler service/forward/remote-network-handler
     lenient-host-key-verifier
     transport/compress/services transport/compress/zlib-compressor transport/compress/none-compressor transport/compress/zlib-decompressor transport/compress/none-decompressor

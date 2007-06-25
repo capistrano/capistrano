@@ -20,36 +20,51 @@ class CommandTest < Test::Unit::TestCase
   end
 
   def test_command_with_env_key_should_have_environment_constructed_and_prepended
-    cmd = Capistrano::Command.new("ls", [mock(:open_channel => nil)], :env => { "FOO" => "bar" })
-    assert_equal "FOO=bar ls", cmd.command
+    session = setup_for_extracting_channel_action(:on_success) do |ch|
+      ch.expects(:exec).with(%(env FOO=bar sh -c "ls"))
+    end
+    Capistrano::Command.new("ls", [session], :env => { "FOO" => "bar" })
   end
 
   def test_env_with_symbolic_key_should_be_accepted_as_a_string
-    cmd = Capistrano::Command.new("ls", [mock(:open_channel => nil)], :env => { :FOO => "bar" })
-    assert_equal "FOO=bar ls", cmd.command
+    session = setup_for_extracting_channel_action(:on_success) do |ch|
+      ch.expects(:exec).with(%(env FOO=bar sh -c "ls"))
+    end
+    Capistrano::Command.new("ls", [session], :env => { :FOO => "bar" })
   end
 
   def test_env_as_string_should_be_substituted_in_directly
-    cmd = Capistrano::Command.new("ls", [mock(:open_channel => nil)], :env => "HOWDY" )
-    assert_equal "HOWDY ls", cmd.command
+    session = setup_for_extracting_channel_action(:on_success) do |ch|
+      ch.expects(:exec).with(%(env HOWDY=there sh -c "ls"))
+    end
+    Capistrano::Command.new("ls", [session], :env => "HOWDY=there")
   end
 
   def test_env_with_symbolic_value_should_be_accepted_as_string
-    cmd = Capistrano::Command.new("ls", [mock(:open_channel => nil)], :env => { "FOO" => :bar })
-    assert_equal "FOO=bar ls", cmd.command
+    session = setup_for_extracting_channel_action(:on_success) do |ch|
+      ch.expects(:exec).with(%(env FOO=bar sh -c "ls"))
+    end
+    Capistrano::Command.new("ls", [session], :env => { "FOO" => :bar })
   end
 
   def test_env_value_should_be_escaped
-    cmd = Capistrano::Command.new("ls", [mock(:open_channel => nil)], :env => { "FOO" => '( "bar" )' })
-    assert_equal "FOO=(\\ \\\"bar\\\"\\ ) ls", cmd.command
+    session = setup_for_extracting_channel_action(:on_success) do |ch|
+      ch.expects(:exec).with(%(env FOO=(\\ \\\"bar\\\"\\ ) sh -c "ls"))
+    end
+    Capistrano::Command.new("ls", [session], :env => { "FOO" => '( "bar" )' })
   end
 
   def test_env_with_multiple_keys_should_chain_the_entries_together
-    cmd = Capistrano::Command.new("ls", [mock(:open_channel => nil)], :env => { :a => :b, :c => :d, :e => :f })
-    env = cmd.command[/^(.*) ls$/, 1]
-    assert_match(/\ba=b\b/, env)
-    assert_match(/\bc=d\b/, env)
-    assert_match(/\be=f\b/, env)
+    session = setup_for_extracting_channel_action(:on_success) do |ch|
+      ch.expects(:exec).with do |command|
+        command =~ /^env / &&
+        command =~ /\ba=b\b/ &&
+        command =~ /\bc=d\b/ &&
+        command =~ /\be=f\b/ &&
+        command =~ / sh -c "ls"$/
+      end
+    end
+    Capistrano::Command.new("ls", [session], :env => { :a => :b, :c => :d, :e => :f })
   end
 
   def test_open_channel_should_set_host_key_on_channel
@@ -245,7 +260,7 @@ class CommandTest < Test::Unit::TestCase
 
   def test_process_with_unknown_placeholder_should_not_replace_placeholder
     session = setup_for_extracting_channel_action(:on_success) do |ch|
-      ch.expects(:exec).with(%(sh -c "echo $CAPISTRANO:OTHER$"))
+      ch.expects(:exec).with(%(sh -c "echo \\$CAPISTRANO:OTHER\\$"))
     end
     Capistrano::Command.new("echo $CAPISTRANO:OTHER$", [session])
   end
