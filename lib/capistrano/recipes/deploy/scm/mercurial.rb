@@ -84,7 +84,7 @@ module Capistrano
                 "Prompt was: #{text}"
             end
           when /yes\/no/i
-            "yes"
+            "yes\n"
           end
         end
 
