@@ -1,3 +1,5 @@
+require 'thread'
+
 module Capistrano
   class Configuration
     module Variables
@@ -37,8 +39,10 @@ module Capistrano
       # Removes any trace of the given variable.
       def unset(variable)
         sym = variable.to_sym
-        @original_procs.delete(sym)
-        @variables.delete(sym)
+        @variable_lock.synchronize do
+          @original_procs.delete(sym)
+          @variables.delete(sym)
+        end
       end
 
       # Returns true if the variable has been defined, and false otherwise.
@@ -51,11 +55,13 @@ module Capistrano
       # true if the variable was actually reset.
       def reset!(variable)
         sym = variable.to_sym
-        if @original_procs.key?(sym)
-          @variables[sym] = @original_procs.delete(sym)
-          true
-        else
-          false
+        @variable_lock.synchronize do
+          if @original_procs.key?(sym)
+            @variables[sym] = @original_procs.delete(sym)
+            true
+          else
+            false
+          end
         end
       end
 
@@ -73,12 +79,15 @@ module Capistrano
           return yield(variable) if block_given?
           raise IndexError, "`#{variable}' not found"
         end
-          
-        if @variables[sym].respond_to?(:call)
-          @original_procs[sym] = @variables[sym]
-          @variables[sym] = @variables[sym].call
+
+        @variable_lock.synchronize do
+          if @variables[sym].respond_to?(:call)
+            @original_procs[sym] = @variables[sym]
+            @variables[sym] = @variables[sym].call
+          end
+
+          @variables[sym]
         end
-        @variables[sym]
       end
 
       def [](variable)
@@ -89,6 +98,7 @@ module Capistrano
         initialize_without_variables(*args)
         @variables = {}
         @original_procs = {}
+        @variable_lock = Mutex.new
 
         set :ssh_options, {}
         set :logger, logger
