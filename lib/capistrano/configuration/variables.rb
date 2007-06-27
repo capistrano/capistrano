@@ -32,7 +32,7 @@ module Capistrano
 
         value = args.empty? ? block : args.first
         sym = variable.to_sym
-        @variable_locks[sym].synchronize { @variables[sym] = value }
+        protect(sym) { @variables[sym] = value }
       end
 
       alias :[]= :set
@@ -40,7 +40,7 @@ module Capistrano
       # Removes any trace of the given variable.
       def unset(variable)
         sym = variable.to_sym
-        @variable_locks[sym].synchronize do
+        protect(sym) do
           @original_procs.delete(sym)
           @variables.delete(sym)
         end
@@ -56,7 +56,7 @@ module Capistrano
       # true if the variable was actually reset.
       def reset!(variable)
         sym = variable.to_sym
-        @variable_locks[sym].synchronize do
+        protect(sym) do
           if @original_procs.key?(sym)
             @variables[sym] = @original_procs.delete(sym)
             true
@@ -75,7 +75,7 @@ module Capistrano
         end
 
         sym = variable.to_sym
-        @variable_locks[sym].synchronize do
+        protect(sym) do
           if !@variables.key?(sym)
             return args.first unless args.empty?
             return yield(variable) if block_given?
@@ -105,6 +105,11 @@ module Capistrano
         set :logger, logger
       end
       private :initialize_with_variables
+
+      def protect(variable)
+        @variable_locks[variable.to_sym].synchronize { yield }
+      end
+      private :protect
 
       def respond_to_with_variables?(sym) #:nodoc:
         @variables.has_key?(sym) || respond_to_without_variables?(sym)
