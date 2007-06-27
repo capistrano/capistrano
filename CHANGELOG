@@ -1,5 +1,7 @@
 *SVN*
 
+* Set LC_ALL=C before querying the revision, to make sure the output is in a predictable locale and can be parsed predictably [via Leandro Nunes dos Santos]
+
 * Add :copy_remote_dir variable for the :copy strategy, to indicate where the archive should be copied to on the remote servers [Jamis Buck]
 
 * Make the awk use in the dependencies code work with POSIX awk [mcornick]

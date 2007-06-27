@@ -28,7 +28,7 @@ set(:revision)  { source.head } unless exists?(:revision)
 # =========================================================================
 
 set(:source)            { Capistrano::Deploy::SCM.new(scm, self) }
-set(:real_revision)     { source.local.query_revision(revision) { |cmd| `#{cmd}` } }
+set(:real_revision)     { source.local.query_revision(revision) { |cmd| with_env("LC_ALL", "C") { `#{cmd}` } } }
 
 set(:strategy)          { Capistrano::Deploy::Strategy.new(deploy_via, self) }
 
@@ -67,6 +67,15 @@ def depend(location, type, *args)
   deps[location][type] ||= []
   deps[location][type] << args
   set :dependencies, deps
+end
+
+# Temporarily sets an environment variable, yields to a block, and restores
+# the value when it is done.
+def with_env(name, value)
+  saved, ENV[name] = ENV[name], value
+  yield
+ensure
+  ENV[name] = saved
 end
 
 # =========================================================================
