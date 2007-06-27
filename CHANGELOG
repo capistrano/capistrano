@@ -1,5 +1,7 @@
 *SVN*
 
+* Make the awk use in the dependencies code work with POSIX awk [mcornick]
+
 * Make variable accesses thread safe [via Adrian Danieli]
 
 * Make user input for yes/no prompts work correctly in the Mercurial module [Matthew Elder]
