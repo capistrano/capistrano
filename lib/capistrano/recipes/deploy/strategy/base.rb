@@ -49,7 +49,7 @@ module Capistrano
         private
 
           def logger
-            @logger ||= configuration[:logger] || Capistrano::Logger.new(STDOUT)
+            @logger ||= configuration[:logger] || Capistrano::Logger.new(:output => STDOUT)
           end
 
           # The revision to deploy. Must return a real revision identifier,

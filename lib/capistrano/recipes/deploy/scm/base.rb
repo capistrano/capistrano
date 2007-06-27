@@ -153,7 +153,7 @@ module Capistrano
           # A reference to a Logger instance that the SCM can use to log
           # activity.
           def logger
-            @logger ||= variable(:logger) || Capistrano::Logger.new(STDOUT)
+            @logger ||= variable(:logger) || Capistrano::Logger.new(:output => STDOUT)
           end
 
           # A helper for accessing the default command name for this SCM. It
