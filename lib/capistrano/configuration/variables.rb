@@ -1,4 +1,4 @@
-require 'thread'
+require 'monitor'
 
 module Capistrano
   class Configuration
@@ -98,7 +98,7 @@ module Capistrano
         initialize_without_variables(*args)
         @variables = {}
         @original_procs = {}
-        @variable_lock = Mutex.new
+        @variable_lock = Monitor.new
 
         set :ssh_options, {}
         set :logger, logger
