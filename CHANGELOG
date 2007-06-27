@@ -1,5 +1,7 @@
 *SVN*
 
+* Add :copy_remote_dir variable for the :copy strategy, to indicate where the archive should be copied to on the remote servers [Jamis Buck]
+
 * Make the awk use in the dependencies code work with POSIX awk [mcornick]
 
 * Make variable accesses thread safe [via Adrian Danieli]

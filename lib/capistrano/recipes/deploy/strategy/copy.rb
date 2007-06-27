@@ -83,10 +83,16 @@ module Capistrano
             @tmpdir ||= configuration[:copy_dir] || Dir.tmpdir
           end
 
+          # The directory on the remote server to which the archive should be
+          # copied
+          def remote_dir
+            @remote_dir ||= configuration[:copy_remote_dir] || "/tmp"
+          end
+
           # The location on the remote server where the file should be
           # temporarily stored.
           def remote_filename
-            @remote_filename ||= "/tmp/#{File.basename(filename)}"
+            @remote_filename ||= File.join(remote_dir, File.basename(filename))
           end
 
           # The compression method to use, defaults to :gzip.

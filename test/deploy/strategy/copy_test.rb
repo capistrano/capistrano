@@ -121,4 +121,26 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
 
     @strategy.deploy!
   end
+
+  def test_deploy_with_copy_remote_dir_should_copy_to_that_dir
+    @config[:copy_remote_dir] = "/somewhere/else"
+    Dir.expects(:tmpdir).returns("/temp/dir")
+    Dir.expects(:chdir).yields
+    @source.expects(:checkout).returns(:local_checkout)
+
+    @strategy.expects(:system).with(:local_checkout)
+    @strategy.expects(:system).with("tar czf 1234567890.tar.gz 1234567890")
+    @strategy.expects(:put).with(:mock_file_contents, "/somewhere/else/1234567890.tar.gz")
+    @strategy.expects(:run).with("cd /u/apps/test/releases && tar xzf /somewhere/else/1234567890.tar.gz && rm /somewhere/else/1234567890.tar.gz")
+
+    mock_file = mock("file")
+    mock_file.expects(:puts).with("154")
+    File.expects(:open).with("/temp/dir/1234567890/REVISION", "w").yields(mock_file)
+    File.expects(:read).with("/temp/dir/1234567890.tar.gz").returns(:mock_file_contents)
+
+    FileUtils.expects(:rm).with("/temp/dir/1234567890.tar.gz")
+    FileUtils.expects(:rm_rf).with("/temp/dir/1234567890")
+
+    @strategy.deploy!
+  end
 end
