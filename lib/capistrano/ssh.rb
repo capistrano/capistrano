@@ -28,7 +28,7 @@ module Capistrano
     transport/identity-cipher transport/packet-stream transport/version-negotiator transport/algorithm-negotiator transport/session
     userauth/methods/services userauth/methods/password userauth/methods/keyboard-interactive userauth/methods/publickey userauth/methods/hostbased
     userauth/services userauth/agent userauth/userkeys userauth/driver
-    transport/services
+    transport/services service/services
   )
 
   net_ssh_dependencies << "userauth/pageant" if File::ALT_SEPARATOR
