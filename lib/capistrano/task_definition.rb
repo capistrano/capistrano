@@ -57,5 +57,11 @@ module Capistrano
 
       brief
     end
+
+    # Indicates whether the task wants to continue, even if a server has failed
+    # previously
+    def continue_on_error?
+      options[:on_error] == :continue
+    end
   end
 end

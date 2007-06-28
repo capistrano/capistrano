@@ -77,6 +77,20 @@ class GatewayTest < Test::Unit::TestCase
     gateway.expects(:warn).times(2)
     assert_raises(Capistrano::ConnectionError) { gateway.connect_to(server("app1")) }
   end
+  
+  def test_connection_error_should_include_accessor_with_host_array
+    gateway = new_gateway
+    expect_connect_to(:host => "127.0.0.1").raises(RuntimeError)
+    gateway.expects(:warn).times(2)
+  
+    begin
+      gateway.connect_to(server("app1"))
+      flunk "expected an exception to be raised"
+    rescue Capistrano::ConnectionError => e
+      assert e.respond_to?(:hosts)
+      assert_equal %w(app1), e.hosts.map { |h| h.to_s }
+    end
+  end
 
   private
 

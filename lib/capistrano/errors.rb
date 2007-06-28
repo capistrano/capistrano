@@ -2,13 +2,13 @@ module Capistrano
   class Error < RuntimeError; end
 
   class CaptureError < Error; end
-  class ConnectionError < Error; end
   class NoSuchTaskError < Error; end
-
+  
   class RemoteError < Error
     attr_accessor :hosts
   end
 
+  class ConnectionError < RemoteError; end
   class UploadError < RemoteError; end
   class CommandError < RemoteError; end
 end

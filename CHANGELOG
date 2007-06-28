@@ -1,5 +1,7 @@
 *SVN*
 
+* Added support for :on_error => :continue in task definitions, allowing tasks to effectively ignore connection and execution errors that occur as they run [Rob Holland]
+
 * Use correct parameters for Logger constructor in the SCM and Strategy base initializers [Jamis Buck]
 
 * Set LC_ALL=C before querying the revision, to make sure the output is in a predictable locale and can be parsed predictably [via Leandro Nunes dos Santos]
