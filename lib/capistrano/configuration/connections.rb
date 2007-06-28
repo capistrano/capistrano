@@ -30,6 +30,18 @@ module Capistrano
       def initialize_with_connections(*args) #:nodoc:
         initialize_without_connections(*args)
         @sessions = {}
+        @failed_sessions = []
+      end
+
+      # Indicate that the given server could not be connected to.
+      def failed!(server)
+        @failed_sessions << server
+      end
+
+      # Query whether previous connection attempts to the given server have
+      # failed.
+      def has_failed?(server)
+        @failed_sessions.include?(server)
       end
 
       # Used to force connections to be made to the current task's servers.
@@ -56,8 +68,22 @@ module Capistrano
 
       # Ensures that there are active sessions for each server in the list.
       def establish_connections_to(servers)
-        threads = Array(servers).map { |server| establish_connection_to(server) }
+        failed_servers = []
+
+        # force the connection factory to be instantiated synchronously,
+        # otherwise we wind up with multiple gateway instances, because
+        # each connection is done in parallel.
+        connection_factory
+
+        threads = Array(servers).map { |server| establish_connection_to(server, failed_servers) }
         threads.each { |t| t.join }
+
+        if failed_servers.any?
+          errors = failed_servers.map { |h| "#{h[:server]} (#{h[:error].class}: #{h[:error].message})" }
+          error = ConnectionError.new("connection failed for: #{errors.join(', ')}")
+          error.hosts = failed_servers.map { |h| h[:server] }
+          raise error
+        end
       end
 
       # Determines the set of servers within the current task's scope and
@@ -72,6 +98,11 @@ module Capistrano
           if servers.empty?
             raise ScriptError, "`#{task.fully_qualified_name}' is only run for servers matching #{task.options.inspect}, but no servers matched"
           end
+
+          if task.continue_on_error?
+            servers.delete_if { |s| has_failed?(s) }
+            return if servers.empty?
+          end
         else
           servers = find_servers(options)
           raise ScriptError, "no servers found to match #{options.inspect}" if servers.empty?
@@ -81,8 +112,22 @@ module Capistrano
         logger.trace "servers: #{servers.map { |s| s.host }.inspect}"
 
         # establish connections to those servers, as necessary
-        establish_connections_to(servers)
-        yield servers
+        begin
+          establish_connections_to(servers)
+        rescue ConnectionError => error
+          raise error unless task.continue_on_error?
+          error.hosts.each do |h|
+            servers.delete(h)
+            failed!(h)
+          end
+        end
+
+        begin
+          yield servers
+        rescue RemoteError => error
+          raise error unless task.continue_on_error?
+          error.hosts.each { |h| failed!(h) }
+        end
       end
 
       private
@@ -90,12 +135,15 @@ module Capistrano
         # We establish the connection by creating a thread in a new method--this
         # prevents problems with the thread's scope seeing the wrong 'server'
         # variable if the thread just happens to take too long to start up.
-        def establish_connection_to(server)
-          # force the connection factory to be instantiated synchronously,
-          # otherwise we wind up with multiple gateway instances, because
-          # each connection is done in parallel.
-          connection_factory
-          Thread.new { sessions[server] ||= connection_factory.connect_to(server) }
+        def establish_connection_to(server, failures=nil)
+          Thread.new do
+            begin
+              sessions[server] ||= connection_factory.connect_to(server)
+            rescue Exception => err
+              raise unless failures
+              failures << { :server => server, :error => err }
+            end
+          end
         end
     end
   end

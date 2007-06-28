@@ -104,7 +104,13 @@ module Capistrano
       end
 
       thread.join
-      connection or raise ConnectionError, "could not establish connection to `#{server}'"
+      if connection.nil?
+        error = ConnectionError.new("could not establish connection to `#{server}'")
+        error.hosts = [server]
+        raise error
+      end
+    
+      connection
     end
 
     private

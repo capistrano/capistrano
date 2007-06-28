@@ -92,6 +92,36 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     @config.establish_connections_to(%w(cap1 cap2 cap3).map { |s| server(s) })
     assert %w(cap1 cap2 cap3), @config.sessions.keys.sort.map { |s| s.host }
   end
+  
+  def test_establish_connections_to_should_raise_one_connection_error_on_failure
+    Capistrano::SSH.expects(:connect).times(2).raises(Exception)
+    assert_raises(Capistrano::ConnectionError) {
+      @config.establish_connections_to(%w(cap1 cap2)).map { |s| servers(s) }
+    }
+  end
+
+  def test_connection_error_should_include_accessor_with_host_array
+    Capistrano::SSH.expects(:connect).times(2).raises(Exception)
+
+    begin
+      @config.establish_connections_to(%w(cap1 cap2)).map { |s| servers(s) }      
+      flunk "expected an exception to be raised"
+    rescue Capistrano::ConnectionError => e
+      assert e.respond_to?(:hosts)
+      assert_equal %w(cap1 cap2), e.hosts.map { |h| h.to_s }
+    end
+  end
+  
+  def test_connection_error_should_only_include_failed_hosts
+    Capistrano::SSH.expects(:connect).times(2).raises(Exception).then.returns(:success)
+
+    begin
+      @config.establish_connections_to(%w(cap1 cap2)).map { |s| servers(s) }      
+      flunk "expected an exception to be raised"
+    rescue Capistrano::ConnectionError => e
+      assert_equal %w(cap1), e.hosts.map { |h| h.to_s }
+    end
+  end
 
   def test_execute_on_servers_should_require_a_block
     assert_raises(ArgumentError) { @config.execute_on_servers }
@@ -111,8 +141,8 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     assert_raises(ScriptError) { @config.execute_on_servers(:a => :b, :c => :d) { |list| } }
   end
 
-  def test_execute_on_servers_should_raise_an_error_if_the_current_task_has_no_matching_servers
-    @config.current_task = stub("task", :fully_qualified_name => "name", :options => {})
+  def test_execute_on_servers_should_raise_an_error_if_the_current_task_has_no_matching_servers_by_default
+    @config.current_task = mock_task
     @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([])
     assert_raises(ScriptError) do
       @config.execute_on_servers do
@@ -120,10 +150,10 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
       end
     end
   end
-
+  
   def test_execute_on_servers_should_determine_server_list_from_active_task
     assert @config.sessions.empty?
-    @config.current_task = stub("task")
+    @config.current_task = mock_task
     @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([server("cap1"), server("cap2"), server("cap3")])
     Capistrano::SSH.expects(:connect).times(3).returns(:success)
     @config.execute_on_servers {}
@@ -132,7 +162,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
 
   def test_execute_on_servers_should_yield_server_list_to_block
     assert @config.sessions.empty?
-    @config.current_task = stub("task")
+    @config.current_task = mock_task
     @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([server("cap1"), server("cap2"), server("cap3")])
     Capistrano::SSH.expects(:connect).times(3).returns(:success)
     block_called = false
@@ -148,7 +178,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
 
   def test_execute_on_servers_with_once_option_should_establish_connection_to_and_yield_only_the_first_server
     assert @config.sessions.empty?
-    @config.current_task = stub("task")
+    @config.current_task = mock_task
     @config.expects(:find_servers_for_task).with(@config.current_task, :once => true).returns([server("cap1"), server("cap2"), server("cap3")])
     Capistrano::SSH.expects(:connect).returns(:success)
     block_called = false
@@ -159,10 +189,81 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     assert block_called
     assert_equal %w(cap1), @config.sessions.keys.sort.map { |s| s.host }
   end
+  
+  def test_execute_servers_should_raise_connection_error_on_failure_by_default
+    @config.current_task = mock_task
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([server("cap1")])
+    Capistrano::SSH.expects(:connect).raises(Exception)
+    assert_raises(Capistrano::ConnectionError) {
+      @config.execute_on_servers do
+        flunk "expected an exception to be raised"
+      end
+    }
+  end
+  
+  def test_execute_servers_should_not_raise_connection_error_on_failure_with_on_errors_continue
+    @config.current_task = mock_task(:on_error => :continue)
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([server("cap1"), server("cap2")])
+    Capistrano::SSH.expects(:connect).times(2).raises(Exception).then.returns(:success)
+    assert_nothing_raised {
+      @config.execute_on_servers do |servers|
+        assert_equal %w(cap2), servers.map { |s| s.host }
+      end
+    }
+  end
+  
+  def test_execute_on_servers_should_not_try_to_connect_to_hosts_with_connection_errors_with_on_errors_continue
+    list = [server("cap1"), server("cap2")]
+    @config.current_task = mock_task(:on_error => :continue)
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns(list)
+    Capistrano::SSH.expects(:connect).times(2).raises(Exception).then.returns(:success)
+    @config.expects(:failed!).with(server("cap1"))
+    @config.execute_on_servers do |servers|
+      assert_equal %w(cap2), servers.map { |s| s.host }
+    end
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns(list)
+    @config.execute_on_servers do |servers|
+      assert_equal %w(cap2), servers.map { |s| s.host }
+    end
+  end
+  
+  def test_execute_on_servers_should_not_try_to_connect_to_hosts_with_command_errors_with_on_errors_continue
+    cap1 = server("cap1")
+    cap2 = server("cap2")
+    @config.current_task = mock_task(:on_error => :continue)
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([cap1, cap2])
+    Capistrano::SSH.expects(:connect).times(2).returns(:success)
+    @config.execute_on_servers do |servers|
+      error = Capistrano::CommandError.new
+      error.hosts = [cap1]
+      raise error
+    end
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([cap1, cap2])
+    @config.execute_on_servers do |servers|
+      assert_equal %w(cap2), servers.map { |s| s.host }
+    end
+  end
+  
+  def test_execute_on_servers_should_not_try_to_connect_to_hosts_with_upload_errors_with_on_errors_continue
+    cap1 = server("cap1")
+    cap2 = server("cap2")
+    @config.current_task = mock_task(:on_error => :continue)
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([cap1, cap2])
+    Capistrano::SSH.expects(:connect).times(2).returns(:success)
+    @config.execute_on_servers do |servers|
+      error = Capistrano::UploadError.new
+      error.hosts = [cap1]
+      raise error
+    end
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([cap1, cap2])
+    @config.execute_on_servers do |servers|
+      assert_equal %w(cap2), servers.map { |s| s.host }
+    end
+  end
 
   def test_connect_should_establish_connections_to_all_servers_in_scope
     assert @config.sessions.empty?
-    @config.current_task = stub("task")
+    @config.current_task = mock_task
     @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([server("cap1"), server("cap2"), server("cap3")])
     Capistrano::SSH.expects(:connect).times(3).returns(:success)
     @config.connect!
@@ -171,10 +272,17 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
 
   def test_connect_should_honor_once_option
     assert @config.sessions.empty?
-    @config.current_task = stub("task")
+    @config.current_task = mock_task
     @config.expects(:find_servers_for_task).with(@config.current_task, :once => true).returns([server("cap1"), server("cap2"), server("cap3")])
     Capistrano::SSH.expects(:connect).returns(:success)
     @config.connect! :once => true
     assert_equal %w(cap1), @config.sessions.keys.sort.map { |s| s.host }
   end
+
+  private
+
+    def mock_task(options={})
+      continue_on_error = options[:on_error] == :continue
+      stub("task", :fully_qualified_name => "name", :options => options, :continue_on_error? => continue_on_error)
+    end
 end

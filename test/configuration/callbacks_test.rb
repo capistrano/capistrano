@@ -198,10 +198,9 @@ class ConfigurationCallbacksTest < Test::Unit::TestCase
     @config.after("any:old:thing", :and_then_this, :lastly_this)
 
     [:first_this, :then_this, :and_then_this, :lastly_this].each do |t|
-      @config.expects(:find_and_execute_task).with(t).returns(Proc.new { @config.called << t })
+      @config.expects(:find_and_execute_task).with(t)
     end
 
     @config.execute_task(task)
-    assert_equal [before_task, :first_this, :then_this, task, :and_then_this, :lastly_this, after_task], @config.called
   end
 end

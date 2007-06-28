@@ -51,7 +51,23 @@ class UploadTest < Test::Unit::TestCase
     assert_equal 1, upload.failed
     assert_equal 1, upload.completed
   end
-
+  
+  def test_upload_error_should_include_accessor_with_host_array
+    sftp = mock_sftp
+    sftp.expects(:open).with("test.txt", @mode, 0660).yields(mock("status1", :code => Net::SFTP::Session::FX_OK), :file_handle)
+    sftp.expects(:write).with(:file_handle, "data").yields(mock("status2", :code => "bad status", :message => "bad status"))
+    session = mock("session", :sftp => sftp, :xserver => server("capistrano"))
+    upload = Capistrano::Upload.new([session], "test.txt", :data => "data", :logger => stub_everything)
+    
+    begin
+      upload.process!
+      flunk "expected an exception to be raised"
+    rescue Capistrano::UploadError => e
+      assert e.respond_to?(:hosts)
+      assert_equal %w(capistrano), e.hosts.map { |h| h.to_s }
+    end
+  end
+  
   def test_process_when_sftp_succeeds_should_raise_nothing
     sftp = mock_sftp
     sftp.expects(:open).with("test.txt", @mode, 0660).yields(mock("status1", :code => Net::SFTP::Session::FX_OK), :file_handle)

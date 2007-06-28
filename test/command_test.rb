@@ -207,7 +207,7 @@ class CommandTest < Test::Unit::TestCase
     new_channel = Proc.new do |times|
       ch = mock("channel")
       returns = [false] * (times-1)
-      ch.stubs(:[]).with(:closed).returns(lambda { returns.empty? ? true : returns.pop })
+      ch.stubs(:[]).with(:closed).returns(*(returns + [true]))
       con = mock("connection")
       con.expects(:process).with(true).times(times-1)
       ch.expects(:connection).times(times-1).returns(con)
@@ -227,8 +227,14 @@ class CommandTest < Test::Unit::TestCase
 
     new_channel = Proc.new do
       ch = mock("channel")
-      ch.stubs(:[]).with(:closed).returns(lambda { Time.now - now < 1.1 ? false : true })
-      ch.stubs(:[]).with(:status).returns(0)
+      ch.stubs(:now => now)
+      def ch.[](key)
+        case key
+        when :status then 0
+        when :closed then Time.now - now < 1.1 ? false : true
+        else raise "unknown key: #{key}"
+        end
+      end
       con = mock("connection")
       con.stubs(:process)
       con.expects(:ping!)
