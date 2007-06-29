@@ -79,15 +79,23 @@ class TaskDefinitionTest < Test::Unit::TestCase
     assert_equal "Here is a line wrapped with spacing in it.\n\n  foo         bar\n  baz         bang", task.description
   end
 
-  def test_task_brief_description_should_return_first_sentence_in_description
+  def test_brief_description_should_return_first_sentence_in_description
     desc = "This is the task. It does all kinds of things."
     task = new_task(:testing, @namespace, :desc => desc)
     assert_equal "This is the task.", task.brief_description
   end
 
-  def test_task_brief_description_should_truncate_if_length_given
+  def test_brief_description_should_truncate_if_length_given
     desc = "This is the task that does all kinds of things. And then some."
     task = new_task(:testing, @namespace, :desc => desc)
     assert_equal "This is the task ...", task.brief_description(20)
+  end
+
+  def test_brief_description_should_not_break_at_period_in_middle_of_sentence
+    task = new_task(:testing, @namespace, :desc => "Take file.txt and copy it.")
+    assert_equal "Take file.txt and copy it.", task.brief_description
+
+    task = new_task(:testing, @namespace, :desc => "Take file.txt and copy it. Then do something else.")
+    assert_equal "Take file.txt and copy it.", task.brief_description
   end
 end
