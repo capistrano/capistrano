@@ -1,5 +1,7 @@
 *SVN*
 
+* Don't break task descriptions on a period that appears in the middle of a sentence [Jamis Buck]
+
 * Added support for :on_error => :continue in task definitions, allowing tasks to effectively ignore connection and execution errors that occur as they run [Rob Holland]
 
 * Use correct parameters for Logger constructor in the SCM and Strategy base initializers [Jamis Buck]

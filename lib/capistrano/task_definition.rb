@@ -49,7 +49,7 @@ module Capistrano
     # given, the result will be truncated if it is longer than +max_length+,
     # and an ellipsis appended.
     def brief_description(max_length=nil)
-      brief = description[/^.*?\./] || description
+      brief = description[/^.*?\.(?=\s|$)/] || description
 
       if max_length && brief.length > max_length
         brief = brief[0,max_length-3] + "..."
