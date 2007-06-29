@@ -12,7 +12,7 @@ module Capistrano
 
     MAJOR = 1
     MINOR = 99
-    TINY  = 2
+    TINY  = 3
 
     STRING = [MAJOR, MINOR, TINY].join(".")
     
