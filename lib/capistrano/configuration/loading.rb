@@ -77,7 +77,7 @@ module Capistrano
       end
 
       # Require another file. This is identical to the standard require method,
-      # with the exception that it sets the reciever as the "current" configuration
+      # with the exception that it sets the receiver as the "current" configuration
       # so that third-party task bundles can include themselves relative to
       # that configuration.
       def require(*args) #:nodoc:
