@@ -1,5 +1,7 @@
 *SVN*
 
+* Make sure deploy:check aborts if it fails [Jamis Buck]
+
 * Spelling correction in docs [Tim Carey-Smith]
 
 
