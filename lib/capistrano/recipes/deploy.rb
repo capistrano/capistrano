@@ -360,6 +360,7 @@ namespace :deploy do
       dependencies.reject { |d| d.pass? }.each do |d|
         puts "--> #{d.message}"
       end
+      abort
     end
   end
 
