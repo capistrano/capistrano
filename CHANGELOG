@@ -1,5 +1,7 @@
 *SVN*
 
+* Put $stdout in sync mode, so that Net::SSH prompts are displayed [Jamis Buck]
+
 * Make sure deploy:check aborts if it fails [Jamis Buck]
 
 * Spelling correction in docs [Tim Carey-Smith]

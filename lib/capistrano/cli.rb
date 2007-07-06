@@ -37,6 +37,7 @@ module Capistrano
     # the CLI class is recommended.
     def initialize(args)
       @args = args.dup
+      $stdout.sync = true # so that Net::SSH prompts show up
     end
 
     # Mix-in the actual behavior
