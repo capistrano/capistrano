@@ -4,8 +4,8 @@ module Capistrano
   module Deploy
     module SCM
 
-      # Implements the Capistrano SCM interface for the Subversion revision
-      # control system (http://subversion.tigris.org).
+      # Implements the Capistrano SCM interface for the CVS revision
+      # control system.
       class Cvs < Base
         # Sets the default command name for this SCM. Users may override this
         # by setting the :scm_command variable.
