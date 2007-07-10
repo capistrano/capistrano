@@ -115,7 +115,7 @@ module Capistrano
         begin
           establish_connections_to(servers)
         rescue ConnectionError => error
-          raise error unless task.continue_on_error?
+          raise error unless task && task.continue_on_error?
           error.hosts.each do |h|
             servers.delete(h)
             failed!(h)
@@ -125,7 +125,7 @@ module Capistrano
         begin
           yield servers
         rescue RemoteError => error
-          raise error unless task.continue_on_error?
+          raise error unless task && task.continue_on_error?
           error.hosts.each { |h| failed!(h) }
         end
       end

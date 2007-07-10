@@ -1,5 +1,7 @@
 *SVN*
 
+* Allow execute_on_servers to be called without a current task again [Jamis Buck]
+
 * Put $stdout in sync mode, so that Net::SSH prompts are displayed [Jamis Buck]
 
 * Make sure deploy:check aborts if it fails [Jamis Buck]
