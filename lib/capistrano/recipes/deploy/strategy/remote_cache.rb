@@ -16,6 +16,12 @@ module Capistrano
           copy_repository_cache
         end
 
+        def check!
+          super.check do |d|
+            d.remote.writable(shared_path)
+          end
+        end
+
         private
 
           def repository_cache
