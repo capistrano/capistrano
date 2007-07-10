@@ -88,7 +88,7 @@ namespace :deploy do
   desc <<-DESC
     Deploys your project. This calls both `update' and `restart'. Note that \
     this will generally only work for applications that have already been deployed \
-    once. For a "cold" deploy, you'll want to take a look at the `cold_deploy' \
+    once. For a "cold" deploy, you'll want to take a look at the `deploy:cold' \
     task, which handles the cold start specifically.
   DESC
   task :default do
@@ -180,8 +180,8 @@ namespace :deploy do
   end
 
   desc <<-DESC
-    Updates the symlink to the most recently deployed version. Capistrano works
-    by putting each new release of your application in its own directory. When
+    Updates the symlink to the most recently deployed version. Capistrano works \
+    by putting each new release of your application in its own directory. When \
     you deploy a new version, this task's job is to update the `current' symlink \
     to point at the new version. You will rarely need to call this task \
     directly; instead, use the `deploy' task (which performs a complete \
@@ -264,9 +264,9 @@ namespace :deploy do
     deployed version of the app. However, you can specify a different release \
     via the migrate_target variable, which must be one of :latest (for the \
     default behavior), or :current (for the release indicated by the \
-    `current' symlink). Strings will work for those values instead of symbols,
-    too. You can also specify additional environment variables to pass to rake
-    via the migrate_env variable. Finally, you can specify the full path to the
+    `current' symlink). Strings will work for those values instead of symbols, \
+    too. You can also specify additional environment variables to pass to rake \
+    via the migrate_env variable. Finally, you can specify the full path to the \
     rake executable by setting the rake variable. The defaults are:
 
       set :rake,           "rake"
@@ -368,7 +368,7 @@ namespace :deploy do
     Deploys and starts a `cold' application. This is useful if you have not \
     deployed your application before, or if your application is (for some \
     other reason) not currently running. It will deploy the code, run any \
-    pending migrations, and then instead of invoking `deploy:restart', it will
+    pending migrations, and then instead of invoking `deploy:restart', it will \
     invoke `deploy:start' to fire up the application servers.
   DESC
   task :cold do
