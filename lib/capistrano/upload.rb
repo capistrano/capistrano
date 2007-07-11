@@ -98,14 +98,16 @@ module Capistrano
           sftp.channel[:server] = server
           sftp.channel[:done] = false
           sftp.channel[:failed] = false
-          sftp.open(filename, IO::WRONLY | IO::CREAT | IO::TRUNC, options[:mode] || 0660) do |status, handle|
-            break unless check_status(sftp, "open #{filename}", server, status)
+
+          real_filename = filename.gsub(/\$CAPISTRANO:HOST\$/, server.host)
+          sftp.open(real_filename, IO::WRONLY | IO::CREAT | IO::TRUNC, options[:mode] || 0660) do |status, handle|
+            break unless check_status(sftp, "open #{real_filename}", server, status)
             
-            logger.info "uploading data to #{server}:#{filename}" if logger
+            logger.info "uploading data to #{server}:#{real_filename}" if logger
             sftp.write(handle, options[:data] || "") do |status|
-              break unless check_status(sftp, "write to #{server}:#{filename}", server, status)
+              break unless check_status(sftp, "write to #{server}:#{real_filename}", server, status)
               sftp.close_handle(handle) do
-                logger.debug "done uploading data to #{server}:#{filename}" if logger
+                logger.debug "done uploading data to #{server}:#{real_filename}" if logger
                 completed!(sftp)
               end
             end
