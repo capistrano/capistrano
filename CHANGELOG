@@ -1,5 +1,9 @@
 *SVN*
 
+* Add a millisecond sleep in upload to reduce CPU impact [Jamis Buck]
+
+* Allow the logger to be set via Configuration#logger= [Jamis Buck]
+
 * Allow $CAPISTRANO:HOST$ to be used in filenames to the put command [Jamis Buck]
 
 * Allow execute_on_servers to be called without a current task again [Jamis Buck]

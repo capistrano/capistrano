@@ -19,7 +19,7 @@ module Capistrano
   # define roles, and set configuration variables.
   class Configuration
     # The logger instance defined for this configuration.
-    attr_reader :logger
+    attr_accessor :logger
 
     def initialize #:nodoc:
       @logger = Logger.new

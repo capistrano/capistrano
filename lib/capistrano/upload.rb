@@ -70,6 +70,7 @@ module Capistrano
             failed!(sftp)
           end
         end
+        sleep 0.01 # a brief respite, to keep the CPU from going crazy
       end
       logger.trace "upload finished" if logger
 
