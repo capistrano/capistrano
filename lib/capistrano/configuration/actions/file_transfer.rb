@@ -16,9 +16,7 @@ module Capistrano
         end
     
         # Get file remote_path from FIRST server targetted by
-        # the current task and transfer it to local machine as path. It will use
-        # SFTP if Net::SFTP is installed; otherwise it will fall back to using
-        # 'cat', which may cause corruption in binary files.
+        # the current task and transfer it to local machine as path.
         #
         # get "#{deploy_to}/current/log/production.log", "log/production.log.web"
         def get(remote_path, path, options = {})
