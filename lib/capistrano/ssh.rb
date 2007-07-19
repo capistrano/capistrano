@@ -19,6 +19,7 @@ module Capistrano
     service/agentforward/services service/agentforward/driver
     service/process/driver util/prompter
     service/forward/services service/forward/driver service/forward/local-network-handler service/forward/remote-network-handler
+    service/shell/services service/shell/driver
     lenient-host-key-verifier
     transport/compress/services transport/compress/zlib-compressor transport/compress/none-compressor transport/compress/zlib-decompressor transport/compress/none-decompressor
     transport/kex/services transport/kex/dh transport/kex/dh-gex

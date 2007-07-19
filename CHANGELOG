@@ -1,5 +1,7 @@
 *SVN*
 
+* Auto-require the SSH shell service, to avoid race conditions [Jamis Buck]
+
 * Add a millisecond sleep in upload to reduce CPU impact [Jamis Buck]
 
 * Allow the logger to be set via Configuration#logger= [Jamis Buck]
