@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix "input stream is empty" errors from HighLine on prompt [Jamis Buck]
+
 * Added "synchronous_connect" setting to try and work around SFTP hangs for certain users [Jamis Buck]
 
 * Auto-require the SSH shell service, to avoid race conditions [Jamis Buck]
