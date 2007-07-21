@@ -15,8 +15,10 @@ desc <<-DESC
     $ cap ROLES=app,web SUDO=1 COMMAND="tail -f /var/log/messages" invoke
 DESC
 task :invoke do
+  command = ENV["COMMAND"] || ""
+  abort "Please specify a command to execute on the remote servers (via the COMMAND environment variable)" if command.empty?
   method = ENV["SUDO"] ? :sudo : :run
-  invoke_command(ENV["COMMAND"], :via => method)
+  invoke_command(command, :via => method)
 end
 
 desc <<-DESC
