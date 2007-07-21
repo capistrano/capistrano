@@ -36,3 +36,8 @@ Use the +cap+ script as follows:
     cap sometask
 
 By default, the script will look for a file called one of +capfile+ or +Capfile+. The +someaction+ text indicates which task to execute. You can do "cap -h" to see all the available options and "cap -T" to see all the available tasks.
+
+== KNOWN ISSUES
+
+* Using "put" to upload a file to two or more hosts when a gateway is in effect has a good chance of crashing with a "corrupt mac detected" error. This is due to a bug in Net::SSH.
+* Running commands may rarely hang inexplicably. This appears to be specific only to certain platforms. Most people will never see this behavior.
