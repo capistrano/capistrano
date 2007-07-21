@@ -58,14 +58,14 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     @config.desc "A description"
     @config.task(:testing) { puts "foo" }
     @config.task(:another) { puts "bar" }
-    assert_equal "A description", @config.tasks[:testing].options[:desc]
-    assert_nil @config.tasks[:another].options[:desc]
+    assert_equal "A description", @config.tasks[:testing].desc
+    assert_nil @config.tasks[:another].desc
   end
 
   def test_pending_desc_should_apply_only_to_next_task_in_any_namespace
     @config.desc "A description"
     @config.namespace(:outer) { task(:testing) { puts "foo" } }
-    assert_equal "A description", @config.namespaces[:outer].tasks[:testing].options[:desc]
+    assert_equal "A description", @config.namespaces[:outer].tasks[:testing].desc
   end
 
   def test_defining_task_without_block_should_raise_error

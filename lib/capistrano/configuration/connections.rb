@@ -105,7 +105,7 @@ module Capistrano
           servers = find_servers_for_task(task, options)
 
           if servers.empty?
-            raise ScriptError, "`#{task.fully_qualified_name}' is only run for servers matching #{task.options.inspect}, but no servers matched"
+            raise Capistrano::NoMatchingServersError, "`#{task.fully_qualified_name}' is only run for servers matching #{task.options.inspect}, but no servers matched"
           end
 
           if task.continue_on_error?
@@ -114,7 +114,7 @@ module Capistrano
           end
         else
           servers = find_servers(options)
-          raise ScriptError, "no servers found to match #{options.inspect}" if servers.empty?
+          raise Capistrano::NoMatchingServersError, "no servers found to match #{options.inspect}" if servers.empty?
         end
 
         servers = [servers.first] if options[:once]
