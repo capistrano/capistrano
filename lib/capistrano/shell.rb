@@ -160,7 +160,7 @@ HELP
           connect(task)
           configuration.execute_task(task)
         end
-      rescue Capistrano::NoSuchTaskError => error
+      rescue Capistrano::NoMatchingServersError, Capistrano::NoSuchTaskError => error
         warn "error: #{error.message}"
       end
 

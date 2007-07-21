@@ -3,14 +3,16 @@ require 'capistrano/server_definition'
 module Capistrano
   # Represents the definition of a single task.
   class TaskDefinition
-    attr_reader :name, :namespace, :options, :body
+    attr_reader :name, :namespace, :options, :body, :desc, :on_error
 
     def initialize(name, namespace, options={}, &block)
       @name, @namespace, @options = name, namespace, options
+      @desc = @options.delete(:desc)
+      @on_error = options.delete(:on_error)
       @body = block or raise ArgumentError, "a task requires a block"
       @servers = nil
     end
-
+    
     # Returns the task's fully-qualified name, including the namespace
     def fully_qualified_name
       @fully_qualified_name ||= begin
@@ -28,7 +30,7 @@ module Capistrano
     def description(rebuild=false)
       @description = nil if rebuild
       @description ||= begin
-        description = options[:desc] || ""
+        description = @desc || ""
 
         indentation = description[/\A\s+/]
         if indentation
@@ -61,7 +63,7 @@ module Capistrano
     # Indicates whether the task wants to continue, even if a server has failed
     # previously
     def continue_on_error?
-      options[:on_error] == :continue
+      @on_error == :continue
     end
   end
 end

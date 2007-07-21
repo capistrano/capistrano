@@ -138,13 +138,13 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
 
   def test_execute_on_servers_without_current_task_should_raise_error_if_no_matching_servers
     @config.expects(:find_servers).with(:a => :b, :c => :d).returns([])
-    assert_raises(ScriptError) { @config.execute_on_servers(:a => :b, :c => :d) { |list| } }
+    assert_raises(Capistrano::NoMatchingServersError) { @config.execute_on_servers(:a => :b, :c => :d) { |list| } }
   end
 
   def test_execute_on_servers_should_raise_an_error_if_the_current_task_has_no_matching_servers_by_default
     @config.current_task = mock_task
     @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([])
-    assert_raises(ScriptError) do
+    assert_raises(Capistrano::NoMatchingServersError) do
       @config.execute_on_servers do
         flunk "should not get here"
       end

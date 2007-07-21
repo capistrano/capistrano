@@ -1,5 +1,7 @@
 *SVN*
 
+* Make the "no matching servers" error more sane [halorgium]
+
 * Make sure the invoke task gives a sane error when the COMMAND value is omitted [halorgium]
 
 * Make sure variables are conditionally set in the deploy recipes, so as not to clobber values set elsewhere [Jamis Buck]
