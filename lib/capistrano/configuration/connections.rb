@@ -70,13 +70,22 @@ module Capistrano
       def establish_connections_to(servers)
         failed_servers = []
 
-        # force the connection factory to be instantiated synchronously,
-        # otherwise we wind up with multiple gateway instances, because
-        # each connection is done in parallel.
-        connection_factory
+        # This attemps to work around the problem where SFTP uploads hang
+        # for some people. A bit of investigating seemed to reveal that the
+        # hang only occurred when the SSH connections were established async,
+        # so this setting allows people to at least work around the problem.
+        if fetch(:synchronous_connect, false)
+          logger.trace "synchronous_connect: true"
+          Array(servers).each { |server| safely_establish_connection_to(server, failed_servers) }
+        else
+          # force the connection factory to be instantiated synchronously,
+          # otherwise we wind up with multiple gateway instances, because
+          # each connection is done in parallel.
+          connection_factory
 
-        threads = Array(servers).map { |server| establish_connection_to(server, failed_servers) }
-        threads.each { |t| t.join }
+          threads = Array(servers).map { |server| establish_connection_to(server, failed_servers) }
+          threads.each { |t| t.join }
+        end
 
         if failed_servers.any?
           errors = failed_servers.map { |h| "#{h[:server]} (#{h[:error].class}: #{h[:error].message})" }
@@ -136,14 +145,14 @@ module Capistrano
         # prevents problems with the thread's scope seeing the wrong 'server'
         # variable if the thread just happens to take too long to start up.
         def establish_connection_to(server, failures=nil)
-          Thread.new do
-            begin
-              sessions[server] ||= connection_factory.connect_to(server)
-            rescue Exception => err
-              raise unless failures
-              failures << { :server => server, :error => err }
-            end
-          end
+          Thread.new { safely_establish_connection_to(server, failures) }
+        end
+
+        def safely_establish_connection_to(server, failures=nil)
+          sessions[server] ||= connection_factory.connect_to(server)
+        rescue Exception => err
+          raise unless failures
+          failures << { :server => server, :error => err }
         end
     end
   end
