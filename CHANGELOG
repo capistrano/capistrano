@@ -1,5 +1,7 @@
 *SVN*
 
+* Make sure variables are conditionally set in the deploy recipes, so as not to clobber values set elsewhere [Jamis Buck]
+
 * Fix "input stream is empty" errors from HighLine on prompt [Jamis Buck]
 
 * Added "synchronous_connect" setting to try and work around SFTP hangs for certain users [Jamis Buck]
