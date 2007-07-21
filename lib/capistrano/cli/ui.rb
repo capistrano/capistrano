@@ -1,5 +1,9 @@
 require 'highline'
 
+# work around problem where HighLine detects an eof on $stdin and raises an
+# error.
+HighLine.track_eof = false
+
 module Capistrano
   class CLI
     module UI
