@@ -54,7 +54,7 @@ module Capistrano
           ) { options[:password] = nil }
 
           opts.on("-q", "--quiet",
-            "Make the output as quiet as possible (default)"
+            "Make the output as quiet as possible."
           ) { options[:verbose] = 0 }
 
           opts.on("-S", "--set-before NAME=VALUE",
