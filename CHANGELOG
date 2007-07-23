@@ -1,3 +1,8 @@
+*SVN*
+
+* Change the "-h" output so that it does not say that "-q" is the default [Jamis Buck]
+
+
 *2.0.0* July 21, 2007
 
 * Make the "no matching servers" error more sane [halorgium]
