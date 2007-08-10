@@ -280,4 +280,18 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     inner = @config.namespaces[:outer].namespaces[:inner]
     assert_nil inner.search_task(:first)
   end
+
+  def test_top_should_return_self_if_self_is_top
+    assert_equal @config, @config.top
+  end
+
+  def test_top_should_return_parent_if_parent_is_top
+    @config.namespace(:outer) {}
+    assert_equal @config, @config.namespaces[:outer].top
+  end
+
+  def test_top_should_return_topmost_parent_if_self_is_deeply_nested
+    @config.namespace(:outer) { namespace(:middle) { namespace(:inner) {} } }
+    assert_equal @config, @config.namespaces[:outer].namespaces[:middle].namespaces[:inner].top
+  end
 end

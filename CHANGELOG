@@ -1,5 +1,7 @@
 *SVN*
 
+* Add Namespaces#top to always return a reference to the topmost namespace [Jamis Buck]
+
 * Change the "-h" output so that it does not say that "-q" is the default [Jamis Buck]
 
 

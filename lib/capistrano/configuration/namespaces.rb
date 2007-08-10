@@ -32,6 +32,12 @@ module Capistrano
       end
       private :initialize_with_namespaces
 
+      # Returns the top-level namespace (the one with no parent).
+      def top
+        return parent.top if parent
+        return self
+      end
+
       # Returns the fully-qualified name of this namespace, or nil if the
       # namespace is at the top-level.
       def fully_qualified_name
