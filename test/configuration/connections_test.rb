@@ -96,7 +96,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
   def test_establish_connections_to_should_raise_one_connection_error_on_failure
     Capistrano::SSH.expects(:connect).times(2).raises(Exception)
     assert_raises(Capistrano::ConnectionError) {
-      @config.establish_connections_to(%w(cap1 cap2)).map { |s| servers(s) }
+      @config.establish_connections_to(%w(cap1 cap2).map { |s| server(s) })
     }
   end
 
@@ -104,7 +104,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     Capistrano::SSH.expects(:connect).times(2).raises(Exception)
 
     begin
-      @config.establish_connections_to(%w(cap1 cap2)).map { |s| servers(s) }      
+      @config.establish_connections_to(%w(cap1 cap2).map { |s| server(s) })
       flunk "expected an exception to be raised"
     rescue Capistrano::ConnectionError => e
       assert e.respond_to?(:hosts)
@@ -116,7 +116,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     Capistrano::SSH.expects(:connect).times(2).raises(Exception).then.returns(:success)
 
     begin
-      @config.establish_connections_to(%w(cap1 cap2)).map { |s| servers(s) }      
+      @config.establish_connections_to(%w(cap1 cap2).map { |s| server(s) })
       flunk "expected an exception to be raised"
     rescue Capistrano::ConnectionError => e
       assert_equal %w(cap1), e.hosts.map { |h| h.to_s }
