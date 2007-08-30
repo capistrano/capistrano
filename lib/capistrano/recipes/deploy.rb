@@ -230,15 +230,19 @@ namespace :deploy do
 
   desc <<-DESC
     Restarts your application. This works by calling the script/process/reaper \
-    script under the current path. By default, this will be invoked via sudo, \
-    but if you are in an environment where sudo is not an option, or is not \
-    allowed, you can indicate that restarts should use `run' instead by \
-    setting the `use_sudo' variable to false:
-
+    script under the current path.
+    
+    By default, this will be invoked via sudo as the `app' user. If \
+    you wish to run it as a different user, set the :runner variable to \
+    that user. If you are in an environment where you can't use sudo, set \
+    the :use_sudo variable to false:
+    
       set :use_sudo, false
   DESC
   task :restart, :roles => :app, :except => { :no_release => true } do
-    invoke_command "#{current_path}/script/process/reaper", :via => run_method
+    as = fetch(:runner, "app")
+    via = fetch(:run_method, :sudo)
+    invoke_command "#{current_path}/script/process/reaper", :via => via, :as => as
   end
 
   desc <<-DESC
