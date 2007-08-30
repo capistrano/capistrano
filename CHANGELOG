@@ -1,5 +1,7 @@
 *SVN*
 
+* Add Accurev SCM support [Doug Barth]
+
 * Use the :runner variable to determine who to sudo as for deploy:restart [Graham Ashton]
 
 * Add Namespaces#top to always return a reference to the topmost namespace [Jamis Buck]
