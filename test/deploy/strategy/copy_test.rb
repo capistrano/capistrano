@@ -26,7 +26,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     mock_file = mock("file")
     mock_file.expects(:puts).with("154")
     File.expects(:open).with("/temp/dir/1234567890/REVISION", "w").yields(mock_file)
-    File.expects(:read).with("/temp/dir/1234567890.tar.gz").returns(:mock_file_contents)
+    File.expects(:open).with("/temp/dir/1234567890.tar.gz", "rb").yields(StringIO.new).returns(:mock_file_contents)
 
     FileUtils.expects(:rm).with("/temp/dir/1234567890.tar.gz")
     FileUtils.expects(:rm_rf).with("/temp/dir/1234567890")
@@ -48,7 +48,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     mock_file = mock("file")
     mock_file.expects(:puts).with("154")
     File.expects(:open).with("/temp/dir/1234567890/REVISION", "w").yields(mock_file)
-    File.expects(:read).with("/temp/dir/1234567890.tar.gz").returns(:mock_file_contents)
+    File.expects(:open).with("/temp/dir/1234567890.tar.gz", "rb").yields(StringIO.new).returns(:mock_file_contents)
 
     FileUtils.expects(:rm).with("/temp/dir/1234567890.tar.gz")
     FileUtils.expects(:rm_rf).with("/temp/dir/1234567890")
@@ -70,7 +70,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     mock_file = mock("file")
     mock_file.expects(:puts).with("154")
     File.expects(:open).with("/temp/dir/1234567890/REVISION", "w").yields(mock_file)
-    File.expects(:read).with("/temp/dir/1234567890.zip").returns(:mock_file_contents)
+    File.expects(:open).with("/temp/dir/1234567890.zip", "rb").yields(StringIO.new).returns(:mock_file_contents)
 
     FileUtils.expects(:rm).with("/temp/dir/1234567890.zip")
     FileUtils.expects(:rm_rf).with("/temp/dir/1234567890")
@@ -92,7 +92,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     mock_file = mock("file")
     mock_file.expects(:puts).with("154")
     File.expects(:open).with("/temp/dir/1234567890/REVISION", "w").yields(mock_file)
-    File.expects(:read).with("/temp/dir/1234567890.tar.bz2").returns(:mock_file_contents)
+    File.expects(:open).with("/temp/dir/1234567890.tar.bz2", "rb").yields(StringIO.new).returns(:mock_file_contents)
 
     FileUtils.expects(:rm).with("/temp/dir/1234567890.tar.bz2")
     FileUtils.expects(:rm_rf).with("/temp/dir/1234567890")
@@ -114,7 +114,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     mock_file = mock("file")
     mock_file.expects(:puts).with("154")
     File.expects(:open).with("/other/path/1234567890/REVISION", "w").yields(mock_file)
-    File.expects(:read).with("/other/path/1234567890.tar.gz").returns(:mock_file_contents)
+    File.expects(:open).with("/other/path/1234567890.tar.gz", "rb").yields(StringIO.new).returns(:mock_file_contents)
 
     FileUtils.expects(:rm).with("/other/path/1234567890.tar.gz")
     FileUtils.expects(:rm_rf).with("/other/path/1234567890")
@@ -136,7 +136,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     mock_file = mock("file")
     mock_file.expects(:puts).with("154")
     File.expects(:open).with("/temp/dir/1234567890/REVISION", "w").yields(mock_file)
-    File.expects(:read).with("/temp/dir/1234567890.tar.gz").returns(:mock_file_contents)
+    File.expects(:open).with("/temp/dir/1234567890.tar.gz", "rb").yields(StringIO.new).returns(:mock_file_contents)
 
     FileUtils.expects(:rm).with("/temp/dir/1234567890.tar.gz")
     FileUtils.expects(:rm_rf).with("/temp/dir/1234567890")
