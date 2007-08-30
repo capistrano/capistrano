@@ -224,7 +224,8 @@ namespace :deploy do
     abort "Please specify at least one file to update (via the FILES environment variable)" if files.empty?
 
     files.each do |file|
-      put File.read(file), File.join(current_path, file)
+      content = File.open(file, "rb") { |f| f.read }
+      put content, File.join(current_path, file)
     end
   end
 
