@@ -81,14 +81,14 @@ module Capistrano
 
         private
 
-          # If a username or password is configured for the SCM, return the
-          # command-line switches for those values.
+          # If a username is configured for the SCM, return the =command-line
+          # switches for that. Note that we don't need to return the password
+          # switch, since Capistrano will check for that prompt in the output
+          # and will respond appropriately.
           def authentication
-            auth = ""
-            auth << "--username #{variable(:scm_username)} " if variable(:scm_username)
-            auth << "--password #{variable(:scm_password)} " if variable(:scm_password)
-            auth << "--no-auth-cache" if !auth.empty?
-            auth
+            username = variable(:scm_username)
+            return "" unless username
+            "--username #{variable(:scm_username)} --no-auth-cache "
           end
 
           # If verbose output is requested, return nil, otherwise return the
