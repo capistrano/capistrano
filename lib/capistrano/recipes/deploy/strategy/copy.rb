@@ -32,7 +32,8 @@ module Capistrano
           logger.trace "compressing #{destination} to #{filename}"
           Dir.chdir(tmpdir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
 
-          put File.read(filename), remote_filename
+          content = File.open(filename, "rb") { |f| f.read }
+          put content, remote_filename 
           run "cd #{configuration[:releases_path]} && #{decompress(remote_filename).join(" ")} && rm #{remote_filename}"
         ensure
           FileUtils.rm filename rescue nil
