@@ -39,9 +39,14 @@ _cset(:real_revision)     { source.local.query_revision(revision) { |cmd| with_e
 _cset(:strategy)          { Capistrano::Deploy::Strategy.new(deploy_via, self) }
 
 _cset(:release_name)      { set :deploy_timestamped, true; Time.now.utc.strftime("%Y%m%d%H%M%S") }
-_cset(:releases_path)     { File.join(deploy_to, "releases") }
-_cset(:shared_path)       { File.join(deploy_to, "shared") }
-_cset(:current_path)      { File.join(deploy_to, "current") }
+
+_cset(:version_dir)       "releases"
+_cset(:shared_dir)        "shared"
+_cset(:current_dir)       "current"
+
+_cset(:releases_path)     { File.join(deploy_to, version_dir) }
+_cset(:shared_path)       { File.join(deploy_to, shared_dir) }
+_cset(:current_path)      { File.join(deploy_to, current_dir) }
 _cset(:release_path)      { File.join(releases_path, release_name) }
 
 _cset(:releases)          { capture("ls -x #{releases_path}").split.sort }

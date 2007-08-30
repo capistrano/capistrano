@@ -1,5 +1,7 @@
 *SVN*
 
+* Add version_dir, current_dir, and shared_dir variables for naming the directories used in deployment [drinkingbird]
+
 * Use Windows-safe binary reads for reading file contents [fukas78]
 
 * Add Accurev SCM support [Doug Barth]
