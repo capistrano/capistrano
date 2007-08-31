@@ -37,5 +37,9 @@ module Capistrano
     def call
       config.find_and_execute_task(source)
     end
+
+    def applies_to?(task)
+      super && (task.nil? || task.fully_qualified_name != source.to_s)
+    end
   end
 end
