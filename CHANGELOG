@@ -1,5 +1,7 @@
 *SVN*
 
+* Don't let a task trigger itself when used as the source for an "on" hook [Jamis Buck]
+
 * Avoid using the --password switch with subversion for security purposes [sentinel]
 
 * Add version_dir, current_dir, and shared_dir variables for naming the directories used in deployment [drinkingbird]
