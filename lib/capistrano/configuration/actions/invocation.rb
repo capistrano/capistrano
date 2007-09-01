@@ -68,7 +68,7 @@ module Capistrano
 
           options = options.dup
           as = options.delete(:as)
-          
+
           user = as && "-u #{as}"
           command = [fetch(:sudo, "sudo"), "-p '#{sudo_prompt}'", user, command].compact.join(" ")
 
