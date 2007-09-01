@@ -112,6 +112,13 @@ class CommandTest < Test::Unit::TestCase
     Capistrano::Command.new("ls", [session], :shell => "/bin/bash")
   end
 
+  def test_successful_channel_with_shell_false_should_send_command_without_shell
+    session = setup_for_extracting_channel_action do |ch|
+      ch.expects(:exec).with(%(echo `hostname`))
+    end
+    Capistrano::Command.new("echo `hostname`", [session], :shell => false)
+  end
+
   def test_successful_channel_should_send_data_if_data_key_is_present
     session = setup_for_extracting_channel_action do |ch|
       ch.expects(:exec).with(%(sh -c "ls"))
