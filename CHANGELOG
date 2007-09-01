@@ -1,4 +1,4 @@
-*SVN*
+*2.0.100 (2.1 Preview 1)* September 1, 2007
 
 * capify-generated Capfile will autoload all recipes from vendor/plugins/*/recipes/*.rb [Graeme Mathieson]
 
