@@ -1,5 +1,7 @@
 *SVN*
 
+* capify-generated Capfile will autoload all recipes from vendor/plugins/*/recipes/*.rb [Graeme Mathieson]
+
 * Use sudo -p switch to set sudo password prompt to something predictable [Mike Bailey]
 
 * Allow independent configurations to require the same recipe file [Jamis Buck]
