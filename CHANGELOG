@@ -1,5 +1,7 @@
 *SVN*
 
+* Use sudo -p switch to set sudo password prompt to something predictable [Mike Bailey]
+
 * Allow independent configurations to require the same recipe file [Jamis Buck]
 
 * Set :shell to false to run a command without wrapping it in "sh -c" [Jamis Buck]
@@ -16,7 +18,7 @@
 
 * Add version_dir, current_dir, and shared_dir variables for naming the directories used in deployment [drinkingbird]
 
-* Use Windows-safe binary reads for reading file contents [fukas78]
+* Use Windows-safe binary reads for reading file contents [Ladislav Martincik]
 
 * Add Accurev SCM support [Doug Barth]
 

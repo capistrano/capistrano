@@ -68,9 +68,9 @@ module Capistrano
 
           options = options.dup
           as = options.delete(:as)
-
+          
           user = as && "-u #{as}"
-          command = [fetch(:sudo, "sudo"), user, command].compact.join(" ")
+          command = [fetch(:sudo, "sudo"), "-p '#{sudo_prompt}'", user, command].compact.join(" ")
 
           run(command, options, &sudo_behavior_callback(block))
         end
@@ -84,9 +84,9 @@ module Capistrano
           # was wrong, let's track which host prompted first and only allow
           # subsequent prompts from that host.
           prompt_host = nil
-          
+
           Proc.new do |ch, stream, out|
-            if out =~ /password:/i
+            if out =~ /^#{Regexp.escape(sudo_prompt)}/
               ch.send_data "#{self[:password]}\n"
             elsif out =~ /try again/
               if prompt_host.nil? || prompt_host == ch[:server]
@@ -123,6 +123,13 @@ module Capistrano
 
           options
         end
+
+        private
+
+          # Returns the prompt text to use with sudo
+          def sudo_prompt
+            fetch(:sudo_prompt, "sudo password: ")
+          end
       end
     end
   end
