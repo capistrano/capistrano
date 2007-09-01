@@ -1,5 +1,7 @@
 *SVN*
 
+* Set :shell to false to run a command without wrapping it in "sh -c" [Jamis Buck]
+
 * Don't request a pty by default [Jamis Buck]
 
 * Add a "match" remote dependency method [Adam Greene]

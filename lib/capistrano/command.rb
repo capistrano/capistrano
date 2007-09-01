@@ -86,8 +86,18 @@ module Capistrano
 
             execute_command = Proc.new do |ch|
               logger.trace "executing command", ch[:server] if logger
-              escaped = replace_placeholders(command, ch).gsub(/[$\\`"]/) { |m| "\\#{m}" }
-              command_line = [environment, options[:shell] || "sh", "-c", "\"#{escaped}\""].compact.join(" ")
+              cmd = replace_placeholders(command, ch)
+
+              if options[:shell] == false
+                shell = nil
+              else
+                shell = "#{options[:shell] || "sh"} -c"
+                cmd = cmd.gsub(/[$\\`"]/) { |m| "\\#{m}" }
+                cmd = "\"#{cmd}\""
+              end
+
+              command_line = [environment, shell, cmd].compact.join(" ")
+
               ch.exec(command_line)
               ch.send_data(options[:data]) if options[:data]
             end
