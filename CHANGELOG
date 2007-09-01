@@ -1,5 +1,7 @@
 *SVN*
 
+* Allow auth-caching of subversion credentials to be enabled via :scm_auth_cache [tsmith]
+
 * Don't let a task trigger itself when used as the source for an "on" hook [Jamis Buck]
 
 * Avoid using the --password switch with subversion for security purposes [sentinel]

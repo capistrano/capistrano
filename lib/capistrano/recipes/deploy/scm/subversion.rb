@@ -88,7 +88,9 @@ module Capistrano
           def authentication
             username = variable(:scm_username)
             return "" unless username
-            "--username #{variable(:scm_username)} --no-auth-cache "
+            result = "--username #{variable(:scm_username)} "
+            result << "--no-auth-cache " unless variable(:scm_auth_cache)
+            result
           end
 
           # If verbose output is requested, return nil, otherwise return the
