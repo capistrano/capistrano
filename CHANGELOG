@@ -1,5 +1,7 @@
 *SVN*
 
+* Allow independent configurations to require the same recipe file [Jamis Buck]
+
 * Set :shell to false to run a command without wrapping it in "sh -c" [Jamis Buck]
 
 * Don't request a pty by default [Jamis Buck]
