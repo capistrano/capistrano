@@ -116,4 +116,12 @@ class ConfigurationLoadingTest < Test::Unit::TestCase
       require "#{File.dirname(__FILE__)}/../fixtures/custom"
     end
   end
+
+  def test_require_in_multiple_instances_should_load_recipes_in_each_instance
+    config2 = MockConfig.new
+    @config.require "#{File.dirname(__FILE__)}/../fixtures/custom"
+    config2.require "#{File.dirname(__FILE__)}/../fixtures/custom"
+    assert_equal :custom, @config.ping
+    assert_equal :custom, config2.ping
+  end
 end
