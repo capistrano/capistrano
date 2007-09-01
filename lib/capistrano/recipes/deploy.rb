@@ -40,9 +40,9 @@ _cset(:strategy)          { Capistrano::Deploy::Strategy.new(deploy_via, self) }
 
 _cset(:release_name)      { set :deploy_timestamped, true; Time.now.utc.strftime("%Y%m%d%H%M%S") }
 
-_cset(:version_dir)       "releases"
-_cset(:shared_dir)        "shared"
-_cset(:current_dir)       "current"
+_cset :version_dir,       "releases"
+_cset :shared_dir,        "shared"
+_cset :current_dir,       "current"
 
 _cset(:releases_path)     { File.join(deploy_to, version_dir) }
 _cset(:shared_path)       { File.join(deploy_to, shared_dir) }
