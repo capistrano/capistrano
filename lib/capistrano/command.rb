@@ -83,9 +83,8 @@ module Capistrano
             channel[:server] = server
             channel[:host] = server.host
             channel[:options] = options
-            channel.request_pty :want_reply => true
 
-            channel.on_success do |ch|
+            execute_command = Proc.new do |ch|
               logger.trace "executing command", ch[:server] if logger
               escaped = replace_placeholders(command, ch).gsub(/[$\\`"]/) { |m| "\\#{m}" }
               command_line = [environment, options[:shell] || "sh", "-c", "\"#{escaped}\""].compact.join(" ")
@@ -93,14 +92,20 @@ module Capistrano
               ch.send_data(options[:data]) if options[:data]
             end
 
-            channel.on_failure do |ch|
-              # just log it, don't actually raise an exception, since the
-              # process method will see that the status is not zero and will
-              # raise an exception then.
-              logger.important "could not open channel", ch[:server] if logger
-              ch.close
+            if options[:pty]
+              channel.request_pty(:want_reply => true)
+              channel.on_success(&execute_command)
+              channel.on_failure do |ch|
+                # just log it, don't actually raise an exception, since the
+                # process method will see that the status is not zero and will
+                # raise an exception then.
+                logger.important "could not open channel", ch[:server] if logger
+                ch.close
+              end
+            else
+              execute_command.call(channel)
             end
-
+              
             channel.on_data do |ch, data|
               @callback[ch, :out, data] if @callback
             end
