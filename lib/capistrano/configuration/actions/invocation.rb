@@ -23,6 +23,7 @@ module Capistrano
         def initialize_with_invocation(*args) #:nodoc:
           initialize_without_invocation(*args)
           set :default_environment, {}
+          set :default_run_options, {}
         end
 
         # Invokes the given command. If a +via+ key is given, it will be used
@@ -110,7 +111,8 @@ module Capistrano
         #   Otherwise, if the :default_shell key exists in the configuration,
         #   it will be used. Otherwise, no :shell key is added.
         def add_default_command_options(options)
-          options = options.dup
+          defaults = self[:default_run_options]
+          options = defaults.merge(options)
 
           env = self[:default_environment]
           env = env.merge(options[:env]) if options[:env]

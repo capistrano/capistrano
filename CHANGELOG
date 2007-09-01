@@ -1,5 +1,7 @@
 *SVN*
 
+* Don't request a pty by default [Jamis Buck]
+
 * Add a "match" remote dependency method [Adam Greene]
 
 * Allow auth-caching of subversion credentials to be enabled via :scm_auth_cache [tsmith]
