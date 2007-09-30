@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix cap shell to properly recognize sudo prompt [Mark Imbriaco, barnaby, Jamis Buck]
+
 * Git SCM module [Garry Dolley, Geoffrey Grosenbach, Scott Chacon]
 
 * Use the --password switch for subversion by default, but add :scm_prefer_prompt variable (defaults to false) [Jamis Buck]

@@ -124,12 +124,10 @@ module Capistrano
           options
         end
 
-        private
-
-          # Returns the prompt text to use with sudo
-          def sudo_prompt
-            fetch(:sudo_prompt, "sudo password: ")
-          end
+        # Returns the prompt text to use with sudo
+        def sudo_prompt
+          fetch(:sudo_prompt, "sudo password: ")
+        end
       end
     end
   end

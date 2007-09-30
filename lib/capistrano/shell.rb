@@ -166,24 +166,12 @@ HELP
 
       # Execute a command on the given list of servers.
       def exec_command(command, servers)
-        processor = Proc.new do |ch, stream, out|
-          # TODO: more robust prompt detection
-          out.each do |line|
-            if stream == :out
-              if out =~ /Password:\s*/i
-                ch.send_data "#{configuration[:password]}\n"
-              else
-                puts "[#{ch[:server]}] #{line.chomp}"
-              end
-            elsif stream == :err
-              puts "[#{ch[:server]} ERR] #{line.chomp}"
-            end
-          end
-        end
-
-        previous = trap("INT") { cmd.stop! }
+        command = command.gsub(/\bsudo\b/, "sudo -p '#{configuration.sudo_prompt}'")
+        processor = configuration.sudo_behavior_callback(Configuration.default_io_proc)
         sessions = servers.map { |server| configuration.sessions[server] }
-        Command.process(command, sessions, :logger => configuration.logger, &Capistrano::Configuration.default_io_proc)
+        cmd = Command.new(command, sessions, :logger => configuration.logger, &processor)
+        previous = trap("INT") { cmd.stop! }
+        cmd.process!
       rescue Capistrano::Error => error
         warn "error: #{error.message}"
       ensure
