@@ -1,3 +1,8 @@
+*SVN*
+
+* Use the --password switch for subversion by default, but add :scm_prefer_prompt variable (defaults to false) [Jamis Buck]
+
+
 *2.0.100 (2.1 Preview 1)* September 1, 2007
 
 * capify-generated Capfile will autoload all recipes from vendor/plugins/*/recipes/*.rb [Graeme Mathieson]
