@@ -10,7 +10,7 @@ namespace :upgrade do
     tag file used in Capistrano 2.x. It is non-destructive and may be safely \
     run any number of times.
   DESC
-  task :revisions do
+  task :revisions, :except => { :no_release => true } do
     revisions = capture("cat #{deploy_to}/revisions.log")
 
     mapping = {}
