@@ -1,5 +1,7 @@
 *SVN*
 
+* Don't run the upgrade:revisions task on non-release servers [Jamis Buck]
+
 * Fix cap shell to properly recognize sudo prompt [Mark Imbriaco, barnaby, Jamis Buck]
 
 * Git SCM module [Garry Dolley, Geoffrey Grosenbach, Scott Chacon]
