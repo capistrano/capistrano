@@ -1,5 +1,7 @@
 *SVN*
 
+* Prefer 'Last Changed Rev' over 'Revision' when querying latest revision via Subversion [Jamis Buck]
+
 * Explicitly require 'stringio' in copy_test [mislav]
 
 * When Subversion#query_revision fails, give a more sane error [Jamis Buck]

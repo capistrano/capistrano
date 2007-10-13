@@ -56,7 +56,7 @@ module Capistrano
           result = yield(command)
           yaml = YAML.load(result)
           raise "tried to run `#{command}' and got unexpected result #{result.inspect}" unless Hash === yaml
-          yaml['Revision']
+          yaml['Last Changed Rev'] || yaml['Revision']
         end
 
         # Determines what the response should be for a particular bit of text
