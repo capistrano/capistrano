@@ -1,5 +1,7 @@
 *SVN*
 
+* Explicitly require 'stringio' in copy_test [mislav]
+
 * When Subversion#query_revision fails, give a more sane error [Jamis Buck]
 
 * Don't run the upgrade:revisions task on non-release servers [Jamis Buck]
