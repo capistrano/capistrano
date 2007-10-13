@@ -1,6 +1,7 @@
 require "#{File.dirname(__FILE__)}/../../utils"
 require 'capistrano/logger'
 require 'capistrano/recipes/deploy/strategy/copy'
+require 'stringio'
 
 class DeployStrategyCopyTest < Test::Unit::TestCase
   def setup
