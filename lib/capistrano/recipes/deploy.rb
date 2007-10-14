@@ -446,7 +446,8 @@ namespace :deploy do
       might not be supported on all SCM's.
     DESC
     task :default, :except => { :no_release => true } do
-      system(source.local.log(current_revision))
+      from = source.next_revision(current_revision)
+      system(source.local.log(from))
     end
   end
 
