@@ -1,5 +1,7 @@
 *SVN*
 
+* Default to 0664 instead of 0660 on upload [Jamis Buck]
+
 * Fix deploy:pending to query SCM for the subsequent revision so that it does not include the last deployed change [Jamis Buck]
 
 * Prefer 'Last Changed Rev' over 'Revision' when querying latest revision via Subversion [Jamis Buck]
