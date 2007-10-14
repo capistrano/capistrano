@@ -114,6 +114,18 @@ module Capistrano
           raise NotImplementedError, "`query_revision' is not implemented by #{self.class.name}"
         end
 
+        # Returns the revision number immediately following revision, if at
+        # all possible. A block should always be passed to this method, which
+        # accepts a command to invoke and returns the result, although a
+        # particular SCM's implementation is not required to invoke the block.
+        #
+        # By default, this method simply returns the revision itself. If a
+        # particular SCM is able to determine a subsequent revision given a
+        # revision identifier, it should override this method.
+        def next_revision(revision)
+          revision
+        end
+
         # Should analyze the given text and determine whether or not a
         # response is expected, and if so, return the appropriate response.
         # If no response is expected, return nil. The +state+ parameter is a

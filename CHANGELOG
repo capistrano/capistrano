@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix deploy:pending to query SCM for the subsequent revision so that it does not include the last deployed change [Jamis Buck]
+
 * Prefer 'Last Changed Rev' over 'Revision' when querying latest revision via Subversion [Jamis Buck]
 
 * Explicitly require 'stringio' in copy_test [mislav]
