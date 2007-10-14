@@ -1,4 +1,4 @@
-*SVN*
+*2.1.0* October 14, 2007
 
 * Default to 0664 instead of 0660 on upload [Jamis Buck]
 
