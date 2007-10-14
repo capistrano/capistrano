@@ -33,7 +33,7 @@ class UploadTest < Test::Unit::TestCase
 
   def test_process_when_sftp_open_fails_should_raise_error
     sftp = mock_sftp
-    sftp.expects(:open).with("test.txt", @mode, 0660).yields(mock("status", :code => "bad status", :message => "bad status"), :file_handle)
+    sftp.expects(:open).with("test.txt", @mode, 0664).yields(mock("status", :code => "bad status", :message => "bad status"), :file_handle)
     session = mock("session", :sftp => sftp, :xserver => server("capistrano"))
     upload = Capistrano::Upload.new([session], "test.txt", :data => "data", :logger => stub_everything)
     assert_raises(Capistrano::UploadError) { upload.process! }
@@ -43,7 +43,7 @@ class UploadTest < Test::Unit::TestCase
 
   def test_process_when_sftp_write_fails_should_raise_error
     sftp = mock_sftp
-    sftp.expects(:open).with("test.txt", @mode, 0660).yields(mock("status1", :code => Net::SFTP::Session::FX_OK), :file_handle)
+    sftp.expects(:open).with("test.txt", @mode, 0664).yields(mock("status1", :code => Net::SFTP::Session::FX_OK), :file_handle)
     sftp.expects(:write).with(:file_handle, "data").yields(mock("status2", :code => "bad status", :message => "bad status"))
     session = mock("session", :sftp => sftp, :xserver => server("capistrano"))
     upload = Capistrano::Upload.new([session], "test.txt", :data => "data", :logger => stub_everything)
@@ -54,7 +54,7 @@ class UploadTest < Test::Unit::TestCase
   
   def test_upload_error_should_include_accessor_with_host_array
     sftp = mock_sftp
-    sftp.expects(:open).with("test.txt", @mode, 0660).yields(mock("status1", :code => Net::SFTP::Session::FX_OK), :file_handle)
+    sftp.expects(:open).with("test.txt", @mode, 0664).yields(mock("status1", :code => Net::SFTP::Session::FX_OK), :file_handle)
     sftp.expects(:write).with(:file_handle, "data").yields(mock("status2", :code => "bad status", :message => "bad status"))
     session = mock("session", :sftp => sftp, :xserver => server("capistrano"))
     upload = Capistrano::Upload.new([session], "test.txt", :data => "data", :logger => stub_everything)
@@ -70,7 +70,7 @@ class UploadTest < Test::Unit::TestCase
   
   def test_process_when_sftp_succeeds_should_raise_nothing
     sftp = mock_sftp
-    sftp.expects(:open).with("test.txt", @mode, 0660).yields(mock("status1", :code => Net::SFTP::Session::FX_OK), :file_handle)
+    sftp.expects(:open).with("test.txt", @mode, 0664).yields(mock("status1", :code => Net::SFTP::Session::FX_OK), :file_handle)
     sftp.expects(:write).with(:file_handle, "data").yields(mock("status2", :code => Net::SFTP::Session::FX_OK))
     sftp.expects(:close_handle).with(:file_handle).yields
     session = mock("session", :sftp => sftp, :xserver => server("capistrano"))
