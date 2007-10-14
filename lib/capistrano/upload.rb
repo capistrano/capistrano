@@ -101,7 +101,7 @@ module Capistrano
           sftp.channel[:failed] = false
 
           real_filename = filename.gsub(/\$CAPISTRANO:HOST\$/, server.host)
-          sftp.open(real_filename, IO::WRONLY | IO::CREAT | IO::TRUNC, options[:mode] || 0660) do |status, handle|
+          sftp.open(real_filename, IO::WRONLY | IO::CREAT | IO::TRUNC, options[:mode] || 0664) do |status, handle|
             break unless check_status(sftp, "open #{real_filename}", server, status)
             
             logger.info "uploading data to #{server}:#{real_filename}" if logger
