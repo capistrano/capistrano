@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.files = Dir.glob("{bin,lib,examples,test}/**/*") + %w(README MIT-LICENSE CHANGELOG)
   s.require_path = 'lib'
   s.autorequire = 'capistrano'
+  s.has_rdoc = true
 
   s.bindir = "bin"
   s.executables << "cap" << "capify"
