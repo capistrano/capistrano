@@ -111,29 +111,41 @@ module Capistrano
 
           fail "No branch specified, use for example 'set :branch, \"origin/master\"' in your deploy.rb" unless branch
 
+          execute = []
           if depth = configuration[:git_shallow_clone]
-            execute  = "#{git} clone --depth #{depth} #{configuration[:repository]} #{destination} && "
+            execute  << "#{git} clone --depth #{depth} #{configuration[:repository]} #{destination}"
           else
-            execute  = "#{git} clone #{configuration[:repository]} #{destination} && "
+            execute  << "#{git} clone #{configuration[:repository]} #{destination}"
           end
 
-          execute += "cd #{destination} && #{git} checkout -b deploy #{branch}" 
+          execute << "cd #{destination}"
+          execute << "#{git} checkout -b deploy #{branch}" 
+          if configuration[:git_enable_submodules]
+            execute << "#{git} submodule init" 
+            execute << "#{git} submodule update" 
+          end
 
-          execute
+          execute.join(" && ")
         end
 
         # Merges the changes to 'head' since the last fetch, for remote_cache
         # deployment strategy
         def sync(revision, destination)
-          execute = "cd #{destination} && git fetch origin && "
+          git      = command
+          execute = []
+          execute << "cd #{destination} && #{git} fetch origin"
 
           if head == 'HEAD'
-            execute += "git merge origin/HEAD"
+            execute << "#{git} merge origin/HEAD"
           else
-            execute += "git merge #{head}"
+            execute << "#{git} merge #{head}"
+          end
+          
+          if configuration[:git_enable_submodules]
+            execute << "#{git} submodule update"
           end
 
-          execute
+          execute.join(" && ")
         end
 
         # Returns a string of diffs between two revisions
