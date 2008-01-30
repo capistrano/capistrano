@@ -1,3 +1,9 @@
+begin
+  require 'rubygems'
+  gem 'net-ssh', "< 1.99.0"
+rescue LoadError, NameError
+end
+
 require 'net/ssh'
 
 module Capistrano
