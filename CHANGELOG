@@ -1,5 +1,7 @@
 *SVN*
 
+* If subversion asks for a password, prompt as a last resort [Jamis Buck]
+
 * Use checkout --lightweight for bzr checkout, instead of branch [michiels]
 
 * Make sure bzr SCM works when revision is head (or unspecified) [michiels]
