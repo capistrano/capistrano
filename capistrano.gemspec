@@ -12,18 +12,18 @@ Gem::Specification.new do |s|
 
   s.files = Dir.glob("{bin,lib,examples,test}/**/*") + %w(README MIT-LICENSE CHANGELOG)
   s.require_path = 'lib'
-  s.autorequire = 'capistrano'
   s.has_rdoc = true
 
   s.bindir = "bin"
   s.executables << "cap" << "capify"
 
-  s.add_dependency 'net-ssh', ">= #{Capistrano::Version::SSH_REQUIRED.join(".")}"
-  s.add_dependency 'net-sftp', ">= #{Capistrano::Version::SFTP_REQUIRED.join(".")}"
+  s.add_dependency 'net-ssh', ">= #{Capistrano::Version::SSH_REQUIRED.join(".")}", "< 1.99.0"
+  s.add_dependency 'net-sftp', ">= #{Capistrano::Version::SFTP_REQUIRED.join(".")}", "< 1.99.0"
   s.add_dependency 'highline'
 
   s.author = "Jamis Buck"
   s.email = "jamis@37signals.com"
   s.homepage = "http://www.capify.org"
+  s.rubyforge_project = "capistrano"
 
 end

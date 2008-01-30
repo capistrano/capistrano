@@ -1,3 +1,9 @@
+begin
+  require 'rubygems'
+  gem 'net-sftp', "< 1.99.0"
+rescue LoadError, NameError
+end
+
 require 'net/sftp'
 require 'net/sftp/operations/errors'
 require 'capistrano/errors'
