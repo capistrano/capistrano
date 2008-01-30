@@ -63,17 +63,13 @@ module Capistrano
         # If the 'revision' argument, on the other hand, is not :head, it is
         # simply returned.
         def query_revision(revision)
-          if revision == head
-            yield(scm(:revno, repository)).chomp
-          else
-            revision
-          end
+          revision
         end
 
         private
 
           def revswitch(revision)
-            if revision == :head
+            if revision == :head || revision.nil?
               nil
             else
               "-r #{revision}"
