@@ -25,21 +25,21 @@ module Capistrano
         # destination directory. The perforce client has a fixed destination so
         # the files must be copied from there to their intended resting place.
         def checkout(revision, destination)
-          p4_sync(revision, destination, "-f")
+          p4_sync(revision, destination, p4sync_flags)
         end
         
         # Returns the command that will sync the given revision to the given
         # destination directory. The perforce client has a fixed destination so
         # the files must be copied from there to their intended resting place.
         def sync(revision, destination)
-          p4_sync(revision, destination, "-f")
+          p4_sync(revision, destination, p4sync_flags)
         end
 
         # Returns the command that will sync the given revision to the given
         # destination directory. The perforce client has a fixed destination so
         # the files must be copied from there to their intended resting place.
         def export(revision, destination)
-          p4_sync(revision, destination, "-f")
+          p4_sync(revision, destination, p4sync_flags)
         end
                
         # Returns the command that will do an "p4 diff2" for the two revisions.
@@ -89,7 +89,6 @@ module Capistrano
           # a fixed destination so the files must be copied from there to their 
           # intended resting place.          
           def p4_sync(revision, destination, options="")
-            p4client_root = "`#{command} #{authentication} client -o | grep ^Root | cut -f2`"
             scm authentication, :sync, options, "#{rev_no(revision)}", "&& cp -rf #{p4client_root} #{destination}"          
           end
 
@@ -107,6 +106,14 @@ module Capistrano
           
           def p4passwd
             variable(:p4passwd) || variable(:scm_password)
+          end
+
+          def p4sync_flags
+            variable(:p4sync_flags) || "-f"
+          end
+
+          def p4client_root
+            variable(:p4client_root) || "`#{command} #{authentication} client -o | grep ^Root | cut -f2`"
           end
           
           def rev_no(revision)                     

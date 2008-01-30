@@ -1,3 +1,10 @@
+*SVN*
+
+* Support p4sync_flags and p4client_root variables for Perforce [gseidman]
+
+* Prepare for Net::SSH v2 by making sure Capistrano only tries to load Net::SSH versions less than 1.99.0 [Jamis Buck]
+
+
 *2.1.0* October 14, 2007
 
 * Default to 0664 instead of 0660 on upload [Jamis Buck]
