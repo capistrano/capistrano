@@ -72,7 +72,7 @@ module Capistrano
           case text
           when /\bpassword.*:/i
             # subversion is prompting for a password
-            "#{variable(:scm_password) || variable(:password)}\n"
+            "#{scm_password_prompt}\n"
           when %r{\(yes/no\)}
             # subversion is asking whether or not to connect
             "yes\n"
@@ -106,6 +106,12 @@ module Capistrano
           # command-line switch for "quiet" ("-q").
           def verbose
             variable(:scm_verbose) ? nil : "-q"
+          end
+
+          def scm_password_prompt
+            @scm_password_prompt ||= variable(:scm_password) ||
+              variable(:password) ||
+              Capistrano::CLI.password_prompt("Subversion password: ")
           end
       end
 
