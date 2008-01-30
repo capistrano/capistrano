@@ -21,7 +21,7 @@ module Capistrano
         # Returns the command that will check out the given revision to the
         # given destination.
         def checkout(revision, destination)
-          scm :branch, revswitch(revision), repository, destination
+          scm :checkout, "--lightweight", revswitch(revision), repository, destination
         end
 
         # The bzr 'update' command does not support updating to a specific
