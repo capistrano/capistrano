@@ -1,5 +1,7 @@
 *SVN*
 
+* Fail gracefully when double-colons are used to delimit namespaces [richie]
+
 * Add support for :git_enable_submodules variable, to enable submodules with the git SCM [halorgium]
 
 * If subversion asks for a password, prompt as a last resort [Jamis Buck]

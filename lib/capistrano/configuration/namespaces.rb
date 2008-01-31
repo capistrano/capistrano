@@ -116,7 +116,8 @@ module Capistrano
 
         ns = self
         until parts.empty?
-          ns = ns.namespaces[parts.shift.to_sym]
+          next_part = parts.shift
+          ns = next_part.empty? ? nil : ns.namespaces[next_part.to_sym]
           return nil if ns.nil?
         end
 
