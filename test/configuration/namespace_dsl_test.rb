@@ -294,4 +294,12 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     @config.namespace(:outer) { namespace(:middle) { namespace(:inner) {} } }
     assert_equal @config, @config.namespaces[:outer].namespaces[:middle].namespaces[:inner].top
   end
+
+  def test_find_task_should_return_nil_when_empty_inner_task
+    @config.namespace :outer do
+      namespace :inner do
+      end
+    end
+    assert_nil @config.find_task("outer::inner")
+  end
 end
