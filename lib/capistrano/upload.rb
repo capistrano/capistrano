@@ -48,7 +48,7 @@ module Capistrano
     #
     # * data: required. Should refer to a String containing the contents of
     #   the file to upload.
-    # * mode: optional. The "mode" of the destination file. Defaults to 0660.
+    # * mode: optional. The "mode" of the destination file. Defaults to 0664.
     # * logger: optional. Should point to a Capistrano::Logger instance, if
     #   given.
     def initialize(sessions, filename, options)

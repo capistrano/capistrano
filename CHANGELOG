@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix documentation typo in upload.rb [evolving_jerk]
+
 * Added test case to show that the :scm_command is honored by the git SCM module [grempe]
 
 * Fail gracefully when double-colons are used to delimit namespaces [richie]
