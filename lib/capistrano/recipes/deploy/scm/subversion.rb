@@ -80,7 +80,7 @@ module Capistrano
             # subversion is asking for the passphrase for the user's key
             "#{variable(:scm_passphrase)}\n"
           when /The entry \'(.+?)\' is no longer a directory/
-            raise Capisrano::Error, "subversion can't update because directory '#{$1}' was replaced. Please add it to svn:ignore."
+            raise Capistrano::Error, "subversion can't update because directory '#{$1}' was replaced. Please add it to svn:ignore."
           when /accept \(t\)emporarily/
             # subversion is asking whether to accept the certificate
             "t\n"
