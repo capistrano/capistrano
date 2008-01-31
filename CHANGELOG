@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix typo in Subversion SCM module, encountered when an update fails [kemiller]
+
 * Fix documentation typo in upload.rb [evolving_jerk]
 
 * Added test case to show that the :scm_command is honored by the git SCM module [grempe]
