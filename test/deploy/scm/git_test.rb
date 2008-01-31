@@ -56,6 +56,10 @@ class DeploySCMGitTest < Test::Unit::TestCase
     # With branch
     @config[:branch] = "origin/foo"
     assert_equal "cd #{dest} && git fetch origin && git merge origin/foo", @source.sync('Not used', dest)
+
+    # With :scm_command
+    @config[:scm_command] = "/opt/local/bin/git"
+    assert_equal "cd #{dest} && /opt/local/bin/git fetch origin && /opt/local/bin/git merge origin/foo", @source.sync('Not used', dest)
   end
 
   def test_shallow_clone
