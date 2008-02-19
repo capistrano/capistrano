@@ -33,13 +33,9 @@ module Capistrano
           commands.join(" && ")
         end
 
-        # The bzr 'export' command would work fine, except it doesn't let you
-        # specify the repository itself, so it only works if there is a working
-        # tree handy, locally. Since this needs to work even on a remote host
-        # where there is no working tree, we'll just do a checkout, followed
-        # by a deletion of the ".bzr" metadata directory.
+        # The bzr 'export' does an export similar to other SCM systems
         def export(revision, destination)
-          [checkout(revision, destination) && "rm -rf #{destination}/.bzr"].join(" && ")
+          scm :export, revswitch(revision), destination, repository
         end
 
         # The bzr "diff" command doesn't accept a repository argument, so it
