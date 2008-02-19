@@ -22,11 +22,11 @@ class DeploySCMGitTest < Test::Unit::TestCase
   def test_checkout
     @config[:repository] = "git@somehost.com:project.git"
     dest = "/var/www"
-    assert_equal "git clone git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy HEAD", @source.checkout('Not used', dest)
+    assert_equal "git clone git@somehost.com:project.git /var/www && cd /var/www && git checkout HEAD", @source.checkout('Not used', dest)
 
     # With branch
     @config[:branch] = "origin/foo"
-    assert_equal "git clone git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy origin/foo", @source.checkout('Not used', dest)
+    assert_equal "git clone git@somehost.com:project.git /var/www && cd /var/www && git checkout origin/foo", @source.checkout('Not used', dest)
   end
 
   def test_diff
@@ -51,26 +51,26 @@ class DeploySCMGitTest < Test::Unit::TestCase
 
   def test_sync
     dest = "/var/www"
-    assert_equal "cd #{dest} && git fetch origin && git merge origin/HEAD", @source.sync('Not used', dest)
+    assert_equal "cd #{dest} && git fetch origin && git checkout origin/HEAD", @source.sync('Not used', dest)
 
     # With branch
     @config[:branch] = "origin/foo"
-    assert_equal "cd #{dest} && git fetch origin && git merge origin/foo", @source.sync('Not used', dest)
+    assert_equal "cd #{dest} && git fetch origin && git checkout origin/foo", @source.sync('Not used', dest)
 
     # With :scm_command
     @config[:scm_command] = "/opt/local/bin/git"
-    assert_equal "cd #{dest} && /opt/local/bin/git fetch origin && /opt/local/bin/git merge origin/foo", @source.sync('Not used', dest)
+    assert_equal "cd #{dest} && /opt/local/bin/git fetch origin && /opt/local/bin/git checkout origin/foo", @source.sync('Not used', dest)
   end
 
   def test_shallow_clone
     @config[:repository] = "git@somehost.com:project.git"
     @config[:git_shallow_clone] = 1
     dest = "/var/www"
-    assert_equal "git clone --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy HEAD", @source.checkout('Not used', dest)
+    assert_equal "git clone --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout HEAD", @source.checkout('Not used', dest)
 
     # With branch
     @config[:branch] = "origin/foo"
-    assert_equal "git clone --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy origin/foo", @source.checkout('Not used', dest)
+    assert_equal "git clone --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout origin/foo", @source.checkout('Not used', dest)
   end
 
   # Tests from base_test.rb, makin' sure we didn't break anything up there!
