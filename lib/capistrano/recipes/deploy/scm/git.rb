@@ -119,7 +119,7 @@ module Capistrano
           end
 
           execute << "cd #{destination}"
-          execute << "#{git} checkout -b deploy #{branch}" 
+          execute << "#{git} checkout #{branch}" 
           if configuration[:git_enable_submodules]
             execute << "#{git} submodule init" 
             execute << "#{git} submodule update" 
@@ -136,9 +136,9 @@ module Capistrano
           execute << "cd #{destination} && #{git} fetch origin"
 
           if head == 'HEAD'
-            execute << "#{git} merge origin/HEAD"
+            execute << "#{git} checkout origin/HEAD"
           else
-            execute << "#{git} merge #{head}"
+            execute << "#{git} checkout #{head}"
           end
           
           if configuration[:git_enable_submodules]
