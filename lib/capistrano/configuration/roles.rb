@@ -1,4 +1,5 @@
 require 'capistrano/server_definition'
+require 'capistrano/role'
 
 module Capistrano
   class Configuration
@@ -15,7 +16,7 @@ module Capistrano
 
       def initialize_with_roles(*args) #:nodoc:
         initialize_without_roles(*args)
-        @roles = Hash.new { |h,k| h[k] = [] }
+        @roles = Hash.new { |h,k| h[k] = Role.new }
       end
 
       # Define a new role and its associated servers. You must specify at least
@@ -41,9 +42,10 @@ module Capistrano
       # that call to "role":
       #
       #   role :web, "web2", "web3", :user => "www", :port => 2345
-      def role(which, *args)
+      def role(which, *args, &block)
         options = args.last.is_a?(Hash) ? args.pop : {}
         which = which.to_sym
+        roles[which].push(block, options) if block_given?
         args.each { |host| roles[which] << ServerDefinition.new(host, options) }
       end
     end
