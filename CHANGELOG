@@ -1,5 +1,7 @@
 *SVN*
 
+* Use a proper export command for bzr SCM [drudru]
+
 * Use checkout instead of merge for git SCM [nuttycom]
 
 * Fix typo in Subversion SCM module, encountered when an update fails [kemiller]
