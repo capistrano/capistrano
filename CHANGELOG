@@ -1,5 +1,7 @@
 *SVN*
 
+* Dynamic roles (e.g. role(:app) { "host.name" }) [dmasover]
+
 * Implement Bzr#next_revision so that pending changes can be reported correctly [casret]
 
 * Use a proper export command for bzr SCM [drudru]
