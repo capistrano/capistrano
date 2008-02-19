@@ -1,5 +1,7 @@
 *SVN*
 
+* Implement Bzr#next_revision so that pending changes can be reported correctly [casret]
+
 * Use a proper export command for bzr SCM [drudru]
 
 * Use checkout instead of merge for git SCM [nuttycom]

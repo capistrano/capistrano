@@ -62,6 +62,11 @@ module Capistrano
           revision
         end
 
+        # Increments the given revision number and returns it.
+        def next_revision(revision)
+          revision.to_i + 1
+        end
+
         private
 
           def revswitch(revision)
