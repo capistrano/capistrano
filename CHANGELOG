@@ -1,5 +1,7 @@
 *SVN*
 
+* Don't try to kill the spawner process on deploy:stop if no spawner process exists [Jamis Buck]
+
 * Dynamic roles (e.g. role(:app) { "host.name" }) [dmasover]
 
 * Implement Bzr#next_revision so that pending changes can be reported correctly [casret]
