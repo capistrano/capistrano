@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix incorrect reference to the 'setup' task in task documentation [rajeshduggal]
+
 * Don't try to kill the spawner process on deploy:stop if no spawner process exists [Jamis Buck]
 
 * Dynamic roles (e.g. role(:app) { "host.name" }) [dmasover]
