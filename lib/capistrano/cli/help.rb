@@ -84,7 +84,9 @@ module Capistrano
         text.each_line do |line|
           indentation = line[/^\s+/] || ""
           indentation_size = indentation.split(//).inject(0) { |c,s| c + (s[0] == ?\t ? 8 : 1) }
-          lines = line.strip.gsub(/(.{1,#{output_columns - indentation_size}})(?:\s+|\Z)/, "\\1\n").split(/\n/)
+          line_length = output_columns - indentation_size
+          line_length = MIN_MAX_LEN if line_length < MIN_MAX_LEN
+          lines = line.strip.gsub(/(.{1,#{line_length}})(?:\s+|\Z)/, "\\1\n").split(/\n/)
           if lines.empty?
             formatted << "\n"
           else
