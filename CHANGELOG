@@ -1,5 +1,7 @@
 *SVN*
 
+* Use a default line length in help text if line length is otherwise too small [Jamis Buck]
+
 * Fix incorrect reference to the 'setup' task in task documentation [rajeshduggal]
 
 * Don't try to kill the spawner process on deploy:stop if no spawner process exists [Jamis Buck]
