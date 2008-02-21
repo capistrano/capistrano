@@ -426,7 +426,7 @@ namespace :deploy do
     as = fetch(:runner, "app")
     via = fetch(:run_method, :sudo)
 
-    invoke_command "#{current_path}/script/process/reaper -a kill -r dispatch.spawner.pid", :via => via, :as => as
+    invoke_command "if [ -f #{current_path}/tmp/pids/dispatch.spawner.pid ]; then #{current_path}/script/process/reaper -a kill -r dispatch.spawner.pid; fi", :via => via, :as => as
     invoke_command "#{current_path}/script/process/reaper -a kill", :via => via, :as => as
   end
 
