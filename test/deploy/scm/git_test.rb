@@ -19,14 +19,21 @@ class DeploySCMGitTest < Test::Unit::TestCase
     assert_equal "master", @source.head
   end
 
+  def origin
+    asser_equal "origin", @source.origin
+    @config[:remote] = "git"
+    assert_equal "git", @source.origin
+  end
+
   def test_checkout
     @config[:repository] = "git@somehost.com:project.git"
     dest = "/var/www"
-    assert_equal "git clone git@somehost.com:project.git /var/www && cd /var/www && git checkout HEAD", @source.checkout('Not used', dest)
+    rev = 'c2d9e79'
+    assert_equal "git clone git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
 
     # With branch
     @config[:branch] = "origin/foo"
-    assert_equal "git clone git@somehost.com:project.git /var/www && cd /var/www && git checkout origin/foo", @source.checkout('Not used', dest)
+    assert_equal "git clone git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
   end
 
   def test_diff
@@ -51,26 +58,55 @@ class DeploySCMGitTest < Test::Unit::TestCase
 
   def test_sync
     dest = "/var/www"
-    assert_equal "cd #{dest} && git fetch origin && git checkout origin/HEAD", @source.sync('Not used', dest)
+    rev = 'c2d9e79'
+    assert_equal "cd #{dest} && git fetch origin && git reset --hard #{rev}", @source.sync(rev, dest)
 
     # With branch
-    @config[:branch] = "origin/foo"
-    assert_equal "cd #{dest} && git fetch origin && git checkout origin/foo", @source.sync('Not used', dest)
+    @config[:branch] = "foo"
+    rev = '92d9e79' # simulate rev change
+    assert_equal "cd #{dest} && git fetch origin && git reset --hard #{rev}", @source.sync(rev, dest)
 
     # With :scm_command
-    @config[:scm_command] = "/opt/local/bin/git"
-    assert_equal "cd #{dest} && /opt/local/bin/git fetch origin && /opt/local/bin/git checkout origin/foo", @source.sync('Not used', dest)
+    git = "/opt/local/bin/git"
+    @config[:scm_command] = git
+    assert_equal "cd #{dest} && #{git} fetch origin && #{git} reset --hard #{rev}", @source.sync(rev, dest)
+  end
+
+  def test_sync_with_remote
+    dest = "/var/www"
+    rev = 'c2d9e79'
+    remote = "username"
+    repository = "git@somehost.com:project.git"
+
+    @config[:repository] = repository
+    @config[:remote] = remote
+
+    assert_equal "cd #{dest} && git config remote.#{remote}.url #{repository} && git config remote.#{remote}.fetch +refs/heads/*:refs/remotes/#{remote}/* && git fetch #{remote} && git reset --hard #{rev}", @source.sync(rev, dest)
   end
 
   def test_shallow_clone
     @config[:repository] = "git@somehost.com:project.git"
     @config[:git_shallow_clone] = 1
     dest = "/var/www"
-    assert_equal "git clone --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout HEAD", @source.checkout('Not used', dest)
+    rev = 'c2d9e79'
+    assert_equal "git clone --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
 
     # With branch
     @config[:branch] = "origin/foo"
-    assert_equal "git clone --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout origin/foo", @source.checkout('Not used', dest)
+    rev = '92d9e79' # simulate rev change
+    assert_equal "git clone --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
+  end
+
+  def test_remote_clone
+    @config[:repository] = "git@somehost.com:project.git"
+    @config[:remote] = "username"
+    dest = "/var/www"
+    rev = 'c2d9e79'
+    assert_equal "git clone -o username git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
+
+    # With branch
+    @config[:branch] = "foo"
+    assert_equal "git clone -o username git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
   end
 
   # Tests from base_test.rb, makin' sure we didn't break anything up there!

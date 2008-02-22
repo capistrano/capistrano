@@ -49,10 +49,27 @@ module Capistrano
       # You may set <tt>:branch</tt>, which is the reference to the branch, tag,
       # or any SHA1 you are deploying, for example:
       #
-      #   set :branch, "origin/master"
+      #   set :branch, "master"
       #
       # Otherwise, HEAD is assumed.  I strongly suggest you set this.  HEAD is
       # not always the best assumption.
+      #
+      # You may also set <tt>:remote</tt>, which will be used as a name for remote
+      # tracking of repositories. This option is intended for use with the
+      # <tt>:remote_cache</tt> strategy in a distributed git environment.
+      #
+      # For example in the projects <tt>config/deploy.rb</tt>:
+      #
+      #   set :repository, "#{scm_user}@somehost:~/projects/project.git"
+      #   set :remote, "#{scm_user}"
+      #
+      # Then each person with deploy priveledges can add the following to their
+      # local <tt>~/.caprc</tt> file:
+      #
+      #   set :scm_user, 'someuser'
+      #
+      # Now any time a person deploys the project, their repository will be
+      # setup as a remote git repository within the cached repository.
       #
       # The <tt>:scm_command</tt> configuration variable, if specified, will
       # be used as the full path to the git executable on the *remote* machine:
@@ -78,7 +95,7 @@ module Capistrano
       #   set :deploy_via, :remote_cache
       #
       # For faster clone, you can also use shallow cloning.  This will set the
-      # '--depth' flag using the depth specified.  This *cannot* be used 
+      # '--depth' flag using the depth specified.  This *cannot* be used
       # together with the :remote_cache strategy
       #
       #   set :git_shallow_clone, 1
@@ -88,8 +105,9 @@ module Capistrano
       #
       # Garry Dolley http://scie.nti.st
       # Contributions by Geoffrey Grosenbach http://topfunky.com
-      #              and Scott Chacon http://jointheconversation.org
-      
+      #              Scott Chacon http://jointheconversation.org
+      #                      and Alex Arnell http://twologic.com
+
       class Git < Base
         # Sets the default command name for this SCM on your *local* machine.
         # Users may override this by setting the :scm_command variable.
@@ -102,27 +120,35 @@ module Capistrano
           configuration[:branch] || 'HEAD'
         end
 
+        def origin
+          configuration[:remote] || 'origin'
+        end
+
         # Performs a clone on the remote machine, then checkout on the branch
         # you want to deploy.
         def checkout(revision, destination)
-          git      = command
+          git    = command
+          remote = origin
 
-          branch   = head
-
-          fail "No branch specified, use for example 'set :branch, \"origin/master\"' in your deploy.rb" unless branch
-
-          execute = []
+          args = []
+          args << "-o #{remote}" unless remote == 'origin'
           if depth = configuration[:git_shallow_clone]
-            execute  << "#{git} clone --depth #{depth} #{configuration[:repository]} #{destination}"
-          else
-            execute  << "#{git} clone #{configuration[:repository]} #{destination}"
+            args << "--depth #{depth}"
           end
 
-          execute << "cd #{destination}"
-          execute << "#{git} checkout #{branch}" 
+          execute = []
+          if args.empty?
+            execute << "#{git} clone #{configuration[:repository]} #{destination}"
+          else
+            execute << "#{git} clone #{args.join(' ')} #{configuration[:repository]} #{destination}"
+          end
+
+          # checkout into a local branch rather than a detached HEAD
+          execute << "cd #{destination} && #{git} checkout -b deploy #{revision}"
+          
           if configuration[:git_enable_submodules]
-            execute << "#{git} submodule init" 
-            execute << "#{git} submodule update" 
+            execute << "#{git} submodule init"
+            execute << "#{git} submodule update"
           end
 
           execute.join(" && ")
@@ -131,16 +157,26 @@ module Capistrano
         # Merges the changes to 'head' since the last fetch, for remote_cache
         # deployment strategy
         def sync(revision, destination)
-          git      = command
-          execute = []
-          execute << "cd #{destination} && #{git} fetch origin"
+          git     = command
+          remote  = origin
 
-          if head == 'HEAD'
-            execute << "#{git} checkout origin/HEAD"
-          else
-            execute << "#{git} checkout #{head}"
+          execute = []
+          execute << "cd #{destination}"
+
+          # Use git-config to setup a remote tracking branches. Could use
+          # git-remote but it complains when a remote of the same name already
+          # exists, git-config will just silenty overwrite the setting every
+          # time. This could cause wierd-ness in the remote cache if the url
+          # changes between calls, but as long as the repositories are all
+          # based from each other it should still work fine.
+          if remote != 'origin'
+            execute << "#{git} config remote.#{remote}.url #{configuration[:repository]}"
+            execute << "#{git} config remote.#{remote}.fetch +refs/heads/*:refs/remotes/#{remote}/*"
           end
-          
+
+          # since we're in a local branch already, just reset to specified revision rather than merge
+          execute << "#{git} fetch #{remote} && #{git} reset --hard #{revision}"
+
           if configuration[:git_enable_submodules]
             execute << "#{git} submodule update"
           end
