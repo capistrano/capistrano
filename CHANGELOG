@@ -1,5 +1,7 @@
 *SVN*
 
+* Add support for :max_hosts option in task definition or run() [Rob Holland <rob@inversepath.com>]
+
 * Distributed git support for better operability with remote_cache strategy [voidlock]
 
 * Use a default line length in help text if line length is otherwise too small [Jamis Buck]

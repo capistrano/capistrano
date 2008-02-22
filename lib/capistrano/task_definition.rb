@@ -3,12 +3,13 @@ require 'capistrano/server_definition'
 module Capistrano
   # Represents the definition of a single task.
   class TaskDefinition
-    attr_reader :name, :namespace, :options, :body, :desc, :on_error
+    attr_reader :name, :namespace, :options, :body, :desc, :on_error, :max_hosts
 
     def initialize(name, namespace, options={}, &block)
       @name, @namespace, @options = name, namespace, options
       @desc = @options.delete(:desc)
       @on_error = options.delete(:on_error)
+      @max_hosts = options[:max_hosts] && options[:max_hosts].to_i
       @body = block or raise ArgumentError, "a task requires a block"
       @servers = nil
     end
