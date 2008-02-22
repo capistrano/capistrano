@@ -1,5 +1,7 @@
 *SVN*
 
+* Distributed git support for better operability with remote_cache strategy [voidlock]
+
 * Use a default line length in help text if line length is otherwise too small [Jamis Buck]
 
 * Fix incorrect reference to the 'setup' task in task documentation [rajeshduggal]
