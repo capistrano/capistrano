@@ -217,7 +217,6 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     @config.current_task = mock_task(:on_error => :continue)
     @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns(list)
     Capistrano::SSH.expects(:connect).times(2).raises(Exception).then.returns(:success)
-    @config.expects(:failed!).with(server("cap1"))
     @config.execute_on_servers do |servers|
       assert_equal %w(cap2), servers.map { |s| s.host }
     end
@@ -260,7 +259,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
       assert_equal %w(cap2), servers.map { |s| s.host }
     end
   end
-
+  
   def test_connect_should_establish_connections_to_all_servers_in_scope
     assert @config.sessions.empty?
     @config.current_task = mock_task
@@ -269,7 +268,43 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     @config.connect!
     assert_equal %w(cap1 cap2 cap3), @config.sessions.keys.sort.map { |s| s.host }
   end
-
+  
+  def test_execute_on_servers_should_only_run_on_tasks_max_hosts_hosts_at_once
+    cap1 = server("cap1")
+    cap2 = server("cap2")
+    connection1 = mock()
+    connection2 = mock()
+    connection1.expects(:close)
+    connection2.expects(:close)
+    @config.current_task = mock_task(:max_hosts => 1)
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([cap1, cap2])
+    Capistrano::SSH.expects(:connect).times(2).returns(connection1).then.returns(connection2)
+    block_called = 0
+    @config.execute_on_servers do |servers|
+      block_called += 1
+      assert_equal 1, servers.size
+    end
+    assert_equal 2, block_called
+  end
+  
+  def test_execute_on_servers_should_only_run_on_max_hosts_hosts_at_once
+    cap1 = server("cap1")
+    cap2 = server("cap2")
+    connection1 = mock()
+    connection2 = mock()
+    connection1.expects(:close)
+    connection2.expects(:close)
+    @config.current_task = mock_task(:max_hosts => 1)
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([cap1, cap2])
+    Capistrano::SSH.expects(:connect).times(2).returns(connection1).then.returns(connection2)
+    block_called = 0
+    @config.execute_on_servers do |servers|
+      block_called += 1
+      assert_equal 1, servers.size
+    end
+    assert_equal 2, block_called
+  end
+  
   def test_connect_should_honor_once_option
     assert @config.sessions.empty?
     @config.current_task = mock_task
@@ -283,6 +318,11 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
 
     def mock_task(options={})
       continue_on_error = options[:on_error] == :continue
-      stub("task", :fully_qualified_name => "name", :options => options, :continue_on_error? => continue_on_error)
+      stub("task",
+        :fully_qualified_name => "name",
+        :options => options,
+        :continue_on_error? => continue_on_error,
+        :max_hosts => options[:max_hosts]
+      )
     end
 end

@@ -1,3 +1,5 @@
+
+require 'enumerator'
 require 'capistrano/gateway'
 require 'capistrano/ssh'
 
@@ -95,6 +97,14 @@ module Capistrano
         end
       end
 
+      # Destroys sessions for each server in the list.
+      def teardown_connections_to(servers)
+        servers.each do |server|
+           @sessions[server].close
+           @sessions.delete(server)
+         end
+      end
+
       # Determines the set of servers within the current task's scope and
       # establishes connections to them, and then yields that list of
       # servers.
@@ -120,22 +130,32 @@ module Capistrano
         servers = [servers.first] if options[:once]
         logger.trace "servers: #{servers.map { |s| s.host }.inspect}"
 
-        # establish connections to those servers, as necessary
-        begin
-          establish_connections_to(servers)
-        rescue ConnectionError => error
-          raise error unless task && task.continue_on_error?
-          error.hosts.each do |h|
-            servers.delete(h)
-            failed!(h)
-          end
-        end
+        max_hosts = (options[:max_hosts] || (task && task.max_hosts) || servers.size).to_i
+        is_subset = max_hosts < servers.size
 
-        begin
-          yield servers
-        rescue RemoteError => error
-          raise error unless task && task.continue_on_error?
-          error.hosts.each { |h| failed!(h) }
+        # establish connections to those servers in groups of max_hosts, as necessary
+        servers.each_slice(max_hosts) do |servers_slice|
+          begin
+            establish_connections_to(servers_slice)
+          rescue ConnectionError => error
+            raise error unless task && task.continue_on_error?
+            error.hosts.each do |h|
+              servers_slice.delete(h)
+              failed!(h)
+            end
+          end
+
+          begin
+            yield servers_slice
+          rescue RemoteError => error
+            raise error unless task && task.continue_on_error?
+            error.hosts.each { |h| failed!(h) }
+          end
+
+          # if dealing with a subset (e.g., :max_hosts is less than the
+          # number of servers available) teardown the subset of connections
+          # that were just made, so that we can make room for the next subset.
+          teardown_connections_to(servers_slice) if is_subset
         end
       end
 
