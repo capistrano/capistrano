@@ -48,6 +48,18 @@ module Capistrano
         roles[which].push(block, options) if block_given?
         args.each { |host| roles[which] << ServerDefinition.new(host, options) }
       end
+
+      # An alternative way to associate servers with roles. If you have a server
+      # that participates in multiple roles, this can be a DRYer way to describe
+      # the relationships. Pass the host definition as the first parameter, and
+      # the roles as the remaining parameters:
+      #
+      #   server "master.example.com", :web, :app
+      def server(host, *roles)
+        options = roles.last.is_a?(Hash) ? roles.pop : {}
+        raise ArgumentError, "you must associate a server with at least one role" if roles.empty?
+        roles.each { |name| role(name, host, options) }
+      end
     end
   end
 end

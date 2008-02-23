@@ -1,5 +1,7 @@
 *SVN*
 
+* Add alternative server-centric role definition method [James Duncan Davidson]
+
 * Add support for password prompts from the Mercurial SCM [ches]
 
 * Add support for :max_hosts option in task definition or run() [Rob Holland <rob@inversepath.com>]
