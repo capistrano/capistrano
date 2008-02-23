@@ -17,10 +17,6 @@ class ConfigurationRolesTest < Test::Unit::TestCase
     @config = MockConfig.new
   end
 
-  def assert_role_equals(list)
-    assert_equal list, @config.roles[:app].map { |s| s.host }
-  end
-
   def test_initialize_should_initialize_roles_collection
     assert @config.original_initialize_called
     assert @config.roles.empty?
@@ -132,4 +128,16 @@ class ConfigurationRolesTest < Test::Unit::TestCase
     end
     assert_role_equals ([])
   end
+
+  def test_role_definitions_via_server_should_associate_server_with_roles
+    @config.server "www.capistrano.test", :web, :app
+    assert_equal %w(www.capistrano.test), @config.roles[:app].map { |s| s.host }
+    assert_equal %w(www.capistrano.test), @config.roles[:web].map { |s| s.host }
+  end
+
+  private
+
+    def assert_role_equals(list)
+      assert_equal list, @config.roles[:app].map { |s| s.host }
+    end
 end
