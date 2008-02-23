@@ -70,24 +70,25 @@ module Capistrano
           logger.info "[#{stream}] #{text}"
           case text
           when /^user:/mi
-            if variable(:scm_user)
-              "#{variable(:scm_user)}\n"
+            # support :scm_user for backwards compatibility of this module
+            if user = variable(:scm_username) || variable(:scm_user)
+              "#{user}\n"
             else
-              raise "No variable :scm_user specified and Mercurial asked!\n" +
+              raise "No variable :scm_username specified and Mercurial asked!\n" +
                 "Prompt was: #{text}"
             end
-          when /^password:/mi
-            if variable(:scm_password)
-              "#{variable(:scm_password)}\n"
-            else
+          when /\bpassword:/mi
+            unless pass = scm_password_or_prompt
+              # fall back on old behavior of erroring out with msg
               raise "No variable :scm_password specified and Mercurial asked!\n" +
                 "Prompt was: #{text}"
             end
+            "#{pass}\n"
           when /yes\/no/i
             "yes\n"
           end
         end
-
+        
         private
 
         # Fine grained mercurial commands
@@ -121,6 +122,12 @@ module Capistrano
             when false: "--quiet"
             else        "--verbose"
           end
+        end
+        
+        # honor Cap 2.1+'s :scm_prefer_prompt if present
+        def scm_password_or_prompt
+          @scm_password_or_prompt ||= variable(:scm_password) ||
+            (Capistrano::CLI.password_prompt("hg password: ") if variable(:scm_prefer_prompt))
         end
 
       end
