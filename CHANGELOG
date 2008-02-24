@@ -1,5 +1,7 @@
 *SVN*
 
+* Fix git submodule support to init on sync [halorgium]
+
 * Add alternative server-centric role definition method [James Duncan Davidson]
 
 * Add support for password prompts from the Mercurial SCM [ches]
