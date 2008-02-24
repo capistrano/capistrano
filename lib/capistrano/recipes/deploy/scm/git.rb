@@ -178,6 +178,7 @@ module Capistrano
           execute << "#{git} fetch #{remote} && #{git} reset --hard #{revision}"
 
           if configuration[:git_enable_submodules]
+            execute << "#{git} submodule init"
             execute << "#{git} submodule update"
           end
 
