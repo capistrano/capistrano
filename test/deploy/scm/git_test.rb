@@ -15,14 +15,16 @@ class DeploySCMGitTest < Test::Unit::TestCase
 
   def test_head
     assert_equal "HEAD", @source.head
+    
+    # With :branch
     @config[:branch] = "master"
     assert_equal "master", @source.head
   end
 
-  def origin
-    asser_equal "origin", @source.origin
-    @config[:remote] = "git"
-    assert_equal "git", @source.origin
+  def test_origin
+    assert_equal "origin", @source.origin
+    @config[:remote] = "username"
+    assert_equal "username", @source.origin
   end
 
   def test_checkout
@@ -31,9 +33,10 @@ class DeploySCMGitTest < Test::Unit::TestCase
     rev = 'c2d9e79'
     assert_equal "git clone git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
 
-    # With branch
-    @config[:branch] = "origin/foo"
-    assert_equal "git clone git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
+    # With :scm_command
+    git = "/opt/local/bin/git"
+    @config[:scm_command] = git
+    assert_equal "#{git} clone git@somehost.com:project.git /var/www && cd /var/www && #{git} checkout -b deploy #{rev}", @source.checkout(rev, dest)
   end
 
   def test_diff
@@ -61,11 +64,6 @@ class DeploySCMGitTest < Test::Unit::TestCase
     rev = 'c2d9e79'
     assert_equal "cd #{dest} && git fetch origin && git reset --hard #{rev}", @source.sync(rev, dest)
 
-    # With branch
-    @config[:branch] = "foo"
-    rev = '92d9e79' # simulate rev change
-    assert_equal "cd #{dest} && git fetch origin && git reset --hard #{rev}", @source.sync(rev, dest)
-
     # With :scm_command
     git = "/opt/local/bin/git"
     @config[:scm_command] = git
@@ -90,11 +88,6 @@ class DeploySCMGitTest < Test::Unit::TestCase
     dest = "/var/www"
     rev = 'c2d9e79'
     assert_equal "git clone --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
-
-    # With branch
-    @config[:branch] = "origin/foo"
-    rev = '92d9e79' # simulate rev change
-    assert_equal "git clone --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
   end
 
   def test_remote_clone
@@ -102,10 +95,6 @@ class DeploySCMGitTest < Test::Unit::TestCase
     @config[:remote] = "username"
     dest = "/var/www"
     rev = 'c2d9e79'
-    assert_equal "git clone -o username git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
-
-    # With branch
-    @config[:branch] = "foo"
     assert_equal "git clone -o username git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
   end
 
