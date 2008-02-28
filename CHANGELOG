@@ -1,4 +1,4 @@
-*SVN*
+*2.2.0* February 27, 2008
 
 * Fix git submodule support to init on sync [halorgium]
 
