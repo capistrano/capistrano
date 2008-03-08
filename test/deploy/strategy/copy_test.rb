@@ -24,6 +24,17 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @strategy.deploy!
   end
 
+  def test_deploy_with_exclusions_should_remove_patterns_from_destination
+    @config[:copy_exclude] = ".git"
+    Dir.expects(:tmpdir).returns("/temp/dir")
+    @source.expects(:checkout).with("154", "/temp/dir/1234567890").returns(:local_checkout)
+    @strategy.expects(:system).with(:local_checkout)
+
+    FileUtils.expects(:rm_rf).with("/temp/dir/1234567890/.git")
+    prepare_standard_compress_and_copy!
+    @strategy.deploy!
+  end
+
   def test_deploy_with_export_should_use_tar_gz_and_export
     Dir.expects(:tmpdir).returns("/temp/dir")
     @config[:copy_strategy] = :export
@@ -189,8 +200,9 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
 
     FileUtils.expects(:mkdir_p).with("/temp/dir/1234567890")
 
-    prepare_directory_tree!("/temp/dir/captest", true)
+    prepare_directory_tree!("/temp/dir/captest")
 
+    FileUtils.expects(:rm_rf).with("/temp/dir/1234567890/*/bar.txt")
     prepare_standard_compress_and_copy!
     @strategy.deploy!
   end
@@ -205,10 +217,8 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
       FileUtils.expects(:ln).with("#{cache}/foo.txt", "/temp/dir/1234567890/foo.txt")
 
       Dir.expects(:glob).with("app/*", File::FNM_DOTMATCH).returns(["app/.", "app/..", "app/bar.txt"])
-      unless exclude
-        File.expects(:directory?).with("app/bar.txt").returns(false)
-        FileUtils.expects(:ln).with("#{cache}/app/bar.txt", "/temp/dir/1234567890/app/bar.txt")
-      end
+      File.expects(:directory?).with("app/bar.txt").returns(false)
+      FileUtils.expects(:ln).with("#{cache}/app/bar.txt", "/temp/dir/1234567890/app/bar.txt")
     end
 
     def prepare_standard_compress_and_copy!
