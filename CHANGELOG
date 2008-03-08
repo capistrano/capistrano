@@ -1,5 +1,7 @@
 *SVN*
 
+* Added :none SCM module for deploying a specific directory's contents [Jamis Buck]
+
 * Improved "copy" strategy supports local caching and pattern exclusion (via :copy_cache and :copy_exclude variables) [Jamis Buck]
 
 
