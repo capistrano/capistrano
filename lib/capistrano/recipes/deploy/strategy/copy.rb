@@ -15,7 +15,26 @@ module Capistrano
       # of the source code. If you would rather use the export operation,
       # you can set the :copy_strategy variable to :export.
       #
-      # This deployment strategy supports a special variable,
+      #   set :copy_strategy, :export
+      #
+      # For even faster deployments, you can set the :copy_cache variable to
+      # true. This will cause deployments to do a new checkout of your
+      # repository to a new directory, and then copy that checkout. Subsequent
+      # deploys will just resync that copy, rather than doing an entirely new
+      # checkout. Additionally, you can specify file patterns to exclude from
+      # the copy when using :copy_cache; just set the :copy_exclude variable
+      # to an array of file globs or regexps.
+      #
+      #   set :copy_cache, true
+      #   set :copy_exclude, ".git/*"
+      #
+      # Note that :copy_strategy is ignored when :copy_cache is set. Also, if
+      # you want the copy cache put somewhere specific, you can set the variable
+      # to the path you want, instead of merely 'true':
+      #
+      #   set :copy_cache, "/tmp/caches/myapp"
+      #
+      # This deployment strategy also supports a special variable,
       # :copy_compression, which must be one of :gzip, :bz2, or
       # :zip, and which specifies how the source should be compressed for
       # transmission to each host.
@@ -25,8 +44,37 @@ module Capistrano
         # servers, and uncompresses it on each of them into the deployment
         # directory.
         def deploy!
-          logger.debug "getting (via #{copy_strategy}) revision #{revision} to #{destination}"
-          system(command)
+          if copy_cache
+            if File.exists?(copy_cache)
+              logger.debug "refreshing local cache to revision #{revision} at #{copy_cache}"
+              system(source.sync(revision, copy_cache))
+            else
+              logger.debug "preparing local cache at #{copy_cache}"
+              system(source.checkout(revision, copy_cache))
+            end
+
+            logger.debug "copying cache to deployment staging area #{destination}"
+            Dir.chdir(copy_cache) do
+              FileUtils.mkdir_p(destination)
+              queue = Dir.glob("*", File::FNM_DOTMATCH)
+              while queue.any?
+                item = queue.shift
+                name = File.basename(item)
+                next if name == "." || name == ".."
+                next if copy_exclude.any? { |pattern| pattern.is_a?(Regexp) ? item =~ pattern : File.fnmatch?(pattern, item, File::FNM_DOTMATCH) }
+                if File.directory?(item)
+                  queue += Dir.glob("#{item}/*", File::FNM_DOTMATCH)
+                  FileUtils.mkdir(File.join(destination, item))
+                else
+                  FileUtils.ln(File.join(copy_cache, item), File.join(destination, item))
+                end
+              end
+            end
+          else
+            logger.debug "getting (via #{copy_strategy}) revision #{revision} to #{destination}"
+            system(command)
+          end
+
           File.open(File.join(destination, "REVISION"), "w") { |f| f.puts(revision) }
 
           logger.trace "compressing #{destination} to #{filename}"
@@ -48,7 +96,23 @@ module Capistrano
           end
         end
 
+        # Returns the location of the local copy cache, if the strategy should
+        # use a local cache + copy instead of a new checkout/export every
+        # time. Returns +nil+ unless :copy_cache has been set. If :copy_cache
+        # is +true+, a default cache location will be returned.
+        def copy_cache
+          @copy_cache ||= configuration[:copy_cache] == true ?
+            File.join(Dir.tmpdir, configuration[:application]) :
+            configuration[:copy_cache]
+        end
+
         private
+
+          # Specify patterns to exclude from the copy. This is only valid
+          # when using a local cache.
+          def copy_exclude
+            @copy_exclude ||= Array(configuration.fetch(:copy_exclude, []))
+          end
 
           # Returns the basename of the release_path, which will be used to
           # name the local copy and archive file.

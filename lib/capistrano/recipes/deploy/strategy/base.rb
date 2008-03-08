@@ -46,6 +46,12 @@ module Capistrano
             end
           end
 
+          # A wrapper for Kernel#system that logs the command being executed.
+          def system(*args)
+            logger.trace "executing locally: #{args.join(' ')}"
+            super
+          end
+
         private
 
           def logger
