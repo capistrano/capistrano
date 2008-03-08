@@ -23,7 +23,7 @@ module Capistrano
       # deploys will just resync that copy, rather than doing an entirely new
       # checkout. Additionally, you can specify file patterns to exclude from
       # the copy when using :copy_cache; just set the :copy_exclude variable
-      # to an array of file globs or regexps.
+      # to a file glob (or an array of globs).
       #
       #   set :copy_cache, true
       #   set :copy_exclude, ".git/*"
