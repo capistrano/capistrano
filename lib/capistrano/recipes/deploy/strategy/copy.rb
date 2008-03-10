@@ -60,7 +60,10 @@ module Capistrano
               while queue.any?
                 item = queue.shift
                 name = File.basename(item)
+
                 next if name == "." || name == ".."
+                next if copy_exclude.any? { |pattern| File.fnmatch(pattern, item) }
+
                 if File.directory?(item)
                   queue += Dir.glob("#{item}/*", File::FNM_DOTMATCH)
                   FileUtils.mkdir(File.join(destination, item))
@@ -72,11 +75,11 @@ module Capistrano
           else
             logger.debug "getting (via #{copy_strategy}) revision #{revision} to #{destination}"
             system(command)
-          end
 
-          if copy_exclude.any?
-            logger.debug "processing exclusions..."
-            copy_exclude.each { |pattern| FileUtils.rm_rf(File.join(destination, pattern)) }
+            if copy_exclude.any?
+              logger.debug "processing exclusions..."
+              copy_exclude.each { |pattern| FileUtils.rm_rf(File.join(destination, pattern)) }
+            end
           end
 
           File.open(File.join(destination, "REVISION"), "w") { |f| f.puts(revision) }

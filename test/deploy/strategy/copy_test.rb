@@ -200,9 +200,8 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
 
     FileUtils.expects(:mkdir_p).with("/temp/dir/1234567890")
 
-    prepare_directory_tree!("/temp/dir/captest")
+    prepare_directory_tree!("/temp/dir/captest", true)
 
-    FileUtils.expects(:rm_rf).with("/temp/dir/1234567890/*/bar.txt")
     prepare_standard_compress_and_copy!
     @strategy.deploy!
   end
@@ -217,8 +216,11 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
       FileUtils.expects(:ln).with("#{cache}/foo.txt", "/temp/dir/1234567890/foo.txt")
 
       Dir.expects(:glob).with("app/*", File::FNM_DOTMATCH).returns(["app/.", "app/..", "app/bar.txt"])
-      File.expects(:directory?).with("app/bar.txt").returns(false)
-      FileUtils.expects(:ln).with("#{cache}/app/bar.txt", "/temp/dir/1234567890/app/bar.txt")
+
+      unless exclude
+        File.expects(:directory?).with("app/bar.txt").returns(false)
+        FileUtils.expects(:ln).with("#{cache}/app/bar.txt", "/temp/dir/1234567890/app/bar.txt")
+      end
     end
 
     def prepare_standard_compress_and_copy!
