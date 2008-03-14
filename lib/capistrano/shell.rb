@@ -169,7 +169,8 @@ HELP
         command = command.gsub(/\bsudo\b/, "sudo -p '#{configuration.sudo_prompt}'")
         processor = configuration.sudo_behavior_callback(Configuration.default_io_proc)
         sessions = servers.map { |server| configuration.sessions[server] }
-        cmd = Command.new(command, sessions, :logger => configuration.logger, &processor)
+        options = configuration.add_default_command_options({})
+        cmd = Command.new(command, sessions, options.merge(:logger => configuration.logger), &processor)
         previous = trap("INT") { cmd.stop! }
         cmd.process!
       rescue Capistrano::Error => error

@@ -61,4 +61,30 @@ class ShellTest < Test::Unit::TestCase
     @shell.expects(:process_command).with("on", "app,db", "hello world")
     assert @shell.read_and_execute
   end
+  
+  def test_task_command_with_bang_gets_processed_by_exec_tasks
+    while_testing_post_exec_commands do
+      @shell.expects(:read_line).returns("!deploy")
+      @shell.expects(:exec_tasks).with(["deploy"])
+      assert @shell.read_and_execute
+    end
+  end
+  
+  def test_normal_command_gets_processed_by_exec_command
+    while_testing_post_exec_commands do
+      @shell.expects(:read_line).returns("uptime")
+      @shell.expects(:exec_command).with("uptime",nil)
+      @shell.expects(:connect)
+      assert @shell.read_and_execute
+    end
+  end
+  
+  
+  private
+  
+  def while_testing_post_exec_commands(&block)
+    @shell.instance_variable_set(:@mutex,Mutex.new)
+    yield
+  end
+  
 end
