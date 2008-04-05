@@ -15,6 +15,12 @@ module Capistrano
         self
       end
 
+      def file(path, options={})
+        @message ||= "`#{path}' is not a file"
+        try("test -f #{path}", options)
+        self
+      end
+
       def writable(path, options={})
         @message ||= "`#{path}' is not writable"
         try("test -w #{path}", options)
