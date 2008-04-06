@@ -1,5 +1,7 @@
 *SVN*
 
+* Added support for depend :remote, :file to test for existence of a specific file [Andrew Carter]
+
 * Ensure that the default run options are mixed into the command options when executing a command from the cap shell [Ken Collins]
 
 * Added :none SCM module for deploying a specific directory's contents [Jamis Buck]
