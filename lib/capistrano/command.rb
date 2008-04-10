@@ -36,15 +36,14 @@ module Capistrano
       loop do
         active = 0
         @channels.each do |ch|
-          next if ch[:closed]
-          active += 1
-          ch.connection.process(true)
+          active += 1 unless ch[:closed]
+          ch.connection.process(0)
         end
 
         break if active == 0
         if Time.now - since >= 1
           since = Time.now
-          @channels.each { |ch| ch.connection.ping! }
+          @channels.each { |ch| ch.connection.send_global_request("keep-alive@openssh.com") }
         end
         sleep 0.01 # a brief respite, to keep the CPU from going crazy
       end
@@ -84,38 +83,32 @@ module Capistrano
             channel[:host] = server.host
             channel[:options] = options
 
-            execute_command = Proc.new do |ch|
-              logger.trace "executing command", ch[:server] if logger
-              cmd = replace_placeholders(command, ch)
+            request_pty_if_necessary(channel) do |ch, success|
+              if success
+                logger.trace "executing command", ch[:server] if logger
+                cmd = replace_placeholders(command, ch)
 
-              if options[:shell] == false
-                shell = nil
+                if options[:shell] == false
+                  shell = nil
+                else
+                  shell = "#{options[:shell] || "sh"} -c"
+                  cmd = cmd.gsub(/[$\\`"]/) { |m| "\\#{m}" }
+                  cmd = "\"#{cmd}\""
+                end
+
+                command_line = [environment, shell, cmd].compact.join(" ")
+
+                ch.exec(command_line)
+                ch.send_data(options[:data]) if options[:data]
               else
-                shell = "#{options[:shell] || "sh"} -c"
-                cmd = cmd.gsub(/[$\\`"]/) { |m| "\\#{m}" }
-                cmd = "\"#{cmd}\""
-              end
-
-              command_line = [environment, shell, cmd].compact.join(" ")
-
-              ch.exec(command_line)
-              ch.send_data(options[:data]) if options[:data]
-            end
-
-            if options[:pty]
-              channel.request_pty(:want_reply => true)
-              channel.on_success(&execute_command)
-              channel.on_failure do |ch|
                 # just log it, don't actually raise an exception, since the
                 # process method will see that the status is not zero and will
                 # raise an exception then.
                 logger.important "could not open channel", ch[:server] if logger
                 ch.close
               end
-            else
-              execute_command.call(channel)
             end
-              
+
             channel.on_data do |ch, data|
               @callback[ch, :out, data] if @callback
             end
@@ -124,14 +117,24 @@ module Capistrano
               @callback[ch, :err, data] if @callback
             end
 
-            channel.on_request do |ch, request, reply, data|
-              ch[:status] = data.read_long if request == "exit-status"
+            channel.on_request("exit-status") do |ch, data|
+              ch[:status] = data.read_long
             end
 
             channel.on_close do |ch|
               ch[:closed] = true
             end
           end
+        end
+      end
+
+      def request_pty_if_necessary(channel)
+        if options[:pty]
+          channel.request_pty do |ch, success|
+            yield ch, success
+          end
+        else
+          yield channel, true
         end
       end
 

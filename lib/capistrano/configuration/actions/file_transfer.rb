@@ -23,8 +23,7 @@ module Capistrano
           execute_on_servers(options.merge(:once => true)) do |servers|
             logger.info "downloading `#{servers.first.host}:#{remote_path}' to `#{path}'"
             sftp = sessions[servers.first].sftp
-            sftp.connect unless sftp.state == :open
-            sftp.get_file remote_path, path
+            sftp.download! remote_path, path
             logger.debug "download finished" 
           end
         end

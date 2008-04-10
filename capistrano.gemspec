@@ -1,5 +1,3 @@
-require './lib/capistrano/version'
-
 Gem::Specification.new do |s|
 
   s.name = 'capistrano'
@@ -11,14 +9,14 @@ Gem::Specification.new do |s|
   DESC
 
   s.files = Dir.glob("{bin,lib,examples,test}/**/*") + %w(README MIT-LICENSE CHANGELOG)
-  s.require_path = 'lib'
   s.has_rdoc = true
 
   s.bindir = "bin"
   s.executables << "cap" << "capify"
 
-  s.add_dependency 'net-ssh', ">= #{Capistrano::Version::SSH_REQUIRED.join(".")}", "< 1.99.0"
-  s.add_dependency 'net-sftp', ">= #{Capistrano::Version::SFTP_REQUIRED.join(".")}", "< 1.99.0"
+  s.add_dependency 'net-ssh', ">= 1.99.1"
+  s.add_dependency 'net-sftp', ">= 1.99.0"
+  s.add_dependency 'net-ssh-gateway', ">= 0.99.0"
   s.add_dependency 'highline'
 
   s.author = "Jamis Buck"

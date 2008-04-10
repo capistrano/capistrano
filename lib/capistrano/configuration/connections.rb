@@ -1,6 +1,6 @@
 
 require 'enumerator'
-require 'capistrano/gateway'
+require 'net/ssh/gateway'
 require 'capistrano/ssh'
 
 module Capistrano
@@ -11,8 +11,6 @@ module Capistrano
         base.send :alias_method, :initialize, :initialize_with_connections
       end
 
-      # An adaptor for making the SSH interface look and act like that of the
-      # Gateway class.
       class DefaultConnectionFactory #:nodoc:
         def initialize(options)
           @options = options
@@ -20,6 +18,19 @@ module Capistrano
 
         def connect_to(server)
           SSH.connect(server, @options)
+        end
+      end
+
+      class GatewayConnectionFactory #:nodoc:
+        def initialize(gateway, options)
+          server = ServerDefinition.new(gateway)
+          @gateway = Net::SSH::Gateway.new(server.host, server.user || ServerDefinition.default_user, server.options)
+          @options = options
+        end
+
+        def connect_to(server)
+          local_host = ServerDefinition.new("127.0.0.1", :user => server.user, :port => @gateway.open(server.host, server.port || 22))
+          SSH.connect(local_host, @options)
         end
       end
 
@@ -61,7 +72,7 @@ module Capistrano
         @connection_factory ||= begin
           if exists?(:gateway)
             logger.debug "establishing connection to gateway `#{fetch(:gateway)}'"
-            Gateway.new(ServerDefinition.new(fetch(:gateway)), self)
+            GatewayConnectionFactory.new(fetch(:gateway), self)
           else
             DefaultConnectionFactory.new(self)
           end
@@ -72,22 +83,13 @@ module Capistrano
       def establish_connections_to(servers)
         failed_servers = []
 
-        # This attemps to work around the problem where SFTP uploads hang
-        # for some people. A bit of investigating seemed to reveal that the
-        # hang only occurred when the SSH connections were established async,
-        # so this setting allows people to at least work around the problem.
-        if fetch(:synchronous_connect, false)
-          logger.trace "synchronous_connect: true"
-          Array(servers).each { |server| safely_establish_connection_to(server, failed_servers) }
-        else
-          # force the connection factory to be instantiated synchronously,
-          # otherwise we wind up with multiple gateway instances, because
-          # each connection is done in parallel.
-          connection_factory
+        # force the connection factory to be instantiated synchronously,
+        # otherwise we wind up with multiple gateway instances, because
+        # each connection is done in parallel.
+        connection_factory
 
-          threads = Array(servers).map { |server| establish_connection_to(server, failed_servers) }
-          threads.each { |t| t.join }
-        end
+        threads = Array(servers).map { |server| establish_connection_to(server, failed_servers) }
+        threads.each { |t| t.join }
 
         if failed_servers.any?
           errors = failed_servers.map { |h| "#{h[:server]} (#{h[:error].class}: #{h[:error].message})" }
@@ -171,6 +173,8 @@ module Capistrano
         def safely_establish_connection_to(server, failures=nil)
           sessions[server] ||= connection_factory.connect_to(server)
         rescue Exception => err
+puts err
+puts err.backtrace
           raise unless failures
           failures << { :server => server, :error => err }
         end

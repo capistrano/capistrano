@@ -1,24 +1,13 @@
 begin
   require 'rubygems'
-  gem 'net-sftp', "< 1.99.0"
+#  gem 'net-sftp', ">= 1.99.0"
 rescue LoadError, NameError
 end
 
 require 'net/sftp'
-require 'net/sftp/operations/errors'
 require 'capistrano/errors'
 
 module Capistrano
-  unless ENV['SKIP_VERSION_CHECK']
-    require 'capistrano/version' 
-    require 'net/sftp/version'
-    sftp_version = [Net::SFTP::Version::MAJOR, Net::SFTP::Version::MINOR, Net::SFTP::Version::TINY]
-    required_version = [1,1,0]
-    if !Capistrano::Version.check(required_version, sftp_version)
-      raise "You have Net::SFTP #{sftp_version.join(".")}, but you need at least #{required_version.join(".")}. Net::SFTP will not be used."
-    end
-  end
-
   # This class encapsulates a single file upload to be performed in parallel
   # across multiple machines, using the SFTP protocol. Although it is intended
   # to be used primarily from within Capistrano, it may also be used standalone
@@ -59,7 +48,7 @@ module Capistrano
       @options  = options
 
       @completed = @failed = 0
-      @sftps = setup_sftp
+      @uploaders = setup_uploaders
     end
     
     # Uploads to all specified servers in parallel. If any one of the servers
@@ -67,21 +56,20 @@ module Capistrano
     def process!
       logger.debug "uploading #{filename}" if logger
       while running?
-        @sftps.each do |sftp|
-          next if sftp.channel[:done]
+        sessions.each do |session|
           begin
-            sftp.channel.connection.process(true)
-          rescue Net::SFTP::Operations::StatusException => error
-            logger.important "uploading failed: #{error.description}", sftp.channel[:server] if logger
-            failed!(sftp)
+            session.process(0)
+          rescue Net::SFTP::StatusException => error
+            logger.important "uploading failed: #{error.description}", session.xserver if logger
+            failed!(uploader)
           end
         end
         sleep 0.01 # a brief respite, to keep the CPU from going crazy
       end
       logger.trace "upload finished" if logger
 
-      if (failed = @sftps.select { |sftp| sftp.channel[:failed] }).any?
-        hosts = failed.map { |sftp| sftp.channel[:server] }
+      if (failed = @uploaders.select { |uploader| uploader[:failed] }).any?
+        hosts = failed.map { |uploader| uploader[:server] }
         error = UploadError.new("upload of #{filename} failed on #{hosts.join(',')}")
         error.hosts = hosts
         raise error
@@ -96,56 +84,36 @@ module Capistrano
         options[:logger]
       end
 
-      def setup_sftp
+      def setup_uploaders
         sessions.map do |session|
           server = session.xserver
           sftp = session.sftp
-          sftp.connect unless sftp.state == :open
-
-          sftp.channel[:server] = server
-          sftp.channel[:done] = false
-          sftp.channel[:failed] = false
 
           real_filename = filename.gsub(/\$CAPISTRANO:HOST\$/, server.host)
-          sftp.open(real_filename, IO::WRONLY | IO::CREAT | IO::TRUNC, options[:mode] || 0664) do |status, handle|
-            break unless check_status(sftp, "open #{real_filename}", server, status)
-            
-            logger.info "uploading data to #{server}:#{real_filename}" if logger
-            sftp.write(handle, options[:data] || "") do |status|
-              break unless check_status(sftp, "write to #{server}:#{real_filename}", server, status)
-              sftp.close_handle(handle) do
-                logger.debug "done uploading data to #{server}:#{real_filename}" if logger
-                completed!(sftp)
-              end
-            end
-          end
-          
-          sftp
+          logger.info "uploading data to #{server}:#{real_filename}" if logger
+          uploader = sftp.upload(StringIO.new(options[:data] || ""), real_filename, :permissions => options[:mode] || 0664)
+
+          uploader[:server] = server
+          uploader[:done] = false
+          uploader[:failed] = false
+
+          uploader
         end
       end
       
-      def check_status(sftp, action, server, status)
-        return true if status.code == Net::SFTP::Session::FX_OK
-
-        logger.error "could not #{action} on #{server} (#{status.message})" if logger
-        failed!(sftp)
-
-        return false
-      end
-
       def running?
-        completed < @sftps.length
+        completed < @uploaders.length
       end
 
-      def failed!(sftp)
-        completed!(sftp)
+      def failed!(uploader)
+        completed!(uploader)
         @failed += 1
-        sftp.channel[:failed] = true
+        uploader[:failed] = true
       end
 
-      def completed!(sftp)
+      def completed!(uploader)
         @completed += 1
-        sftp.channel[:done] = true
+        uploader[:done] = true
       end
   end
 
