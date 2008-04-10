@@ -63,6 +63,12 @@ class SSHTest < Test::Unit::TestCase
     assert_equal success, Capistrano::SSH.connect(server)
   end
 
+  def test_connect_with_server_with_other_ssh_options_should_pass_ssh_options_to_net_ssh
+    server = server("jamis@capistrano:1235", :ssh_options => { :keys => %w(some_valid_key), :auth_methods => %w(a_method), :hmac => 'none' })
+    Net::SSH.expects(:start).with(server.host, @options.merge(:username => "jamis", :port => 1235, :keys => %w(some_valid_key), :auth_methods => %w(a_method), :hmac => 'none' )).returns(success = Object.new)
+    assert_equal success, Capistrano::SSH.connect(server)
+  end
+
   def test_connect_with_ssh_options_should_use_ssh_options
     ssh_options = { :username => "JamisMan", :port => 8125 }
     Net::SSH.expects(:start).with(@server.host, @options.merge(:username => "JamisMan", :port => 8125)).returns(success = Object.new)

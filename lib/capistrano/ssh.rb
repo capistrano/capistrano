@@ -91,8 +91,8 @@ module Capistrano
     def self.connect(server, options={}, &block)
       methods = [ %w(publickey hostbased), %w(password keyboard-interactive) ]
       password_value = nil
-      
-      ssh_options = (options[:ssh_options] || {}).dup
+
+      ssh_options = (server.options[:ssh_options] || {}).dup.merge(options[:ssh_options] || {}).dup
       ssh_options[:username] = server.user || options[:user] || ssh_options[:username]
       ssh_options[:port]     = server.port || options[:port] || ssh_options[:port] || DEFAULT_PORT
 
