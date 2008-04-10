@@ -1,4 +1,3 @@
-
 module Capistrano
   class Role
     include Enumerable
@@ -34,27 +33,14 @@ module Capistrano
       servers.empty?
     end
 
-    # Resets the cache, so that proc values may be recalculated.
-    # There should be a command in Configuration::Roles to do this,
-    # but I haven't needed it yet, and I'm not sure yet
-    # what to call that command. Suggestions?
-    def reset!
-      @dynamic_servers.each { |item| item.reset! }
-    end
-
-    # Clears everything. I still thing this should be 'clear!', but that's not
-    # the way Array does it.
     def clear
       @dynamic_servers.clear
       @static_servers.clear
     end
 
-    # Mostly for documentation purposes. Doesn't seem to do anything.
     protected
 
     # This is the combination of a block, a hash of options, and a cached value.
-    # It is protected because it is an implementation detail -- the original
-    # implementation was two lists (blocks and cached results of calling them).
     class DynamicServerList
       def initialize (block, options)
         @block = block
