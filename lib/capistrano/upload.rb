@@ -56,11 +56,11 @@ module Capistrano
     def process!
       logger.debug "uploading #{filename}" if logger
       while running?
-        sessions.each do |session|
+        @uploaders.each do |uploader|
           begin
-            session.process(0)
+            uploader.sftp.session.process(0)
           rescue Net::SFTP::StatusException => error
-            logger.important "uploading failed: #{error.description}", session.xserver if logger
+            logger.important "uploading failed: #{error.description}", uploader[:server] if logger
             failed!(uploader)
           end
         end
@@ -91,7 +91,10 @@ module Capistrano
 
           real_filename = filename.gsub(/\$CAPISTRANO:HOST\$/, server.host)
           logger.info "uploading data to #{server}:#{real_filename}" if logger
-          uploader = sftp.upload(StringIO.new(options[:data] || ""), real_filename, :permissions => options[:mode] || 0664)
+
+          uploader = sftp.upload(StringIO.new(options[:data] || ""), real_filename, :permissions => options[:mode] || 0664) do |event, actor, *args|
+            completed!(actor) if event == :finish
+          end
 
           uploader[:server] = server
           uploader[:done] = false
