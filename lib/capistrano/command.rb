@@ -32,9 +32,7 @@ module Capistrano
     # fails (non-zero return code) on any of the hosts, this will raise a
     # Capistrano::CommandError.
     def process!
-      loop do
-        break unless process_iteration
-      end
+      loop { break unless process_iteration }
 
       logger.trace "command finished" if logger
 
