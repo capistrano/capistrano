@@ -29,8 +29,12 @@ module Capistrano
         end
 
         def connect_to(server)
+          @options[:logger].debug "establishing connection to `#{server}' via gateway" if @options[:logger]
           local_host = ServerDefinition.new("127.0.0.1", :user => server.user, :port => @gateway.open(server.host, server.port || 22))
-          SSH.connect(local_host, @options)
+          session = SSH.connect(local_host, @options)
+          session.xserver = server
+          @options[:logger].trace "connected: `#{server}' (via gateway)" if @options[:logger]
+          session
         end
       end
 

@@ -32,20 +32,8 @@ module Capistrano
     # fails (non-zero return code) on any of the hosts, this will raise a
     # Capistrano::CommandError.
     def process!
-      since = Time.now
       loop do
-        active = 0
-        @channels.each do |ch|
-          active += 1 unless ch[:closed]
-          ch.connection.process(0)
-        end
-
-        break if active == 0
-        if Time.now - since >= 1
-          since = Time.now
-          @channels.each { |ch| ch.connection.send_global_request("keep-alive@openssh.com") }
-        end
-        sleep 0.01 # a brief respite, to keep the CPU from going crazy
+        break unless process_iteration
       end
 
       logger.trace "command finished" if logger
@@ -69,6 +57,25 @@ module Capistrano
     end
 
     private
+
+      def process_iteration
+        sessions.each { |session| session.preprocess }
+        return false if @channels.all? { |ch| ch[:closed] }
+
+        readers = sessions.map { |session| session.listeners.keys }.flatten
+        writers = readers.select { |io| io.respond_to?(:pending_write?) && io.pending_write? }
+
+        readers, writers, = IO.select(readers, writers)
+
+        if readers
+          sessions.each do |session|
+            ios = session.listeners.keys
+            session.postprocess(ios & readers, ios & writers)
+          end
+        end
+
+        true
+      end
 
       def logger
         options[:logger]
