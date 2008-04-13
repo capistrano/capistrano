@@ -43,7 +43,7 @@ module Capistrano
       methods = [ %w(publickey hostbased), %w(password keyboard-interactive) ]
       password_value = nil
 
-      ssh_options = (server.options[:ssh_options] || {}).dup.merge(options[:ssh_options] || {}).dup
+      ssh_options        = (server.options[:ssh_options] || {}).merge(options[:ssh_options] || {})
       user               = server.user || options[:user] || ssh_options[:username] || ServerDefinition.default_user
       ssh_options[:port] = server.port || options[:port] || ssh_options[:port] || DEFAULT_PORT
 
