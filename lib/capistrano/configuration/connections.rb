@@ -1,4 +1,3 @@
-
 require 'enumerator'
 require 'net/ssh/gateway'
 require 'capistrano/ssh'
