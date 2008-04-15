@@ -22,6 +22,7 @@ module Capistrano
 
       class GatewayConnectionFactory #:nodoc:
         def initialize(gateway, options)
+          Thread.abort_on_exception = true
           server = ServerDefinition.new(gateway)
           @gateway = Net::SSH::Gateway.new(server.host, server.user || ServerDefinition.default_user, server.options)
           @options = options
