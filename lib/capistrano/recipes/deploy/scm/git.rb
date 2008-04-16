@@ -24,14 +24,6 @@ module Capistrano
       #   * Supports :scm_command, :scm_password, :scm_passphrase Capistrano
       #     directives.
       #
-      # REQUIREMENTS
-      # ------------
-      #
-      # Git is required to be installed on your remote machine(s), because a
-      # clone and checkout is done to get the code up there.  This is the way
-      # I prefer to deploy; there is no alternative to this, so :deploy_via
-      # is ignored.
-      #
       # CONFIGURATION
       # -------------
       #
