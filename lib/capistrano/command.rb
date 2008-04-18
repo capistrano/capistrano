@@ -60,7 +60,7 @@ module Capistrano
         sessions.each { |session| session.preprocess }
         return false if @channels.all? { |ch| ch[:closed] }
 
-        readers = sessions.map { |session| session.listeners.keys }.flatten
+        readers = sessions.map { |session| session.listeners.keys }.flatten.reject { |io| io.closed? }
         writers = readers.select { |io| io.respond_to?(:pending_write?) && io.pending_write? }
 
         readers, writers, = IO.select(readers, writers)
