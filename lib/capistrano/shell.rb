@@ -1,4 +1,5 @@
 require 'thread'
+require 'capistrano/command'
 
 module Capistrano
   # The Capistrano::Shell class is the guts of the "shell" task. It implements
@@ -6,6 +7,8 @@ module Capistrano
   # commands. It makes for a GREAT way to monitor systems, and perform quick
   # maintenance on one or more machines.
   class Shell
+    include Command::Processable
+
     # A Readline replacement for platforms where readline is either
     # unavailable, or has not been installed.
     class ReadlineFallback #:nodoc:
@@ -142,11 +145,13 @@ HELP
       # be invoked. Otherwise, it is executed as a command on all associated
       # servers.
       def exec(command)
-        if command[0] == ?!
-          exec_tasks(command[1..-1].split)
-        else
-          servers = connect(configuration.current_task)
-          exec_command(command, servers)
+        @mutex.synchronize do
+          if command[0] == ?!
+            exec_tasks(command[1..-1].split)
+          else
+            servers = connect(configuration.current_task)
+            exec_command(command, servers)
+          end
         end
       ensure
         STDOUT.flush
@@ -197,17 +202,10 @@ HELP
 
         @mutex = Mutex.new
         @bgthread = Thread.new do
-            loop do
-              ready = configuration.sessions.values.select { |sess| sess.connection.reader_ready? }
-              if ready.empty?
-                sleep 0.1
-              else
-                @mutex.synchronize do
-                  ready.each { |session| session.connection.process(true) }
-                end
-              end
-            end
+          loop do
+            @mutex.synchronize { process_iteration(0.1) }
           end
+        end
       end
 
       # Set the given option to +value+.
@@ -245,7 +243,7 @@ HELP
         old_var, ENV[env_var] = ENV[env_var], (scope_value == "all" ? nil : scope_value) if env_var
         if command
           begin
-            @mutex.synchronize { exec(command) }
+            exec(command)
           ensure
             ENV[env_var] = old_var if env_var
           end
@@ -253,5 +251,10 @@ HELP
           puts "scoping #{scope_type} #{scope_value}"
         end
       end
+    end
+
+    # All open sessions
+    def sessions
+      configuration.sessions.values
     end
 end
