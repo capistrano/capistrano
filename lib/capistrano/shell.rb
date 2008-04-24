@@ -253,7 +253,7 @@ HELP
       end
     end
 
-    # All open sessions
+    # All open sessions, needed to satisfy the Command::Processable include
     def sessions
       configuration.sessions.values
     end

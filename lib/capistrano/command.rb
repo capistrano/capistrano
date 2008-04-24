@@ -1,31 +1,11 @@
 require 'capistrano/errors'
+require 'capistrano/processable'
 
 module Capistrano
 
   # This class encapsulates a single command to be executed on a set of remote
   # machines, in parallel.
   class Command
-    module Processable
-      def process_iteration(wait=nil, &block)
-        sessions.each { |session| session.preprocess }
-        return false if block && !block.call(self)
-
-        readers = sessions.map { |session| session.listeners.keys }.flatten.reject { |io| io.closed? }
-        writers = readers.select { |io| io.respond_to?(:pending_write?) && io.pending_write? }
-
-        readers, writers, = IO.select(readers, writers, nil, wait)
-
-        if readers
-          sessions.each do |session|
-            ios = session.listeners.keys
-            session.postprocess(ios & readers, ios & writers)
-          end
-        end
-
-        true
-      end
-    end
-
     include Processable
 
     attr_reader :command, :sessions, :options

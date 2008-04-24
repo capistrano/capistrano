@@ -1,4 +1,4 @@
-require 'capistrano/upload'
+require 'capistrano/transfer'
 
 module Capistrano
   class Configuration
@@ -9,22 +9,29 @@ module Capistrano
         # by the current task. If <tt>:mode</tt> is specified it is used to
         # set the mode on the file.
         def put(data, path, options={})
-          execute_on_servers(options) do |servers|
-            targets = servers.map { |s| sessions[s] }
-            Upload.process(targets, path, :data => data, :mode => options[:mode], :logger => logger)
-          end
+          upload(StringIO.new(data), path, options)
         end
     
-        # Get file remote_path from FIRST server targetted by
+        # Get file remote_path from FIRST server targeted by
         # the current task and transfer it to local machine as path.
         #
         # get "#{deploy_to}/current/log/production.log", "log/production.log.web"
-        def get(remote_path, path, options = {})
-          execute_on_servers(options.merge(:once => true)) do |servers|
-            logger.info "downloading `#{servers.first.host}:#{remote_path}' to `#{path}'"
-            sftp = sessions[servers.first].sftp
-            sftp.download! remote_path, path
-            logger.debug "download finished" 
+        def get(remote_path, path, options={}, &block)
+          download(remote_path, path, options.merge(:once => true), &block)
+        end
+
+        def upload(from, to, options={}, &block)
+          transfer(:up, from, to, options, &block)
+        end
+
+        def download(from, to, options={}, &block)
+          transfer(:down, from, to, options, &block)
+        end
+
+        def transfer(direction, from, to, options={}, &block)
+          execute_on_servers(options) do |servers|
+            targets = servers.map { |s| sessions[s] }
+            Transfer.process(direction, from, to, targets, options.merge(:logger => logger), &block)
           end
         end
 

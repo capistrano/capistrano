@@ -10,6 +10,6 @@ module Capistrano
   end
 
   class ConnectionError < RemoteError; end
-  class UploadError < RemoteError; end
+  class TransferError < RemoteError; end
   class CommandError < RemoteError; end
 end

@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'net-ssh', ">= 1.99.2"
   s.add_dependency 'net-sftp', ">= 1.99.1"
+  s.add_dependency 'net-scp', ">= 0.99.0"
   s.add_dependency 'net-ssh-gateway', ">= 0.99.0"
   s.add_dependency 'highline'
 
