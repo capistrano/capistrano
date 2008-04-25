@@ -1,4 +1,6 @@
-*SVN*
+*unreleased*
+
+* Added #export method for git SCM [Phillip Goldenburg]
 
 * For query_revision, git SCM used git-rev-parse on the repo hosting the Capfile, which may NOT be the same tree as the actual source reposistory. Use git-ls-remote instead to resolve the revision for checkout. [Robin H. Johnson]
 
