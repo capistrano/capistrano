@@ -1,5 +1,7 @@
 *SVN*
 
+* For query_revision, git SCM used git-rev-parse on the repo hosting the Capfile, which may NOT be the same tree as the actual source reposistory. Use git-ls-remote instead to resolve the revision for checkout. [Robin H. Johnson]
+
 * Allow :ssh_options hash to be specified per server [Jesse Newland]
 
 * Added support for depend :remote, :file to test for existence of a specific file [Andrew Carter]

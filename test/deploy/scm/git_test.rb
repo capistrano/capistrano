@@ -7,7 +7,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
   end
 
   def setup
-    @config = { }
+    @config = { :repository => "." }
     def @config.exists?(name); key?(name); end
 
     @source = TestSCM.new(@config)
@@ -50,7 +50,11 @@ class DeploySCMGitTest < Test::Unit::TestCase
   end
 
   def test_query_revision
-    assert_equal "git rev-parse HEAD", @source.query_revision('HEAD') { |o| o }
+    revision = @source.query_revision('HEAD') do |o|
+      assert_equal "git ls-remote . HEAD", o
+      "d11006102c07c94e5d54dd0ee63dca825c93ed61\tHEAD"
+    end
+    assert_equal "d11006102c07c94e5d54dd0ee63dca825c93ed61", revision
   end
 
   def test_command_should_be_backwards_compatible
