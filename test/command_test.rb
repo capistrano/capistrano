@@ -1,4 +1,4 @@
-require "#{File.dirname(__FILE__)}/utils"
+require "utils"
 require 'capistrano/command'
 
 class CommandTest < Test::Unit::TestCase

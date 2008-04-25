@@ -1,4 +1,4 @@
-require "#{File.dirname(__FILE__)}/../../utils"
+require "utils"
 require 'capistrano/recipes/deploy/scm/git'
 
 class DeploySCMGitTest < Test::Unit::TestCase

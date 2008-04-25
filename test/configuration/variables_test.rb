@@ -1,4 +1,4 @@
-require "#{File.dirname(__FILE__)}/../utils"
+require "utils"
 require 'capistrano/configuration/variables'
 
 class ConfigurationVariablesTest < Test::Unit::TestCase

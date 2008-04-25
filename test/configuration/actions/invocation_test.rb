@@ -1,4 +1,4 @@
-require "#{File.dirname(__FILE__)}/../../utils"
+require "utils"
 require 'capistrano/configuration/actions/invocation'
 
 class ConfigurationActionsInvocationTest < Test::Unit::TestCase

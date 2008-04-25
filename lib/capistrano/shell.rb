@@ -1,5 +1,5 @@
 require 'thread'
-require 'capistrano/command'
+require 'capistrano/processable'
 
 module Capistrano
   # The Capistrano::Shell class is the guts of the "shell" task. It implements
@@ -7,7 +7,7 @@ module Capistrano
   # commands. It makes for a GREAT way to monitor systems, and perform quick
   # maintenance on one or more machines.
   class Shell
-    include Command::Processable
+    include Processable
 
     # A Readline replacement for platforms where readline is either
     # unavailable, or has not been installed.

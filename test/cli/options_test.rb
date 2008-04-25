@@ -1,4 +1,4 @@
-require "#{File.dirname(__FILE__)}/../utils"
+require "utils"
 require 'capistrano/cli/options'
 
 class CLIOptionsTest < Test::Unit::TestCase

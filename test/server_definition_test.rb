@@ -1,4 +1,4 @@
-require "#{File.dirname(__FILE__)}/utils"
+require "utils"
 require 'capistrano/server_definition'
 
 class ServerDefinitionTest < Test::Unit::TestCase

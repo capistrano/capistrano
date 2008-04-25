@@ -1,4 +1,4 @@
-require "#{File.dirname(__FILE__)}/../../utils"
+require "utils"
 require 'capistrano/configuration/actions/file_transfer'
 
 class ConfigurationActionsFileTransferTest < Test::Unit::TestCase

@@ -1,4 +1,4 @@
-require "#{File.dirname(__FILE__)}/utils"
+require "utils"
 require 'capistrano/configuration'
 
 # These tests are only for testing the integration of the various components

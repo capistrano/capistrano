@@ -1,4 +1,4 @@
-require "#{File.dirname(__FILE__)}/../../utils"
+require "utils"
 require 'capistrano/recipes/deploy/scm/mercurial'
 
 class DeploySCMMercurialTest < Test::Unit::TestCase
