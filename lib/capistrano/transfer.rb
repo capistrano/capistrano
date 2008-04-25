@@ -56,9 +56,12 @@ module Capistrano
         errors = failed.map { |txfr| "#{txfr[:error]} (#{txfr[:error].message})" }.uniq.join(", ")
         error = TransferError.new("#{operation} via #{transport} failed on #{hosts.join(',')}: #{errors}")
         error.hosts = hosts
+
+        logger.important(error.message) if logger
         raise error
       end
 
+      logger.debug "#{transport} #{operation} complete" if logger
       self
     end
 
@@ -70,10 +73,28 @@ module Capistrano
       "#{direction}load"
     end
 
+    def sanitized_from
+      if from.responds_to?(:read)
+        "#<#{from.class}>"
+      else
+        from
+      end
+    end
+
+    def sanitized_to
+      if to.responds_to?(:read)
+        "#<#{to.class}>"
+      else
+        to
+      end
+    end
+
     private
 
       def prepare_transfers
         @session_map = {}
+
+        logger.info "#{transport} #{operation} #{from} -> #{to}" if logger
 
         @transfers = sessions.map do |session|
           session_from = normalize(from, session)
@@ -93,11 +114,15 @@ module Capistrano
       def prepare_scp_transfer(from, to, session)
         scp = Net::SCP.new(session)
 
+        real_callback = callback || Proc.new do |channel, name, sent, total|
+          logger.trace "[#{channel[:host]}] #{name}" if logger && sent == 0
+        end
+
         channel = case direction
           when :up
-            scp.upload(from, to, options, &callback)
+            scp.upload(from, to, options, &real_callback)
           when :down
-            scp.download(from, to, options, &callback)
+            scp.download(from, to, options, &real_callback)
           else
             raise ArgumentError, "unsupported transfer direction: #{direction.inspect}"
           end
@@ -114,22 +139,31 @@ module Capistrano
         sftp = Net::SFTP::Session.new(session).connect!
 
         real_callback = Proc.new do |event, op, *args|
-          callback.call(event, op, *args) if callback
+          if callback
+            callback.call(event, op, *args)
+          elsif event == :open
+            logger.trace "[#{op[:host]}] #{args[0].remote}"
+          elsif event == :finish
+            logger.trace "[#{op[:host]}] done"
+          end
+            
           op[:channel].close if event == :finish
         end
 
+        opts = options.dup
+        opts[:properties] = (opts[:properties] || {}).merge(
+          :server  => session.xserver,
+          :host    => session.xserver.host,
+          :channel => sftp.channel)
+
         operation = case direction
           when :up
-            sftp.upload(from, to, options, &real_callback)
+            sftp.upload(from, to, opts, &real_callback)
           when :down
-            sftp.download(from, to, options, &real_callback)
+            sftp.download(from, to, opts, &real_callback)
           else
             raise ArgumentError, "unsupported transfer direction: #{direction.inspect}"
           end
-
-        operation[:server]  = session.xserver
-        operation[:host]    = session.xserver.host
-        operation[:channel] = sftp.channel
 
         return operation
       end
