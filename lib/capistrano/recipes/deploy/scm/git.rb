@@ -92,13 +92,24 @@ module Capistrano
       #
       #   set :git_shallow_clone, 1
       #
+      # For those that don't like to leave your entire repository on
+      # your production server you can:
+      #
+      #   set :deploy_via, :export
+      #
+      # To deploy from a local repository:
+      #
+      #   set :repository, "file://."
+      #   set :deploy_via, :copy
+      #
       # AUTHORS
       # -------
       #
       # Garry Dolley http://scie.nti.st
       # Contributions by Geoffrey Grosenbach http://topfunky.com
       #              Scott Chacon http://jointheconversation.org
-      #                      and Alex Arnell http://twologic.com
+      #                          Alex Arnell http://twologic.com
+      #                                   and Phillip Goldenburg
 
       class Git < Base
         # Sets the default command name for this SCM on your *local* machine.
@@ -144,6 +155,12 @@ module Capistrano
           end
 
           execute.join(" && ")
+        end
+        
+        # An expensive export. Performs a checkout as above, then
+        # removes the repo.
+        def export(revision, destination)
+          checkout(revision, destination) << " && rm -Rf #{destination}/.git"
         end
 
         # Merges the changes to 'head' since the last fetch, for remote_cache
