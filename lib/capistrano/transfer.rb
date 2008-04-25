@@ -134,29 +134,53 @@ module Capistrano
         return channel
       end
 
-      def prepare_sftp_transfer(from, to, session)
-        # FIXME: connect! is a synchronous operation, do this async and then synchronize all at once
-        sftp = Net::SFTP::Session.new(session).connect!
+      class SFTPTransferWrapper
+        attr_reader :operation
 
-        real_callback = Proc.new do |event, op, *args|
-          if callback
-            callback.call(event, op, *args)
-          elsif event == :open
-            logger.trace "[#{op[:host]}] #{args[0].remote}"
-          elsif event == :finish
-            logger.trace "[#{op[:host]}] done"
+        def initialize(session, &callback)
+          Net::SFTP::Session.new(session) do |sftp|
+            @operation = callback.call(sftp)
           end
-            
-          op[:channel].close if event == :finish
         end
 
-        opts = options.dup
-        opts[:properties] = (opts[:properties] || {}).merge(
-          :server  => session.xserver,
-          :host    => session.xserver.host,
-          :channel => sftp.channel)
+        def active?
+          @operation.nil? || @operation.active?
+        end
 
-        operation = case direction
+        def [](key)
+          @operation[key]
+        end
+
+        def []=(key, value)
+          @operation[key] = value
+        end
+
+        def abort!
+          @operation.abort!
+        end
+      end
+
+      def prepare_sftp_transfer(from, to, session)
+        SFTPTransferWrapper.new(session) do |sftp|
+          real_callback = Proc.new do |event, op, *args|
+            if callback
+              callback.call(event, op, *args)
+            elsif event == :open
+              logger.trace "[#{op[:host]}] #{args[0].remote}"
+            elsif event == :finish
+              logger.trace "[#{op[:host]}] done"
+            end
+            
+            op[:channel].close if event == :finish
+          end
+
+          opts = options.dup
+          opts[:properties] = (opts[:properties] || {}).merge(
+            :server  => session.xserver,
+            :host    => session.xserver.host,
+            :channel => sftp.channel)
+
+          case direction
           when :up
             sftp.upload(from, to, opts, &real_callback)
           when :down
@@ -164,8 +188,7 @@ module Capistrano
           else
             raise ArgumentError, "unsupported transfer direction: #{direction.inspect}"
           end
-
-        return operation
+        end
       end
 
       def normalize(argument, session)
