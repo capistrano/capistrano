@@ -1,5 +1,11 @@
 *unreleased*
 
+* Expand file-transfer options with new upload() and download() helpers. [Jamis Buck]
+
+* Allow SCP transfers in addition to SFTP. [Jamis Buck]
+
+* Use Net::SSH v2 and Net::SSH::Gateway. [Jamis Buck]
+
 * Added #export method for git SCM [Phillip Goldenburg]
 
 * For query_revision, git SCM used git-rev-parse on the repo hosting the Capfile, which may NOT be the same tree as the actual source reposistory. Use git-ls-remote instead to resolve the revision for checkout. [Robin H. Johnson]
