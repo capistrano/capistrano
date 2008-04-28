@@ -1,11 +1,18 @@
 begin
   require 'capistrano/version'
+
+  begin
+    require 'rubygems'
+    gem 'net-sftp', '< 1.99.0'
+  rescue LoadError, NameError
+  end
+
   require 'net/sftp'
   require 'net/sftp/version'
+
   sftp_version = [Net::SFTP::Version::MAJOR, Net::SFTP::Version::MINOR, Net::SFTP::Version::TINY]
-  required_version = [1,1,0]
-  if !Capistrano::Version.check(required_version, sftp_version)
-    warn "You have Net::SFTP #{sftp_version.join(".")}, but you need at least #{required_version.join(".")}. Net::SFTP will not be used."
+  if !Capistrano::Version.check(sftp_version, Capistrano::Version::MINIMUM_SFTP_REQUIRED, Capistrano::Version::MAXIMUM_SFTP_REQUIRED)
+    warn "You have Net::SFTP #{sftp_version.join(".")}, but you need between #{Capistrano::Version::MINIMUM_SFTP_REQUIRED.join('.')}...#{Capistrano::Version::MAXIMUM_SFTP_REQUIRED.join('.')}. Net::SFTP will not be used."
     Capistrano::SFTP = false
   else
     Capistrano::SFTP = true

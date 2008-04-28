@@ -20,8 +20,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rake', ">= 0.7.0"
 
-  s.add_dependency 'net-ssh', ">= #{Capistrano::Version::SSH_REQUIRED.join(".")}"
-  s.add_dependency 'net-sftp', ">= #{Capistrano::Version::SFTP_REQUIRED.join(".")}"
+  s.add_dependency 'net-ssh', ">= #{Capistrano::Version::MINIMUM_SSH_REQUIRED.join(".")}", "< #{Capistrano::Version::MAXIMUM_SSH_REQUIRED.join('.')}"
+  s.add_dependency 'net-sftp', ">= #{Capistrano::Version::MINIMUM_SFTP_REQUIRED.join(".")}", "< #{Capistrano::Version::MINIMUM_SSH_REQUIRED.join('.')}"
 
   s.author = "Jamis Buck"
   s.email = "jamis@37signals.com"

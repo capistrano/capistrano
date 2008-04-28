@@ -1,3 +1,9 @@
+begin
+  require 'rubygems'
+  gem 'net-ssh', '< 1.99.0'
+rescue LoadError, NameError
+end
+
 require 'net/ssh'
 
 module Capistrano
@@ -5,8 +11,8 @@ module Capistrano
     require 'capistrano/version'
     require 'net/ssh/version'
     ssh_version = [Net::SSH::Version::MAJOR, Net::SSH::Version::MINOR, Net::SSH::Version::TINY]
-    if !Version.check(Version::SSH_REQUIRED, ssh_version)
-      raise "You have Net::SSH #{ssh_version.join(".")}, but you need at least #{Version::SSH_REQUIRED.join(".")}"
+    if !Version.check(ssh_version, Version::MINIMUM_SSH_REQUIRED, Version::MAXIMUM_SSH_REQUIRED)
+      raise "You have Net::SSH #{ssh_version.join(".")}, but you need a version between #{Version::MINIMUM_SSH_REQUIRED.join(".")}...#{Version::MAXIMUM_SSH_REQUIRED.join(".")}"
     end
   end
 

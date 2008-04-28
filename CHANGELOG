@@ -1,6 +1,9 @@
-*SVN*
+*unreleased*
+
+* Add an explicit dependency on Net::SSH and Net::SFTP versions less than 1.99.0 so that cap1 can coexist with net-ssh v2 [Jamis Buck]
 
 * Don't send no-auth-cache if no auth credentials are given [Jonathan Younger]
+
 
 *1.4.1* (February 24, 2007)
 
