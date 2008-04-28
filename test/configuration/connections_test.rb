@@ -31,7 +31,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     @config = MockConfig.new
     @config.stubs(:logger).returns(stub_everything)
     @ssh_options = {
-      :user        => "jamis",
+      :user        => "user",
       :port        => 8080,
       :password    => "g00b3r",
       :ssh_options => { :debug => :verbose }
@@ -59,17 +59,16 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
   end
 
   def test_connection_factory_should_return_gateway_instance_if_gateway_variable_is_set
-    @config.values[:gateway] = "capistrano"
-    server = server("capistrano")
-    Capistrano::SSH.expects(:connect).with { |s,| s.host == "capistrano" }.yields(stub_everything)
-    assert_instance_of Capistrano::Gateway, @config.connection_factory
+    @config.values[:gateway] = "j@capistrano"
+    Net::SSH::Gateway.expects(:new).with("capistrano", "j", :port => 22, :password => nil, :auth_methods => %w(publickey hostbased)).returns(stub_everything)
+    assert_instance_of Capistrano::Configuration::Connections::GatewayConnectionFactory, @config.connection_factory
   end
 
   def test_connection_factory_as_gateway_should_honor_config_options
     @config.values[:gateway] = "capistrano"
     @config.values.update(@ssh_options)
-    Capistrano::SSH.expects(:connect).with { |s,opts| s.host == "capistrano" && opts == @config }.yields(stub_everything)
-    assert_instance_of Capistrano::Gateway, @config.connection_factory
+    Net::SSH::Gateway.expects(:new).with("capistrano", "user", :debug => :verbose, :port => 8080, :password => nil, :auth_methods => %w(publickey hostbased)).returns(stub_everything)
+    assert_instance_of Capistrano::Configuration::Connections::GatewayConnectionFactory, @config.connection_factory
   end
 
   def test_establish_connections_to_should_accept_a_single_nonarray_parameter
@@ -194,11 +193,11 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     @config.current_task = mock_task
     @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([server("cap1")])
     Capistrano::SSH.expects(:connect).raises(Exception)
-    assert_raises(Capistrano::ConnectionError) {
+    assert_raises(Capistrano::ConnectionError) do
       @config.execute_on_servers do
         flunk "expected an exception to be raised"
       end
-    }
+    end
   end
   
   def test_execute_servers_should_not_raise_connection_error_on_failure_with_on_errors_continue
@@ -243,14 +242,14 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     end
   end
   
-  def test_execute_on_servers_should_not_try_to_connect_to_hosts_with_upload_errors_with_on_errors_continue
+  def test_execute_on_servers_should_not_try_to_connect_to_hosts_with_transfer_errors_with_on_errors_continue
     cap1 = server("cap1")
     cap2 = server("cap2")
     @config.current_task = mock_task(:on_error => :continue)
     @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([cap1, cap2])
     Capistrano::SSH.expects(:connect).times(2).returns(:success)
     @config.execute_on_servers do |servers|
-      error = Capistrano::UploadError.new
+      error = Capistrano::TransferError.new
       error.hosts = [cap1]
       raise error
     end

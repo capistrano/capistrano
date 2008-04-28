@@ -20,8 +20,7 @@ class CommandTest < Test::Unit::TestCase
   end
 
   def test_command_with_pty_should_request_pty_and_register_success_callback
-    session = setup_for_extracting_channel_action(:on_success) do |ch|
-      ch.expects(:request_pty).with(:want_reply => true)
+    session = setup_for_extracting_channel_action(:request_pty, true) do |ch|
       ch.expects(:exec).with(%(sh -c "ls"))
     end
     Capistrano::Command.new("ls", [session], :pty => true)
@@ -128,7 +127,7 @@ class CommandTest < Test::Unit::TestCase
   end
 
   def test_unsuccessful_pty_request_should_close_channel
-    session = setup_for_extracting_channel_action(:on_failure) do |ch|
+    session = setup_for_extracting_channel_action(:request_pty, false) do |ch|
       ch.expects(:close)
     end
     Capistrano::Command.new("ls", [session], :pty => true)
@@ -158,7 +157,7 @@ class CommandTest < Test::Unit::TestCase
 
   def test_on_request_should_record_exit_status
     data = mock(:read_long => 5)
-    session = setup_for_extracting_channel_action(:on_request, "exit-status", nil, data) do |ch|
+    session = setup_for_extracting_channel_action([:on_request, "exit-status"], data) do |ch|
       ch.expects(:[]=).with(:status, 5)
     end
     Capistrano::Command.new("ls", [session])
@@ -172,34 +171,34 @@ class CommandTest < Test::Unit::TestCase
   end
 
   def test_stop_should_close_all_open_channels
-    sessions = [mock("session", :open_channel => new_channel(false)),
-                mock("session", :open_channel => new_channel(true)),
-                mock("session", :open_channel => new_channel(false))]
+    sessions = [mock_session(new_channel(false)),
+                mock_session(new_channel(true)),
+                mock_session(new_channel(false))]
 
     cmd = Capistrano::Command.new("ls", sessions)
     cmd.stop!
   end
 
   def test_process_should_return_cleanly_if_all_channels_have_zero_exit_status
-    sessions = [mock("session", :open_channel => new_channel(true, 0)),
-                mock("session", :open_channel => new_channel(true, 0)),
-                mock("session", :open_channel => new_channel(true, 0))]
+    sessions = [mock_session(new_channel(true, 0)),
+                mock_session(new_channel(true, 0)),
+                mock_session(new_channel(true, 0))]
     cmd = Capistrano::Command.new("ls", sessions)
     assert_nothing_raised { cmd.process! }
   end
 
   def test_process_should_raise_error_if_any_channel_has_non_zero_exit_status
-    sessions = [mock("session", :open_channel => new_channel(true, 0)),
-                mock("session", :open_channel => new_channel(true, 0)),
-                mock("session", :open_channel => new_channel(true, 1))]
+    sessions = [mock_session(new_channel(true, 0)),
+                mock_session(new_channel(true, 0)),
+                mock_session(new_channel(true, 1))]
     cmd = Capistrano::Command.new("ls", sessions)
     assert_raises(Capistrano::CommandError) { cmd.process! }
   end
 
   def test_command_error_should_include_accessor_with_host_array
-    sessions = [mock("session", :open_channel => new_channel(true, 0)),
-                mock("session", :open_channel => new_channel(true, 0)),
-                mock("session", :open_channel => new_channel(true, 1))]
+    sessions = [mock_session(new_channel(true, 0)),
+                mock_session(new_channel(true, 0)),
+                mock_session(new_channel(true, 1))]
     cmd = Capistrano::Command.new("ls", sessions)
 
     begin
@@ -216,43 +215,13 @@ class CommandTest < Test::Unit::TestCase
       ch = mock("channel")
       returns = [false] * (times-1)
       ch.stubs(:[]).with(:closed).returns(*(returns + [true]))
-      con = mock("connection")
-      con.expects(:process).with(true).times(times-1)
-      ch.expects(:connection).times(times-1).returns(con)
       ch.expects(:[]).with(:status).returns(0)
       ch
     end
 
-    sessions = [mock("session", :open_channel => new_channel[5]),
-                mock("session", :open_channel => new_channel[10]),
-                mock("session", :open_channel => new_channel[7])]
-    cmd = Capistrano::Command.new("ls", sessions)
-    assert_nothing_raised { cmd.process! }
-  end
-
-  def test_process_should_ping_all_connections_each_second
-    now = Time.now
-
-    new_channel = Proc.new do
-      ch = mock("channel")
-      ch.stubs(:now => now)
-      def ch.[](key)
-        case key
-        when :status then 0
-        when :closed then Time.now - now < 1.1 ? false : true
-        else raise "unknown key: #{key}"
-        end
-      end
-      con = mock("connection")
-      con.stubs(:process)
-      con.expects(:ping!)
-      ch.stubs(:connection).returns(con)
-      ch
-    end
-
-    sessions = [mock("session", :open_channel => new_channel[]),
-                mock("session", :open_channel => new_channel[]),
-                mock("session", :open_channel => new_channel[])]
+    sessions = [mock_session(new_channel[5]),
+                mock_session(new_channel[10]),
+                mock_session(new_channel[7])]
     cmd = Capistrano::Command.new("ls", sessions)
     assert_nothing_raised { cmd.process! }
   end
@@ -281,6 +250,13 @@ class CommandTest < Test::Unit::TestCase
 
   private
 
+    def mock_session(channel=nil)
+      stub('session', :open_channel => channel,
+        :preprocess => true,
+        :postprocess => true,
+        :listeners => {})
+    end
+
     def new_channel(closed, status=nil)
       ch = mock("channel")
       ch.expects(:[]).with(:closed).returns(closed)
@@ -300,7 +276,11 @@ class CommandTest < Test::Unit::TestCase
 
       channel.stubs(:[]).with(:server).returns(s)
       channel.stubs(:[]).with(:host).returns(s.host)
-      channel.expects(action).yields(channel, *args) if action
+
+      if action
+        action = Array(action)
+        channel.expects(action.first).with(*action[1..-1]).yields(channel, *args)
+      end
 
       yield channel if block_given?
 

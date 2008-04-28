@@ -9,7 +9,9 @@ module Capistrano
         # by the current task. If <tt>:mode</tt> is specified it is used to
         # set the mode on the file.
         def put(data, path, options={})
-          upload(StringIO.new(data), path, options)
+          opts = options.dup
+          opts[:permissions] = opts.delete(:mode)
+          upload(StringIO.new(data), path, opts)
         end
     
         # Get file remote_path from FIRST server targeted by

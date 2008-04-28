@@ -39,7 +39,22 @@ module Capistrano
     # constructor. Values in +options+ are then merged into it, and any
     # connection information in +server+ is added last, so that +server+ info
     # takes precedence over +options+, which takes precendence over ssh_options.
-    def self.connect(server, options={}, &block)
+    def self.connect(server, options={})
+      connection_strategy(server, options) do |host, user, connection_options|
+        connection = Net::SSH.start(host, user, connection_options)
+        Server.apply_to(connection, server)
+      end
+    end
+
+    # Abstracts the logic for establishing an SSH connection (which includes
+    # testing for connection failures and retrying with a password, and so forth,
+    # mostly made complicated because of the fact that some of these variables
+    # might be lazily evaluated and try to do something like prompt the user,
+    # which should only happen when absolutely necessary.
+    #
+    # This will yield the hostname, username, and a hash of connection options
+    # to the given block, which should return a new connection.
+    def self.connection_strategy(server, options={}, &block)
       methods = [ %w(publickey hostbased), %w(password keyboard-interactive) ]
       password_value = nil
 
@@ -47,15 +62,15 @@ module Capistrano
       user               = server.user || options[:user] || ssh_options[:username] || ServerDefinition.default_user
       ssh_options[:port] = server.port || options[:port] || ssh_options[:port] || DEFAULT_PORT
 
+      ssh_options.delete(:username)
+
       begin
         connection_options = ssh_options.merge(
           :password => password_value,
           :auth_methods => ssh_options[:auth_methods] || methods.shift
         )
 
-        connection = Net::SSH.start(server.host, user, connection_options, &block)
-        Server.apply_to(connection, server)
-
+        yield server.host, user, connection_options
       rescue Net::SSH::AuthenticationFailed
         raise if methods.empty? || ssh_options[:auth_methods]
         password_value = options[:password]

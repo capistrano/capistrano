@@ -1,6 +1,7 @@
 require 'enumerator'
 require 'net/ssh/gateway'
 require 'capistrano/ssh'
+require 'capistrano/errors'
 
 module Capistrano
   class Configuration
@@ -24,8 +25,11 @@ module Capistrano
         def initialize(gateway, options)
           Thread.abort_on_exception = true
           server = ServerDefinition.new(gateway)
-          @gateway = Net::SSH::Gateway.new(server.host, server.user || ServerDefinition.default_user, server.options)
+
           @options = options
+          @gateway = SSH.connection_strategy(server, options) do |host, user, connect_options|
+            Net::SSH::Gateway.new(host, user, connect_options)
+          end
         end
 
         def connect_to(server)
@@ -177,8 +181,6 @@ module Capistrano
         def safely_establish_connection_to(server, failures=nil)
           sessions[server] ||= connection_factory.connect_to(server)
         rescue Exception => err
-puts err
-puts err.backtrace
           raise unless failures
           failures << { :server => server, :error => err }
         end

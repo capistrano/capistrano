@@ -31,9 +31,11 @@ module Capistrano
       @options   = options
       @callback  = callback
 
-      @transport = options.fetch(:transport, :sftp)
+      @transport = options.fetch(:via, :sftp)
       @logger    = options.delete(:logger)
-      
+
+      @session_map = {}
+
       prepare_transfers
     end
 
@@ -91,16 +93,18 @@ module Capistrano
 
     private
 
-      def prepare_transfers
-        @session_map = {}
+      def session_map
+        @session_map
+      end
 
+      def prepare_transfers
         logger.info "#{transport} #{operation} #{from} -> #{to}" if logger
 
         @transfers = sessions.map do |session|
           session_from = normalize(from, session)
           session_to   = normalize(to, session)
 
-          @session_map[session] = case transport
+          session_map[session] = case transport
             when :sftp
               prepare_sftp_transfer(session_from, session_to, session)
             when :scp
@@ -112,24 +116,21 @@ module Capistrano
       end
 
       def prepare_scp_transfer(from, to, session)
-        scp = Net::SCP.new(session)
-
         real_callback = callback || Proc.new do |channel, name, sent, total|
           logger.trace "[#{channel[:host]}] #{name}" if logger && sent == 0
         end
 
         channel = case direction
           when :up
-            scp.upload(from, to, options, &real_callback)
+            session.scp.upload(from, to, options, &real_callback)
           when :down
-            scp.download(from, to, options, &real_callback)
+            session.scp.download(from, to, options, &real_callback)
           else
             raise ArgumentError, "unsupported transfer direction: #{direction.inspect}"
           end
 
-        channel[:server]  = session.xserver
-        channel[:host]    = session.xserver.host
-        channel[:channel] = channel
+        channel[:server] = session.xserver
+        channel[:host]   = session.xserver.host
 
         return channel
       end
@@ -138,7 +139,7 @@ module Capistrano
         attr_reader :operation
 
         def initialize(session, &callback)
-          Net::SFTP::Session.new(session) do |sftp|
+          session.sftp(false).connect do |sftp|
             @operation = callback.call(sftp)
           end
         end
@@ -170,15 +171,12 @@ module Capistrano
             elsif event == :finish
               logger.trace "[#{op[:host]}] done"
             end
-            
-            op[:channel].close if event == :finish
           end
 
           opts = options.dup
           opts[:properties] = (opts[:properties] || {}).merge(
             :server  => session.xserver,
-            :host    => session.xserver.host,
-            :channel => sftp.channel)
+            :host    => session.xserver.host)
 
           case direction
           when :up
@@ -205,12 +203,14 @@ module Capistrano
       end
 
       def handle_error(error)
-        transfer = @session_map[error.session]
-        transfer[:channel].close
+        transfer = session_map[error.session]
         transfer[:error] = error
         transfer[:failed] = true
 
-        transfer.abort! if transport == :sftp
+        case transport
+        when :sftp then transfer.abort!
+        when :scp  then transfer.close
+        end
       end
   end
 end
