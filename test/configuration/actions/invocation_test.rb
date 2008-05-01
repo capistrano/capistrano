@@ -97,29 +97,29 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
   end
 
   def test_sudo_should_default_to_sudo
-    @config.expects(:run).with("sudo -p 'sudo password: ' ls", {})
+    @config.expects(:run).with("ls", :command_prefix => "sudo -p 'sudo password: '")
     @config.sudo "ls"
   end
 
   def test_sudo_should_use_sudo_variable_definition
-    @config.expects(:run).with("/opt/local/bin/sudo -p 'sudo password: ' ls", {})
+    @config.expects(:run).with("ls", :command_prefix => "/opt/local/bin/sudo -p 'sudo password: '")
     @config.options[:sudo] = "/opt/local/bin/sudo"
     @config.sudo "ls"
   end
 
   def test_sudo_should_interpret_as_option_as_user
-    @config.expects(:run).with("sudo -p 'sudo password: ' -u app ls", {})
+    @config.expects(:run).with("ls", :command_prefix => "sudo -p 'sudo password: ' -u app")
     @config.sudo "ls", :as => "app"
   end
 
   def test_sudo_should_pass_options_through_to_run
-    @config.expects(:run).with("sudo -p 'sudo password: ' ls", :foo => "bar")
+    @config.expects(:run).with("ls", :command_prefix => "sudo -p 'sudo password: '", :foo => "bar")
     @config.sudo "ls", :foo => "bar"
   end
 
   def test_sudo_should_interpret_sudo_prompt_variable_as_custom_prompt
     @config.set :sudo_prompt, "give it to me: "
-    @config.expects(:run).with("sudo -p 'give it to me: ' ls", {})
+    @config.expects(:run).with("ls", :command_prefix => "sudo -p 'give it to me: '")
     @config.sudo "ls"
   end
 

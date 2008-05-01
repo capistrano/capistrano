@@ -82,12 +82,12 @@ module Capistrano
                 if options[:shell] == false
                   shell = nil
                 else
-                  shell = "#{options[:shell] || "sh"} -c"
+                  shell = [options.fetch(:shell, "sh"), "-c"].join(" ")
                   cmd = cmd.gsub(/[$\\`"]/) { |m| "\\#{m}" }
                   cmd = "\"#{cmd}\""
                 end
 
-                command_line = [environment, shell, cmd].compact.join(" ")
+                command_line = [environment, options[:command_prefix], shell, cmd].compact.join(" ")
 
                 ch.exec(command_line)
                 ch.send_data(options[:data]) if options[:data]

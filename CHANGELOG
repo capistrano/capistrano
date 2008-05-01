@@ -1,5 +1,7 @@
 *unreleased*
 
+* Make sudo helper play nicely with complex command chains [Jamis Buck]
+
 * Expand file-transfer options with new upload() and download() helpers. [Jamis Buck]
 
 * Allow SCP transfers in addition to SFTP. [Jamis Buck]

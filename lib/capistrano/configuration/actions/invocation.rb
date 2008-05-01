@@ -70,7 +70,7 @@ module Capistrano
           as = options.delete(:as)
 
           user = as && "-u #{as}"
-          command = [fetch(:sudo, "sudo"), "-p '#{sudo_prompt}'", user, command].compact.join(" ")
+          options[:command_prefix] = [fetch(:sudo, "sudo"), "-p '#{sudo_prompt}'", user].compact.join(" ")
 
           run(command, options, &sudo_behavior_callback(block))
         end
