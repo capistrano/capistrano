@@ -89,6 +89,15 @@ ensure
   ENV[name] = saved
 end
 
+# If :run_method is :sudo (or :use_sudo is true), this executes the given command
+# via +sudo+. Otherwise is uses +run+. Further, if sudo is being used and :runner
+# is set, the command will be executed as the user given by :runner.
+def try_sudo(command)
+  as = fetch(:runner, "app")
+  via = fetch(:run_method, :sudo)
+  invoke_command(command, :via => via, :as => as)
+end
+
 # =========================================================================
 # These are the tasks that are available to help with deploying web apps,
 # and specifically, Rails applications. You can have cap give you a summary
@@ -122,7 +131,7 @@ namespace :deploy do
   task :setup, :except => { :no_release => true } do
     dirs = [deploy_to, releases_path, shared_path]
     dirs += %w(system log pids).map { |d| File.join(shared_path, d) }
-    run "umask 02 && mkdir -p #{dirs.join(' ')}"
+    try_sudo "umask 02 && mkdir -p #{dirs.join(' ')}"
   end
 
   desc <<-DESC
@@ -246,9 +255,7 @@ namespace :deploy do
       set :use_sudo, false
   DESC
   task :restart, :roles => :app, :except => { :no_release => true } do
-    as = fetch(:runner, "app")
-    via = fetch(:run_method, :sudo)
-    invoke_command "#{current_path}/script/process/reaper", :via => via, :as => as
+    try_sudo "#{current_path}/script/process/reaper"
   end
 
   desc <<-DESC
@@ -337,7 +344,7 @@ namespace :deploy do
       directories = (releases - releases.last(count)).map { |release|
         File.join(releases_path, release) }.join(" ")
 
-      invoke_command "rm -rf #{directories}", :via => run_method
+      try_sudo "rm -rf #{directories}"
     end
   end
 
@@ -406,9 +413,7 @@ namespace :deploy do
     the :use_sudo variable to false.
   DESC
   task :start, :roles => :app do
-    as = fetch(:runner, "app")
-    via = fetch(:run_method, :sudo)
-    invoke_command "sh -c 'cd #{current_path} && nohup script/spin'", :via => via, :as => as
+    try_sudo "sh -c 'cd #{current_path} && nohup script/spin'"
   end
 
   desc <<-DESC
@@ -423,11 +428,8 @@ namespace :deploy do
     the :use_sudo variable to false.
   DESC
   task :stop, :roles => :app do
-    as = fetch(:runner, "app")
-    via = fetch(:run_method, :sudo)
-
-    invoke_command "if [ -f #{current_path}/tmp/pids/dispatch.spawner.pid ]; then #{current_path}/script/process/reaper -a kill -r dispatch.spawner.pid; fi", :via => via, :as => as
-    invoke_command "#{current_path}/script/process/reaper -a kill", :via => via, :as => as
+    try_sudo "if [ -f #{current_path}/tmp/pids/dispatch.spawner.pid ]; then #{current_path}/script/process/reaper -a kill -r dispatch.spawner.pid; fi"
+    try_sudo "#{current_path}/script/process/reaper -a kill"
   end
 
   namespace :pending do

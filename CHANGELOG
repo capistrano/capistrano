@@ -1,5 +1,7 @@
 *unreleased*
 
+* Make deploy:setup obey the :use_sudo and :runner directives, and generalize the :use_sudo and :runner options into a try_sudo() helper method [Jamis Buck]
+
 * Make sudo helper play nicely with complex command chains [Jamis Buck]
 
 * Expand file-transfer options with new upload() and download() helpers. [Jamis Buck]
