@@ -14,10 +14,10 @@ Gem::Specification.new do |s|
   s.bindir = "bin"
   s.executables << "cap" << "capify"
 
-  s.add_dependency 'net-ssh', ">= 1.99.2"
-  s.add_dependency 'net-sftp', ">= 1.99.1"
-  s.add_dependency 'net-scp', ">= 0.99.0"
-  s.add_dependency 'net-ssh-gateway', ">= 0.99.0"
+  s.add_dependency 'net-ssh', ">= 2.0.0"
+  s.add_dependency 'net-sftp', ">= 2.0.0"
+  s.add_dependency 'net-scp', ">= 1.0.0"
+  s.add_dependency 'net-ssh-gateway', ">= 1.0.0"
   s.add_dependency 'highline'
 
   s.author = "Jamis Buck"
