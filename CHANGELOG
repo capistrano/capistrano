@@ -1,5 +1,7 @@
 *unreleased*
 
+* Make sure git fetches include tags [Alex Arnell]
+
 * Make deploy:setup obey the :use_sudo and :runner directives, and generalize the :use_sudo and :runner options into a try_sudo() helper method [Jamis Buck]
 
 * Make sudo helper play nicely with complex command chains [Jamis Buck]

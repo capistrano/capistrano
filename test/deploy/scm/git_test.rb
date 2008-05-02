@@ -66,12 +66,12 @@ class DeploySCMGitTest < Test::Unit::TestCase
   def test_sync
     dest = "/var/www"
     rev = 'c2d9e79'
-    assert_equal "cd #{dest} && git fetch origin && git reset --hard #{rev}", @source.sync(rev, dest)
+    assert_equal "cd #{dest} && git fetch --tags origin && git reset --hard #{rev}", @source.sync(rev, dest)
 
     # With :scm_command
     git = "/opt/local/bin/git"
     @config[:scm_command] = git
-    assert_equal "cd #{dest} && #{git} fetch origin && #{git} reset --hard #{rev}", @source.sync(rev, dest)
+    assert_equal "cd #{dest} && #{git} fetch --tags origin && #{git} reset --hard #{rev}", @source.sync(rev, dest)
   end
 
   def test_sync_with_remote
@@ -83,7 +83,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
     @config[:repository] = repository
     @config[:remote] = remote
 
-    assert_equal "cd #{dest} && git config remote.#{remote}.url #{repository} && git config remote.#{remote}.fetch +refs/heads/*:refs/remotes/#{remote}/* && git fetch #{remote} && git reset --hard #{rev}", @source.sync(rev, dest)
+    assert_equal "cd #{dest} && git config remote.#{remote}.url #{repository} && git config remote.#{remote}.fetch +refs/heads/*:refs/remotes/#{remote}/* && git fetch --tags #{remote} && git reset --hard #{rev}", @source.sync(rev, dest)
   end
 
   def test_shallow_clone
