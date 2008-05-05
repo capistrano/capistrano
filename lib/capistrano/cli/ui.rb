@@ -30,7 +30,8 @@ module Capistrano
           ui.ask("#{prompt}?  ") do |q|
             q.overwrite = false
             q.character = true
-            q.validate = /(y(es)?)|(no?)|(a(bort)?)/i
+            q.default = 'y'
+            q.validate = /(y(es)?)|(no?)|(a(bort)?|\n)/i
             q.responses[:not_valid] = prompt
           end
         end
