@@ -22,6 +22,18 @@ module Capistrano
         def password_prompt(prompt="Password: ")
           ui.ask(prompt) { |q| q.echo = false }
         end
+        
+        # Debug mode prompt
+        def debug_prompt(cmd)
+          ui.say("Preparing to execute command: #{cmd}")
+          prompt = "Execute ([Yes], No, Abort) "
+          ui.ask("#{prompt}?  ") do |q|
+            q.overwrite = false
+            q.character = true
+            q.validate = /(y(es)?)|(no?)|(a(bort)?)/i
+            q.responses[:not_valid] = prompt
+          end
+        end
       end
     end
   end

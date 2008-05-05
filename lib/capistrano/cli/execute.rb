@@ -22,6 +22,7 @@ module Capistrano
       # Returns the Configuration instance used, if successful.
       def execute!
         config = instantiate_configuration
+        config.debug = options[:debug]
         config.logger.level = options[:verbose]
 
         set_pre_vars(config)

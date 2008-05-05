@@ -27,6 +27,10 @@ module Capistrano
         @option_parser ||= OptionParser.new do |opts|
           opts.banner = "Usage: #{File.basename($0)} [options] action ..."
 
+          opts.on("-d", "--debug",
+            "Prompts before each remote command execution."
+          ) { |value| options[:debug] = true }
+
           opts.on("-e", "--explain TASK",
             "Displays help (if available) for the task."
           ) { |value| options[:explain] = value }

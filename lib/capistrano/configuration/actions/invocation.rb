@@ -46,6 +46,8 @@ module Capistrano
           block ||= self.class.default_io_proc
           logger.debug "executing #{cmd.strip.inspect}"
 
+          return if debug && continue_execution(cmd) == false
+
           options = add_default_command_options(options)
 
           execute_on_servers(options) do |servers|
@@ -127,6 +129,17 @@ module Capistrano
         # Returns the prompt text to use with sudo
         def sudo_prompt
           fetch(:sudo_prompt, "sudo password: ")
+        end
+        
+        def continue_execution(cmd)
+          case Capistrano::CLI.debug_prompt(cmd)
+            when "y"
+              true
+            when "n"
+              false
+            when "a"
+              exit(-1)
+          end
         end
       end
     end
