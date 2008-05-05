@@ -1,3 +1,8 @@
+*unreleased*
+
+* Add debug switch for enabling conditional execution of commands [Mark Imbriaco]
+
+
 *2.3.0* May 2, 2008
 
 * Make sure git fetches include tags [Alex Arnell]

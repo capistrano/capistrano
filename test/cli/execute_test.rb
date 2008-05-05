@@ -15,7 +15,7 @@ class CLIExecuteTest < Test::Unit::TestCase
   def setup
     @cli = MockCLI.new
     @logger = stub_everything
-    @config = stub(:logger => @logger)
+    @config = stub(:logger => @logger, :debug= => nil)
     @config.stubs(:set)
     @config.stubs(:load)
     @config.stubs(:trigger)

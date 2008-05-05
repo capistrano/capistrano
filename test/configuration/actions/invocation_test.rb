@@ -4,6 +4,7 @@ require 'capistrano/configuration/actions/invocation'
 class ConfigurationActionsInvocationTest < Test::Unit::TestCase
   class MockConfig
     attr_reader :options
+    attr_accessor :debug
 
     def initialize
       @options = {}
