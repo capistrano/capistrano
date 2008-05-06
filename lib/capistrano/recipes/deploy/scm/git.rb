@@ -202,8 +202,7 @@ module Capistrano
 
         # Returns a log of changes between the two revisions (inclusive).
         def log(from, to=nil)
-          from << "..#{to}" if to
-          scm :log, from
+          scm :log, "#{from}..#{to}"
         end
 
         # Getting the actual commit id, in case we were passed a tag
