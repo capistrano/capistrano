@@ -1,5 +1,7 @@
 *unreleased*
 
+* Make sure deploy:check works with :none scm (which has no default command) [Jamis Buck]
+
 * Add debug switch for enabling conditional execution of commands [Mark Imbriaco]
 
 

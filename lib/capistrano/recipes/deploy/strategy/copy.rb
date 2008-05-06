@@ -97,7 +97,7 @@ module Capistrano
 
         def check!
           super.check do |d|
-            d.local.command(source.local.command)
+            d.local.command(source.local.command) if source.local.command
             d.local.command(compress(nil, nil).first)
             d.remote.command(decompress(nil).first)
           end

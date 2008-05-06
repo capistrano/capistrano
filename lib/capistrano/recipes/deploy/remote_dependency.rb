@@ -1,3 +1,5 @@
+require 'capistrano/errors'
+
 module Capistrano
   module Deploy
     class RemoteDependency
