@@ -45,7 +45,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
   end
 
   def test_log
-    assert_equal "git log master", @source.log('master')
+    assert_equal "git log master..", @source.log('master')
     assert_equal "git log master..branch", @source.log('master', 'branch')
   end
 
