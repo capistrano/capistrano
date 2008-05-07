@@ -28,7 +28,7 @@ desc "Run code-coverage analysis using rcov"
 task :coverage do
   rm_rf "coverage"
   files = Dir["test/**/*_test.rb"]
-  system "rcov #{files.join(' ')}"
+  system "rcov --sort coverage -Ilib:test #{files.join(' ')}"
 end
 
 GEM_SPEC = eval(File.read("#{File.dirname(__FILE__)}/#{PKG_NAME}.gemspec"))
