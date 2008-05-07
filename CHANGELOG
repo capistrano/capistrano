@@ -1,5 +1,7 @@
 *unreleased*
 
+* Revert the "git fetch --tags" change, since it didn't work as expected [Jamis Buck]
+
 * Fix deploy:pending when using git SCM [Ryan McGeary]
 
 * Make sure deploy:check works with :none scm (which has no default command) [Jamis Buck]
@@ -8,8 +10,6 @@
 
 
 *2.3.0* May 2, 2008
-
-* Make sure git fetches include tags [Alex Arnell]
 
 * Make deploy:setup obey the :use_sudo and :runner directives, and generalize the :use_sudo and :runner options into a try_sudo() helper method [Jamis Buck]
 
