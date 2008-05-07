@@ -1,5 +1,7 @@
 *unreleased*
 
+* Fixed "coverage" take task [Ryan McGeary]
+
 * Use upload() instead of put() with the copy strategy [Jamis Buck]
 
 * Revert the "git fetch --tags" change, since it didn't work as expected [Jamis Buck]
