@@ -76,6 +76,11 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     assert_equal({:foo => "bar", :shell => "/bin/bash"}, @config.add_default_command_options(:foo => "bar"))
   end
 
+  def test_add_default_command_options_should_use_default_shell_of_false_if_present
+    @config.set :default_shell, false
+    assert_equal({:foo => "bar", :shell => false}, @config.add_default_command_options(:foo => "bar"))
+  end
+
   def test_add_default_command_options_should_use_shell_in_preference_of_default_shell
     @config.set :default_shell, "/bin/bash"
     assert_equal({:foo => "bar", :shell => "/bin/sh"}, @config.add_default_command_options(:foo => "bar", :shell => "/bin/sh"))
