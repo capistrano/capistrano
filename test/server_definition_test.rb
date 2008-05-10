@@ -62,6 +62,19 @@ class ServerDefinitionTest < Test::Unit::TestCase
     server = Capistrano::ServerDefinition.new("www.capistrano.test", :primary => true)
     assert_equal true, server.options[:primary]
   end
+  
+  def test_default_user_should_try_to_guess_username
+    ENV.stubs(:[]).returns(nil)
+    assert_equal "not-specified", Capistrano::ServerDefinition.default_user
+    
+    ENV.stubs(:[]).returns(nil)
+    ENV.stubs(:[]).with("USERNAME").returns("ryan")
+    assert_equal "ryan", Capistrano::ServerDefinition.default_user
+
+    ENV.stubs(:[]).returns(nil)
+    ENV.stubs(:[]).with("USER").returns("jamis")
+    assert_equal "jamis", Capistrano::ServerDefinition.default_user
+  end
 
   def test_comparison_should_match_when_host_user_port_are_same
     s1 = server("jamis@www.capistrano.test:8080")
