@@ -96,6 +96,14 @@ class ConfigurationCallbacksTest < Test::Unit::TestCase
     assert_equal 1, @config.callbacks[:before].length
     assert_equal %w(primary), @config.callbacks[:before].first.except
   end
+  
+  def test_on_without_tasks_or_block_should_raise_error
+    assert_raises(ArgumentError) { @config.on(:before) }
+  end
+
+  def test_on_with_both_tasks_and_block_should_raise_error
+    assert_raises(ArgumentError) { @config.on(:before, :first) { blah } }
+  end
 
   def test_trigger_without_constraints_should_invoke_all_callbacks
     task = stub(:fully_qualified_name => "any:old:thing")
