@@ -140,27 +140,26 @@ module Capistrano
       def require(*args) #:nodoc:
         # look to see if this specific configuration instance has ever seen
         # these arguments to require before
-        if !@loaded_features.include?(args)
-          @loaded_features << args
+        if @loaded_features.include?(args)
+          return false 
+        end
+        
+        @loaded_features << args
+        begin
+          original_instance, self.class.instance = self.class.instance, self
+          original_feature, self.class.current_feature = self.class.current_feature, args
 
-          begin
-            original_instance, self.class.instance = self.class.instance, self
-            original_feature, self.class.current_feature = self.class.current_feature, args
-
-            result = super
-            if !result # file has been required previously, load up the remembered recipes
-              list = self.class.recipes_per_feature[args] || []
-              list.each { |options| load(options.merge(:reloading => true)) }
-            end
-
-            return result
-          ensure
-            # restore the original, so that require's can be nested
-            self.class.instance = original_instance
-            self.class.current_feature = original_feature
+          result = super
+          if !result # file has been required previously, load up the remembered recipes
+            list = self.class.recipes_per_feature[args] || []
+            list.each { |options| load(options.merge(:reloading => true)) }
           end
-        else
-          return false
+
+          return result
+        ensure
+          # restore the original, so that require's can be nested
+          self.class.instance = original_instance
+          self.class.current_feature = original_feature
         end
       end
 
