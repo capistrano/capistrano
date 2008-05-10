@@ -24,6 +24,12 @@ class CLIOptionsTest < Test::Unit::TestCase
     assert_raises(ExitException) { @cli.parse_options! }
   end
   
+  def test_parse_options_with_d_should_set_debug_option
+    @cli.args << "-d"
+    @cli.parse_options!
+    assert @cli.options[:debug]
+  end
+
   def test_parse_options_with_e_should_set_explain_option
     @cli.args << "-e" << "sample"
     @cli.parse_options!
