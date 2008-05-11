@@ -1,5 +1,7 @@
 *unreleased*
 
+* Make set(:default_shell, false) work for not using a shell on a per-command basis [Ryan McGeary] 
+
 * Improved test coverage [Ryan McGeary]
 
 * Fixed "coverage" take task [Ryan McGeary]
