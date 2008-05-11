@@ -118,7 +118,7 @@ class ConfigurationLoadingTest < Test::Unit::TestCase
   end
 
   def test_require_from_config_should_return_false_when_called_a_second_time_with_same_args
-    assert @config.require "#{File.dirname(__FILE__)}/../fixtures/custom"
+    assert @config.require("#{File.dirname(__FILE__)}/../fixtures/custom")
     assert_equal false, @config.require("#{File.dirname(__FILE__)}/../fixtures/custom")
   end
   

@@ -1,5 +1,7 @@
 *unreleased*
 
+* Improved test coverage [Ryan McGeary]
+
 * Fixed "coverage" take task [Ryan McGeary]
 
 * Use upload() instead of put() with the copy strategy [Jamis Buck]
