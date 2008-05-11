@@ -121,7 +121,7 @@ module Capistrano
           options[:env] = env unless env.empty?
 
           shell = options[:shell] || self[:default_shell]
-          options[:shell] = shell if shell
+          options[:shell] = shell unless shell.nil?
 
           options
         end
