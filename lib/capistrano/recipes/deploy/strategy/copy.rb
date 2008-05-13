@@ -146,7 +146,7 @@ module Capistrano
           # Returns the name of the file that the source code will be
           # compressed to.
           def filename
-            @filename ||= File.join(tmpdir, "#{File.basename(destination)}.#{compression_extension}")
+            @filename ||= File.join(tmpdir, "#{File.basename(destination)}.#{compression.extension}")
           end
 
           # The directory to which the copy should be checked out
@@ -166,46 +166,33 @@ module Capistrano
             @remote_filename ||= File.join(remote_dir, File.basename(filename))
           end
 
+          # A struct for representing the specifics of a compression type.
+          # Commands are arrays, where the first element is the utility to be
+          # used to perform the compression or decompression.
+          Compression = Struct.new(:extension, :compress_command, :decompress_command)
+          
           # The compression method to use, defaults to :gzip.
           def compression
-            configuration[:copy_compression] || :gzip
-          end
-
-          # Returns the file extension used for the compression method in
-          # question.
-          def compression_extension
-            case compression
-            when :gzip, :gz   then "tar.gz"
-            when :bzip2, :bz2 then "tar.bz2"
-            when :zip         then "zip"
-            else raise ArgumentError, "invalid compression type #{compression.inspect}"
+            type = configuration[:copy_compression] || :gzip
+            case type
+            when :gzip, :gz   then Compression.new("tar.gz",  %w(tar czf), %w(tar xzf))
+            when :bzip2, :bz2 then Compression.new("tar.bz2", %w(tar cjf), %w(tar xjf))
+            when :zip         then Compression.new("zip",     %w(zip -qr), %w(unzip -q))
+            else raise ArgumentError, "invalid compression type #{type.inspect}"
             end
           end
-
+          
           # Returns the command necessary to compress the given directory
-          # into the given file. The command is returned as an array, where
-          # the first element is the utility to be used to perform the compression.
+          # into the given file.
           def compress(directory, file)
-            case compression
-            when :gzip, :gz   then ["tar", "czf", file, directory]
-            when :bzip2, :bz2 then ["tar", "cjf", file, directory]
-            when :zip         then ["zip", "-qr", file, directory]
-            else raise ArgumentError, "invalid compression type #{compression.inspect}"
-            end
+            compression.compress_command + [file, directory]
           end
 
           # Returns the command necessary to decompress the given file,
           # relative to the current working directory. It must also
-          # preserve the directory structure in the file. The command is returned
-          # as an array, where the first element is the utility to be used to
-          # perform the decompression.
+          # preserve the directory structure in the file.
           def decompress(file)
-            case compression
-            when :gzip, :gz   then ["tar", "xzf", file]
-            when :bzip2, :bz2 then ["tar", "xjf", file]
-            when :zip         then ["unzip", "-q", file]
-            else raise ArgumentError, "invalid compression type #{compression.inspect}"
-            end
+            compression.decompress_command + [file]
           end
       end
 

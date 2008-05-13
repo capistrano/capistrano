@@ -86,7 +86,17 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
 
     @strategy.deploy!
   end
-
+  
+  def test_deploy_with_unknown_compression_should_error_on_extension
+    @config[:copy_compression] = :bogus
+    Dir.expects(:tmpdir).returns("/temp/dir")
+    @source.expects(:checkout).with("154", "/temp/dir/1234567890").returns(:local_checkout)
+    @strategy.stubs(:system)
+    File.stubs(:open)
+    
+    assert_raises(ArgumentError) { @strategy.deploy! }
+  end
+  
   def test_deploy_with_custom_copy_dir_should_use_that_as_tmpdir
     Dir.expects(:tmpdir).never
     Dir.expects(:chdir).with("/other/path").yields
