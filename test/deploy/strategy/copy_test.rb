@@ -87,7 +87,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @strategy.deploy!
   end
   
-  def test_deploy_with_unknown_compression_should_error_on_extension
+  def test_deploy_with_unknown_compression_type_should_error
     @config[:copy_compression] = :bogus
     Dir.expects(:tmpdir).returns("/temp/dir")
     @source.expects(:checkout).with("154", "/temp/dir/1234567890").returns(:local_checkout)
