@@ -57,6 +57,12 @@ class DeploySCMGitTest < Test::Unit::TestCase
     assert_equal "d11006102c07c94e5d54dd0ee63dca825c93ed61", revision
   end
 
+  def test_query_revision_deprecation_error
+    assert_raise(ArgumentError) do
+      revision = @source.query_revision('origin/release') {}
+    end
+  end
+
   def test_command_should_be_backwards_compatible
     # 1.x version of this module used ":git", not ":scm_command"
     @config[:git] = "/srv/bin/git"
