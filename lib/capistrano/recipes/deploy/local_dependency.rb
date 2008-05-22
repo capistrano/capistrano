@@ -30,7 +30,7 @@ module Capistrano
       # file is found that matches the parameter, this returns true.
       def find_in_path(utility)
         path = (ENV['PATH'] || "").split(File::PATH_SEPARATOR)
-        suffixes = RUBY_PLATFORM =~ /mswin/ ? %w(.bat .exe .com .cmd) : [""]
+        suffixes = self.class.on_windows? ? %w(.bat .exe .com .cmd) : [""]
 
         path.each do |dir|
           suffixes.each do |sfx|
@@ -40,6 +40,10 @@ module Capistrano
         end
 
         false
+      end
+      
+      def self.on_windows?
+        RUBY_PLATFORM =~ /mswin/
       end
     end
   end
