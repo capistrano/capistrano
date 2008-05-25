@@ -1,5 +1,7 @@
 *unreleased*
 
+* Fix deployment recipes to use the updated sudo helper [Jamis Buck]
+
 * Enhance the sudo helper so it can be used to return the command, instead of executing it [Jamis Buck]
 
 * Revert "make sudo helper play nicely with complex command chains", since it broke stuff [Jamis Buck]

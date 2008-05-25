@@ -89,13 +89,23 @@ ensure
   ENV[name] = saved
 end
 
+# If a command is given, this will try to execute the given command, as
+# described below. Otherwise, it will return a string for use in embedding in
+# another command, for executing that command as described below.
+#
 # If :run_method is :sudo (or :use_sudo is true), this executes the given command
 # via +sudo+. Otherwise is uses +run+. Further, if sudo is being used and :runner
 # is set, the command will be executed as the user given by :runner.
-def try_sudo(command)
+def try_sudo(command=nil)
   as = fetch(:runner, "app")
   via = fetch(:run_method, :sudo)
-  invoke_command(command, :via => via, :as => as)
+  if command
+    invoke_command(command, :via => via, :as => as)
+  elsif via == :sudo
+    sudo(:as => as)
+  else
+    ""
+  end
 end
 
 # =========================================================================
@@ -131,7 +141,7 @@ namespace :deploy do
   task :setup, :except => { :no_release => true } do
     dirs = [deploy_to, releases_path, shared_path]
     dirs += %w(system log pids).map { |d| File.join(shared_path, d) }
-    try_sudo "umask 02 && mkdir -p #{dirs.join(' ')}"
+    run "#{try_sudo} mkdir -p #{dirs.join(' ')} && #{try_sudo} chmod g+w #{dirs.join(' ')}"
   end
 
   desc <<-DESC
@@ -413,7 +423,7 @@ namespace :deploy do
     the :use_sudo variable to false.
   DESC
   task :start, :roles => :app do
-    try_sudo "sh -c 'cd #{current_path} && nohup script/spin'"
+    run "cd #{current_path} && #{try_sudo} nohup script/spin"
   end
 
   desc <<-DESC
@@ -428,7 +438,7 @@ namespace :deploy do
     the :use_sudo variable to false.
   DESC
   task :stop, :roles => :app do
-    try_sudo "if [ -f #{current_path}/tmp/pids/dispatch.spawner.pid ]; then #{current_path}/script/process/reaper -a kill -r dispatch.spawner.pid; fi"
+    run "if [ -f #{current_path}/tmp/pids/dispatch.spawner.pid ]; then #{try_sudo} #{current_path}/script/process/reaper -a kill -r dispatch.spawner.pid; fi"
     try_sudo "#{current_path}/script/process/reaper -a kill"
   end
 
