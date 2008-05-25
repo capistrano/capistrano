@@ -1,5 +1,7 @@
 *unreleased*
 
+* Display a deprecation error if a remote git branch is specified [Tim Harper]
+
 * Fix deployment recipes to use the updated sudo helper [Jamis Buck]
 
 * Enhance the sudo helper so it can be used to return the command, instead of executing it [Jamis Buck]
