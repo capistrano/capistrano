@@ -149,7 +149,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     ch.stubs(:[]).with(:host).returns("capistrano")
     ch.stubs(:[]).with(:server).returns(server("capistrano"))
     @config.expects(:reset!).with(:password)
-    @config.sudo_behavior_callback(nil)[ch, nil, "blah blah try again blah blah"]
+    @config.sudo_behavior_callback(nil)[ch, nil, "Sorry, try again."]
   end
 
   def test_sudo_behavior_callback_with_incorrect_password_on_subsequent_prompts
@@ -164,9 +164,9 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
 
     @config.expects(:reset!).with(:password).times(2)
 
-    callback[ch, nil, "blah blah try again blah blah"]
-    callback[ch2, nil, "blah blah try again blah blah"] # shouldn't call reset!
-    callback[ch, nil, "blah blah try again blah blah"]
+    callback[ch, nil, "Sorry, try again."]
+    callback[ch2, nil, "Sorry, try again."] # shouldn't call reset!
+    callback[ch, nil, "Sorry, try again."]
   end
 
   def test_sudo_behavior_callback_should_defer_to_fallback_for_other_output

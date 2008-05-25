@@ -50,31 +50,45 @@ module Capistrano
 
           options = add_default_command_options(options)
 
+          if cmd.include?(sudo)
+            block = sudo_behavior_callback(block)
+          end
+
           execute_on_servers(options) do |servers|
             targets = servers.map { |s| sessions[s] }
             Command.process(cmd, targets, options.merge(:logger => logger), &block)
           end
         end
 
-        # Like #run, but executes the command via <tt>sudo</tt>. This assumes
-        # that the sudo password (if required) is the same as the password for
-        # logging in to the server.
+        # Returns the command string used by capistrano to invoke a comamnd via
+        # sudo.
         #
-        # Also, this module accepts a <tt>:sudo</tt> configuration variable,
+        #   run "#{sudo :as => 'bob'} mkdir /path/to/dir"
+        #
+        # It can also be invoked like #run, but executing the command via sudo.
+        # This assumes that the sudo password (if required) is the same as the
+        # password for logging in to the server.
+        #
+        #   sudo "mkdir /path/to/dir"
+        #
+        # Also, this method understands a <tt>:sudo</tt> configuration variable,
         # which (if specified) will be used as the full path to the sudo
         # executable on the remote machine:
         #
         #   set :sudo, "/opt/local/bin/sudo"
-        def sudo(command, options={}, &block)
-          block ||= self.class.default_io_proc
+        def sudo(*parameters, &block)
+          options = parameters.last.is_a?(Hash) ? parameters.pop.dup : {}
+          command = parameters.first
+          user = options[:as] && "-u #{options.delete(:as)}"
 
-          options = options.dup
-          as = options.delete(:as)
+          sudo_command = [fetch(:sudo, "sudo"), "-p '#{sudo_prompt}'", user].compact.join(" ")
 
-          user = as && "-u #{as}"
-          command = [fetch(:sudo, "sudo"), "-p '#{sudo_prompt}'", user, command].compact.join(" ")
-
-          run(command, options, &sudo_behavior_callback(block))
+          if command
+            command = sudo_command + " " + command
+            run(command, options, &block)
+          else
+            return sudo_command
+          end
         end
 
         # Returns a Proc object that defines the behavior of the sudo
@@ -90,13 +104,13 @@ module Capistrano
           Proc.new do |ch, stream, out|
             if out =~ /^#{Regexp.escape(sudo_prompt)}/
               ch.send_data "#{self[:password]}\n"
-            elsif out =~ /try again/
+            elsif out =~ /^Sorry, try again/
               if prompt_host.nil? || prompt_host == ch[:server]
                 prompt_host = ch[:server]
                 logger.important out, "#{stream} :: #{ch[:server]}"
                 reset! :password
               end
-            else
+            elsif fallback
               fallback.call(ch, stream, out)
             end
           end

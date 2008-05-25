@@ -1,5 +1,7 @@
 *unreleased*
 
+* Enhance the sudo helper so it can be used to return the command, instead of executing it [Jamis Buck]
+
 * Revert "make sudo helper play nicely with complex command chains", since it broke stuff [Jamis Buck]
 
 * Make set(:default_shell, false) work for not using a shell on a per-command basis [Ryan McGeary] 
