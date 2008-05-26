@@ -1,5 +1,7 @@
 *unreleased*
 
+* Fix load_from_file method for windows users [Neil Wilson]
+
 * Display a deprecation error if a remote git branch is specified [Tim Harper]
 
 * Fix deployment recipes to use the updated sudo helper [Jamis Buck]

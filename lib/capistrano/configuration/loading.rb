@@ -168,7 +168,7 @@ module Capistrano
         # Load a recipe from the named file. If +name+ is given, the file will
         # be reported using that name.
         def load_from_file(file, name=nil)
-          file = find_file_in_load_path(file) unless file[0] == ?/
+          file = find_file_in_load_path(file) unless File.file?(file)
           load :string => File.read(file), :name => name || file
         end
 
