@@ -1,5 +1,7 @@
 *unreleased*
 
+* Don't follow symlinks when using :copy_cache [Jamis Buck]
+
 * If :mode is given to upload() helper, do a chmod after to set the mode [Jamis Buck]
 
 * Fix load_from_file method for windows users [Neil Wilson]

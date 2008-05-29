@@ -64,7 +64,9 @@ module Capistrano
                 next if name == "." || name == ".."
                 next if copy_exclude.any? { |pattern| File.fnmatch(pattern, item) }
 
-                if File.directory?(item)
+                if File.symlink?(item)
+                  FileUtils.ln_s(File.readlink(File.join(copy_cache, item)), File.join(destination, item))
+                elsif File.directory?(item)
                   queue += Dir.glob("#{item}/*", File::FNM_DOTMATCH)
                   FileUtils.mkdir(File.join(destination, item))
                 else
