@@ -1,5 +1,7 @@
 *unreleased*
 
+* If :mode is given to upload() helper, do a chmod after to set the mode [Jamis Buck]
+
 * Fix load_from_file method for windows users [Neil Wilson]
 
 * Display a deprecation error if a remote git branch is specified [Tim Harper]

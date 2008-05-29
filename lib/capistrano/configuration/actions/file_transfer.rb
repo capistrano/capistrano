@@ -10,7 +10,6 @@ module Capistrano
         # set the mode on the file.
         def put(data, path, options={})
           opts = options.dup
-          opts[:permissions] = opts.delete(:mode)
           upload(StringIO.new(data), path, opts)
         end
     
@@ -23,7 +22,12 @@ module Capistrano
         end
 
         def upload(from, to, options={}, &block)
+          mode = options.delete(:mode)
           transfer(:up, from, to, options, &block)
+          if mode
+            mode = mode.is_a?(Numeric) ? mode.to_s(8) : mode.to_s
+            run "chmod #{mode} #{to}"
+          end
         end
 
         def download(from, to, options={}, &block)
