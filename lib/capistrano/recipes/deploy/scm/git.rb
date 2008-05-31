@@ -141,17 +141,17 @@ module Capistrano
 
           execute = []
           if args.empty?
-            execute << "#{git} clone #{configuration[:repository]} #{destination}"
+            execute << "#{git} clone #{verbose} #{configuration[:repository]} #{destination}"
           else
-            execute << "#{git} clone #{args.join(' ')} #{configuration[:repository]} #{destination}"
+            execute << "#{git} clone #{verbose} #{args.join(' ')} #{configuration[:repository]} #{destination}"
           end
 
           # checkout into a local branch rather than a detached HEAD
-          execute << "cd #{destination} && #{git} checkout -b deploy #{revision}"
+          execute << "cd #{destination} && #{git} checkout #{verbose} -b deploy #{revision}"
           
           if configuration[:git_enable_submodules]
-            execute << "#{git} submodule init"
-            execute << "#{git} submodule update"
+            execute << "#{git} submodule #{verbose} init"
+            execute << "#{git} submodule #{verbose} update"
           end
 
           execute.join(" && ")
@@ -184,11 +184,11 @@ module Capistrano
           end
 
           # since we're in a local branch already, just reset to specified revision rather than merge
-          execute << "#{git} fetch #{remote} && #{git} reset --hard #{revision}"
+          execute << "#{git} fetch #{verbose} #{remote} && #{git} reset #{verbose} --hard #{revision}"
 
           if configuration[:git_enable_submodules]
-            execute << "#{git} submodule init"
-            execute << "#{git} submodule update"
+            execute << "#{git} submodule #{verbose} init"
+            execute << "#{git} submodule #{verbose} update"
           end
 
           execute.join(" && ")
@@ -249,6 +249,14 @@ module Capistrano
             "t\n"
           end
         end
+
+        private
+
+          # If verbose output is requested, return nil, otherwise return the
+          # command-line switch for "quiet" ("-q").
+          def verbose
+            variable(:scm_verbose) ? nil : "-q"
+          end
       end
     end
   end

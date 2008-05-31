@@ -31,12 +31,20 @@ class DeploySCMGitTest < Test::Unit::TestCase
     @config[:repository] = "git@somehost.com:project.git"
     dest = "/var/www"
     rev = 'c2d9e79'
-    assert_equal "git clone git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
+    assert_equal "git clone -q git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
 
     # With :scm_command
     git = "/opt/local/bin/git"
     @config[:scm_command] = git
-    assert_equal "#{git} clone git@somehost.com:project.git /var/www && cd /var/www && #{git} checkout -b deploy #{rev}", @source.checkout(rev, dest)
+    assert_equal "#{git} clone -q git@somehost.com:project.git /var/www && cd /var/www && #{git} checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
+  end
+
+  def test_checkout_with_verbose_should_not_use_q_switch
+    @config[:repository] = "git@somehost.com:project.git"
+    @config[:scm_verbose] = true
+    dest = "/var/www"
+    rev = 'c2d9e79'
+    assert_equal "git clone  git@somehost.com:project.git /var/www && cd /var/www && git checkout  -b deploy #{rev}", @source.checkout(rev, dest)
   end
 
   def test_diff
@@ -72,12 +80,12 @@ class DeploySCMGitTest < Test::Unit::TestCase
   def test_sync
     dest = "/var/www"
     rev = 'c2d9e79'
-    assert_equal "cd #{dest} && git fetch origin && git reset --hard #{rev}", @source.sync(rev, dest)
+    assert_equal "cd #{dest} && git fetch -q origin && git reset -q --hard #{rev}", @source.sync(rev, dest)
 
     # With :scm_command
     git = "/opt/local/bin/git"
     @config[:scm_command] = git
-    assert_equal "cd #{dest} && #{git} fetch origin && #{git} reset --hard #{rev}", @source.sync(rev, dest)
+    assert_equal "cd #{dest} && #{git} fetch -q origin && #{git} reset -q --hard #{rev}", @source.sync(rev, dest)
   end
 
   def test_sync_with_remote
@@ -89,7 +97,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
     @config[:repository] = repository
     @config[:remote] = remote
 
-    assert_equal "cd #{dest} && git config remote.#{remote}.url #{repository} && git config remote.#{remote}.fetch +refs/heads/*:refs/remotes/#{remote}/* && git fetch #{remote} && git reset --hard #{rev}", @source.sync(rev, dest)
+    assert_equal "cd #{dest} && git config remote.#{remote}.url #{repository} && git config remote.#{remote}.fetch +refs/heads/*:refs/remotes/#{remote}/* && git fetch -q #{remote} && git reset -q --hard #{rev}", @source.sync(rev, dest)
   end
 
   def test_shallow_clone
@@ -97,7 +105,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
     @config[:git_shallow_clone] = 1
     dest = "/var/www"
     rev = 'c2d9e79'
-    assert_equal "git clone --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
+    assert_equal "git clone -q --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
   end
 
   def test_remote_clone
@@ -105,7 +113,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
     @config[:remote] = "username"
     dest = "/var/www"
     rev = 'c2d9e79'
-    assert_equal "git clone -o username git@somehost.com:project.git /var/www && cd /var/www && git checkout -b deploy #{rev}", @source.checkout(rev, dest)
+    assert_equal "git clone -q -o username git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
   end
 
   # Tests from base_test.rb, makin' sure we didn't break anything up there!
