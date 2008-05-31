@@ -67,7 +67,8 @@ module Capistrano
         # user/pass can come from ssh and http distribution methods
         # yes/no is for when ssh asks you about fingerprints
         def handle_data(state, stream, text)
-          logger.info "[#{stream}] #{text}"
+          host = state[:channel][:host]
+          logger.info "[#{host} :: #{stream}] #{text}"
           case text
           when /^user:/mi
             # support :scm_user for backwards compatibility of this module

@@ -227,7 +227,8 @@ module Capistrano
         # from the SCM. Password prompts, connection requests, passphrases,
         # etc. are handled here.
         def handle_data(state, stream, text)
-          logger.info "[#{stream}] #{text}"
+          host = state[:channel][:host]
+          logger.info "[#{host} :: #{stream}] #{text}"
           case text
           when /\bpassword.*:/i
             # git is prompting for a password

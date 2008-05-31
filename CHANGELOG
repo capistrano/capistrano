@@ -1,5 +1,7 @@
 *unreleased*
 
+* Make sure the host is reported with the output from scm_run [Jamis Buck]
+
 * Make git SCM honor the :scm_verbose option [Jamis Buck]
 
 * Don't follow symlinks when using :copy_cache [Jamis Buck]

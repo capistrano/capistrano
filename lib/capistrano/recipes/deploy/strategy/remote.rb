@@ -27,7 +27,7 @@ module Capistrano
           # #handle_data filter of the SCM implementation.
           def scm_run(command)
             run(command) do |ch,stream,text|
-              ch[:state] ||= {}
+              ch[:state] ||= { :channel => ch }
               output = source.handle_data(ch[:state], stream, text)
               ch.send_data(output) if output
             end
