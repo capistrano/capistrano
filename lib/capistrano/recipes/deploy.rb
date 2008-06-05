@@ -241,7 +241,7 @@ namespace :deploy do
   task :upload, :except => { :no_release => true } do
     files = (ENV["FILES"] || "").
       split(",").
-      map { |f| f.strip!; File.directory?(f) ? Dir["#{f}/**/*"] : f }.
+      map { |f| f.strip!; Dir[ File.directory?(f) ? "#{f}/**/*" : f ]}.
       flatten.
       reject { |f| File.directory?(f) || File.basename(f)[0] == ?. }
 
