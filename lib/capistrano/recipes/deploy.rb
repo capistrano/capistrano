@@ -27,8 +27,6 @@ _cset :deploy_via, :checkout
 _cset(:deploy_to) { "/u/apps/#{application}" }
 _cset(:revision)  { source.head }
 
-_cset :runner_admin, nil
-
 # =========================================================================
 # These variables should NOT be changed unless you are very confident in
 # what you are doing. Make sure you understand all the implications of your
