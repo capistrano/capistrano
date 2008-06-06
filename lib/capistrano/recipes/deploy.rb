@@ -27,6 +27,8 @@ _cset :deploy_via, :checkout
 _cset(:deploy_to) { "/u/apps/#{application}" }
 _cset(:revision)  { source.head }
 
+_cset :runner_admin, nil
+
 # =========================================================================
 # These variables should NOT be changed unless you are very confident in
 # what you are doing. Make sure you understand all the implications of your
@@ -94,10 +96,22 @@ end
 # another command, for executing that command as described below.
 #
 # If :run_method is :sudo (or :use_sudo is true), this executes the given command
-# via +sudo+. Otherwise is uses +run+. Further, if sudo is being used and :runner
-# is set, the command will be executed as the user given by :runner.
-def try_sudo(command=nil)
-  as = fetch(:runner, "app")
+# via +sudo+. Otherwise is uses +run+. If :as is given as a key, it will be
+# passed as the user to sudo as, if using sudo. If the :as key is not given,
+# it will default to whatever the value of the :admin_runner variable is,
+# which (by default) is unset.
+#
+# THUS, if you want to try to run something via sudo, and what to use the
+# root user, you'd just to try_sudo('something'). If you wanted to try_sudo as
+# someone else, you'd just do try_sudo('something', :as => "bob"). If you
+# always wanted sudo to run as a particular user, you could do 
+# set(:admin_runner, "bob").
+def try_sudo(*args)
+  options = args.last.is_a?(Hash) ? args.pop : {}
+  command = args.shift
+  raise ArgumentError, "too many arguments" if args.any?
+
+  as = options.fetch(:as, fetch(:admin_runner, nil))
   via = fetch(:run_method, :sudo)
   if command
     invoke_command(command, :via => via, :as => as)
@@ -106,6 +120,14 @@ def try_sudo(command=nil)
   else
     ""
   end
+end
+
+# Same as sudo, but tries sudo with :as set to the value of the :runner
+# variable (which defaults to "app").
+def try_runner(*args)
+  options = args.last.is_a?(Hash) ? args.pop : {}
+  args << options.merge(:as => fetch(:runner, "app"))
+  try_sudo(*args)
 end
 
 # =========================================================================
@@ -260,7 +282,7 @@ namespace :deploy do
       set :use_sudo, false
   DESC
   task :restart, :roles => :app, :except => { :no_release => true } do
-    try_sudo "#{current_path}/script/process/reaper"
+    try_runner "#{current_path}/script/process/reaper"
   end
 
   desc <<-DESC
@@ -418,7 +440,7 @@ namespace :deploy do
     the :use_sudo variable to false.
   DESC
   task :start, :roles => :app do
-    run "cd #{current_path} && #{try_sudo} nohup script/spin"
+    run "cd #{current_path} && #{try_runner} nohup script/spin"
   end
 
   desc <<-DESC
@@ -433,8 +455,8 @@ namespace :deploy do
     the :use_sudo variable to false.
   DESC
   task :stop, :roles => :app do
-    run "if [ -f #{current_path}/tmp/pids/dispatch.spawner.pid ]; then #{try_sudo} #{current_path}/script/process/reaper -a kill -r dispatch.spawner.pid; fi"
-    try_sudo "#{current_path}/script/process/reaper -a kill"
+    run "if [ -f #{current_path}/tmp/pids/dispatch.spawner.pid ]; then #{try_runner} #{current_path}/script/process/reaper -a kill -r dispatch.spawner.pid; fi"
+    try_runner "#{current_path}/script/process/reaper -a kill"
   end
 
   namespace :pending do
