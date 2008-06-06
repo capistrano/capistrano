@@ -1,5 +1,7 @@
 *unreleased*
 
+* Make deploy:upload accept globs [Mark Imbriaco]
+
 * Make sure the host is reported with the output from scm_run [Jamis Buck]
 
 * Make git SCM honor the :scm_verbose option [Jamis Buck]
