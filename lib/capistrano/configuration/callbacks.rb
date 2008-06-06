@@ -4,7 +4,7 @@ module Capistrano
   class Configuration
     module Callbacks
       def self.included(base) #:nodoc:
-        %w(initialize execute_task).each do |method|
+        %w(initialize invoke_task_directly).each do |method|
           base.send :alias_method, "#{method}_without_callbacks", method
           base.send :alias_method, method, "#{method}_with_callbacks"
         end
@@ -18,13 +18,13 @@ module Capistrano
         @callbacks = {}
       end
 
-      def execute_task_with_callbacks(task) #:nodoc:
+      def invoke_task_directly_with_callbacks(task) #:nodoc:
         before = find_hook(task, :before)
         execute_task(before) if before
 
         trigger :before, task
 
-        result = execute_task_without_callbacks(task)
+        result = invoke_task_directly_without_callbacks(task)
 
         trigger :after, task
 

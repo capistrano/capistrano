@@ -1,5 +1,7 @@
 *unreleased*
 
+* Make sure triggers defined as a block inherit the scope of the task they are attached to, instead of the task they were called from [Jamis Buck]
+
 * Make deploy:upload use the upload() helper for more efficient directory processing [Jamis Buck]
 
 * Make deploy:upload accept globs [Mark Imbriaco]

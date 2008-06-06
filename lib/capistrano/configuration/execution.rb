@@ -72,12 +72,12 @@ module Capistrano
         task_call_frames.last.task
       end
 
-      # Executes the task with the given name, including the before and after
-      # hooks.
+      # Executes the task with the given name, without invoking any associated
+      # callbacks.
       def execute_task(task)
         logger.debug "executing `#{task.fully_qualified_name}'"
         push_task_call_frame(task)
-        task.namespace.instance_eval(&task.body)
+        invoke_task_directly(task)
       ensure
         pop_task_call_frame
       end
@@ -120,6 +120,11 @@ module Capistrano
 
       def pop_task_call_frame
         task_call_frames.pop
+      end
+
+      # Invokes the task's body directly, without setting up the call frame.
+      def invoke_task_directly(task)
+        task.namespace.instance_eval(&task.body)
       end
     end
   end

@@ -12,8 +12,14 @@ class ConfigurationCallbacksTest < Test::Unit::TestCase
     end
 
     def execute_task(task)
-      @called << task
+      invoke_task_directly(task)
     end
+
+    protected
+
+      def invoke_task_directly(task)
+        @called << task
+      end
 
     include Capistrano::Configuration::Callbacks
   end
