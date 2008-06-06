@@ -1,4 +1,4 @@
-*unreleased*
+*2.4.0 Preview Release #1* (2.3.101) June 5, 2008 
 
 * Only make deploy:start, deploy:stop, and deploy:restart try sudo as :runner. The other sudo-enabled tasks (deploy:setup, deploy:cleanup, etc.) will now use the :admin_runner user (which by default is unset). [Jamis Buck]
 
