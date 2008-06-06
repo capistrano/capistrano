@@ -233,24 +233,19 @@ namespace :deploy do
     To use this task, specify the files and directories you want to copy as a \
     comma-delimited list in the FILES environment variable. All directories \
     will be processed recursively, with all files being pushed to the \
-    deployment servers. Any file or directory starting with a '.' character \
-    will be ignored.
+    deployment servers.
 
       $ cap deploy:upload FILES=templates,controller.rb
+
+    Dir globs are also supported:
+
+      $ cap deploy:upload FILES='config/apache/*.conf'
   DESC
   task :upload, :except => { :no_release => true } do
-    files = (ENV["FILES"] || "").
-      split(",").
-      map { |f| f.strip!; Dir[ File.directory?(f) ? "#{f}/**/*" : f ]}.
-      flatten.
-      reject { |f| File.directory?(f) || File.basename(f)[0] == ?. }
+    files = (ENV["FILES"] || "").split(",").map { |f| Dir[f.strip] }.flatten
+    abort "Please specify at least one file or directory to update (via the FILES environment variable)" if files.empty?
 
-    abort "Please specify at least one file to update (via the FILES environment variable)" if files.empty?
-
-    files.each do |file|
-      content = File.open(file, "rb") { |f| f.read }
-      put content, File.join(current_path, file)
-    end
+    files.each { |file| top.upload(file, File.join(current_path, file)) }
   end
 
   desc <<-DESC
