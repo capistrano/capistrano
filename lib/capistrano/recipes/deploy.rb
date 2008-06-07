@@ -208,7 +208,9 @@ namespace :deploy do
     symlinks to the shared directory for the log, system, and tmp/pids \
     directories, and will lastly touch all assets in public/images, \
     public/stylesheets, and public/javascripts so that the times are \
-    consistent (so that asset timestamping works).
+    consistent (so that asset timestamping works).  This touch process \
+    is only carried out if the :normalize_asset_timestamps variable is \
+    set to true, which is the default.
   DESC
   task :finalize_update, :except => { :no_release => true } do
     run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
@@ -224,9 +226,11 @@ namespace :deploy do
       ln -s #{shared_path}/pids #{latest_release}/tmp/pids
     CMD
 
-    stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
-    asset_paths = %w(images stylesheets javascripts).map { |p| "#{latest_release}/public/#{p}" }.join(" ")
-    run "find #{asset_paths} -exec touch -t #{stamp} {} ';'; true", :env => { "TZ" => "UTC" }
+    if fetch(:normalize_asset_timestamps, true)
+      stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
+      asset_paths = %w(images stylesheets javascripts).map { |p| "#{latest_release}/public/#{p}" }.join(" ")
+      run "find #{asset_paths} -exec touch -t #{stamp} {} ';'; true", :env => { "TZ" => "UTC" }
+    end
   end
 
   desc <<-DESC
