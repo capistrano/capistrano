@@ -1,4 +1,4 @@
-*unreleased*
+*2.4.0* June 13, 2008
 
 * Added :normalize_asset_timestamps option to deployment, defaulting to true, which allows asset timestamping to be disabled [John Trupiano]
 
