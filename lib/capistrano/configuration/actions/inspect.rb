@@ -34,7 +34,7 @@ module Capistrano
           invoke_command(command, options.merge(:once => true)) do |ch, stream, data|
             case stream
             when :out then output << data
-            when :err then raise CaptureError, "error processing #{command.inspect}: #{data.inspect}"
+            when :err then warn "[err :: #{ch[:server]}] #{data}"
             end
           end
           output

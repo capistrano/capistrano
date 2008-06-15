@@ -37,9 +37,12 @@ class ConfigurationActionsInspectTest < Test::Unit::TestCase
     @config.capture("hostname", :foo => "bar")
   end
 
-  def test_capture_with_stderr_result_should_raise_capture_error
-    @config.expects(:invoke_command).yields(mock("channel"), :err, "boom")
-    assert_raises(Capistrano::CaptureError) { @config.capture("hostname") }
+  def test_capture_with_stderr_should_emit_stderr_via_warn
+    ch = mock("channel")
+    ch.expects(:[]).with(:server).returns(server("capistrano"))
+    @config.expects(:invoke_command).yields(ch, :err, "boom")
+    @config.expects(:warn).with("[err :: capistrano] boom")
+    @config.capture("hostname")
   end
 
   def test_capture_with_stdout_should_aggregate_and_return_stdout
