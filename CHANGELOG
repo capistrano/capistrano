@@ -1,5 +1,7 @@
 *unreleased*
 
+* Let Net::SSH manage the default SSH port selection [Ben Lavender]
+
 * Changed capture() helper to not raise an exception on error, but to warn instead [Jeff Forcier]
 
 

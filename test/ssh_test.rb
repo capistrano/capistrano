@@ -5,7 +5,6 @@ class SSHTest < Test::Unit::TestCase
   def setup
     Capistrano::ServerDefinition.stubs(:default_user).returns("default-user")
     @options = { :password => nil,
-                 :port     => 22,
                  :auth_methods => %w(publickey hostbased) }
     @server = server("capistrano")
   end

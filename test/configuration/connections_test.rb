@@ -60,7 +60,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
 
   def test_connection_factory_should_return_gateway_instance_if_gateway_variable_is_set
     @config.values[:gateway] = "j@capistrano"
-    Net::SSH::Gateway.expects(:new).with("capistrano", "j", :port => 22, :password => nil, :auth_methods => %w(publickey hostbased)).returns(stub_everything)
+    Net::SSH::Gateway.expects(:new).with("capistrano", "j", :password => nil, :auth_methods => %w(publickey hostbased)).returns(stub_everything)
     assert_instance_of Capistrano::Configuration::Connections::GatewayConnectionFactory, @config.connection_factory
   end
 
