@@ -1,4 +1,4 @@
-== *unreleased*
+== 2.4.1 / June 27, 2008
 
 * Use Echoe to manage the Rakefile [Jamis Buck]
 
