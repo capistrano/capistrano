@@ -25,4 +25,10 @@ Echoe.new('capistrano', version) do |p|
   p.url              = "http://www.capify.org"
   p.need_zip         = true
   p.rdoc_pattern     = /^(lib|README.rdoc|CHANGELOG.rdoc)/
+
+  p.dependencies     = ["net-ssh         >= 2.0.0",
+                        "net-sftp        >= 2.0.0",
+                        "net-scp         >= 1.0.0",
+                        "net-ssh-gateway >= 1.0.0",
+                        "highline"]
 end
