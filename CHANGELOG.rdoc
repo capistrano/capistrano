@@ -1,3 +1,8 @@
+== 2.4.3 / June 28, 2008
+
+* Fix gem dependencies so gem actually understands them [Jamis Buck]
+
+
 == 2.4.2 / June 27, 2008
 
 * Specify gem dependencies in rakefile [Jamis Buck]
