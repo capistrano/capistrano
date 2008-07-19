@@ -30,6 +30,18 @@ class CLIOptionsTest < Test::Unit::TestCase
     assert @cli.options[:debug]
   end
 
+  def test_parse_options_with_n_should_set_dry_run_option
+    @cli.args << "-n"
+    @cli.parse_options!
+    assert @cli.options[:dry_run]
+  end
+
+  def test_parse_options_with_dry_run_should_set_dry_run_option
+    @cli.args << "--dry-run"
+    @cli.parse_options!
+    assert @cli.options[:dry_run]
+  end
+
   def test_parse_options_with_e_should_set_explain_option
     @cli.args << "-e" << "sample"
     @cli.parse_options!

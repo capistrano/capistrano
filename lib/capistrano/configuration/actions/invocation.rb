@@ -46,7 +46,7 @@ module Capistrano
           block ||= self.class.default_io_proc
           logger.debug "executing #{cmd.strip.inspect}"
 
-          return if debug && continue_execution(cmd) == false
+          return if dry_run || (debug && continue_execution(cmd) == false)
 
           options = add_default_command_options(options)
 

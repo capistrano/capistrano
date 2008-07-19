@@ -23,6 +23,7 @@ module Capistrano
       def execute!
         config = instantiate_configuration
         config.debug = options[:debug]
+        config.dry_run = options[:dry_run]
         config.logger.level = options[:verbose]
 
         set_pre_vars(config)
