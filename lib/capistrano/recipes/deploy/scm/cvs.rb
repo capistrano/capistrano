@@ -71,7 +71,7 @@ module Capistrano
           revision = yield(scm(cvs_root, :log, "-r#{revision}")).
                        grep(/^date:/).
                        map { |line| line[/^date: (.*?);/, 1] }.
-                       sort.last
+                       sort.last + " UTC"
           return revision
         end
 
@@ -111,6 +111,7 @@ module Capistrano
           
           # attempts to guess what type of revision we're working with
           def revision_type(rev)
+            return :date if rev =~ /^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} UTC$/ # i.e 2007-05-15 08:13:25 UTC
             return :date if rev =~ /^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2}$/ # i.e 2007-05-15 08:13:25
             return :revision if rev =~ /^\d/ # i.e. 1.2.1
             return :tag # i.e. RELEASE_1_2
