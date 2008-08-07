@@ -43,7 +43,7 @@ module Capistrano
       end
 
       def self.on_windows?
-        RUBY_PLATFORM =~ /mswin/
+        RUBY_PLATFORM =~ /mswin|mingw/
       end
 
       def self.windows_executable_extensions
