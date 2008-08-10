@@ -27,7 +27,7 @@ module Capistrano
         # Simply does a copy from the :repository directory to the
         # :destination directory.
         def checkout(revision, destination)
-          "cp -R #{repository} #{destination}"
+          !Capistrano::Deploy::LocalDependency.on_windows? ? "cp -R #{repository} #{destination}" : "xcopy #{repository} \"#{destination}\" /S/I/Y/Q/E"
         end
 
         alias_method :export, :checkout
