@@ -107,12 +107,13 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
       flunk "expected an exception to be raised"
     rescue Capistrano::ConnectionError => e
       assert e.respond_to?(:hosts)
-      assert_equal %w(cap1 cap2), e.hosts.map { |h| h.to_s }
+      assert_equal %w(cap1 cap2), e.hosts.map { |h| h.to_s }.sort
     end
   end
   
   def test_connection_error_should_only_include_failed_hosts
-    Capistrano::SSH.expects(:connect).times(2).raises(Exception).then.returns(:success)
+    Capistrano::SSH.expects(:connect).with(server('cap1'), anything).raises(Exception)
+    Capistrano::SSH.expects(:connect).with(server('cap2'), anything).returns(:success)
 
     begin
       @config.establish_connections_to(%w(cap1 cap2).map { |s| server(s) })
@@ -203,7 +204,8 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
   def test_execute_servers_should_not_raise_connection_error_on_failure_with_on_errors_continue
     @config.current_task = mock_task(:on_error => :continue)
     @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([server("cap1"), server("cap2")])
-    Capistrano::SSH.expects(:connect).times(2).raises(Exception).then.returns(:success)
+    Capistrano::SSH.expects(:connect).with(server('cap1'), anything).raises(Exception)
+    Capistrano::SSH.expects(:connect).with(server('cap2'), anything).returns(:success)
     assert_nothing_raised {
       @config.execute_on_servers do |servers|
         assert_equal %w(cap2), servers.map { |s| s.host }
