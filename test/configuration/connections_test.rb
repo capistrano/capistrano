@@ -217,7 +217,8 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     list = [server("cap1"), server("cap2")]
     @config.current_task = mock_task(:on_error => :continue)
     @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns(list)
-    Capistrano::SSH.expects(:connect).times(2).raises(Exception).then.returns(:success)
+    Capistrano::SSH.expects(:connect).with(server('cap1'), anything).raises(Exception)
+    Capistrano::SSH.expects(:connect).with(server('cap2'), anything).returns(:success)
     @config.execute_on_servers do |servers|
       assert_equal %w(cap2), servers.map { |s| s.host }
     end
