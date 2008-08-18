@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Fixed timestamp bug in CVS module [Jørgen Fjeld]
+
 * Added -n/--dry-run switch, to display but not execute remote tasks [Paul Gross]
 
 
