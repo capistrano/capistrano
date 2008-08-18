@@ -1,5 +1,11 @@
 == (unreleased)
 
+* Make None SCM module work in Windows [Carlos Kozuszko]
+
+* Recognize mingw as a Windows platform [Carlos Kozuszko]
+
+* Fixed failing tests in Windows [Carlos Kozuszko]
+
 * Made :scm_auth_cache control whether password option is emitted in subversion module [Brendan Schwartz]
 
 * Fixed timestamp bug in CVS module [Jørgen Fjeld]
