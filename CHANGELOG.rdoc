@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Made :scm_auth_cache control whether password option is emitted in subversion module [Brendan Schwartz]
+
 * Fixed timestamp bug in CVS module [Jørgen Fjeld]
 
 * Added -n/--dry-run switch, to display but not execute remote tasks [Paul Gross]
