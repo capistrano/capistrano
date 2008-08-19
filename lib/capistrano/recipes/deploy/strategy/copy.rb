@@ -80,7 +80,7 @@ module Capistrano
 
             if copy_exclude.any?
               logger.debug "processing exclusions..."
-              copy_exclude.each { |pattern| FileUtils.rm_rf(File.join(destination, pattern)) }
+              copy_exclude.each { |pattern| FileUtils.rm_rf(Dir.glob(File.join(destination, pattern), File::FNM_DOTMATCH)) }
             end
           end
 

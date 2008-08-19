@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Allow filename globbing in copy_exclude setting for the copy strategy [Sharebear]
+
 * Allow remote_cache strategy to use copy_exclude settings (requires rsync) [Lewis Mackenzie]
 
 * Make None SCM module work in Windows [Carlos Kozuszko]

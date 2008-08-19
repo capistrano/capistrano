@@ -29,6 +29,19 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     Dir.expects(:tmpdir).returns("/temp/dir")
     @source.expects(:checkout).with("154", "/temp/dir/1234567890").returns(:local_checkout)
     @strategy.expects(:system).with(:local_checkout)
+    Dir.expects(:glob).with("/temp/dir/1234567890/.git", File::FNM_DOTMATCH).returns("/temp/dir/1234567890/.git")
+
+    FileUtils.expects(:rm_rf).with("/temp/dir/1234567890/.git")
+    prepare_standard_compress_and_copy!
+    @strategy.deploy!
+  end
+
+  def test_deploy_with_exclusions_should_remove_glob_patterns_from_destination
+    @config[:copy_exclude] = ".gi*"
+    Dir.expects(:tmpdir).returns("/temp/dir")
+    @source.expects(:checkout).with("154", "/temp/dir/1234567890").returns(:local_checkout)
+    @strategy.expects(:system).with(:local_checkout)
+    Dir.expects(:glob).with("/temp/dir/1234567890/.gi*", File::FNM_DOTMATCH).returns("/temp/dir/1234567890/.git")
 
     FileUtils.expects(:rm_rf).with("/temp/dir/1234567890/.git")
     prepare_standard_compress_and_copy!
