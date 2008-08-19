@@ -60,8 +60,9 @@ module Capistrano
       # hook will be executed.
       def on_rollback(&block)
         if transaction?
+          # don't note a new rollback request if one has already been set
+          rollback_requests << task_call_frames.last unless task_call_frames.last.rollback
           task_call_frames.last.rollback = block
-          rollback_requests << task_call_frames.last
         end
       end
 

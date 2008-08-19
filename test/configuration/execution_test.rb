@@ -116,6 +116,22 @@ class ConfigurationExecutionTest < Test::Unit::TestCase
     assert @config.state[:aaa]
   end
 
+  def test_on_rollback_called_twice_should_result_in_last_rollback_block_being_effective
+    aaa = new_task(@config, :aaa) do
+      transaction do
+        on_rollback { (state[:rollback] ||= []) << :first }
+        on_rollback { (state[:rollback] ||= []) << :second }
+        raise "boom"
+      end
+    end
+
+    assert_raises(RuntimeError) do
+      @config.execute_task(aaa)
+    end
+
+    assert_equal [:second], @config.state[:rollback]
+  end
+
   def test_find_and_execute_task_should_raise_error_when_task_cannot_be_found
     @config.expects(:find_task).with("path:to:task").returns(nil)
     assert_raises(Capistrano::NoSuchTaskError) { @config.find_and_execute_task("path:to:task") }
