@@ -1,6 +1,8 @@
 == (unreleased)
 
-* Allow filename globbing in copy_exclude setting for the copy strategy [Sharebear]
+* Add :shared_children variable to customize which subdirectories are created by deploy:setup [Jonathan Share]
+
+* Allow filename globbing in copy_exclude setting for the copy strategy [Jonathan Share]
 
 * Allow remote_cache strategy to use copy_exclude settings (requires rsync) [Lewis Mackenzie]
 

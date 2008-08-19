@@ -42,6 +42,7 @@ _cset(:release_name)      { set :deploy_timestamped, true; Time.now.utc.strftime
 
 _cset :version_dir,       "releases"
 _cset :shared_dir,        "shared"
+_cset :shared_children,   %w(system log pids)
 _cset :current_dir,       "current"
 
 _cset(:releases_path)     { File.join(deploy_to, version_dir) }
@@ -160,7 +161,7 @@ namespace :deploy do
   DESC
   task :setup, :except => { :no_release => true } do
     dirs = [deploy_to, releases_path, shared_path]
-    dirs += %w(system log pids).map { |d| File.join(shared_path, d) }
+    dirs += shared_children.map { |d| File.join(shared_path, d) }
     run "#{try_sudo} mkdir -p #{dirs.join(' ')} && #{try_sudo} chmod g+w #{dirs.join(' ')}"
   end
 
