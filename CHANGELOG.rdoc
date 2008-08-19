@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Allow remote_cache strategy to use copy_exclude settings (requires rsync) [Lewis Mackenzie]
+
 * Make None SCM module work in Windows [Carlos Kozuszko]
 
 * Recognize mingw as a Windows platform [Carlos Kozuszko]
