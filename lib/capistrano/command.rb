@@ -8,10 +8,74 @@ module Capistrano
   class Command
     include Processable
 
-    attr_reader :command, :sessions, :options
+    class Tree
+      attr_reader :branches
 
-    def self.process(command, sessions, options={}, &block)
-      new(command, sessions, options, &block).process!
+      class Branch
+        attr_accessor :command, :callback
+
+        def initialize(command, callback)
+          @command = command.strip.gsub(/\r?\n/, "\\\n")
+          @callback = callback || Capistrano::Configuration.default_io_proc
+          @skip = false
+        end
+
+        def skip?
+          @skip
+        end
+
+        def skip!
+          @skip = true
+        end
+
+        def match(server)
+          true
+        end
+
+        def to_s
+          command.inspect
+        end
+      end
+
+      class PatternBranch < Branch
+        attr_accessor :pattern
+
+        def initialize(pattern, command, callback)
+          @pattern = pattern
+          super(command, callback)
+        end
+
+        def match(server)
+          pattern === server.host
+        end
+
+        def to_s
+          "#{pattern.inspect} :: #{command.inspect}"
+        end
+      end
+
+      def initialize
+        @branches = []
+        yield self if block_given?
+      end
+
+      def if(pattern, command, &block)
+        branches << PatternBranch.new(pattern, command, block)
+      end
+
+      def else(command, &block)
+        branches << Branch.new(command, block)
+      end
+
+      def branch_for(server)
+        branches.detect { |branch| branch.match(server) }
+      end
+    end
+
+    attr_reader :tree, :sessions, :options
+
+    def self.process(tree, sessions, options={})
+      new(tree, sessions, options).process!
     end
 
     # Instantiates a new command object. The +command+ must be a string
@@ -23,11 +87,10 @@ module Capistrano
     # * +data+: (optional), a string to be sent to the command via it's stdin
     # * +env+: (optional), a string or hash to be interpreted as environment
     #   variables that should be defined for this command invocation.
-    def initialize(command, sessions, options={}, &block)
-      @command = command.strip.gsub(/\r?\n/, "\\\n")
+    def initialize(tree, sessions, options={})
+      @tree = tree
       @sessions = sessions
       @options = options
-      @callback = block
       @channels = open_channels
     end
 
@@ -67,17 +130,20 @@ module Capistrano
 
       def open_channels
         sessions.map do |session|
-          session.open_channel do |channel|
-            server = session.xserver
+          server = session.xserver
+          branch = tree.branch_for(server)
+          next if branch.skip?
 
+          session.open_channel do |channel|
             channel[:server] = server
             channel[:host] = server.host
             channel[:options] = options
+            channel[:branch] = branch
 
             request_pty_if_necessary(channel) do |ch, success|
               if success
                 logger.trace "executing command", ch[:server] if logger
-                cmd = replace_placeholders(command, ch)
+                cmd = replace_placeholders(channel[:branch].command, ch)
 
                 if options[:shell] == false
                   shell = nil
@@ -101,11 +167,11 @@ module Capistrano
             end
 
             channel.on_data do |ch, data|
-              @callback[ch, :out, data] if @callback
+              ch[:branch].callback[ch, :out, data]
             end
 
             channel.on_extended_data do |ch, type, data|
-              @callback[ch, :err, data] if @callback
+              ch[:branch].callback[ch, :err, data]
             end
 
             channel.on_request("exit-status") do |ch, data|
@@ -116,7 +182,7 @@ module Capistrano
               ch[:closed] = true
             end
           end
-        end
+        end.compact
       end
 
       def request_pty_if_necessary(channel)

@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Added parallel() helper for executing multiple different commands in parallel [Jamis Buck]
+
 * Make sure a task only uses the last on_rollback block, once, on rollback [Jamis Buck]
 
 * Add :shared_children variable to customize which subdirectories are created by deploy:setup [Jonathan Share]

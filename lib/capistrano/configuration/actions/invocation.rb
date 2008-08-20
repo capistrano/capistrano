@@ -26,6 +26,12 @@ module Capistrano
           set :default_run_options, {}
         end
 
+        def parallel(options={})
+          raise ArgumentError, "parallel() requires a block" unless block_given?
+          tree = Command::Tree.new { |t| yield t }
+          run_tree(tree)
+        end
+
         # Invokes the given command. If a +via+ key is given, it will be used
         # to determine what method to use to invoke the command. It defaults
         # to :run, but may be :sudo, or any other method that conforms to the
@@ -44,19 +50,33 @@ module Capistrano
         # stdout), and the data that was received.
         def run(cmd, options={}, &block)
           block ||= self.class.default_io_proc
-          logger.debug "executing #{cmd.strip.inspect}"
+          tree = Command::Tree.new { |t| t.else(cmd, block) }
+          run_tree(tree, options)
+        end
 
-          return if dry_run || (debug && continue_execution(cmd) == false)
+        def run_tree(tree, options={})
+          if tree.branches.length == 1
+            logger.debug "executing #{tree.branches.first}"
+          else
+            logger.debug "executing multiple commands in parallel"
+            tree.branches.each do |branch|
+              logger.trace "-> #{branch}"
+            end
+          end
+
+          return if dry_run || (debug && continue_execution(tree) == false)
 
           options = add_default_command_options(options)
 
-          if cmd.include?(sudo)
-            block = sudo_behavior_callback(block)
+          tree.branches.each do |branch|
+            if branch.command.include?(sudo)
+              branch.callback = sudo_behavior_callback(branch.callback)
+            end
           end
 
           execute_on_servers(options) do |servers|
             targets = servers.map { |s| sessions[s] }
-            Command.process(cmd, targets, options.merge(:logger => logger), &block)
+            Command.process(tree, targets, options.merge(:logger => logger))
           end
         end
 
@@ -145,8 +165,17 @@ module Capistrano
           fetch(:sudo_prompt, "sudo password: ")
         end
         
-        def continue_execution(cmd)
-          case Capistrano::CLI.debug_prompt(cmd)
+        def continue_execution(tree)
+          if tree.branches.length == 1
+            continue_execution_for_branch(tree.branches.first)
+          else
+            tree.branches.each { |branch| branch.skip! unless continue_execution_for_branch(branch) }
+            tree.branches.any? { |branch| !branch.skip? }
+          end
+        end
+
+        def continue_execution_for_branch(branch)
+          case Capistrano::CLI.debug_prompt(branch)
             when "y"
               true
             when "n"
