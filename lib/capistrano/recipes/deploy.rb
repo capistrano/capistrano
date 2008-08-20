@@ -50,7 +50,7 @@ _cset(:shared_path)       { File.join(deploy_to, shared_dir) }
 _cset(:current_path)      { File.join(deploy_to, current_dir) }
 _cset(:release_path)      { File.join(releases_path, release_name) }
 
-_cset(:releases)          { capture("ls -x #{releases_path}").split.sort }
+_cset(:releases)          { capture("ls -xt #{releases_path}").split.reverse }
 _cset(:current_release)   { File.join(releases_path, releases.last) }
 _cset(:previous_release)  { File.join(releases_path, releases[-2]) }
 
