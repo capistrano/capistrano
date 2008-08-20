@@ -29,7 +29,6 @@ module Capistrano
           prompt = "Execute ([Yes], No, Abort) "
           ui.ask("#{prompt}?  ") do |q|
             q.overwrite = false
-            q.character = true
             q.default = 'y'
             q.validate = /(y(es)?)|(no?)|(a(bort)?|\n)/i
             q.responses[:not_valid] = prompt
