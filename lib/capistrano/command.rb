@@ -9,15 +9,25 @@ module Capistrano
     include Processable
 
     class Tree
+      attr_reader :configuration
       attr_reader :branches
+      attr_reader :fallback
+
+      include Enumerable
 
       class Branch
         attr_accessor :command, :callback
+        attr_reader :options
 
-        def initialize(command, callback)
+        def initialize(command, options, callback)
           @command = command.strip.gsub(/\r?\n/, "\\\n")
           @callback = callback || Capistrano::Configuration.default_io_proc
+          @options = options
           @skip = false
+        end
+
+        def last?
+          options[:last]
         end
 
         def skip?
@@ -37,38 +47,83 @@ module Capistrano
         end
       end
 
-      class PatternBranch < Branch
-        attr_accessor :pattern
+      class ConditionBranch < Branch
+        attr_accessor :configuration
+        attr_accessor :condition
 
-        def initialize(pattern, command, callback)
-          @pattern = pattern
-          super(command, callback)
+        class Evaluator
+          attr_reader :configuration, :condition, :server
+
+          def initialize(config, condition, server)
+            @configuration = config
+            @condition = condition
+            @server = server
+          end
+
+          def in?(role)
+            configuration.roles[role].include?(server)
+          end
+
+          def result
+            eval(condition, binding)
+          end
+
+          def method_missing(sym, *args, &block)
+            if server.respond_to?(sym)
+              server.send(sym, *args, &block)
+            elsif configuration.respond_to?(sym)
+              configuration.send(sym, *args, &block)
+            else
+              super
+            end
+          end
+        end
+
+        def initialize(configuration, condition, command, options, callback)
+          @configuration = configuration
+          @condition = condition
+          super(command, options, callback)
         end
 
         def match(server)
-          pattern === server.host
+          Evaluator.new(configuration, condition, server).result
         end
 
         def to_s
-          "#{pattern.inspect} :: #{command.inspect}"
+          "#{condition.inspect} :: #{command.inspect}"
         end
       end
 
-      def initialize
+      def initialize(config)
+        @configuration = config
         @branches = []
         yield self if block_given?
       end
 
-      def if(pattern, command, &block)
-        branches << PatternBranch.new(pattern, command, block)
+      def when(condition, command, options={}, &block)
+        branches << ConditionBranch.new(configuration, condition, command, options, block)
       end
 
       def else(command, &block)
-        branches << Branch.new(command, block)
+        @fallback = Branch.new(command, {}, block)
       end
 
-      def branch_for(server)
-        branches.detect { |branch| branch.match(server) }
+      def branches_for(server)
+        seen_last = false
+        matches = branches.select do |branch|
+          success = !seen_last && !branch.skip? && branch.match(server)
+          seen_last = success && branch.last?
+          success
+        end
+
+        matches << fallback if matches.empty? && fallback
+        return matches
+      end
+
+      def each
+        branches.each { |branch| yield branch }
+        yield fallback if fallback
+        return self
       end
     end
 
@@ -131,58 +186,57 @@ module Capistrano
       def open_channels
         sessions.map do |session|
           server = session.xserver
-          branch = tree.branch_for(server)
-          next if branch.skip?
+          tree.branches_for(server).map do |branch|
+            session.open_channel do |channel|
+              channel[:server] = server
+              channel[:host] = server.host
+              channel[:options] = options
+              channel[:branch] = branch
 
-          session.open_channel do |channel|
-            channel[:server] = server
-            channel[:host] = server.host
-            channel[:options] = options
-            channel[:branch] = branch
+              request_pty_if_necessary(channel) do |ch, success|
+                if success
+                  logger.trace "executing command", ch[:server] if logger
+                  cmd = replace_placeholders(channel[:branch].command, ch)
 
-            request_pty_if_necessary(channel) do |ch, success|
-              if success
-                logger.trace "executing command", ch[:server] if logger
-                cmd = replace_placeholders(channel[:branch].command, ch)
+                  if options[:shell] == false
+                    shell = nil
+                  else
+                    shell = "#{options[:shell] || "sh"} -c"
+                    cmd = cmd.gsub(/[$\\`"]/) { |m| "\\#{m}" }
+                    cmd = "\"#{cmd}\""
+                  end
 
-                if options[:shell] == false
-                  shell = nil
+                  command_line = [environment, shell, cmd].compact.join(" ")
+
+                  ch.exec(command_line)
+                  ch.send_data(options[:data]) if options[:data]
                 else
-                  shell = "#{options[:shell] || "sh"} -c"
-                  cmd = cmd.gsub(/[$\\`"]/) { |m| "\\#{m}" }
-                  cmd = "\"#{cmd}\""
+                  # just log it, don't actually raise an exception, since the
+                  # process method will see that the status is not zero and will
+                  # raise an exception then.
+                  logger.important "could not open channel", ch[:server] if logger
+                  ch.close
                 end
+              end
 
-                command_line = [environment, shell, cmd].compact.join(" ")
+              channel.on_data do |ch, data|
+                ch[:branch].callback[ch, :out, data]
+              end
 
-                ch.exec(command_line)
-                ch.send_data(options[:data]) if options[:data]
-              else
-                # just log it, don't actually raise an exception, since the
-                # process method will see that the status is not zero and will
-                # raise an exception then.
-                logger.important "could not open channel", ch[:server] if logger
-                ch.close
+              channel.on_extended_data do |ch, type, data|
+                ch[:branch].callback[ch, :err, data]
+              end
+
+              channel.on_request("exit-status") do |ch, data|
+                ch[:status] = data.read_long
+              end
+
+              channel.on_close do |ch|
+                ch[:closed] = true
               end
             end
-
-            channel.on_data do |ch, data|
-              ch[:branch].callback[ch, :out, data]
-            end
-
-            channel.on_extended_data do |ch, type, data|
-              ch[:branch].callback[ch, :err, data]
-            end
-
-            channel.on_request("exit-status") do |ch, data|
-              ch[:status] = data.read_long
-            end
-
-            channel.on_close do |ch|
-              ch[:closed] = true
-            end
           end
-        end.compact
+        end.flatten
       end
 
       def request_pty_if_necessary(channel)

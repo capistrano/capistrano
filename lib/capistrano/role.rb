@@ -38,6 +38,10 @@ module Capistrano
       @static_servers.clear
     end
 
+    def include?(server)
+      servers.include?(server)
+    end
+
     protected
 
     # This is the combination of a block, a hash of options, and a cached value.

@@ -28,7 +28,7 @@ module Capistrano
 
         def parallel(options={})
           raise ArgumentError, "parallel() requires a block" unless block_given?
-          tree = Command::Tree.new { |t| yield t }
+          tree = Command::Tree.new(self) { |t| yield t }
           run_tree(tree)
         end
 
@@ -50,7 +50,7 @@ module Capistrano
         # stdout), and the data that was received.
         def run(cmd, options={}, &block)
           block ||= self.class.default_io_proc
-          tree = Command::Tree.new { |t| t.else(cmd, block) }
+          tree = Command::Tree.new(self) { |t| t.else(cmd, block) }
           run_tree(tree, options)
         end
 
@@ -59,7 +59,7 @@ module Capistrano
             logger.debug "executing #{tree.branches.first}"
           else
             logger.debug "executing multiple commands in parallel"
-            tree.branches.each do |branch|
+            tree.each do |branch|
               logger.trace "-> #{branch}"
             end
           end
@@ -169,8 +169,8 @@ module Capistrano
           if tree.branches.length == 1
             continue_execution_for_branch(tree.branches.first)
           else
-            tree.branches.each { |branch| branch.skip! unless continue_execution_for_branch(branch) }
-            tree.branches.any? { |branch| !branch.skip? }
+            tree.each { |branch| branch.skip! unless continue_execution_for_branch(branch) }
+            tree.any? { |branch| !branch.skip? }
           end
         end
 
