@@ -142,7 +142,13 @@ module Capistrano
     # * +data+: (optional), a string to be sent to the command via it's stdin
     # * +env+: (optional), a string or hash to be interpreted as environment
     #   variables that should be defined for this command invocation.
-    def initialize(tree, sessions, options={})
+    def initialize(tree, sessions, options={}, &block)
+      if String === tree
+        tree = Tree.new(nil) { |t| t.else(tree, &block) }
+      elsif block
+        raise ArgumentError, "block given with tree argument"
+      end
+
       @tree = tree
       @sessions = sessions
       @options = options
@@ -160,9 +166,10 @@ module Capistrano
       logger.trace "command finished" if logger
 
       if (failed = @channels.select { |ch| ch[:status] != 0 }).any?
-        hosts = failed.map { |ch| ch[:server] }
-        error = CommandError.new("command #{command.inspect} failed on #{hosts.join(',')}")
-        error.hosts = hosts
+        commands = failed.inject({}) { |map, ch| (map[ch[:command]] ||= []) << ch[:server]; map }
+        message = commands.map { |command, list| "#{command.inspect} on #{list.join(',')}" }.join("; ")
+        error = CommandError.new("failed: #{message}")
+        error.hosts = commands.values.flatten
         raise error
       end
 
@@ -207,6 +214,7 @@ module Capistrano
                   end
 
                   command_line = [environment, shell, cmd].compact.join(" ")
+                  ch[:command] = command_line
 
                   ch.exec(command_line)
                   ch.send_data(options[:data]) if options[:data]

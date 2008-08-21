@@ -47,22 +47,6 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     @config.run "ls", :foo => "bar"
   end
 
-  def test_run_without_block_should_use_default_io_proc
-    @config.expects(:execute_on_servers).yields(%w(s1 s2 s3).map { |s| server(s) })
-    @config.expects(:sessions).returns(Hash.new { |h,k| h[k] = k.host.to_sym }).times(3)
-    prepare_command("ls", [:s1, :s2, :s3], {:logger => @config.logger})
-    MockConfig.default_io_proc = inspectable_proc
-    @config.run "ls"
-  end
-
-  def test_run_with_block_should_use_block
-    @config.expects(:execute_on_servers).yields(%w(s1 s2 s3).map { |s| mock(:host => s) })
-    @config.expects(:sessions).returns(Hash.new { |h,k| h[k] = k.host.to_sym }).times(3)
-    prepare_command("ls", [:s1, :s2, :s3], {:logger => @config.logger})
-    MockConfig.default_io_proc = Proc.new { |a,b,c| raise "shouldn't get here" }
-    @config.run("ls", &inspectable_proc)
-  end
-
   def test_add_default_command_options_should_return_bare_options_if_there_is_no_env_or_shell_specified
     assert_equal({:foo => "bar"}, @config.add_default_command_options(:foo => "bar"))
   end
@@ -182,7 +166,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     a = mock("channel", :called => true)
     b = mock("stream", :called => true)
     c = mock("data", :called => true)
-
+  
     callback[a, b, c]
   end
 
@@ -210,6 +194,11 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
       a = mock("channel", :called => true)
       b = mock("stream", :called => true)
       c = mock("data", :called => true)
-      Capistrano::Command.expects(:process).with(command, sessions, options).yields(a, b, c)
+
+      compare_args = Proc.new do |tree, sess, opts|
+        tree.fallback.command == command && sess == sessions && opts == options
+      end
+
+      Capistrano::Command.expects(:process).with(&compare_args)
     end
 end

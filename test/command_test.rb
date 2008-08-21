@@ -1,22 +1,21 @@
 require "utils"
 require 'capistrano/command'
+require 'capistrano/configuration'
 
 class CommandTest < Test::Unit::TestCase
   def test_command_should_open_channels_on_all_sessions
-    s1 = mock(:open_channel => nil)
-    s2 = mock(:open_channel => nil)
-    s3 = mock(:open_channel => nil)
-    assert_equal "ls", Capistrano::Command.new("ls", [s1, s2, s3]).command
+    s1, s2, s3 = mock_session, mock_session, mock_session
+    assert_equal "ls", Capistrano::Command.new("ls", [s1, s2, s3]).tree.fallback.command
   end
 
   def test_command_with_newlines_should_be_properly_escaped
-    cmd = Capistrano::Command.new("ls\necho", [mock(:open_channel => nil)])
-    assert_equal "ls\\\necho", cmd.command
+    cmd = Capistrano::Command.new("ls\necho", [mock_session])
+    assert_equal "ls\\\necho", cmd.tree.fallback.command
   end
 
   def test_command_with_windows_newlines_should_be_properly_escaped
-    cmd = Capistrano::Command.new("ls\r\necho", [mock(:open_channel => nil)])
-    assert_equal "ls\\\necho", cmd.command
+    cmd = Capistrano::Command.new("ls\r\necho", [mock_session])
+    assert_equal "ls\\\necho", cmd.tree.fallback.command
   end
 
   def test_command_with_pty_should_request_pty_and_register_success_callback
@@ -76,25 +75,17 @@ class CommandTest < Test::Unit::TestCase
   end
 
   def test_open_channel_should_set_host_key_on_channel
-    session = mock(:xserver => server("capistrano"))
-    channel = stub_everything
-
-    session.expects(:open_channel).yields(channel)
-    channel.expects(:[]=).with(:host, "capistrano")
-    channel.stubs(:[]).with(:host).returns("capistrano")
-
+    channel = nil
+    session = setup_for_extracting_channel_action { |ch| channel = ch }
     Capistrano::Command.new("ls", [session])
+    assert_equal "capistrano", channel[:host]
   end
 
   def test_open_channel_should_set_options_key_on_channel
-    session = mock(:xserver => server("capistrano"))
-    channel = stub_everything
-
-    session.expects(:open_channel).yields(channel)
-    channel.expects(:[]=).with(:options, {:data => "here we go"})
-    channel.stubs(:[]).with(:host).returns("capistrano")
-
+    channel = nil
+    session = setup_for_extracting_channel_action { |ch| channel = ch }
     Capistrano::Command.new("ls", [session], :data => "here we go")
+    assert_equal({ :data => 'here we go' }, channel[:options])
   end
 
   def test_successful_channel_should_send_command
@@ -157,17 +148,17 @@ class CommandTest < Test::Unit::TestCase
 
   def test_on_request_should_record_exit_status
     data = mock(:read_long => 5)
-    session = setup_for_extracting_channel_action([:on_request, "exit-status"], data) do |ch|
-      ch.expects(:[]=).with(:status, 5)
-    end
+    channel = nil
+    session = setup_for_extracting_channel_action([:on_request, "exit-status"], data) { |ch| channel = ch }
     Capistrano::Command.new("ls", [session])
+    assert_equal 5, channel[:status]
   end
 
   def test_on_close_should_set_channel_closed
-    session = setup_for_extracting_channel_action(:on_close) do |ch|
-      ch.expects(:[]=).with(:closed, true)
-    end
+    channel = nil
+    session = setup_for_extracting_channel_action(:on_close) { |ch| channel = ch }
     Capistrano::Command.new("ls", [session])
+    assert channel[:closed]
   end
 
   def test_stop_should_close_all_open_channels
@@ -228,10 +219,8 @@ class CommandTest < Test::Unit::TestCase
 
   def test_process_should_instantiate_command_and_process!
     cmd = mock("command", :process! => nil)
-    Capistrano::Command.expects(:new).with("ls -l", %w(a b c), {:foo => "bar"}).yields(:command).returns(cmd)
-    parameter = nil
-    Capistrano::Command.process("ls -l", %w(a b c), :foo => "bar") { |cmd| parameter = cmd }
-    assert_equal :command, parameter
+    Capistrano::Command.expects(:new).with("ls -l", %w(a b c), {:foo => "bar"}).returns(cmd)
+    Capistrano::Command.process("ls -l", %w(a b c), :foo => "bar")
   end
 
   def test_process_with_host_placeholder_should_substitute_placeholder_with_each_host
@@ -254,16 +243,20 @@ class CommandTest < Test::Unit::TestCase
       stub('session', :open_channel => channel,
         :preprocess => true,
         :postprocess => true,
-        :listeners => {})
+        :listeners => {},
+        :xserver => server("capistrano"))
+    end
+
+    class MockChannel < Hash
+      def close
+      end
     end
 
     def new_channel(closed, status=nil)
-      ch = mock("channel")
-      ch.expects(:[]).with(:closed).returns(closed)
-      ch.expects(:[]).with(:status).returns(status) if status
+      ch = MockChannel.new
+      ch.update({ :closed => closed, :host => "capistrano", :server => server("capistrano") })
+      ch[:status] = status if status
       ch.expects(:close) unless closed
-      ch.stubs(:[]).with(:host).returns("capistrano")
-      ch.stubs(:[]).with(:server).returns(server("capistrano"))
       ch
     end
 
@@ -271,11 +264,15 @@ class CommandTest < Test::Unit::TestCase
       s = server("capistrano")
       session = mock("session", :xserver => s)
 
-      channel = stub_everything
+      channel = {}
       session.expects(:open_channel).yields(channel)
 
-      channel.stubs(:[]).with(:server).returns(s)
-      channel.stubs(:[]).with(:host).returns(s.host)
+      channel.stubs(:on_data)
+      channel.stubs(:on_extended_data)
+      channel.stubs(:on_request)
+      channel.stubs(:on_close)
+      channel.stubs(:exec)
+      channel.stubs(:send_data)
 
       if action
         action = Array(action)

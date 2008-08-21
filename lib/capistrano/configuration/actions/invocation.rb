@@ -50,7 +50,7 @@ module Capistrano
         # stdout), and the data that was received.
         def run(cmd, options={}, &block)
           block ||= self.class.default_io_proc
-          tree = Command::Tree.new(self) { |t| t.else(cmd, block) }
+          tree = Command::Tree.new(self) { |t| t.else(cmd, &block) }
           run_tree(tree, options)
         end
 
