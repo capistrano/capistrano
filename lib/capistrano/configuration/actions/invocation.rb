@@ -55,13 +55,15 @@ module Capistrano
         end
 
         def run_tree(tree, options={})
-          if tree.branches.length == 1
-            logger.debug "executing #{tree.branches.first}"
-          else
+          if tree.branches.empty? && tree.fallback
+            logger.debug "executing #{tree.fallback}"
+          elsif tree.branches.any?
             logger.debug "executing multiple commands in parallel"
             tree.each do |branch|
               logger.trace "-> #{branch}"
             end
+          else
+            raise ArgumentError, "attempt to execute without specifying a command"
           end
 
           return if dry_run || (debug && continue_execution(tree) == false)
