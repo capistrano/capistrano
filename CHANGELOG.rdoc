@@ -1,5 +1,9 @@
 == (unreleased)
 
+* Make rollbacks work with processes that need the current directory to be valid in order to restart properly (e.g. mongrel_rails) [Jamis Buck]
+
+* Rename deploy:rollback_code to deploy:rollback:code [Jamis Buck]
+
 * Added parallel() helper for executing multiple different commands in parallel [Jamis Buck]
 
 * Make sure a task only uses the last on_rollback block, once, on rollback [Jamis Buck]
