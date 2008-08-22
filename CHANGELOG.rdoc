@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Add descriptions of -n and -d to the verbose help text [Jamis Buck]
+
 * Make rollbacks work with processes that need the current directory to be valid in order to restart properly (e.g. mongrel_rails) [Jamis Buck]
 
 * Rename deploy:rollback_code to deploy:rollback:code [Jamis Buck]

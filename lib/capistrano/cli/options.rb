@@ -31,10 +31,6 @@ module Capistrano
             "Prompts before each remote command execution."
           ) { |value| options[:debug] = true }
 
-          opts.on("-n", "--dry-run",
-            "Prints out commands without running them."
-          ) { |value| options[:dry_run] = true }
-
           opts.on("-e", "--explain TASK",
             "Displays help (if available) for the task."
           ) { |value| options[:explain] = value }
@@ -56,6 +52,10 @@ module Capistrano
             puts opts
             exit
           end
+
+          opts.on("-n", "--dry-run",
+            "Prints out commands without running them."
+          ) { |value| options[:dry_run] = true }
 
           opts.on("-p", "--password",
             "Immediately prompt for the password."

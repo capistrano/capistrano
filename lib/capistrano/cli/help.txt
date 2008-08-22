@@ -10,6 +10,9 @@ The command-line interface to Capistrano is via the `cap' command.
 
 The following options are understood:
 
+  <%= color '-d, --debug', :bold %>
+	Causes Capistrano to pause and prompt before executing any remote command, giving the user the option to either execute the command, skip the command, or abort execution entirely. This makes it a great way to troubleshoot tasks, or test custom tasks, by executing commands one at a time and checking the server to make sure they worked as expected before moving on to the next command. (Compare this to the --dry-run command.)
+
   <%= color '-e, --explain TASK', :bold %>
 	Displays the extended description of the given task. Not all tasks will have an extended description, but for those that do, this can provide a wealth of additional usage information, such as describing environment variables or settings that can affect the execution of the task.
 
@@ -25,6 +28,9 @@ The following options are understood:
   <%= color '-h, --help', :bold %>
 	Shows a brief summary of these options and exits.
 
+  <%= color '-n, --dry-run', :bold %>
+	Causes Capistrano to simply display each remote command, without executing it. In this sense it is similar to --debug, but without the prompt. Note that commands executed locally are still run--only remote commands are skipped.
+  
   <%= color '-p, --password', :bold %>
 	Normally, cap will prompt for the password on-demand, the first time it is needed. This can make it hard to walk away from Capistrano, since you might not know if it will prompt for a password down the road. In such cases, you can use the -p option to force cap to prompt for the password immediately.
 
