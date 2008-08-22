@@ -99,10 +99,82 @@ class CLIOptionsTest < Test::Unit::TestCase
     assert_equal "bar", @cli.options[:pre_vars][:foo]
   end
 
+  def test_S_should_coerce_digits_to_integers
+    @cli.args << "-S" << "foo=1234"
+    @cli.parse_options!
+    assert_equal 1234, @cli.options[:pre_vars][:foo]
+  end
+
+  def test_S_should_treat_quoted_integers_as_string
+    @cli.args << "-S" << "foo=\"1234\""
+    @cli.parse_options!
+    assert_equal "1234", @cli.options[:pre_vars][:foo]
+  end
+
+  def test_S_should_treat_digits_with_dot_as_floating_point
+    @cli.args << "-S" << "foo=3.1415"
+    @cli.parse_options!
+    assert_equal 3.1415, @cli.options[:pre_vars][:foo]
+  end
+
+  def test_S_should_treat_true_as_boolean_true
+    @cli.args << "-S" << "foo=true"
+    @cli.parse_options!
+    assert_equal true, @cli.options[:pre_vars][:foo]
+  end
+
+  def test_S_should_treat_false_as_boolean_false
+    @cli.args << "-S" << "foo=false"
+    @cli.parse_options!
+    assert_equal false, @cli.options[:pre_vars][:foo]
+  end
+
+  def test_S_should_treat_nil_as_nil
+    @cli.args << "-S" << "foo=nil"
+    @cli.parse_options!
+    assert_equal nil, @cli.options[:pre_vars][:foo]
+  end
+
   def test_parse_options_with_s_should_set_vars
     @cli.args << "-s" << "foo=bar"
     @cli.parse_options!
     assert_equal "bar", @cli.options[:vars][:foo]
+  end
+
+  def test_s_should_coerce_digits_to_integers
+    @cli.args << "-s" << "foo=1234"
+    @cli.parse_options!
+    assert_equal 1234, @cli.options[:vars][:foo]
+  end
+
+  def test_s_should_treat_quoted_integers_as_string
+    @cli.args << "-s" << "foo=\"1234\""
+    @cli.parse_options!
+    assert_equal "1234", @cli.options[:vars][:foo]
+  end
+
+  def test_s_should_treat_digits_with_dot_as_floating_point
+    @cli.args << "-s" << "foo=3.1415"
+    @cli.parse_options!
+    assert_equal 3.1415, @cli.options[:vars][:foo]
+  end
+
+  def test_s_should_treat_true_as_boolean_true
+    @cli.args << "-s" << "foo=true"
+    @cli.parse_options!
+    assert_equal true, @cli.options[:vars][:foo]
+  end
+
+  def test_s_should_treat_false_as_boolean_false
+    @cli.args << "-s" << "foo=false"
+    @cli.parse_options!
+    assert_equal false, @cli.options[:vars][:foo]
+  end
+
+  def test_s_should_treat_nil_as_nil
+    @cli.args << "-s" << "foo=nil"
+    @cli.parse_options!
+    assert_equal nil, @cli.options[:vars][:foo]
   end
 
   def test_parse_options_with_T_should_set_tasks_option_and_set_verbose_off

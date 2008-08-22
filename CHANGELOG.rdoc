@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Convert arguments to -s and -S into integers, booleans, etc. based on whether the arguments appear to be those types [Jamis Buck]
+
 * Add descriptions of -n and -d to the verbose help text [Jamis Buck]
 
 * Make rollbacks work with processes that need the current directory to be valid in order to restart properly (e.g. mongrel_rails) [Jamis Buck]

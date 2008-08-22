@@ -124,6 +124,8 @@ module Capistrano
 
         option_parser.parse!(args)
 
+        coerce_variable_types!
+
         # if no verbosity has been specified, be verbose
         options[:verbose] = 3 if !options.has_key?(:verbose)
 
@@ -186,6 +188,26 @@ module Capistrano
           "/"
       end
 
+      def coerce_variable_types!
+        [:pre_vars, :vars].each do |collection|
+          options[collection].keys.each do |key|
+            options[collection][key] = coerce_variable(options[collection][key])
+          end
+        end
+      end
+
+      def coerce_variable(value)
+        case value
+        when /^"(.*)"$/ then $1
+        when /^'(.*)'$/ then $1
+        when /^\d+$/ then value.to_i
+        when /^\d+\.\d*$/ then value.to_f
+        when "true" then true
+        when "false" then false
+        when "nil" then nil
+        else value
+        end
+      end
     end
   end
 end
