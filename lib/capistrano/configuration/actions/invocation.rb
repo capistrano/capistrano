@@ -68,7 +68,7 @@ module Capistrano
 
           options = add_default_command_options(options)
 
-          tree.branches.each do |branch|
+          tree.each do |branch|
             if branch.command.include?(sudo)
               branch.callback = sudo_behavior_callback(branch.callback)
             end
