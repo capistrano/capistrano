@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Allow :gateway to be set to an array, in which case a chain of tunnels is created [Kerry Buckley]
+
 * Allow HOSTS spec to override even non-existent roles [Mike Bailey]
 
 * Sort releases via "ls -xt" instead of "ls -x" to allow for custom release names [Yan Pritzker]

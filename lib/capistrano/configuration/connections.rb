@@ -23,21 +23,27 @@ module Capistrano
 
       class GatewayConnectionFactory #:nodoc:
         def initialize(gateway, options)
-          Thread.abort_on_exception = true
-          server = ServerDefinition.new(gateway)
-
           @options = options
-          @gateway = SSH.connection_strategy(server, options) do |host, user, connect_options|
+          @options[:logger].debug "Creating gateway using #{[*gateway].join(', ')}" if @options[:logger]
+          Thread.abort_on_exception = true
+          @gateways = [*gateway].collect { |g| ServerDefinition.new(g) }
+          tunnel = SSH.connection_strategy(@gateways[0], @options) do |host, user, connect_options|
             Net::SSH::Gateway.new(host, user, connect_options)
           end
+          @gateway = (@gateways[1..-1]).inject(tunnel) do |tunnel, destination|
+            @options[:logger].debug "Creating tunnel to #{destination}" if @options[:logger]
+            local_host = ServerDefinition.new("127.0.0.1", :user => destination.user, :port => tunnel.open(destination.host, (destination.port || 22)))
+            SSH.connection_strategy(local_host, @options) do |host, user, connect_options|
+              Net::SSH::Gateway.new(host, user, connect_options)
+            end
+          end
         end
-
+        
         def connect_to(server)
           @options[:logger].debug "establishing connection to `#{server}' via gateway" if @options[:logger]
           local_host = ServerDefinition.new("127.0.0.1", :user => server.user, :port => @gateway.open(server.host, server.port || 22))
           session = SSH.connect(local_host, @options)
           session.xserver = server
-          @options[:logger].trace "connected: `#{server}' (via gateway)" if @options[:logger]
           session
         end
       end
