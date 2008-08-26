@@ -35,13 +35,14 @@ module Capistrano
       #   servers = find_servers :hosts => "jamis@example.host.com"
       def find_servers(options={})
         hosts  = server_list_from(ENV['HOSTS'] || options[:hosts])
-        roles  = role_list_from(ENV['ROLES'] || options[:roles] || self.roles.keys)
-        only   = options[:only] || {}
-        except = options[:except] || {}
-
+        
         if hosts.any?
           hosts.uniq
         else
+          roles  = role_list_from(ENV['ROLES'] || options[:roles] || self.roles.keys)
+          only   = options[:only] || {}
+          except = options[:except] || {}
+          
           servers = roles.inject([]) { |list, role| list.concat(self.roles[role]) }
           servers = servers.select { |server| only.all? { |key,value| server.options[key] == value } }
           servers = servers.reject { |server| except.any? { |key,value| server.options[key] == value } }
