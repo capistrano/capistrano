@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Sort releases via "ls -xt" instead of "ls -x" to allow for custom release names [Yan Pritzker]
+
 * Convert arguments to -s and -S into integers, booleans, etc. based on whether the arguments appear to be those types [Jamis Buck]
 
 * Add descriptions of -n and -d to the verbose help text [Jamis Buck]
