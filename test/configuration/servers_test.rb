@@ -37,6 +37,13 @@ class ConfigurationServersTest < Test::Unit::TestCase
     assert_equal %w(web1 web2).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
   end
 
+  def test_task_with_unknown_role_should_raise_exception
+    task = new_task(:testing, @config, :roles => :bogus)
+    assert_raises(ArgumentError) do
+      @config.find_servers_for_task(task)
+    end
+  end
+
   def test_task_with_hosts_option_should_apply_only_to_those_hosts
     task = new_task(:testing, @config, :hosts => %w(foo bar))
     assert_equal %w(foo bar).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
@@ -58,6 +65,14 @@ class ConfigurationServersTest < Test::Unit::TestCase
   def test_task_with_hosts_as_environment_variable_should_apply_only_to_those_hosts
     ENV['HOSTS'] = "foo,bar"
     task = new_task(:testing)
+    assert_equal %w(foo bar).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
+  ensure
+    ENV['HOSTS'] = nil
+  end
+
+  def test_task_with_hosts_as_environment_variable_should_not_inspect_roles_at_all
+    ENV['HOSTS'] = "foo,bar"
+    task = new_task(:testing, @config, :roles => :bogus)
     assert_equal %w(foo bar).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
   ensure
     ENV['HOSTS'] = nil
