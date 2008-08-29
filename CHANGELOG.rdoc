@@ -1,4 +1,4 @@
-== (unreleased)
+== 2.5.0 / August 28, 2008
 
 * Allow :gateway to be set to an array, in which case a chain of tunnels is created [Kerry Buckley]
 
