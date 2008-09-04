@@ -150,6 +150,13 @@ module Capistrano
           command || default_command
         end
 
+        # A helper method that can be used to define SCM commands naturally.
+        # It returns a single string with all arguments joined by spaces,
+        # with the scm command prefixed onto it.
+        def scm(*args)
+          [command, *args].compact.join(" ")
+        end
+
         private
 
           # A helper for accessing variable values, which takes into
@@ -172,13 +179,6 @@ module Capistrano
           # simply delegates to the class' +default_command+ method.
           def default_command
             self.class.default_command
-          end
-
-          # A helper method that can be used to define SCM commands naturally.
-          # It returns a single string with all arguments joined by spaces,
-          # with the scm command prefixed onto it.
-          def scm(*args)
-            [command, *args].compact.join(" ")
           end
 
           # A convenience method for accessing the declared repository value.
