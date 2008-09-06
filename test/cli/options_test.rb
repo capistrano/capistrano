@@ -261,7 +261,8 @@ class CLIOptionsTest < Test::Unit::TestCase
     assert_equal "world", ENV["HELLO"]
     assert_equal "value", ENV["ANOTHER"]
   ensure
-    ENV["HELLO"] = ENV["ANOTHER"] = nil
+    ENV.delete("HELLO")
+    ENV.delete("ANOTHER")
   end
 
   def test_remaining_args_should_be_added_to_actions_list
@@ -269,7 +270,7 @@ class CLIOptionsTest < Test::Unit::TestCase
     @cli.parse_options!
     assert_equal %w(something else), @cli.args
   ensure
-    ENV["HELLO"] = nil
+    ENV.delete("HELLO")
   end
 
   def test_search_for_default_recipe_file_should_look_for_Capfile

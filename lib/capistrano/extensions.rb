@@ -25,7 +25,7 @@ module Capistrano
       Capistrano::Configuration.protected_instance_methods +
       Capistrano::Configuration.private_instance_methods
 
-    if methods.include?(name.to_s)
+    if methods.any? { |m| m.to_sym == name }
       raise Capistrano::Error, "registering a plugin named `#{name}' would shadow a method on Capistrano::Configuration with the same name"
     end
 

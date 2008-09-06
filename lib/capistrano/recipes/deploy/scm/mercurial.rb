@@ -119,9 +119,9 @@ module Capistrano
         # verbosity configuration grokking :)
         def verbose
           case variable(:scm_verbose)
-            when nil:   nil
-            when false: "--quiet"
-            else        "--verbose"
+            when nil   then nil
+            when false then "--quiet"
+            else            "--verbose"
           end
         end
         

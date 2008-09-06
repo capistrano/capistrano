@@ -9,6 +9,7 @@ module Capistrano
       def initialize(configuration)
         @configuration = configuration
         @success = true
+        @hosts = nil
       end
 
       def directory(path, options={})
@@ -83,7 +84,7 @@ module Capistrano
 
       def message
         s = @message.dup
-        s << " (#{@hosts})" if @hosts && @hosts.any?
+        s << " (#{@hosts})" if @hosts
         s
       end
 

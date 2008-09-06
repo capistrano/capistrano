@@ -30,7 +30,7 @@ module Capistrano
     def log(level, message, line_prefix=nil)
       if level <= self.level
         indent = "%*s" % [MAX_LEVEL, "*" * (MAX_LEVEL - level)]
-        message.each do |line|
+        (RUBY_VERSION >= "1.9" ? message.lines : message).each do |line|
           if line_prefix
             device.puts "#{indent} [#{line_prefix}] #{line.strip}\n"
           else

@@ -59,7 +59,7 @@ class ConfigurationServersTest < Test::Unit::TestCase
     task = new_task(:testing)
     assert_equal %w(app1 app2 app3 file).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
   ensure
-    ENV['ROLES'] = nil
+    ENV.delete('ROLES')
   end
 
   def test_task_with_hosts_as_environment_variable_should_apply_only_to_those_hosts
@@ -67,7 +67,7 @@ class ConfigurationServersTest < Test::Unit::TestCase
     task = new_task(:testing)
     assert_equal %w(foo bar).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
   ensure
-    ENV['HOSTS'] = nil
+    ENV.delete('HOSTS')
   end
 
   def test_task_with_hosts_as_environment_variable_should_not_inspect_roles_at_all
@@ -75,7 +75,7 @@ class ConfigurationServersTest < Test::Unit::TestCase
     task = new_task(:testing, @config, :roles => :bogus)
     assert_equal %w(foo bar).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
   ensure
-    ENV['HOSTS'] = nil
+    ENV.delete('HOSTS')
   end
 
   def test_task_with_only_should_apply_only_to_matching_tasks

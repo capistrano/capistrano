@@ -108,9 +108,9 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
   end
 
   def test_defining_ask_should_add_task_as_method
-    assert !@config.methods.include?("original")
+    assert !@config.methods.any? { |m| m.to_sym == :original }
     @config.task(:original) { puts "foo" }
-    assert @config.methods.include?("original")
+    assert @config.methods.any? { |m| m.to_sym == :original }
   end
 
   def test_calling_defined_task_should_delegate_to_execute_task

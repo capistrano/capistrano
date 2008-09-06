@@ -23,7 +23,7 @@ class ConfigurationLoadingTest < Test::Unit::TestCase
 
   def teardown
     MockConfig.instance = nil
-    $".delete "#{File.dirname(__FILE__)}/../fixtures/custom.rb"
+    $LOADED_FEATURES.delete_if { |a| a =~ /fixtures\/custom\.rb$/ }
   end
 
   def test_initialize_should_init_collections

@@ -123,9 +123,9 @@ module Capistrano
           def cvs_revision(rev)
             revision = ""
             revision << case revision_type(rev)
-              when :date:
+              when :date
                 "-D \"#{rev}\"" if revision_type(rev) == :date
-              when :revision:
+              when :revision
                 "-r #{rev}"
               else
                 "-r #{head}"
