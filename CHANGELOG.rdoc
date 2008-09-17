@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Make sure the glob matching for copy excludes does not delete parent directories [Fabio Akita]
+
 * Ruby 1.9 compatibility [Jamis Buck]
 
 

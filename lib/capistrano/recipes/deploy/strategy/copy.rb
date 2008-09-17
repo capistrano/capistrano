@@ -80,7 +80,14 @@ module Capistrano
 
             if copy_exclude.any?
               logger.debug "processing exclusions..."
-              copy_exclude.each { |pattern| FileUtils.rm_rf(Dir.glob(File.join(destination, pattern), File::FNM_DOTMATCH)) }
+              if copy_exclude.any?
+                copy_exclude.each do |pattern| 
+                  delete_list = Dir.glob(File.join(destination, pattern), File::FNM_DOTMATCH)
+                  # avoid the /.. trap that deletes the parent directories
+                  delete_list.delete_if { |dir| dir =~ /\/\.\.$/ }
+                  FileUtils.rm_rf(delete_list.compact)
+                end
+              end
             end
           end
 
