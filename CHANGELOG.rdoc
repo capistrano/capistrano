@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Added HOSTFILTER environment variable for constraining tasks so they run only on hosts matching the given list of servers [Walter Smith]
+
 * Make sure the glob matching for copy excludes does not delete parent directories [Fabio Akita]
 
 * Ruby 1.9 compatibility [Jamis Buck]

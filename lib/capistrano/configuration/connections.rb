@@ -131,7 +131,12 @@ module Capistrano
           servers = find_servers_for_task(task, options)
 
           if servers.empty?
-            raise Capistrano::NoMatchingServersError, "`#{task.fully_qualified_name}' is only run for servers matching #{task.options.inspect}, but no servers matched"
+            if ENV['HOSTFILTER']
+              logger.info "skipping `#{task.fully_qualified_name}' because no servers matched"
+              return
+            else
+              raise Capistrano::NoMatchingServersError, "`#{task.fully_qualified_name}' is only run for servers matching #{task.options.inspect}, but no servers matched"
+            end
           end
 
           if task.continue_on_error?

@@ -78,6 +78,22 @@ class ConfigurationServersTest < Test::Unit::TestCase
     ENV.delete('HOSTS')
   end
 
+  def test_task_with_onlyhosts_environment_variable_should_apply_only_to_those_hosts
+    ENV['HOSTFILTER'] = "app1,web1"
+    task = new_task(:testing)
+    assert_equal %w(app1 web1).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
+  ensure
+    ENV.delete('HOSTFILTER')
+  end
+
+  def test_task_with_onlyhosts_environment_variable_should_filter_hosts_option
+    ENV['HOSTFILTER'] = "foo"
+    task = new_task(:testing, @config, :hosts => %w(foo bar))
+    assert_equal %w(foo).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
+  ensure
+    ENV.delete('HOSTFILTER')
+  end
+
   def test_task_with_only_should_apply_only_to_matching_tasks
     task = new_task(:testing, @config, :roles => :app, :only => { :primary => true })
     assert_equal %w(app1), @config.find_servers_for_task(task).map { |s| s.host }
