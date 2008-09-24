@@ -34,7 +34,7 @@ _cset(:revision)  { source.head }
 # =========================================================================
 
 _cset(:source)            { Capistrano::Deploy::SCM.new(scm, self) }
-_cset(:real_revision)     { source.local.query_revision(revision) { |cmd| with_env("LC_ALL", "C") { `#{cmd}` } } }
+_cset(:real_revision)     { source.local.query_revision(revision) { |cmd| with_env("LC_ALL", "C") { run_locally(cmd) } } }
 
 _cset(:strategy)          { Capistrano::Deploy::Strategy.new(deploy_via, self) }
 
@@ -88,6 +88,13 @@ def with_env(name, value)
   yield
 ensure
   ENV[name] = saved
+end
+
+# logs the command then executes it locally.
+# returns the command output as a string
+def run_locally(cmd)
+  logger.trace "executing locally: #{cmd.inspect}" if logger
+  `#{cmd}`
 end
 
 # If a command is given, this will try to execute the given command, as
