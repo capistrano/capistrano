@@ -12,7 +12,7 @@ module Capistrano
 
       def execute_requested_actions_with_help(config)
         if options[:tasks]
-          task_list(config)
+          task_list(config, options[:tasks])
         elsif options[:explain]
           explain_task(config, options[:explain])
         else
@@ -20,8 +20,12 @@ module Capistrano
         end
       end
 
-      def task_list(config) #:nodoc:
-        tasks = config.task_list(:all)
+      def task_list(config, namespace = true) #:nodoc:
+        if namespace.is_a?(String) && config.namespaces[namespace.to_sym]
+          tasks = config.namespaces[namespace.to_sym].task_list(:all)
+        else
+          tasks = config.task_list(:all)
+        end
 
         if tasks.empty?
           warn "There are no tasks available. Please specify a recipe file to load."
@@ -45,7 +49,7 @@ module Capistrano
             puts
             puts "Some tasks were not listed, either because they have no description,"
             puts "or because they are only used internally by other tasks. To see all"
-            puts "tasks, type `#{File.basename($0)} -Tv'."
+            puts "tasks, type `#{File.basename($0)} -vT'."
           end
 
           puts

@@ -1,5 +1,9 @@
 == (unreleased)
 
+* Use -T <arg> to filter listed tasks by namespace [Mathias Meyer]
+
+* Expose the #scm method on SCM::Base for building custom scm commands [Mathias Meyer]
+
 * Start logging some locally executed commands [springyweb]
 
 * Added HOSTFILTER environment variable for constraining tasks so they run only on hosts matching the given list of servers [Walter Smith]

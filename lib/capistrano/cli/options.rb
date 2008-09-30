@@ -79,10 +79,14 @@ module Capistrano
             options[:vars][name.to_sym] = value
           end
 
-          opts.on("-T", "--tasks",
+          opts.on("-T", "--tasks [NAMESPACE]",
             "List all tasks in the loaded recipe files."
-          ) do 
-            options[:tasks] = true
+          ) do |value|
+            options[:tasks] = if value
+              value
+            else
+              true
+            end
             options[:verbose] ||= 0
           end
 
