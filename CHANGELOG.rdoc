@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Start logging some locally executed commands [springyweb]
+
 * Added HOSTFILTER environment variable for constraining tasks so they run only on hosts matching the given list of servers [Walter Smith]
 
 * Make sure the glob matching for copy excludes does not delete parent directories [Fabio Akita]
