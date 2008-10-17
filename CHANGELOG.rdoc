@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Added :scm_arguments variable for custom SCM arguments (subversion-only, currently) [David Abdemoulaie]
+
 * Don't emit -p for sudo when :sudo_prompt is blank [Matthias Marschall]
 
 * Copy symlinks when using rsync [Paul Paradise]

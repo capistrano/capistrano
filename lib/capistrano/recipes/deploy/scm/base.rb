@@ -54,7 +54,7 @@ module Capistrano
         # and "local_scm_command" to be set, if the two differ.
         #
         # Alternatively, it may be called with a block, and for the duration of
-        # the block, all requests on this configuration object will be 
+        # the block, all requests on this configuration object will be
         # considered local.
         def local
           if block_given?
@@ -184,6 +184,10 @@ module Capistrano
           # A convenience method for accessing the declared repository value.
           def repository
             variable(:repository)
+          end
+
+          def arguments
+            variable(:scm_arguments)
           end
       end
 

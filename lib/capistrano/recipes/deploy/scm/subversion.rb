@@ -21,19 +21,19 @@ module Capistrano
         # Returns the command that will check out the given revision to the
         # given destination.
         def checkout(revision, destination)
-          scm :checkout, verbose, authentication, "-r#{revision}", repository, destination
+          scm :checkout, arguments, verbose, authentication, "-r#{revision}", repository, destination
         end
 
         # Returns the command that will do an "svn update" to the given
         # revision, for the working copy at the given destination.
         def sync(revision, destination)
-          scm :update, verbose, authentication, "-r#{revision}", destination
+          scm :update, arguments, verbose, authentication, "-r#{revision}", destination
         end
 
         # Returns the command that will do an "svn export" of the given revision
         # to the given destination.
         def export(revision, destination)
-          scm :export, verbose, authentication, "-r#{revision}", repository, destination
+          scm :export, arguments, verbose, authentication, "-r#{revision}", repository, destination
         end
 
         # Returns the command that will do an "svn diff" for the two revisions.
