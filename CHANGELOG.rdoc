@@ -1,7 +1,9 @@
 == (unreleased)
 
+* Don't emit -p for sudo when :sudo_prompt is blank [Matthias Marschall]
+
 * Copy symlinks when using rsync [Paul Paradise]
-*
+
 * Make sure git query-revision matches on exact branch name [grant@nightriot.com]
 
 * Use -T <arg> to filter listed tasks by namespace [Mathias Meyer]

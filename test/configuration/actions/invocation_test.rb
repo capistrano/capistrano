@@ -114,6 +114,12 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     @config.sudo "ls", :foo => "bar"
   end
 
+  def test_sudo_should_avoid_minus_p_when_sudo_prompt_is_empty
+    @config.set :sudo_prompt, ""
+    @config.expects(:run).with("sudo ls", {})
+    @config.sudo "ls"
+  end
+
   def test_sudo_should_interpret_sudo_prompt_variable_as_custom_prompt
     @config.set :sudo_prompt, "give it to me: "
     @config.expects(:run).with("sudo -p 'give it to me: ' ls", {})

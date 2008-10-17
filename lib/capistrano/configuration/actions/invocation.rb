@@ -103,7 +103,8 @@ module Capistrano
           command = parameters.first
           user = options[:as] && "-u #{options.delete(:as)}"
 
-          sudo_command = [fetch(:sudo, "sudo"), "-p '#{sudo_prompt}'", user].compact.join(" ")
+          sudo_prompt_option = "-p '#{sudo_prompt}'" unless sudo_prompt.empty?
+          sudo_command = [fetch(:sudo, "sudo"), sudo_prompt_option, user].compact.join(" ")
 
           if command
             command = sudo_command + " " + command
