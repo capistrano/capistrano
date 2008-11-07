@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Add -t (--tools) switch for better task lists for external tools [Jamis Buck]
+
 * Make the RemoteDependency#try method use invoke_command instead of run, for sudo-ability [Matthias Marschall]
 
 * Make locally executed commands in Windows more Windows-friendly [esad@esse.at]

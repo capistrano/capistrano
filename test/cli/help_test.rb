@@ -84,6 +84,7 @@ class CLIHelpTest < Test::Unit::TestCase
     config = mock("config")
     config.expects(:task_list).with(:all).times(2).returns(task_list)
 
+    @cli.stubs(:warn)
     @cli.stubs(:puts)
     @cli.task_list(config, "z")
   end

@@ -46,6 +46,9 @@ The following options are understood:
   <%= color '-T, --tasks PATTERN', :bold %>
 	Displays the list of all tasks (matching optional PATTERN) in all loaded recipe files. If a task has no description, or if the description starts with the [internal] tag, the task will not be listed unless you also specify -v.
 
+  <%= color '-t, --tool', :bold %>
+	Abbreviates the output of -T for integration with other tools. Without -t, -T will list tasks with their summaries, and may include additional instructive text at the bottom. When integrating with other tools (e.g., bash auto-expansion and the like) that additional text can get in the way. This switch makes it easier for those tools to parse the list of tasks. (The -t switch has no effect if the -T switch is not specified.)
+
   <%= color '-V, --version', :bold %>
 	Shows the current Capistrano version number and exits.
 
