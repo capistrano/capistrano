@@ -92,7 +92,7 @@ module Capistrano
 
       def try(command, options)
         return unless @success # short-circuit evaluation
-        configuration.run(command, options) do |ch,stream,out|
+        configuration.invoke_command(command, options) do |ch,stream,out|
           warn "#{ch[:server]}: #{out}" if stream == :err
           yield ch, stream, out if block_given?
         end

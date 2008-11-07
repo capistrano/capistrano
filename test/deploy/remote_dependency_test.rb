@@ -96,7 +96,7 @@ class RemoteDependencyTest < Test::Unit::TestCase
   private
 
   def setup_for_a_configuration_run(command, passing)
-    expectation = @config.expects(:run).with(command, {})
+    expectation = @config.expects(:invoke_command).with(command, {})
     if passing
       expectation.returns(true)
     else

@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Make the RemoteDependency#try method use invoke_command instead of run, for sudo-ability [Matthias Marschall]
+
 * Make locally executed commands in Windows more Windows-friendly [esad@esse.at]
 
 * Added :scm_arguments variable for custom SCM arguments (subversion-only, currently) [David Abdemoulaie]
