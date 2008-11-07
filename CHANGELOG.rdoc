@@ -10,7 +10,7 @@
 
 * Make sure git query-revision matches on exact branch name [grant@nightriot.com]
 
-* Use -T <arg> to filter listed tasks by namespace [Mathias Meyer]
+* Use -T <arg> to filter listed tasks by a pattern [Mathias Meyer, Geoffrey Grosenbach]
 
 * Expose the #scm method on SCM::Base for building custom scm commands [Mathias Meyer]
 

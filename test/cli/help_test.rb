@@ -57,47 +57,37 @@ class CLIHelpTest < Test::Unit::TestCase
     expected_max_len = 80 - 3 - MockCLI::LINE_PADDING
     task_list = [task("c"), task("g", "c:g"), task("b", "c:b"), task("a")]
     task_list.each { |t| t.expects(:brief_description).with(expected_max_len).returns(t.fully_qualified_name) }
-  
+
     config = mock("config")
     config.expects(:task_list).with(:all).returns(task_list)
     @cli.stubs(:puts)
     @cli.task_list(config)
   end
 
-  def test_task_list_should_query_tasks_in_namespace
+  def test_task_list_should_query_tasks_with_pattern
     expected_max_len = 80 - 3 - MockCLI::LINE_PADDING
     task_list = [task("g", "c:g"), task("b", "c:b")]
     task_list.each { |t| t.expects(:brief_description).with(expected_max_len).returns(t.fully_qualified_name)}
 
-    namespace = mock("namespace")
-    namespace.expects(:task_list).with(:all).returns(task_list)
-    
-    namespaces = mock("namespaces")
-    namespaces.expects(:[]).with(:c).times(2).returns(namespace)
     config = mock("config")
-    config.expects(:namespaces).times(2).returns(namespaces)
-    
+    config.expects(:task_list).with(:all).once.returns(task_list)
+
     @cli.stubs(:puts)
     @cli.task_list(config, "c")
   end
 
-  def test_task_list_should_query_for_all_tasks_when_namespace_doesnt_exist
+  def test_task_list_should_query_for_all_tasks_when_pattern_doesnt_match
     expected_max_len = 80 - 3 - MockCLI::LINE_PADDING
     task_list = [task("g", "c:g"), task("b", "c:b")]
-    task_list.each { |t| t.expects(:brief_description).with(expected_max_len).returns(t.fully_qualified_name)}
+    task_list.each { |t| t.expects(:brief_description).with(expected_max_len).returns(t.fully_qualified_name) }
 
-    namespaces = mock("namespaces")
-    namespaces.expects(:[]).with(:c).returns(nil)
-    
     config = mock("config")
-    config.expects(:namespaces).returns(namespaces)
-    
-    config.expects(:task_list).with(:all).returns(task_list)
-    
+    config.expects(:task_list).with(:all).times(2).returns(task_list)
+
     @cli.stubs(:puts)
-    @cli.task_list(config, "c")
+    @cli.task_list(config, "z")
   end
-  
+
   def test_task_list_should_never_use_less_than_MIN_MAX_LEN_chars_for_descriptions
     @ui.stubs(:output_cols).returns(20)
     t = task("c")
@@ -167,7 +157,8 @@ class CLIHelpTest < Test::Unit::TestCase
 
   private
 
-    def task(name, fqn=name, desc="a description")
-      stub("task", :name => name, :fully_qualified_name => fqn, :description => desc)
-    end
+  def task(name, fqn=name, desc="a description")
+    stub("task", :name => name, :fully_qualified_name => fqn, :description => desc)
+  end
+
 end

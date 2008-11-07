@@ -79,8 +79,8 @@ module Capistrano
             options[:vars][name.to_sym] = value
           end
 
-          opts.on("-T", "--tasks [NAMESPACE]",
-            "List all tasks in the loaded recipe files."
+          opts.on("-T", "--tasks [PATTERN]",
+            "List all tasks (matching optional PATTERN) in the loaded recipe files."
           ) do |value|
             options[:tasks] = if value
               value

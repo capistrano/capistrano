@@ -43,8 +43,8 @@ The following options are understood:
   <%= color '-s, --set NAME=VALUE', :bold %>
 	Sets the given variable to the given value, after loading all recipe files. This is useful when you want to override the value of a variable which is used in a task. Note that this will set the variables too late for them to affect conditions that are executed as the recipes are loaded.
 
-  <%= color '-T, --tasks', :bold %>
-	Displays the list of all tasks in all loaded recipe files. If a task has no description, or if the description starts with the [internal] tag, the task will not be listed unless you also specify -v.
+  <%= color '-T, --tasks PATTERN', :bold %>
+	Displays the list of all tasks (matching optional PATTERN) in all loaded recipe files. If a task has no description, or if the description starts with the [internal] tag, the task will not be listed unless you also specify -v.
 
   <%= color '-V, --version', :bold %>
 	Shows the current Capistrano version number and exits.

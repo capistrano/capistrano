@@ -20,10 +20,12 @@ module Capistrano
         end
       end
 
-      def task_list(config, namespace = true) #:nodoc:
-        if namespace.is_a?(String) && config.namespaces[namespace.to_sym]
-          tasks = config.namespaces[namespace.to_sym].task_list(:all)
-        else
+      def task_list(config, pattern = true) #:nodoc:
+        if pattern.is_a?(String)
+          tasks = config.task_list(:all).select {|t| t.fully_qualified_name =~ /#{pattern}/}
+        end
+        if tasks.nil? || tasks.length == 0
+          puts "Pattern '#{pattern}' not found. Listing all tasks.\n\n" unless pattern.is_a?(TrueClass)
           tasks = config.task_list(:all)
         end
 
