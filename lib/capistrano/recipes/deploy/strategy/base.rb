@@ -51,8 +51,8 @@ module Capistrano
             cmd = args.join(' ')
             if RUBY_PLATFORM =~ /win32/
               cmd.gsub!('/','\\') # Replace / with \\
-              cmd.gsub!(/^cd/,'cd /D') # Replace cd with cd /D
-              cmd.gsub!(/&& cd/,'&& cd /D') # Replace cd with cd /D
+              cmd.gsub!(/^cd /,'cd /D ') # Replace cd with cd /D
+              cmd.gsub!(/&& cd /,'&& cd /D ') # Replace cd with cd /D
               logger.trace "executing locally: #{cmd}"
               super(cmd)
             else
