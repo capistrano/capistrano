@@ -48,8 +48,17 @@ module Capistrano
 
           # A wrapper for Kernel#system that logs the command being executed.
           def system(*args)
-            logger.trace "executing locally: #{args.join(' ')}"
-            super
+            cmd = args.join(' ')
+            if RUBY_PLATFORM =~ /win32/
+              cmd.gsub!('/','\\') # Replace / with \\
+              cmd.gsub!(/^cd/,'cd /D') # Replace cd with cd /D
+              cmd.gsub!(/&& cd/,'&& cd /D') # Replace cd with cd /D
+              logger.trace "executing locally: #{cmd}"
+              super(cmd)
+            else
+              logger.trace "executing locally: #{cmd}"
+              super
+            end
           end
 
         private
