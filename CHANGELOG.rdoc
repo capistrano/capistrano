@@ -1,4 +1,4 @@
-== (unreleased)
+== 2.5.1 / November 7, 2008
 
 * Add -t (--tools) switch for better task lists for external tools [Jamis Buck]
 
