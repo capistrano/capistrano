@@ -1,4 +1,4 @@
-== (unreleased)
+== 2.5.2 / November 13, 2008
 
 * Fix issue with git SCM that caused "Unable to resolve revision for 'HEAD'" errors on deploy [Jamis Buck]
 
