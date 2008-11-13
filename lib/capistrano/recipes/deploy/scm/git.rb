@@ -210,7 +210,7 @@ module Capistrano
         def query_revision(revision)
           raise ArgumentError, "Deploying remote branches has been deprecated.  Specify the remote branch as a local branch for the git repository you're deploying from (ie: '#{revision.gsub('origin/', '')}' rather than '#{revision}')." if revision =~ /^origin\//
           return revision if revision =~ /^[0-9a-f]{40}$/
-          command = scm('ls-remote -h -t', repository, revision)
+          command = scm('ls-remote', repository, revision)
           result = yield(command)
           revdata = result.split(/[\t\n]/)
 	  newrev = nil

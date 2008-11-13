@@ -1,3 +1,8 @@
+== (unreleased)
+
+* Fix issue with git SCM that caused "Unable to resolve revision for 'HEAD'" errors on deploy [Jamis Buck]
+
+
 == 2.5.1 / November 7, 2008
 
 * Add -t (--tools) switch for better task lists for external tools [Jamis Buck]
