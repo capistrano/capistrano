@@ -216,7 +216,7 @@ module Capistrano
 	  newrev = nil
 	  revdata.each_slice(2) do |refs|
 	    rev, ref = *refs
-	    if ref.sub(/refs\/.*?\//, '') == revision
+	    if ref.sub(/refs\/.*?\//, '').strip == revision
 	      newrev = rev
 	      break
             end

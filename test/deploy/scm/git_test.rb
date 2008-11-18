@@ -64,6 +64,14 @@ class DeploySCMGitTest < Test::Unit::TestCase
     end
     assert_equal "d11006102c07c94e5d54dd0ee63dca825c93ed61", revision
   end
+  
+  def test_query_revision_has_whitespace
+    revision = @source.query_revision('HEAD') do |o|
+      assert_equal "git ls-remote . HEAD", o
+      "d11006102c07c94e5d54dd0ee63dca825c93ed61\tHEAD\r"
+    end
+    assert_equal "d11006102c07c94e5d54dd0ee63dca825c93ed61", revision
+  end
 
   def test_query_revision_deprecation_error
     assert_raise(ArgumentError) do
