@@ -252,7 +252,7 @@ namespace :deploy do
   DESC
   task :symlink, :except => { :no_release => true } do
     on_rollback do
-      if releases.length > 1
+      if previous_release
         run "rm -f #{current_path}; ln -s #{previous_release} #{current_path}; true"
       else
         logger.important "no previous release to rollback to, rollback of symlink skipped"
@@ -309,10 +309,10 @@ namespace :deploy do
       ever) need to be called directly.
     DESC
     task :revision, :except => { :no_release => true } do
-      if releases.length < 2
-        abort "could not rollback the code because there is no prior release"
-      else
+      if previous_release
         run "rm #{current_path}; ln -s #{previous_release} #{current_path}"
+      else
+        abort "could not rollback the code because there is no prior release"
       end
     end
 
