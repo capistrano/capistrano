@@ -1,3 +1,8 @@
+== (unreleased)
+
+* Fix issue with git SCM that caused "Unable to resolve revision" errors when there was trailing whitespace in git's output [Mark Zuneska, Daniel Berlinger and Evan Closson]
+
+
 == 2.5.2 / November 13, 2008
 
 * Fix issue with git SCM that caused "Unable to resolve revision for 'HEAD'" errors on deploy [Jamis Buck]
