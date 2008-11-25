@@ -111,7 +111,14 @@ module Capistrano
       end
 
       def output_columns #:nodoc:
-        @output_columns ||= self.class.ui.output_cols > 80 ? 80 : self.class.ui.output_cols
+        if ( @output_columns.nil? ) 
+          if ( self.class.ui.output_cols.nil? || self.class.ui.output_cols > 80 )
+            @output_columns = 80 
+          else
+            @output_columns = self.class.ui.output_cols
+          end
+        end
+        @output_columns 
       end
     end
   end
