@@ -29,7 +29,7 @@ module Capistrano
       @to        = to
       @sessions  = sessions
       @options   = options
-      @callback  = callback
+      @callback  = block
 
       @transport = options.fetch(:via, :sftp)
       @logger    = options.delete(:logger)

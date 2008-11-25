@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Fix bug in transfer.rb that caused get/put/upload/download to ignore blocks passed to them [arika]
+
 * Fix issue with git SCM that caused "Unable to resolve revision" errors when there was trailing whitespace in git's output [Mark Zuneska, Daniel Berlinger and Evan Closson]
 
 
