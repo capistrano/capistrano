@@ -251,7 +251,14 @@ namespace :deploy do
     except `restart').
   DESC
   task :symlink, :except => { :no_release => true } do
-    on_rollback { run "rm -f #{current_path}; ln -s #{previous_release} #{current_path}; true" }
+    on_rollback do
+      if releases.length > 1
+        run "rm -f #{current_path}; ln -s #{previous_release} #{current_path}; true"
+      else
+        logger.important "no previous release to rollback to, rollback of symlink skipped"
+      end
+    end
+
     run "rm -f #{current_path} && ln -s #{latest_release} #{current_path}"
   end
 
