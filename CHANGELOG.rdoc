@@ -1,5 +1,7 @@
 == (unreleased)
 
+* Make previous_release return nil if there is no previous release [Mathias Meyer]
+
 * Play nice with rubies that don't inspect terminals well (ie. JRuby) by defaulting screen columns to 80 [Bob McWhirter]
 
 * Rollback of deploy:symlink would explode if there was no previous revision to rollback to [Jamis Buck]
