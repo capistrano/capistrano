@@ -213,14 +213,14 @@ module Capistrano
           command = scm('ls-remote', repository, revision)
           result = yield(command)
           revdata = result.split(/[\t\n]/)
-	  newrev = nil
-	  revdata.each_slice(2) do |refs|
-	    rev, ref = *refs
-	    if ref.sub(/refs\/.*?\//, '').strip == revision
-	      newrev = rev
-	      break
+          newrev = nil
+          revdata.each_slice(2) do |refs|
+            rev, ref = *refs
+            if ref.sub(/refs\/.*?\//, '').strip == revision
+              newrev = rev
+              break
             end
-	  end
+          end
           raise "Unable to resolve revision for '#{revision}' on repository '#{repository}'." unless newrev =~ /^[0-9a-f]{40}$/
           return newrev
         end
