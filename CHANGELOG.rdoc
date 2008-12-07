@@ -1,4 +1,4 @@
-== (unreleased)
+== 2.5.3 / December 6, 2008
 
 * Make previous_release return nil if there is no previous release [Mathias Meyer]
 

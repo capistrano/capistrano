@@ -6,7 +6,7 @@ module Capistrano
   class Version < Net::SSH::Version
     MAJOR = 2
     MINOR = 5
-    TINY  = 2
+    TINY  = 3
 
     # The current version, as a Version instance
     CURRENT = new(MAJOR, MINOR, TINY)
