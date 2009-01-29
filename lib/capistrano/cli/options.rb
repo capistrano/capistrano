@@ -43,7 +43,7 @@ module Capistrano
             "A recipe file to load. May be given more than once."
           ) { |value| options[:recipes] << value }
 
-          opts.on("-H", "--long-help", "Explain these options.") do
+          opts.on("-H", "--long-help", "Explain these options and environment variables.") do
             long_help
             exit
           end

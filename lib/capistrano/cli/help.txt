@@ -60,3 +60,16 @@ The following options are understood:
 
   <%= color '-x, --skip-user-config', :bold %>
 	By default, cap will look for and (if it exists) load the user-specific configuration file located in $HOME/.caprc. If you don't want cap to load that file, give this option.
+
+-----------------------------
+<%= color('Environment Variables', :bold) %>
+-----------------------------
+
+  <%= color 'HOSTS', :bold %>
+	Execute the tasks against this comma-separated list of hosts.  Effectively, this makes the host(s) part of every roles.
+
+  <%= color 'HOSTFILTER', :bold %>
+	Execute tasks against this comma-separated list of host, but only if the host has the proper role for the task.
+
+  <%= color 'ROLES', :bold %>
+	Execute tasks against this comma-separated list of roles.  Hosts which do not have the right roles will be skipped.
