@@ -223,14 +223,16 @@ module Capistrano
           prompt_host = nil
 
           Proc.new do |ch, stream, out|
-            if out =~ /^#{Regexp.escape(sudo_prompt)}/
-              ch.send_data "#{self[:password]}\n"
-            elsif out =~ /^Sorry, try again/
+            if out =~ /^Sorry, try again/
               if prompt_host.nil? || prompt_host == ch[:server]
                 prompt_host = ch[:server]
                 logger.important out, "#{stream} :: #{ch[:server]}"
                 reset! :password
               end
+            end
+
+            if out =~ /^#{Regexp.escape(sudo_prompt)}/
+              ch.send_data "#{self[:password]}\n"
             elsif fallback
               fallback.call(ch, stream, out)
             end

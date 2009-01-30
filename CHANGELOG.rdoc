@@ -1,3 +1,10 @@
+== (unreleased)
+
+* Make sure sudo prompts are retried correctly even if "try again" and the prompt appear in the same text chunk from the server [Jamis Buck]
+
+* Add supported environment variables to -H output [François Beausoleil]
+
+
 == 2.5.3 / December 6, 2008
 
 * Make previous_release return nil if there is no previous release [Mathias Meyer]

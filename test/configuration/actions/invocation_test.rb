@@ -166,6 +166,20 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     callback[ch, nil, "Sorry, try again."]
   end
 
+  def test_sudo_behavior_callback_should_reset_password_and_prompt_again_if_output_includes_both_cues
+    ch = mock("channel")
+    ch.stubs(:[]).with(:host).returns("capistrano")
+    ch.stubs(:[]).with(:server).returns(server("capistrano"))
+    ch.expects(:send_data, "password!\n").times(2)
+
+    @config.set(:password, "password!")
+    @config.expects(:reset!).with(:password)
+
+    callback = @config.sudo_behavior_callback(nil)
+    callback[ch, :out, "sudo password: "]
+    callback[ch, :out, "Sorry, try again.\nsudo password: "]
+  end
+
   def test_sudo_behavior_callback_should_defer_to_fallback_for_other_output
     callback = @config.sudo_behavior_callback(inspectable_proc)
 
