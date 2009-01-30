@@ -238,6 +238,12 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     ns = @config.namespaces[:outer]
     assert ns.respond_to?(:original_initialize_called)
   end
+  
+  def test_namespace_should_accept_respond_to_with_include_priv_parameter
+    @config.namespace(:outer) {}
+    ns = @config.namespaces[:outer]
+    assert ns.respond_to?(:original_initialize_called, true)
+  end
 
   def test_namespace_should_delegate_unknown_messages_to_its_parent
     @config.namespace(:outer) {}

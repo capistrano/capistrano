@@ -177,8 +177,8 @@ module Capistrano
             raise NotImplementedError, "roles cannot be defined in a namespace"
           end
 
-          def respond_to?(sym)
-            super || parent.respond_to?(sym)
+          def respond_to?(sym, include_priv=false)
+            super || parent.respond_to?(sym, include_priv)
           end
 
           def method_missing(sym, *args, &block)

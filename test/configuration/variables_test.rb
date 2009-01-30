@@ -53,6 +53,10 @@ class ConfigurationVariablesTest < Test::Unit::TestCase
     @config[:sample] = :value
     assert @config.respond_to?(:sample)
   end
+  
+  def test_respond_to_with_include_priv_paramter
+    assert !@config.respond_to?(:sample, true)
+  end
 
   def test_set_should_require_value
     assert_raises(ArgumentError) do
