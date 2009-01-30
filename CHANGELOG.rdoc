@@ -1,6 +1,6 @@
 == (unreleased)
 
-* Allow respond_to?() method to accept optional second parameter (include_priv) [Mathias Meyer]
+* Allow respond_to?() method to accept optional second parameter (include_priv) [Matthias Marschall]
 
 * Make sure sudo prompts are retried correctly even if "try again" and the prompt appear in the same text chunk from the server [Jamis Buck]
 
