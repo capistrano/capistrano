@@ -1,5 +1,9 @@
 == (unreleased)
 
+* Bump Net::SSH dependency to version 2.0.10 [Jamis Buck]
+
+* Use 'user' from .ssh/config appropriately [Jamis Buck]
+
 * Allow respond_to?() method to accept optional second parameter (include_priv) [Matthias Marschall]
 
 * Make sure sudo prompts are retried correctly even if "try again" and the prompt appear in the same text chunk from the server [Jamis Buck]

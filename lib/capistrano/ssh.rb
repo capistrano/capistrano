@@ -1,6 +1,6 @@
 begin
   require 'rubygems'
-  gem 'net-ssh', ">= 1.99.1"
+  gem 'net-ssh', ">= 2.0.10"
 rescue LoadError, NameError
 end
 
@@ -55,12 +55,32 @@ module Capistrano
       methods = [ %w(publickey hostbased), %w(password keyboard-interactive) ]
       password_value = nil
 
-      ssh_options = (server.options[:ssh_options] || {}).merge(options[:ssh_options] || {})
-      user        = server.user || options[:user] || ssh_options[:username] || ServerDefinition.default_user
-      port        = server.port || options[:port] || ssh_options[:port]
+      # construct the hash of ssh options that should be passed more-or-less
+      # directly to Net::SSH. This will be the general ssh options, merged with
+      # the server-specific ssh-options.
+      ssh_options = (options[:ssh_options] || {}).merge(server.options[:ssh_options] || {})
+
+      # load any SSH configuration files that were specified in the SSH options. This
+      # will load from ~/.ssh/config and /etc/ssh_config by default (see Net::SSH
+      # for details). Merge the explicitly given ssh_options over the top of the info
+      # from the config file.
+      ssh_options = Net::SSH.configuration_for(server.host, ssh_options.fetch(:config, true)).merge(ssh_options)
+
+      # Once we've loaded the config, we don't need Net::SSH to do it again.
+      ssh_options[:config] = false
+
+      user = server.user || options[:user] || ssh_options[:username] ||
+             ssh_options[:user] || ServerDefinition.default_user
+      port = server.port || options[:port] || ssh_options[:port]
+
+      # the .ssh/config file might have changed the host-name on us
+      host = ssh_options.fetch(:host_name, server.host) 
 
       ssh_options[:port] = port if port
+
+      # delete these, since we've determined which username to use by this point
       ssh_options.delete(:username)
+      ssh_options.delete(:user)
 
       begin
         connection_options = ssh_options.merge(
@@ -68,7 +88,7 @@ module Capistrano
           :auth_methods => ssh_options[:auth_methods] || methods.shift
         )
 
-        yield server.host, user, connection_options
+        yield host, user, connection_options
       rescue Net::SSH::AuthenticationFailed
         raise if methods.empty? || ssh_options[:auth_methods]
         password_value = options[:password]
