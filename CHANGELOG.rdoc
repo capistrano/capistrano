@@ -1,4 +1,4 @@
-== (unreleased)
+== 2.5.4 / 4 Feb 2009
 
 * When using rsync with the remote_cache strategy include -t switch to preserve file times [Kevin McCarthy]
 
