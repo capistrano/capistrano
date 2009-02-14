@@ -45,6 +45,14 @@ module Capistrano
       def role(which, *args, &block)
         options = args.last.is_a?(Hash) ? args.pop : {}
         which = which.to_sym
+
+        # The roles Hash is defined so that unrecognized keys always auto-initialize
+        # to a new Role instance (see the assignment in the initialize_with_roles method,
+        # above). However, we explicitly assign here so that role declarations will
+        # vivify the role object even if there are no server arguments. (Otherwise,
+        # role(:app) won't actually instantiate a Role object for :app.)
+        roles[which] ||= Role.new
+
         roles[which].push(block, options) if block_given?
         args.each { |host| roles[which] << ServerDefinition.new(host, options) }
       end

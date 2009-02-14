@@ -24,6 +24,7 @@ class ConfigurationRolesTest < Test::Unit::TestCase
 
   def test_role_should_allow_empty_list
     @config.role :app
+    assert @config.roles.keys.include?(:app)
     assert @config.roles[:app].empty?
   end
 
