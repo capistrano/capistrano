@@ -51,24 +51,26 @@ module Capistrano
       # A hash of the SSH sessions that are currently open and available.
       # Because sessions are constructed lazily, this will only contain
       # connections to those servers that have been the targets of one or more
-      # executed tasks.
-      attr_reader :sessions
+      # executed tasks. Stored on a per-thread basis to improve thread-safety.
+      def sessions
+        Thread.current[:sessions] ||= {}
+      end
 
       def initialize_with_connections(*args) #:nodoc:
         initialize_without_connections(*args)
-        @sessions = {}
-        @failed_sessions = []
+        Thread.current[:sessions] = {}
+        Thread.current[:failed_sessions] = []
       end
 
       # Indicate that the given server could not be connected to.
       def failed!(server)
-        @failed_sessions << server
+        Thread.current[:failed_sessions] << server
       end
 
       # Query whether previous connection attempts to the given server have
       # failed.
       def has_failed?(server)
-        @failed_sessions.include?(server)
+        Thread.current[:failed_sessions].include?(server)
       end
 
       # Used to force connections to be made to the current task's servers.
@@ -116,9 +118,9 @@ module Capistrano
       # Destroys sessions for each server in the list.
       def teardown_connections_to(servers)
         servers.each do |server|
-           @sessions[server].close
-           @sessions.delete(server)
-         end
+          sessions[server].close
+          sessions.delete(server)
+        end
       end
 
       # Determines the set of servers within the current task's scope and
@@ -186,11 +188,13 @@ module Capistrano
         # prevents problems with the thread's scope seeing the wrong 'server'
         # variable if the thread just happens to take too long to start up.
         def establish_connection_to(server, failures=nil)
-          Thread.new { safely_establish_connection_to(server, failures) }
+          current_thread = Thread.current
+          Thread.new { safely_establish_connection_to(server, current_thread, failures) }
         end
 
-        def safely_establish_connection_to(server, failures=nil)
-          sessions[server] ||= connection_factory.connect_to(server)
+        def safely_establish_connection_to(server, thread, failures=nil)
+          thread[:sessions] ||= {}
+          thread[:sessions][server] ||= connection_factory.connect_to(server)
         rescue Exception => err
           raise unless failures
           failures << { :server => server, :error => err }

@@ -8,28 +8,36 @@ module Capistrano
         base.send :alias_method, :initialize, :initialize_with_execution
       end
 
-      # The call stack of the tasks. The currently executing task may inspect
-      # this to see who its caller was. The current task is always the last
-      # element of this stack.
-      attr_reader :task_call_frames
-
-      # The stack of tasks that have registered rollback handlers within the
-      # current transaction. If this is nil, then there is no transaction
-      # that is currently active.
-      attr_reader :rollback_requests
-
       # A struct for representing a single instance of an invoked task.
       TaskCallFrame = Struct.new(:task, :rollback)
 
       def initialize_with_execution(*args) #:nodoc:
         initialize_without_execution(*args)
-        @task_call_frames = []
       end
       private :initialize_with_execution
 
       # Returns true if there is a transaction currently active.
       def transaction?
         !rollback_requests.nil?
+      end
+
+      # The call stack of the tasks. The currently executing task may inspect
+      # this to see who its caller was. The current task is always the last
+      # element of this stack.
+      def task_call_frames
+        Thread.current[:task_call_frames] ||= []
+      end
+      
+      
+      # The stack of tasks that have registered rollback handlers within the
+      # current transaction. If this is nil, then there is no transaction
+      # that is currently active.
+      def rollback_requests
+        Thread.current[:rollback_requests]
+      end
+
+      def rollback_requests=(rollback_requests)
+        Thread.current[:rollback_requests] = rollback_requests
       end
 
       # Invoke a set of tasks in a transaction. If any task fails (raises an
@@ -44,14 +52,14 @@ module Capistrano
 
         logger.info "transaction: start"
         begin
-          @rollback_requests = []
+          self.rollback_requests = []
           yield
           logger.info "transaction: commit"
         rescue Object => e
           rollback!
           raise
         ensure
-          @rollback_requests = nil
+          self.rollback_requests = nil if Thread.main == Thread.current
         end
       end
 
@@ -99,6 +107,9 @@ module Capistrano
     protected
 
       def rollback!
+        return if Thread.current[:rollback_requests].nil?
+        Thread.current[:rolled_back] = true
+   
         # throw the task back on the stack so that roles are properly
         # interpreted in the scope of the task in question.
         rollback_requests.reverse.each do |frame|
