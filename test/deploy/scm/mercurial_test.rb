@@ -17,6 +17,11 @@ class DeploySCMMercurialTest < Test::Unit::TestCase
     assert_equal "tip", @source.head
   end
 
+  def test_different_head
+    @config[:branch] = "staging"
+    assert_equal "staging", @source.head
+  end
+
   def test_checkout
     @config[:repository] = "http://example.com/project-hg"
     dest = "/var/www"

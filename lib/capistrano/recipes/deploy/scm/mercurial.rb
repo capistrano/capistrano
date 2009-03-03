@@ -18,7 +18,7 @@ module Capistrano
         # For mercurial HEAD == tip except that it bases this assumption on what
         # tip is in the current repository (so push before you deploy)
         def head
-          "tip"
+          configuration[:branch] || "tip"
         end
 
         # Clone the repository and update to the specified changeset.
