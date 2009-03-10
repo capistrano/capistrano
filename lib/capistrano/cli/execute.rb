@@ -21,7 +21,7 @@ module Capistrano
       #
       # Returns the Configuration instance used, if successful.
       def execute!
-        config = instantiate_configuration
+        config = instantiate_configuration(options)
         config.debug = options[:debug]
         config.dry_run = options[:dry_run]
         config.logger.level = options[:verbose]
@@ -66,8 +66,8 @@ module Capistrano
 
       # Primarily useful for testing, but subclasses of CLI could conceivably
       # override this method to return a Configuration subclass or replacement.
-      def instantiate_configuration #:nodoc:
-        Capistrano::Configuration.new
+      def instantiate_configuration(options={}) #:nodoc:
+        Capistrano::Configuration.new(options)
       end
 
       def handle_error(error) #:nodoc:

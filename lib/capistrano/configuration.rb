@@ -21,10 +21,10 @@ module Capistrano
     # The logger instance defined for this configuration.
     attr_accessor :debug, :logger, :dry_run
 
-    def initialize #:nodoc:
+    def initialize(options={}) #:nodoc:
       @debug = false
       @dry_run = false
-      @logger = Logger.new
+      @logger = Logger.new(options)
     end
 
     # make the DSL easier to read when using lazy evaluation via lambdas
