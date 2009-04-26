@@ -2,3 +2,4 @@ coverage
 doc
 pkg
 *.swp
+*.patch
