@@ -154,6 +154,15 @@ namespace :deploy do
     # restart
   end
 
+  [:start, :stop, :restart].each do |deprecated_task|
+    desc "#{deprecated_task.to_s} is deprecated. Please see "
+    task deprecated_task do
+
+    end
+  end
+    
+    
+    
   desc <<-DESC
     Prepares one or more servers for deployment. Before you can use any \
     of the Capistrano deployment tasks with your project, you will need to \

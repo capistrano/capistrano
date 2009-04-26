@@ -5,6 +5,23 @@ Capistrano is a utility and framework for executing commands in parallel on mult
 Capistrano was originally designed to simplify and automate deployment of web applications to distributed environments, and originally came bundled with a set of tasks designed for deploying Rails applications. The deployment tasks are now (as of Capistrano 2.0) opt-in and require clients to explicitly put
 "load 'deploy'" in their recipes.
 
+As of 2.5.6 the default deploy.rb nolonger makes assumptions about your choice of platform. Deploys are versioned, but the expectation that you are using Mongrel with the Rails framework has expired.
+
+Since 2.5.6 you must include one, or more of the following if you require the Rails code, and you may include only the ones you require.
+
+* capistrano-rails
+  * capistrano-rails/mongrel
+  * capistrano-rails/mod_rails
+  * capistrano-rails/nginx
+
+* capistrano-alt/apache
+
+Each of the capistrano-rails libraries includes a start, stop and restart task appropriate for each environment.
+
+Where applicable they also include web:disable and web:enable tasks.
+
+The capistrano-atl/apache file contains generic apache restart methods, and will attempt to call `sudo apachectl {{re,}start,stop}`. This can be configured through the :apachectl variable.
+
 == DEPENDENCIES
 
 * Net::SSH v2 (http://net-ssh.rubyforge.org)
