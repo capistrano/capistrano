@@ -98,6 +98,10 @@ class DeploySCMGitTest < Test::Unit::TestCase
     git = "/opt/local/bin/git"
     @config[:scm_command] = git
     assert_equal "cd #{dest} && #{git} fetch -q origin && #{git} reset -q --hard #{rev}", @source.sync(rev, dest)
+
+    # with submodules
+    @config[:git_enable_submodules] = true
+    assert_equal "cd #{dest} && #{git} fetch -q origin && #{git} reset -q --hard #{rev} && #{git} submodule -q init && for mod in `#{git} submodule status | awk '{ print $2 }'`; do #{git} config -f .git/config submodule.${mod}.url `#{git} config -f .gitmodules --get submodule.${mod}.url` && echo Synced $mod; done && #{git} submodule -q sync && #{git} submodule -q update", @source.sync(rev, dest)
   end
 
   def test_sync_with_remote
