@@ -12,6 +12,7 @@ if ENV['SNAPSHOT'].to_i == 1
 end
 
 Echoe.new('capistrano', version) do |p|
+  p.include_gemspec = true
   p.changelog        = "CHANGELOG.rdoc"
 
   p.author           = "Jamis Buck"
