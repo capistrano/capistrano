@@ -37,6 +37,10 @@ class DeploySCMGitTest < Test::Unit::TestCase
     git = "/opt/local/bin/git"
     @config[:scm_command] = git
     assert_equal "#{git} clone -q git@somehost.com:project.git /var/www && cd /var/www && #{git} checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
+
+    # with submodules
+    @config[:git_enable_submodules] = true
+    assert_equal "#{git} clone -q git@somehost.com:project.git /var/www && cd /var/www && #{git} checkout -q -b deploy #{rev} && #{git} submodule -q init && #{git} submodule -q sync && #{git} submodule -q update", @source.checkout(rev, dest)
   end
 
   def test_checkout_with_verbose_should_not_use_q_switch
@@ -122,6 +126,15 @@ class DeploySCMGitTest < Test::Unit::TestCase
     dest = "/var/www"
     rev = 'c2d9e79'
     assert_equal "git clone -q -o username git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
+  end
+
+  def test_remote_clone_with_submodules
+    @config[:repository] = "git@somehost.com:project.git"
+    @config[:remote] = "username"
+    @config[:git_enable_submodules] = true
+    dest = "/var/www"
+    rev = 'c2d9e79'
+    assert_equal "git clone -q -o username git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev} && git submodule -q init && git submodule -q sync && git submodule -q update", @source.checkout(rev, dest)
   end
 
   # Tests from base_test.rb, makin' sure we didn't break anything up there!

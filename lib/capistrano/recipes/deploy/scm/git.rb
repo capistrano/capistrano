@@ -151,6 +151,7 @@ module Capistrano
           
           if configuration[:git_enable_submodules]
             execute << "#{git} submodule #{verbose} init"
+            execute << "#{git} submodule #{verbose} sync"
             execute << "#{git} submodule #{verbose} update"
           end
 
@@ -188,6 +189,7 @@ module Capistrano
 
           if configuration[:git_enable_submodules]
             execute << "#{git} submodule #{verbose} init"
+            execute << "#{git} submodule sync"
             execute << "#{git} submodule #{verbose} update"
           end
 
