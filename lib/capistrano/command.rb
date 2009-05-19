@@ -209,7 +209,7 @@ module Capistrano
                     shell = nil
                   else
                     shell = "#{options[:shell] || "sh"} -c"
-                    cmd = cmd.gsub(/[$\\`"]/) { |m| "\\#{m}" }
+                    cmd = cmd.gsub(/[$\\"]/) { |m| "\\#{m}" }
                     cmd = "\"#{cmd}\""
                   end
 
