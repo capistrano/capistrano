@@ -58,6 +58,11 @@ module Capistrano
           yield(command)[/Change (\d+) on/, 1]
         end
 
+        # Increments the given revision number and returns it.
+        def next_revision(revision)
+          revision.to_i + 1
+        end
+
         # Determines what the response should be for a particular bit of text
         # from the SCM. Password prompts, connection requests, passphrases,
         # etc. are handled here.
