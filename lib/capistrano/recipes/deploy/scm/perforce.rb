@@ -49,7 +49,7 @@ module Capistrano
 
         # Returns a "p4 changes" command for the two revisions.
         def log(from=1, to=head)
-          scm authentication, :changes, "-s submitted", "//#{p4client}/...#{rev_no(from)},#(rev_no(to)}"
+          scm authentication, :changes, "-s submitted", "//#{p4client}/...#{rev_no(from)},#{rev_no(to)}"
         end
 
         def query_revision(revision)
