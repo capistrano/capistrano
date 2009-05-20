@@ -14,6 +14,6 @@ namespace :deploy do
   
 end
 
-after('deploy:update', 'deploy:restart')
-after('deploy:rollback', 'deploy:restart')
+after('deploy:update',     'deploy:restart')
+after('deploy:rollback',   'deploy:restart')
 after('deploy:migrations', 'deploy:restart')
