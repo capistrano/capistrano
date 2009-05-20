@@ -4,7 +4,7 @@
 * Improved back-tick handling code in relation to the above.
 * Removes rails-assumptions, more info see .......
 * Fixes a Git issue when submodules update upstream. [sneakin]
-
+* Ensures that the deploy_to directory is chowned :user/:user during deploy:setup
 
 == 2.5.5 / 24 Feb 2009
 
