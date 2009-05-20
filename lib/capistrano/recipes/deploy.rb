@@ -296,21 +296,6 @@ namespace :deploy do
     files.each { |file| top.upload(file, File.join(current_path, file)) }
   end
 
-  # desc <<-DESC
-  #   Restarts your application. This works by calling the script/process/reaper \
-  #   script under the current path.
-  #   
-  #   By default, this will be invoked via sudo as the `app' user. If \
-  #   you wish to run it as a different user, set the :runner variable to \
-  #   that user. If you are in an environment where you can't use sudo, set \
-  #   the :use_sudo variable to false:
-  #   
-  #     set :use_sudo, false
-  # DESC
-  # task :restart, :roles => :app, :except => { :no_release => true } do
-  #   try_runner "#{current_path}/script/process/reaper"
-  # end
-
   namespace :rollback do
     desc <<-DESC
       [internal] Points the current symlink at the previous revision.
@@ -337,8 +322,7 @@ namespace :deploy do
     desc <<-DESC
       Rolls back to the previously deployed version. The `current' symlink will \
       be updated to point at the previously deployed version, and then the \
-      current release will be removed from the servers. You'll generally want \
-      to call `rollback' instead, as it performs a `restart' as well.
+      current release will be removed from the servers.
     DESC
     task :code, :except => { :no_release => true } do
       revision
@@ -352,55 +336,9 @@ namespace :deploy do
     DESC
     task :default do
       revision
-      restart
       cleanup
     end
   end
-
-  # desc <<-DESC
-  #   Run the migrate rake task. By default, it runs this in most recently \
-  #   deployed version of the app. However, you can specify a different release \
-  #   via the migrate_target variable, which must be one of :latest (for the \
-  #   default behavior), or :current (for the release indicated by the \
-  #   `current' symlink). Strings will work for those values instead of symbols, \
-  #   too. You can also specify additional environment variables to pass to rake \
-  #   via the migrate_env variable. Finally, you can specify the full path to the \
-  #   rake executable by setting the rake variable. The defaults are:
-  # 
-  #     set :rake,           "rake"
-  #     set :rails_env,      "production"
-  #     set :migrate_env,    ""
-  #     set :migrate_target, :latest
-  # DESC
-  # task :migrate, :roles => :db, :only => { :primary => true } do
-  #   rake = fetch(:rake, "rake")
-  #   rails_env = fetch(:rails_env, "production")
-  #   migrate_env = fetch(:migrate_env, "")
-  #   migrate_target = fetch(:migrate_target, :latest)
-  # 
-  #   directory = case migrate_target.to_sym
-  #     when :current then current_path
-  #     when :latest  then current_release
-  #     else raise ArgumentError, "unknown migration target #{migrate_target.inspect}"
-  #     end
-  # 
-  #   run "cd #{directory}; #{rake} RAILS_ENV=#{rails_env} #{migrate_env} db:migrate"
-  # end
-
-  # desc <<-DESC
-  #   Deploy and run pending migrations. This will work similarly to the \
-  #   `deploy' task, but will also run any pending migrations (via the \
-  #   `deploy:migrate' task) prior to updating the symlink. Note that the \
-  #   update in this case it is not atomic, and transactions are not used, \
-  #   because migrations are not guaranteed to be reversible.
-  # DESC
-  # task :migrations do
-  #   set :migrate_target, :latest
-  #   update_code
-  #   migrate
-  #   symlink
-  #   restart
-  # end
 
   desc <<-DESC
     Clean up old releases. By default, the last 5 releases are kept on each \
@@ -471,41 +409,7 @@ namespace :deploy do
   DESC
   task :cold do
     update
-    # migrate
-    start
   end
-
-  # desc <<-DESC
-  #   Start the application servers. This will attempt to invoke a script \
-  #   in your application called `script/spin', which must know how to start \
-  #   your application listeners. For Rails applications, you might just have \
-  #   that script invoke `script/process/spawner' with the appropriate \
-  #   arguments.
-  # 
-  #   By default, the script will be executed via sudo as the `app' user. If \
-  #   you wish to run it as a different user, set the :runner variable to \
-  #   that user. If you are in an environment where you can't use sudo, set \
-  #   the :use_sudo variable to false.
-  # DESC
-  # task :start, :roles => :app do
-  #   run "cd #{current_path} && #{try_runner} nohup script/spin"
-  # end
-  # 
-  # desc <<-DESC
-  #   Stop the application servers. This will call script/process/reaper for \
-  #   both the spawner process, and all of the application processes it has \
-  #   spawned. As such, it is fairly Rails specific and may need to be \
-  #   overridden for other systems.
-  # 
-  #   By default, the script will be executed via sudo as the `app' user. If \
-  #   you wish to run it as a different user, set the :runner variable to \
-  #   that user. If you are in an environment where you can't use sudo, set \
-  #   the :use_sudo variable to false.
-  # DESC
-  # task :stop, :roles => :app do
-  #   run "if [ -f #{current_path}/tmp/pids/dispatch.spawner.pid ]; then #{try_runner} #{current_path}/script/process/reaper -a kill -r dispatch.spawner.pid; fi"
-  #   try_runner "#{current_path}/script/process/reaper -a kill"
-  # end
 
   namespace :pending do
     desc <<-DESC
@@ -528,44 +432,4 @@ namespace :deploy do
     end
   end
 
-  namespace :web do
-    desc <<-DESC
-      Present a maintenance page to visitors. Disables your application's web \
-      interface by writing a "maintenance.html" file to each web server. The \
-      servers must be configured to detect the presence of this file, and if \
-      it is present, always display it instead of performing the request.
-
-      By default, the maintenance page will just say the site is down for \
-      "maintenance", and will be back "shortly", but you can customize the \
-      page by specifying the REASON and UNTIL environment variables:
-
-        $ cap deploy:web:disable \\
-              REASON="hardware upgrade" \\
-              UNTIL="12pm Central Time"
-
-      Further customization will require that you write your own task.
-    DESC
-    task :disable, :roles => :web, :except => { :no_release => true } do
-      require 'erb'
-      on_rollback { run "rm #{shared_path}/system/maintenance.html" }
-
-      reason = ENV['REASON']
-      deadline = ENV['UNTIL']
-
-      template = File.read(File.join(File.dirname(__FILE__), "templates", "maintenance.rhtml"))
-      result = ERB.new(template).result(binding)
-
-      put result, "#{shared_path}/system/maintenance.html", :mode => 0644
-    end
-
-    desc <<-DESC
-      Makes the application web-accessible again. Removes the \
-      "maintenance.html" page generated by deploy:web:disable, which (if your \
-      web servers are configured correctly) will make your application \
-      web-accessible again.
-    DESC
-    task :enable, :roles => :web, :except => { :no_release => true } do
-      run "rm #{shared_path}/system/maintenance.html"
-    end
-  end
 end
