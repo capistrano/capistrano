@@ -1,12 +1,10 @@
-# -*- encoding: utf-8 -*-
-
 Gem::Specification.new do |s|
   s.name = %q{capistrano}
-  s.version = "2.5.5"
+  s.version = "2.5.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jamis Buck"]
-  s.date = %q{2009-05-13}
+  s.date = %q{2009-02-24}
   s.description = %q{Capistrano is a utility and framework for executing commands in parallel on multiple remote machines, via SSH.}
   s.email = %q{jamis@jamisbuck.org}
   s.executables = ["cap", "capify"]
@@ -17,7 +15,7 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Capistrano", "--main", "README.rdoc"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{capistrano}
-  s.rubygems_version = %q{1.3.1}
+  s.rubygems_version = %q{1.2.0}
   s.summary = %q{Capistrano is a utility and framework for executing commands in parallel on multiple remote machines, via SSH.}
   s.test_files = ["test/cli/execute_test.rb", "test/cli/help_test.rb", "test/cli/options_test.rb", "test/cli/ui_test.rb", "test/cli_test.rb", "test/command_test.rb", "test/configuration/actions/file_transfer_test.rb", "test/configuration/actions/inspect_test.rb", "test/configuration/actions/invocation_test.rb", "test/configuration/callbacks_test.rb", "test/configuration/connections_test.rb", "test/configuration/execution_test.rb", "test/configuration/loading_test.rb", "test/configuration/namespace_dsl_test.rb", "test/configuration/roles_test.rb", "test/configuration/servers_test.rb", "test/configuration/variables_test.rb", "test/configuration_test.rb", "test/deploy/local_dependency_test.rb", "test/deploy/remote_dependency_test.rb", "test/deploy/scm/accurev_test.rb", "test/deploy/scm/base_test.rb", "test/deploy/scm/git_test.rb", "test/deploy/scm/mercurial_test.rb", "test/deploy/scm/none_test.rb", "test/deploy/strategy/copy_test.rb", "test/extensions_test.rb", "test/logger_test.rb", "test/role_test.rb", "test/server_definition_test.rb", "test/shell_test.rb", "test/ssh_test.rb", "test/task_definition_test.rb", "test/transfer_test.rb"]
 
@@ -25,18 +23,20 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 2
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if current_version >= 3 then
       s.add_runtime_dependency(%q<net-ssh>, [">= 2.0.10"])
       s.add_runtime_dependency(%q<net-sftp>, [">= 2.0.0"])
       s.add_runtime_dependency(%q<net-scp>, [">= 1.0.0"])
       s.add_runtime_dependency(%q<net-ssh-gateway>, [">= 1.0.0"])
       s.add_runtime_dependency(%q<highline>, [">= 0"])
+      s.add_development_dependency(%q<echoe>, [">= 0"])
     else
       s.add_dependency(%q<net-ssh>, [">= 2.0.10"])
       s.add_dependency(%q<net-sftp>, [">= 2.0.0"])
       s.add_dependency(%q<net-scp>, [">= 1.0.0"])
       s.add_dependency(%q<net-ssh-gateway>, [">= 1.0.0"])
       s.add_dependency(%q<highline>, [">= 0"])
+      s.add_dependency(%q<echoe>, [">= 0"])
     end
   else
     s.add_dependency(%q<net-ssh>, [">= 2.0.10"])
@@ -44,5 +44,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<net-scp>, [">= 1.0.0"])
     s.add_dependency(%q<net-ssh-gateway>, [">= 1.0.0"])
     s.add_dependency(%q<highline>, [">= 0"])
+    s.add_dependency(%q<echoe>, [">= 0"])
   end
 end
