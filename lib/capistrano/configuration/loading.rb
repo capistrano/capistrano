@@ -176,6 +176,7 @@ module Capistrano
           load_paths.each do |path|
             ["", ".rb"].each do |ext|
               name = File.join(path, "#{file}#{ext}")
+              debugger
               return name if File.file?(name)
             end
           end
