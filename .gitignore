@@ -3,3 +3,4 @@ doc
 pkg
 *.swp
 *.patch
+*.gem
