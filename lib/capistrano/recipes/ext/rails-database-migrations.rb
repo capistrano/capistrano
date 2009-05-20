@@ -1,4 +1,4 @@
-namespace :delpoy do
+namespace :deploy do
 
   desc <<-DESC
     Run the migrate rake task. By default, it runs this in most recently \
