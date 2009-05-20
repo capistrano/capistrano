@@ -209,8 +209,8 @@ module Capistrano
                     shell = nil
                   else
                     shell = "#{options[:shell] || "sh"} -c"
-                    cmd = cmd.gsub(/[$\\"]/) { |m| "\\#{m}" }
-                    cmd = "\"#{cmd}\""
+                    cmd = cmd.gsub(/'/) { |m| "'\\''" }
+                    cmd = "'#{cmd}'"
                   end
 
                   command_line = [environment, shell, cmd].compact.join(" ")

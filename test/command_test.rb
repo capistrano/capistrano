@@ -20,7 +20,7 @@ class CommandTest < Test::Unit::TestCase
 
   def test_command_with_pty_should_request_pty_and_register_success_callback
     session = setup_for_extracting_channel_action(:request_pty, true) do |ch|
-      ch.expects(:exec).with(%(sh -c "ls"))
+      ch.expects(:exec).with(%(sh -c 'ls'))
     end
     Capistrano::Command.new("ls", [session], :pty => true)
   end
@@ -28,35 +28,35 @@ class CommandTest < Test::Unit::TestCase
   def test_command_with_env_key_should_have_environment_constructed_and_prepended
     session = setup_for_extracting_channel_action do |ch|
       ch.expects(:request_pty).never
-      ch.expects(:exec).with(%(env FOO=bar sh -c "ls"))
+      ch.expects(:exec).with(%(env FOO=bar sh -c 'ls'))
     end
     Capistrano::Command.new("ls", [session], :env => { "FOO" => "bar" })
   end
 
   def test_env_with_symbolic_key_should_be_accepted_as_a_string
     session = setup_for_extracting_channel_action do |ch|
-      ch.expects(:exec).with(%(env FOO=bar sh -c "ls"))
+      ch.expects(:exec).with(%(env FOO=bar sh -c 'ls'))
     end
     Capistrano::Command.new("ls", [session], :env => { :FOO => "bar" })
   end
 
   def test_env_as_string_should_be_substituted_in_directly
     session = setup_for_extracting_channel_action do |ch|
-      ch.expects(:exec).with(%(env HOWDY=there sh -c "ls"))
+      ch.expects(:exec).with(%(env HOWDY=there sh -c 'ls'))
     end
     Capistrano::Command.new("ls", [session], :env => "HOWDY=there")
   end
 
   def test_env_with_symbolic_value_should_be_accepted_as_string
     session = setup_for_extracting_channel_action do |ch|
-      ch.expects(:exec).with(%(env FOO=bar sh -c "ls"))
+      ch.expects(:exec).with(%(env FOO=bar sh -c 'ls'))
     end
     Capistrano::Command.new("ls", [session], :env => { "FOO" => :bar })
   end
 
   def test_env_value_should_be_escaped
     session = setup_for_extracting_channel_action do |ch|
-      ch.expects(:exec).with(%(env FOO=(\\ \\\"bar\\\"\\ ) sh -c "ls"))
+      ch.expects(:exec).with(%(env FOO=(\\ \\\"bar\\\"\\ ) sh -c 'ls'))
     end
     Capistrano::Command.new("ls", [session], :env => { "FOO" => '( "bar" )' })
   end
@@ -68,7 +68,7 @@ class CommandTest < Test::Unit::TestCase
         command =~ /\ba=b\b/ &&
         command =~ /\bc=d\b/ &&
         command =~ /\be=f\b/ &&
-        command =~ / sh -c "ls"$/
+        command =~ / sh -c 'ls'$/
       end
     end
     Capistrano::Command.new("ls", [session], :env => { :a => :b, :c => :d, :e => :f })
@@ -90,14 +90,14 @@ class CommandTest < Test::Unit::TestCase
 
   def test_successful_channel_should_send_command
     session = setup_for_extracting_channel_action do |ch|
-      ch.expects(:exec).with(%(sh -c "ls"))
+      ch.expects(:exec).with(%(sh -c 'ls'))
     end
     Capistrano::Command.new("ls", [session])
   end
 
   def test_successful_channel_with_shell_option_should_send_command_via_specified_shell
     session = setup_for_extracting_channel_action do |ch|
-      ch.expects(:exec).with(%(/bin/bash -c "ls"))
+      ch.expects(:exec).with(%(/bin/bash -c 'ls'))
     end
     Capistrano::Command.new("ls", [session], :shell => "/bin/bash")
   end
@@ -111,7 +111,7 @@ class CommandTest < Test::Unit::TestCase
 
   def test_successful_channel_should_send_data_if_data_key_is_present
     session = setup_for_extracting_channel_action do |ch|
-      ch.expects(:exec).with(%(sh -c "ls"))
+      ch.expects(:exec).with(%(sh -c 'ls'))
       ch.expects(:send_data).with("here we go")
     end
     Capistrano::Command.new("ls", [session], :data => "here we go")
@@ -225,14 +225,14 @@ class CommandTest < Test::Unit::TestCase
 
   def test_process_with_host_placeholder_should_substitute_placeholder_with_each_host
     session = setup_for_extracting_channel_action do |ch|
-      ch.expects(:exec).with(%(sh -c "echo capistrano"))
+      ch.expects(:exec).with(%(sh -c 'echo capistrano'))
     end
     Capistrano::Command.new("echo $CAPISTRANO:HOST$", [session])
   end
 
   def test_process_with_unknown_placeholder_should_not_replace_placeholder
     session = setup_for_extracting_channel_action do |ch|
-      ch.expects(:exec).with(%(sh -c "echo \\$CAPISTRANO:OTHER\\$"))
+      ch.expects(:exec).with(%(sh -c 'echo $CAPISTRANO:OTHER$'))
     end
     Capistrano::Command.new("echo $CAPISTRANO:OTHER$", [session])
   end
