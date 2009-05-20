@@ -4,3 +4,4 @@ pkg
 *.swp
 *.patch
 *.gem
+*.sh
