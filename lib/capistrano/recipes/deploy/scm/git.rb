@@ -194,6 +194,10 @@ module Capistrano
             execute << "#{git} submodule #{verbose} update"
           end
 
+          # Make sure there's nothing else lying around in the repository (for
+          # example, a submodule that has subsequently been removed).
+          execute << "#{git} clean #{verbose} -d -x -f"
+
           execute.join(" && ")
         end
 

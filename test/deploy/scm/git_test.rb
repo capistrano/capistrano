@@ -92,16 +92,16 @@ class DeploySCMGitTest < Test::Unit::TestCase
   def test_sync
     dest = "/var/www"
     rev = 'c2d9e79'
-    assert_equal "cd #{dest} && git fetch -q origin && git reset -q --hard #{rev}", @source.sync(rev, dest)
+    assert_equal "cd #{dest} && git fetch -q origin && git reset -q --hard #{rev} && git clean -q -d -x -f", @source.sync(rev, dest)
 
     # With :scm_command
     git = "/opt/local/bin/git"
     @config[:scm_command] = git
-    assert_equal "cd #{dest} && #{git} fetch -q origin && #{git} reset -q --hard #{rev}", @source.sync(rev, dest)
+    assert_equal "cd #{dest} && #{git} fetch -q origin && #{git} reset -q --hard #{rev} && #{git} clean -q -d -x -f", @source.sync(rev, dest)
 
     # with submodules
     @config[:git_enable_submodules] = true
-    assert_equal "cd #{dest} && #{git} fetch -q origin && #{git} reset -q --hard #{rev} && #{git} submodule -q init && for mod in `#{git} submodule status | awk '{ print $2 }'`; do #{git} config -f .git/config submodule.${mod}.url `#{git} config -f .gitmodules --get submodule.${mod}.url` && echo Synced $mod; done && #{git} submodule -q sync && #{git} submodule -q update", @source.sync(rev, dest)
+    assert_equal "cd #{dest} && #{git} fetch -q origin && #{git} reset -q --hard #{rev} && #{git} submodule -q init && for mod in `#{git} submodule status | awk '{ print $2 }'`; do #{git} config -f .git/config submodule.${mod}.url `#{git} config -f .gitmodules --get submodule.${mod}.url` && echo Synced $mod; done && #{git} submodule -q sync && #{git} submodule -q update && #{git} clean -q -d -x -f", @source.sync(rev, dest)
   end
 
   def test_sync_with_remote
@@ -113,7 +113,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
     @config[:repository] = repository
     @config[:remote] = remote
 
-    assert_equal "cd #{dest} && git config remote.#{remote}.url #{repository} && git config remote.#{remote}.fetch +refs/heads/*:refs/remotes/#{remote}/* && git fetch -q #{remote} && git reset -q --hard #{rev}", @source.sync(rev, dest)
+    assert_equal "cd #{dest} && git config remote.#{remote}.url #{repository} && git config remote.#{remote}.fetch +refs/heads/*:refs/remotes/#{remote}/* && git fetch -q #{remote} && git reset -q --hard #{rev} && git clean -q -d -x -f", @source.sync(rev, dest)
   end
 
   def test_shallow_clone
