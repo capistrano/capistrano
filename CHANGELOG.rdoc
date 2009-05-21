@@ -1,5 +1,6 @@
 == 2.5.6 / 25 May 2009
 
+* Clean the cached git repository [Graeme Mathieson]
 * Fixes perforce issues reported at http://bit.ly/wt0es [Scott Johnson]
 * Improved back-tick handling code in relation to the above.
 * Removes rails-assumptions, more info see .......
