@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name = %q{capistrano}
+  s.name = %q{capistrano-edge}
   s.version = "2.5.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://www.capify.org}
   s.rdoc_options = ["--line-numbers", "--inline-source", "--title", "Capistrano", "--main", "README.rdoc"]
   s.require_paths = ["lib"]
-  s.rubyforge_project = %q{capistrano}
+  s.rubyforge_project = %q{capistrano-edge}
   s.rubygems_version = %q{1.2.0}
   s.summary = %q{Capistrano is a utility and framework for executing commands in parallel on multiple remote machines, via SSH.}
   s.test_files = ["test/cli/execute_test.rb", "test/cli/help_test.rb", "test/cli/options_test.rb", "test/cli/ui_test.rb", "test/cli_test.rb", "test/command_test.rb", "test/configuration/actions/file_transfer_test.rb", "test/configuration/actions/inspect_test.rb", "test/configuration/actions/invocation_test.rb", "test/configuration/callbacks_test.rb", "test/configuration/connections_test.rb", "test/configuration/execution_test.rb", "test/configuration/loading_test.rb", "test/configuration/namespace_dsl_test.rb", "test/configuration/roles_test.rb", "test/configuration/servers_test.rb", "test/configuration/variables_test.rb", "test/configuration_test.rb", "test/deploy/local_dependency_test.rb", "test/deploy/remote_dependency_test.rb", "test/deploy/scm/accurev_test.rb", "test/deploy/scm/base_test.rb", "test/deploy/scm/git_test.rb", "test/deploy/scm/mercurial_test.rb", "test/deploy/scm/none_test.rb", "test/deploy/strategy/copy_test.rb", "test/extensions_test.rb", "test/logger_test.rb", "test/role_test.rb", "test/server_definition_test.rb", "test/shell_test.rb", "test/ssh_test.rb", "test/task_definition_test.rb", "test/transfer_test.rb"]
