@@ -20,6 +20,24 @@ As a result failure to read this document thoroughly could lead to problems, if 
 
 Please open issues on the bug tracer at http://capistrano.lighthouseapp.com/ if you experience problems
 
+== Documentation
+
+We know that documentation is something that really lets us down, that's why there is a repository for a handbook below, please open an issue on it if you would like something documented:
+
+* http://github.com/leehambley/capistrano-handbook
+
+If you prefer the wiki style of documentation, then please see our wiki
+
+* http://wiki.capify.org
+
+Due to a failure of MySQL with PHP, searches shorter than three characters are all but ignored, we're going to rectify this, but in the meantime, please do what you can, tickets opened on the handbook for the wiki will be answered too, so please let us know if you don't find something you needed.
+
+We take bug reports via lighthouse app, you can find that page here:
+
+* http://capistrano.lighthouseapp.com
+
+More documentation is on the way, if in doubt try opening the recipes that ship with capistrano.
+
 == DEPENDENCIES
 
 * Net::SSH v2 (http://net-ssh.rubyforge.org)
