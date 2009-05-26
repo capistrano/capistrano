@@ -24,6 +24,7 @@ module Capistrano
       # line switches for Capistrano, and what their corresponding behaviors
       # are.
       def option_parser #:nodoc:
+        @logger = Logger.new
         @option_parser ||= OptionParser.new do |opts|
           opts.banner = "Usage: #{File.basename($0)} [options] action ..."
 
@@ -167,6 +168,7 @@ module Capistrano
           %w(Capfile capfile).each do |file|
             if File.file?(file)
               options[:recipes] << file
+              @logger.info "Using recipes from #{File.join(current,file)}"
               return
             end
           end

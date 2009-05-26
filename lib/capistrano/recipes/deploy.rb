@@ -42,7 +42,6 @@ _cset(:release_name)      { set :deploy_timestamped, true; Time.now.utc.strftime
 
 _cset :version_dir,       "releases"
 _cset :shared_dir,        "shared"
-_cset :shared_children,   %w(system log pids)
 _cset :current_dir,       "current"
 
 _cset(:releases_path)     { File.join(deploy_to, version_dir) }

@@ -1,0 +1,1 @@
+_cset :shared_children,   %w(system log pids)

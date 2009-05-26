@@ -1,7 +1,6 @@
 Gem::Specification.new do |s|
   s.name = %q{capistrano}
   s.version = "2.5.6"
-
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jamis Buck", "Lee Hambley"]
   s.date = %q{2009-02-24}
