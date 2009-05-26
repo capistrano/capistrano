@@ -40,6 +40,19 @@ Use the +cap+ script as follows:
 
 By default, the script will look for a file called one of +capfile+ or +Capfile+. The +someaction+ text indicates which task to execute. You can do "cap -h" to see all the available options and "cap -T" to see all the available tasks.
 
+== Capistrano Edge
+
+If you want to try Capistrano code that hasn't been formerly released yet, this repository now includes a gemspec that should build what you need, here's how to get a copy:
+
+    git clone git://github.com/capistrano/capistrano.git capistrano-capistrano
+    cd capistrano-capsitrano
+    gem build capistrano.gemspec
+    sudo gem install capistrano-*.gem
+
+This will install the most recent version of capistrano and make it available for both cap, and capify.
+
+We recommend that you capify a new test application, as the resulting files are different to previous versions.
+
 == LICENSE:
 
 (The MIT License)
