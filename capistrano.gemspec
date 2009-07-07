@@ -3,7 +3,7 @@ Gem::Specification.new do |s|
   s.version = "2.5.8"
   s.required_rubygems_version = Gem::Requirement.new(">= 1.2") if s.respond_to? :required_rubygems_version=
   s.authors = ["Jamis Buck", "Lee Hambley"]
-  s.date = %q{2009-02-24}
+  s.date = %q{2009-07-07}
   s.description = %q{Capistrano is a utility and framework for executing commands in parallel on multiple remote machines, via SSH.}
   s.email = %q{lee.hambley@gmail.com}
   s.executables = ["cap", "capify"]
