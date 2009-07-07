@@ -1,13 +1,14 @@
-== 2.5.6 / May 2009
+== 2.5.8 / July 2009
 
+* Fixes a problem in 2.5.7 where deploy:finalize_update had been badly merged.
+
+== 2.5.6 & 2.5.7 / July 2009
+
+* 2.5.7 masks a broken 2.5.6 release that was accidentally mirrored via Rubyforge.
 * Clean the cached git repository [Graeme Mathieson]
-
 * Fixes perforce issues reported at http://bit.ly/wt0es [Scott Johnson]
-
 * Improved back-tick handling code in relation to the above.
-
 * Fixes a Git issue when submodules update upstream. (via mailing list) [sneakin]
-
 * Capify now creates the config directory in directories without one.
 
 == 2.5.5 / 24 Feb 2009
