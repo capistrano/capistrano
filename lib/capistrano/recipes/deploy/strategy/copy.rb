@@ -182,10 +182,13 @@ module Capistrano
           
           # The compression method to use, defaults to :gzip.
           def compression
+            remote_tar = configuration[:copy_remote_tar] || 'tar'
+            local_tar = configuration[:copy_local_tar] || 'tar'
+            
             type = configuration[:copy_compression] || :gzip
             case type
-            when :gzip, :gz   then Compression.new("tar.gz",  %w(tar czf), %w(tar xzf))
-            when :bzip2, :bz2 then Compression.new("tar.bz2", %w(tar cjf), %w(tar xjf))
+            when :gzip, :gz   then Compression.new("tar.gz",  [local_tar, 'czf'], [remote_tar, 'xzf'])
+            when :bzip2, :bz2 then Compression.new("tar.bz2", [local_tar, 'cjf'], [remote_tar, 'xjf'])
             when :zip         then Compression.new("zip",     %w(zip -qr), %w(unzip -q))
             else raise ArgumentError, "invalid compression type #{type.inspect}"
             end

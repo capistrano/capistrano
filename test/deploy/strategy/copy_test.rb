@@ -14,6 +14,50 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @config.stubs(:source).returns(@source)
     @strategy = Capistrano::Deploy::Strategy::Copy.new(@config)
   end
+  
+  def test_deploy_with_defaults_should_use_remote_gtar
+    @config[:copy_remote_tar] = 'gtar'
+    
+    Dir.expects(:tmpdir).returns("/temp/dir")
+    @source.expects(:checkout).with("154", "/temp/dir/1234567890").returns(:local_checkout)
+    @strategy.expects(:system).with(:local_checkout)
+
+    Dir.expects(:chdir).with("/temp/dir").yields
+    @strategy.expects(:system).with("tar czf 1234567890.tar.gz 1234567890")
+    @strategy.expects(:upload).with("/temp/dir/1234567890.tar.gz", "/tmp/1234567890.tar.gz")
+    @strategy.expects(:run).with("cd /u/apps/test/releases && gtar xzf /tmp/1234567890.tar.gz && rm /tmp/1234567890.tar.gz")
+
+    mock_file = mock("file")
+    mock_file.expects(:puts).with("154")
+    File.expects(:open).with("/temp/dir/1234567890/REVISION", "w").yields(mock_file)
+
+    FileUtils.expects(:rm).with("/temp/dir/1234567890.tar.gz")
+    FileUtils.expects(:rm_rf).with("/temp/dir/1234567890")
+    
+    @strategy.deploy!
+  end
+  
+  def test_deploy_with_defaults_should_use_local_gtar
+    @config[:copy_local_tar] = 'gtar'
+    
+    Dir.expects(:tmpdir).returns("/temp/dir")
+    @source.expects(:checkout).with("154", "/temp/dir/1234567890").returns(:local_checkout)
+    @strategy.expects(:system).with(:local_checkout)
+
+    Dir.expects(:chdir).with("/temp/dir").yields
+    @strategy.expects(:system).with("gtar czf 1234567890.tar.gz 1234567890")
+    @strategy.expects(:upload).with("/temp/dir/1234567890.tar.gz", "/tmp/1234567890.tar.gz")
+    @strategy.expects(:run).with("cd /u/apps/test/releases && tar xzf /tmp/1234567890.tar.gz && rm /tmp/1234567890.tar.gz")
+
+    mock_file = mock("file")
+    mock_file.expects(:puts).with("154")
+    File.expects(:open).with("/temp/dir/1234567890/REVISION", "w").yields(mock_file)
+
+    FileUtils.expects(:rm).with("/temp/dir/1234567890.tar.gz")
+    FileUtils.expects(:rm_rf).with("/temp/dir/1234567890")
+    
+    @strategy.deploy!
+  end  
 
   def test_deploy_with_defaults_should_use_tar_gz_and_checkout
     Dir.expects(:tmpdir).returns("/temp/dir")
