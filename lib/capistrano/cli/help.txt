@@ -28,6 +28,9 @@ The following options are understood:
   <%= color '-h, --help', :bold %>
 	Shows a brief summary of these options and exits.
 
+  <%= color '-l, --logger [STDERR|STDOUT|file]', :bold %>
+	Change the file used to print the output. It offers three options: standard error(stderr), standard output and file. Options are not case sensitive. By default Capistrano uses stderr.
+
   <%= color '-n, --dry-run', :bold %>
 	Causes Capistrano to simply display each remote command, without executing it. In this sense it is similar to --debug, but without the prompt. Note that commands executed locally are still run--only remote commands are skipped.
   
