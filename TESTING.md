@@ -3,7 +3,7 @@ Testing Capistrano
 
  1. Install the Following Gem Dependencies
  
-    `# gem install mocha echo`
+    `# gem install mocha echoe`
 
  2. Run the following
     
