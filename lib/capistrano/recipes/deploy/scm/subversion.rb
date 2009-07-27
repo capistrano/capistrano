@@ -56,7 +56,7 @@ module Capistrano
           result = yield(command)
           yaml = YAML.load(result)
           raise "tried to run `#{command}' and got unexpected result #{result.inspect}" unless Hash === yaml
-          yaml['Last Changed Rev'] || yaml['Revision']
+          [ (yaml['Last Changed Rev'] || 0).to_i, (yaml['Revision'] || 0).to_i ].max
         end
 
         # Increments the given revision number and returns it.
