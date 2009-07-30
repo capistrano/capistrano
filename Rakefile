@@ -15,8 +15,8 @@ Echoe.new('capistrano', version) do |p|
   p.include_gemspec = true
   p.changelog        = "CHANGELOG.rdoc"
 
-  p.author           = "Jamis Buck"
-  p.email            = "jamis@jamisbuck.org"
+  p.author           = ["Jamis Buck", "Lee Hambley"]
+  p.email            = ["jamis@jamisbuck.org", "lee.hambley@gmail.com"]
 
   p.summary = <<-DESC.strip.gsub(/\n\s+/, " ")
     Capistrano is a utility and framework for executing commands in parallel
