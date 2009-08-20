@@ -13,8 +13,10 @@ module Capistrano
       # The options hash may include a :hosts option (which should specify
       # an array of host names or ServerDefinition instances), a :roles
       # option (specifying an array of roles), an :only option (specifying
-      # a hash of key/value pairs that any matching server must match), and
-      # an :exception option (like :only, but the inverse).
+      # a hash of key/value pairs that any matching server must match), 
+      # an :exception option (like :only, but the inverse), and a 
+      # :skip_hostfilter option to ignore the HOSTFILTER environment variable
+      # described below.
       #
       # Additionally, if the HOSTS environment variable is set, it will take
       # precedence over any other options. Similarly, the ROLES environment
@@ -40,7 +42,11 @@ module Capistrano
         hosts  = server_list_from(ENV['HOSTS'] || options[:hosts])
         
         if hosts.any?
-          filter_server_list(hosts.uniq)
+          if options[:skip_hostfilter]
+            hosts.uniq
+          else
+            filter_server_list(hosts.uniq)
+          end
         else
           roles  = role_list_from(ENV['ROLES'] || options[:roles] || self.roles.keys)
           only   = options[:only] || {}
@@ -49,7 +55,12 @@ module Capistrano
           servers = roles.inject([]) { |list, role| list.concat(self.roles[role]) }
           servers = servers.select { |server| only.all? { |key,value| server.options[key] == value } }
           servers = servers.reject { |server| except.any? { |key,value| server.options[key] == value } }
-          filter_server_list(servers.uniq)
+
+          if options[:skip_hostfilter]
+            servers.uniq
+          else
+            filter_server_list(servers.uniq)
+          end
         end
       end
 
