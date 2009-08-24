@@ -1,8 +1,8 @@
 == 2.5.9 / 1 August 2009
 
-* Includes more logger options (can now select stdout, stderr of a file) [Rafael Garciá]
+* Includes more logger options (can now select stdout, stderr of a file) [Rafael García]
 
-* Improved web:disable task, now suggests a .htaccess block to use suggested by Rafael Garciá
+* Improved web:disable task, now suggests a .htaccess block to use suggested by Rafael García
 
 * Adds support for customizing which `tar` command to use. [Jeremy Wells]
 
