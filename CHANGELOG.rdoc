@@ -1,12 +1,20 @@
 == 2.5.9 / 1 August 2009
 
-* Includes more logger options (can now select stdout, stderr of a file) [Rafael García]
 
-* Improved web:disable task, now suggests a .htaccess block to use suggested by Rafael García
 
 * Adds support for customizing which `tar` command to use. [Jeremy Wells]
 
 * Fixes a couple of documentation problems, typos and worse. [Lee Hambley]
+
+  * Using non-master branch fails with Ruby 1.9 [Suraj Kurapati] #103
+  
+  
+  * #96  - Tweak for 1.9 Compatibility
+  * #79  - Capistrano hangs on shell command for many computers
+  * #77  - Copy command doesn't work on Solaris due to tar/gtar
+  * #76  - Invalid Subversion URL
+  * Improved web:disable task, now suggests a .htaccess block to use suggested by Rafael García
+  * Includes more logger options (can now select stdout, stderr of a file) [Rafael García] 
 
 == 2.5.8 / July 2009
 
