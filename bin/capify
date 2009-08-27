@@ -66,8 +66,6 @@ files.each do |file, content|
     warn "[skip] `#{file.downcase}' exists, which could conflict with `#{file}'"
   elsif !File.exists?(File.dirname(file))
     FileUtils.mkdir(File.dirname(file))
-    retry
-    warn "[skip] directory `#{File.dirname(file)}' did not exist, created."
   else
     puts "[add] writing `#{file}'"
     File.open(file, "w") { |f| f.write(content) }
