@@ -291,6 +291,10 @@ namespace :deploy do
     Restarts your application. This works by calling the script/process/reaper \
     script under the current path.
     
+    If you are deploying a Rails 2.3.x application, you will need to install 
+    these http://github.com/rails/irs_process_scripts (more info about why
+    on that page.)
+    
     By default, this will be invoked via sudo as the `app' user. If \
     you wish to run it as a different user, set the :runner variable to \
     that user. If you are in an environment where you can't use sudo, set \
