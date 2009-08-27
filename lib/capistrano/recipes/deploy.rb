@@ -303,6 +303,7 @@ namespace :deploy do
       set :use_sudo, false
   DESC
   task :restart, :roles => :app, :except => { :no_release => true } do
+    warn "[DEPRECATED] `deploy:restart` is going to be changed to Passenger mod_rails' method after 2.5.9 - see http://is.gd/2BPeA"
     try_runner "#{current_path}/script/process/reaper"
   end
 
@@ -483,6 +484,7 @@ namespace :deploy do
     the :use_sudo variable to false.
   DESC
   task :start, :roles => :app do
+    warn "[DEPRECATED] `deploy:start` is going to be removed after 2.5.9 - see http://is.gd/2BPeA"
     run "cd #{current_path} && #{try_runner} nohup script/spin"
   end
 
@@ -498,6 +500,7 @@ namespace :deploy do
     the :use_sudo variable to false.
   DESC
   task :stop, :roles => :app do
+    warn "[DEPRECATED] `deploy:start` is going to be removed after 2.5.9 - see http://is.gd/2BPeA"
     run "if [ -f #{current_path}/tmp/pids/dispatch.spawner.pid ]; then #{try_runner} #{current_path}/script/process/reaper -a kill -r dispatch.spawner.pid; fi"
     try_runner "#{current_path}/script/process/reaper -a kill"
   end
