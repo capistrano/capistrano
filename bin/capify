@@ -36,51 +36,51 @@ def unindent(string)
 end
 
 files = {
-
   "Capfile" => unindent(<<-FILE),
     load 'deploy' if respond_to?(:namespace) # cap2 differentiator
     Dir['vendor/plugins/*/recipes/*.rb'].each { |plugin| load(plugin) }
-    load 'config/deploy'
+
+    load 'config/deploy' # remove this line to skip loading any of the default tasks
   FILE
 
-  "config/deploy.rb" => unindent(<<-FILE),
-set :application, "set your application name here"
-set :repository,  "set your repository location here"
+  "config/deploy.rb" => unindent('
+    set :application, "set your application name here"
+    set :repository,  "set your repository location here"
 
-set :scm, :subversion
-# Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
+    set :scm, :subversion
+    # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
-role :web, "your web-server here"                     # Your HTTP server, Apache/etc
-role :app, "your app-server here"                     # This may be the same as your `Web` server
-role :db,  "your primary db-server here", :primary => true    # This is where Rails migrations will run
-role :db,  "your slave db-server here"
+    role :web, "your web-server here"                     # Your HTTP server, Apache/etc
+    role :app, "your app-server here"                     # This may be the same as your `Web` server
+    role :db,  "your primary db-server here", :primary => true    # This is where Rails migrations will run
+    role :db,  "your slave db-server here"
 
-# If you are using Passenger mod_rails uncomment this:
-# if you're still using the script/reapear helper you will need
-# these http://github.com/rails/irs_process_scripts
+    # If you are using Passenger mod_rails uncomment this:
+    # if you\'re still using the script/reapear helper you will need
+    # these http://github.com/rails/irs_process_scripts
 
-# namespace :deploy do
-#   task :start {}
-#   task :stop {}
-#   task :restart, :roles => :app, :except => { :no_release => true } do
-#     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-#   end
-# end
-
-FILE
-}
+    # namespace :deploy do
+    #   task :start {}
+    #   task :stop {}
+    #   task :restart, :roles => :app, :except => { :no_release => true } do
+    #     run "#{try_sudo} touch #{File.join(current_path,\'tmp\',\'restart.txt\')}"
+    #   end
+    # end
+')}
 
 base = ARGV.shift
 files.each do |file, content|
   file = File.join(base, file)
   if File.exists?(file)
-    warn "[skip] `#{file}' already exists"
+    warn "[skip] '#{file}' already exists"
   elsif File.exists?(file.downcase)
-    warn "[skip] `#{file.downcase}' exists, which could conflict with `#{file}'"
-  elsif !File.exists?(File.dirname(file))
-    FileUtils.mkdir(File.dirname(file))
+    warn "[skip] '#{file.downcase}' exists, which could conflict with `#{file}'"
   else
-    puts "[add] writing `#{file}'"
+    unless File.exists?(File.dirname(file))
+      puts "[add] making directory '#{File.dirname(file)}'"
+      FileUtils.mkdir(File.dirname(file))
+    end
+    puts "[add] writing '#{file}'"
     File.open(file, "w") { |f| f.write(content) }
   end
 end
