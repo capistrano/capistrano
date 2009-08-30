@@ -6,9 +6,8 @@
 
 * Fixes a couple of documentation problems, typos and worse. [Lee Hambley]
 
-  * Using non-master branch fails with Ruby 1.9 [Suraj Kurapati] #103
-  
-  
+  * #105 - Add skip_hostfilter option to find_servers() [Eric]
+  * #103 - Using non-master branch fails with Ruby 1.9 [Suraj Kurapati]
   * #96  - Tweak for 1.9 Compatibility
   * #79  - Capistrano hangs on shell command for many computers
   * #77  - Copy command doesn't work on Solaris due to tar/gtar
