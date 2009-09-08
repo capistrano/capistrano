@@ -94,7 +94,16 @@ end
 # returns the command output as a string
 def run_locally(cmd)
   logger.trace "executing locally: #{cmd.inspect}" if logger
+  command_present?(cmd)
   `#{cmd}`
+end
+
+# tests if the given command is present on the local system
+def command_present?(cmd)
+  executable = cmd.to_s.split(" ").first
+  unless system("which #{executable}")
+    logger.important "executable '#{executable}' not present or not in $PATH on the local system!"
+  end
 end
 
 # If a command is given, this will try to execute the given command, as
