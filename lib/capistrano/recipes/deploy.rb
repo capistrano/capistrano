@@ -1,4 +1,5 @@
 require 'yaml'
+require 'mkmf'
 require 'capistrano/recipes/deploy/scm'
 require 'capistrano/recipes/deploy/strategy'
 
@@ -101,7 +102,7 @@ end
 # tests if the given command is present on the local system
 def command_present?(cmd)
   executable = cmd.to_s.split(" ").first
-  unless system("which #{executable}")
+  unless find_executable(executable)
     logger.important "executable '#{executable}' not present or not in $PATH on the local system!"
   end
 end
