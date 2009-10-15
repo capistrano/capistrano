@@ -1,7 +1,5 @@
 == 2.5.9 / 1 August 2009
 
-
-
 * Adds support for customizing which `tar` command to use. [Jeremy Wells]
 
 * Fixes a couple of documentation problems, typos and worse. [Lee Hambley]
