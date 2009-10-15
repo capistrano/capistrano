@@ -116,7 +116,9 @@ module Capistrano
         # * :max_hosts - specifies the maximum number of hosts that should be selected
         #   at a time. If this value is less than the number of hosts that are selected
         #   to run, then the hosts will be run in groups of max_hosts. The default is nil,
-        #   which indicates that there is no maximum host limit.
+        #   which indicates that there is no maximum host limit. Please note this does not
+        #   limit the number of SSH channels that can be open, only the number of hosts upon
+        #   which this will be called. 
         # * :shell - says which shell should be used to invoke commands. This
         #   defaults to "sh". Setting this to false causes Capistrano to invoke
         #   the commands directly, without wrapping them in a shell invocation.
