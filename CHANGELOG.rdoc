@@ -1,3 +1,9 @@
+== 2.5.10 / 25 October 2009
+
+* Fixes Darcs remote repository problem when using the copy strategy [Alex `regularfry` Young]
+* Allows the specification of :copy_via for use by the copy strategy [Emily `duien` Price]
+* Documentation improvements for embedding Capistrano [Lee Hambley]
+
 == 2.5.9 / 1 August 2009
 
 * Adds support for customizing which `tar` command to use. [Jeremy Wells]
