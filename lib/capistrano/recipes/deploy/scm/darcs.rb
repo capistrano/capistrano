@@ -18,22 +18,11 @@ module Capistrano
           :head
         end
 
-        def to_match(revision)
-          if revision.nil? || revision == self.head
-            nil
-          else
-            "--to-match='hash #{revision}'"
-          end
-        end
-        
         # Returns the command that will check out the given revision to the
         # given destination. The 'revision' parameter must be the 'hash' value
         # for the revision in question, as given by 'darcs changes --xml-output'.
         def checkout(revision, destination)
-          scm :get, *[verbose, 
-                      "--repo-name=#{destination}", 
-                      to_match(revision),
-                      repository].compact
+          scm :get, verbose, "--repo-name=#{destination}", "--to-match='hash #{revision}'", repository
         end
 
         # Tries to update the destination repository in-place, to bring it up

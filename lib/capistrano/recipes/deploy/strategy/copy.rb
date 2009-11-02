@@ -38,10 +38,6 @@ module Capistrano
       # :copy_compression, which must be one of :gzip, :bz2, or
       # :zip, and which specifies how the source should be compressed for
       # transmission to each host.
-      # 
-      # It also supports the variable :copy_via, which must be one of :sftp or
-      # :scp, and which specifies the method used to transfer the compressed
-      # code to the remote server. It defaults to :sftp.
       class Copy < Base
         # Obtains a copy of the source code locally (via the #command method),
         # compresses it to a single file, copies that file to all target
@@ -100,8 +96,7 @@ module Capistrano
           logger.trace "compressing #{destination} to #{filename}"
           Dir.chdir(tmpdir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
 
-          upload(filename, remote_filename, {:via => configuration[:copy_via]})
-          # FIXED Allow specifying transfer mode
+          upload(filename, remote_filename)
           run "cd #{configuration[:releases_path]} && #{decompress(remote_filename).join(" ")} && rm #{remote_filename}"
         ensure
           FileUtils.rm filename rescue nil
