@@ -1,5 +1,6 @@
 begin
   require 'rubygems'
+  require 'redgreen'
   gem     'mocha'
 rescue LoadError
 end
