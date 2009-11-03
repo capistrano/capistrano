@@ -17,12 +17,11 @@ module Capistrano
     # different set of parameters (such as when embedded cap in a program):
     #
     #   require 'capistrano/cli'
-    #   Capistrano::CLI.parse(%w(-vvvv -r config/deploy update_code)).execute!
+    #   Capistrano::CLI.parse(%W(-vvvv -f config/deploy update_code)).execute!
     #
     # Note that you can also embed cap directly by creating a new Configuration
-    # instance and setting it up, but you'll often wind up duplicating logic
-    # defined in the CLI class. The above snippet, redone using the Configuration
-    # class directly, would look like:
+    # instance and setting it up, The above snippet, redone using the 
+    # Configuration class directly, would look like:
     #
     #   require 'capistrano'
     #   require 'capistrano/cli'
@@ -43,5 +42,6 @@ module Capistrano
     # Mix-in the actual behavior
     include Execute, Options, UI
     include Help # needs to be included last, because it overrides some methods
+
   end
 end
