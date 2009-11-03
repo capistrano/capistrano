@@ -1,6 +1,6 @@
 begin
   require 'rubygems'
-  require 'redgreen'
+  require 'redgreen' unless ENV['TM_FILENAME']
   gem     'mocha'
 rescue LoadError
 end

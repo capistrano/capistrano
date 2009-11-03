@@ -1,6 +1,9 @@
 require "utils"
 require 'capistrano/task_definition'
 
+# Silences the wanrnings raised in the two deprecation tests
+$VERBOSE = nil
+
 class TaskDefinitionTest < Test::Unit::TestCase
   def setup
     @namespace = namespace
@@ -20,6 +23,18 @@ class TaskDefinitionTest < Test::Unit::TestCase
   def test_fqn_at_top_level_when_default_should_be_default
     task = new_task(:default)
     assert_equal "default", task.fully_qualified_name
+  end
+
+  def test_deprecation_warning_on_method_name_beginning_with_before_underscore
+    name = "before_test"
+    Kernel.expects(:warn).with("[Deprecation Warning] Naming tasks with before_ and after_ is deprecated, please see the new before() and after() methods. (Offending task name was #{name})")
+    new_task(name)
+  end
+
+  def test_deprecation_warning_on_method_name_beginning_with_after_underscore
+    name = "after_test"
+    Kernel.expects(:warn).with("[Deprecation Warning] Naming tasks with before_ and after_ is deprecated, please see the new before() and after() methods. (Offending task name was #{name})")
+    new_task(name)
   end
 
   def test_fqn_in_namespace_when_default_should_be_namespace_fqn

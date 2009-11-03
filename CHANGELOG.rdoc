@@ -2,6 +2,7 @@
 
 * Fixes Darcs remote repository problem when using the copy strategy [Alex `regularfry` Young]
 * Documentation improvements for embedding Capistrano [Lee Hambley]
+* Fixes ticket #95 -formally deprecating the before_something and after_something methods [Lee Hambley] 
 
 == 2.5.9 / 1 August 2009
 
