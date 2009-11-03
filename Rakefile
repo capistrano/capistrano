@@ -1,35 +1,33 @@
 require "./lib/capistrano/version"
 
 begin
-  require 'echoe'
+  require 'jeweler'
+  Jeweler::Tasks.new do |gem|
+    gem.version
+    gem.name            = "capistrano"
+    gem.summary         = %Q{Capistrano – Welcome to easy deployment with Ruby over SSH}
+    gem.description     = %Q{Capistrano is a utility and framework for executing commands in parallel on multiple remote machines, via SSH.}
+    gem.homepage        = "http://github.com/capistrano/capistrano"
+    gem.email           = [ "jamis@jamisbuck.org", "lee.hambley@gmail.com" ]
+    gem.authors         = [ "Jamis Buck", "Lee Hambley" ]
+    gem.add_dependency  "net-ssh",          ">=2.0.14"
+    gem.add_dependency  "net-sftp",         ">=2.0.0"
+    gem.add_dependency  "net-scp",          ">=1.0.0"
+    gem.add_dependency  "net-ssh-gateway",  ">=1.0.0"
+    gem.add_dependency  "highline"
+    gem.add_development_dependency "mocha", ">= 0"
+  end
 rescue LoadError
-  abort "You'll need to have `echoe' installed to use Capistrano's Rakefile"
+  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
 
-version = Capistrano::Version::STRING.dup
-if ENV['SNAPSHOT'].to_i == 1
-  version << "." << Time.now.utc.strftime("%Y%m%d%H%M%S")
+require 'rake/testtask'
+Rake::TestTask.new(:test) do |test|
+  test.libs << 'lib' << 'test'
+  test.pattern = 'test/**/*_test.rb'
+  test.verbose = true
 end
 
-Echoe.new('capistrano', version) do |p|
-  p.include_gemspec = true
-  p.changelog        = "CHANGELOG.rdoc"
+task :test => :check_dependencies
+task :default => :test
 
-  p.author           = ["Jamis Buck", "Lee Hambley"]
-  p.email            = ["jamis@jamisbuck.org", "lee.hambley@gmail.com"]
-
-  p.summary = <<-DESC.strip.gsub(/\n\s+/, " ")
-    Capistrano is a utility and framework for executing commands in parallel
-    on multiple remote machines, via SSH.
-  DESC
-
-  p.url              = "http://www.capify.org"
-  p.need_zip         = true
-  p.rdoc_pattern     = /^(lib|README.rdoc|CHANGELOG.rdoc)/
-
-  p.dependencies     = ["net-ssh         >=2.0.14",
-                        "net-sftp        >=2.0.0",
-                        "net-scp         >=1.0.0",
-                        "net-ssh-gateway >=1.0.0",
-                        "highline"]
-end
