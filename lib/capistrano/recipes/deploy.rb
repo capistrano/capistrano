@@ -102,7 +102,7 @@ end
 # tests if the given command is present on the local system
 def command_present?(cmd)
   executable = cmd.to_s.split(" ").first
-  unless find_executable(executable)
+  unless find_executable0(executable)
     logger.important "executable '#{executable}' not present or not in $PATH on the local system!"
   end
 end
