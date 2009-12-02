@@ -1,5 +1,4 @@
 require 'yaml'
-require 'mkmf'
 require 'capistrano/recipes/deploy/scm'
 require 'capistrano/recipes/deploy/strategy'
 
@@ -95,16 +94,7 @@ end
 # returns the command output as a string
 def run_locally(cmd)
   logger.trace "executing locally: #{cmd.inspect}" if logger
-  command_present?(cmd)
-  `#{cmd}`
-end
-
-# tests if the given command is present on the local system
-def command_present?(cmd)
-  executable = cmd.to_s.split(" ").first
-  unless find_executable0(executable)
-    logger.important "executable '#{executable}' not present or not in $PATH on the local system!"
-  end
+  `#{cmd}` and (raise LocalArgumentError("#{cmd} returned status #{$?.to_i}") if ($?.to_i > 0))
 end
 
 # If a command is given, this will try to execute the given command, as
