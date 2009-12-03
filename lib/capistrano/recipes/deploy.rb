@@ -94,8 +94,13 @@ end
 # returns the command output as a string
 def run_locally(cmd)
   logger.trace "executing locally: #{cmd.inspect}" if logger
-  `#{cmd}` and (raise LocalArgumentError("#{cmd} returned status #{$?.to_i}") if ($?.to_i > 0))
+  output_on_stdout = `#{cmd}`
+  if $?.to_i > 0 # $? is command exit code (posix style)
+    raise Capistrano::LocalArgumentError, "Command #{cmd} returned status code #{$?}"
+  end
+  output_on_stdout
 end
+
 
 # If a command is given, this will try to execute the given command, as
 # described below. Otherwise, it will return a string for use in embedding in
