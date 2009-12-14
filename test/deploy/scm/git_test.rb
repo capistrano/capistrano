@@ -31,7 +31,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
     @config[:repository] = "git@somehost.com:project.git"
     dest = "/var/www"
     rev = 'c2d9e79'
-    assert_equal "git clone -q git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
+    assert_equal "git clone -q  git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
 
     # With :scm_command
     git = "/opt/local/bin/git"
@@ -48,7 +48,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
     @config[:scm_verbose] = true
     dest = "/var/www"
     rev = 'c2d9e79'
-    assert_equal "git clone  git@somehost.com:project.git /var/www && cd /var/www && git checkout  -b deploy #{rev}", @source.checkout(rev, dest)
+    assert_equal "git clone   git@somehost.com:project.git /var/www && cd /var/www && git checkout  -b deploy #{rev}", @source.checkout(rev, dest)
   end
 
   def test_diff
