@@ -38,6 +38,7 @@ _cset(:real_revision)     { source.local.query_revision(revision) { |cmd| with_e
 
 _cset(:strategy)          { Capistrano::Deploy::Strategy.new(deploy_via, self) }
 
+# If overriding release name, please also select an appropriate setting for :releases below.
 _cset(:release_name)      { set :deploy_timestamped, true; Time.now.utc.strftime("%Y%m%d%H%M%S") }
 
 _cset :version_dir,       "releases"
@@ -50,7 +51,7 @@ _cset(:shared_path)       { File.join(deploy_to, shared_dir) }
 _cset(:current_path)      { File.join(deploy_to, current_dir) }
 _cset(:release_path)      { File.join(releases_path, release_name) }
 
-_cset(:releases)          { capture("ls -xt #{releases_path}").split.reverse }
+_cset(:releases)          { capture("ls -x #{releases_path}").split.reverse }
 _cset(:current_release)   { File.join(releases_path, releases.last) }
 _cset(:previous_release)  { releases.length > 1 ? File.join(releases_path, releases[-2]) : nil }
 
