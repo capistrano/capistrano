@@ -59,7 +59,10 @@ module Capistrano
         # If the 'revision' argument, on the other hand, is not :head, it is
         # simply returned.
         def query_revision(revision)
-          revision
+          return revision unless :head == revision
+
+          command = scm('revno', repository)
+          result = yield(command)
         end
 
         # Increments the given revision number and returns it.
