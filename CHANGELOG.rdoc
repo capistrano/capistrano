@@ -1,3 +1,11 @@
+== 2.5.12 / 5 January 2010
+
+* Tweak the directory version listing (caused a lot of problems, please upgrade immediately)
+
+== 2.5.11 / December 2009
+
+* Deprecations and other small changes
+
 == 2.5.10 / 3 November 2009
 
 * Fixes Darcs remote repository problem when using the copy strategy [Alex `regularfry` Young]
