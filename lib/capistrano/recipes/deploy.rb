@@ -51,7 +51,9 @@ _cset(:shared_path)       { File.join(deploy_to, shared_dir) }
 _cset(:current_path)      { File.join(deploy_to, current_dir) }
 _cset(:release_path)      { File.join(releases_path, release_name) }
 
-_cset(:releases)          { capture("ls -x #{releases_path}").split.reverse }
+# re: https://capistrano.lighthouseapp.com/projects/8716/tickets/88-getting-the-newest-directory
+# remove system inconsistencies with ls and let ruby sort the releases
+_cset(:releases)          { capture("ls -x #{releases_path}").split.sort }
 _cset(:current_release)   { File.join(releases_path, releases.last) }
 _cset(:previous_release)  { releases.length > 1 ? File.join(releases_path, releases[-2]) : nil }
 
@@ -386,6 +388,7 @@ namespace :deploy do
       else raise ArgumentError, "unknown migration target #{migrate_target.inspect}"
       end
 
+    puts "#{migrate_target} => #{directory}"
     run "cd #{directory}; #{rake} RAILS_ENV=#{rails_env} #{migrate_env} db:migrate"
   end
 
