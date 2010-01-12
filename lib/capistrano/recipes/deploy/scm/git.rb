@@ -120,11 +120,11 @@ module Capistrano
         # default, Git's reference of HEAD (the latest changeset in the default
         # branch, usually called "master").
         def head
-          configuration[:branch] || 'HEAD'
+          variable(:branch) || 'HEAD'
         end
 
         def origin
-          configuration[:remote] || 'origin'
+          variable(:remote) || 'origin'
         end
 
         # Performs a clone on the remote machine, then checkout on the branch
@@ -135,21 +135,21 @@ module Capistrano
 
           args = []
           args << "-o #{remote}" unless remote == 'origin'
-          if depth = configuration[:git_shallow_clone]
+          if depth = variable(:git_shallow_clone)
             args << "--depth #{depth}"
           end
 
           execute = []
           if args.empty?
-            execute << "#{git} clone #{verbose} #{configuration[:repository]} #{destination}"
+            execute << "#{git} clone #{verbose} #{variable(:repository)} #{destination}"
           else
-            execute << "#{git} clone #{verbose} #{args.join(' ')} #{configuration[:repository]} #{destination}"
+            execute << "#{git} clone #{verbose} #{args.join(' ')} #{variable(:repository)} #{destination}"
           end
 
           # checkout into a local branch rather than a detached HEAD
           execute << "cd #{destination} && #{git} checkout #{verbose} -b deploy #{revision}"
           
-          if configuration[:git_enable_submodules]
+          if variable(:git_enable_submodules)
             execute << "#{git} submodule #{verbose} init"
             execute << "#{git} submodule #{verbose} sync"
             execute << "#{git} submodule #{verbose} update"
@@ -180,14 +180,14 @@ module Capistrano
           # changes between calls, but as long as the repositories are all
           # based from each other it should still work fine.
           if remote != 'origin'
-            execute << "#{git} config remote.#{remote}.url #{configuration[:repository]}"
+            execute << "#{git} config remote.#{remote}.url #{variable(:repository)}"
             execute << "#{git} config remote.#{remote}.fetch +refs/heads/*:refs/remotes/#{remote}/*"
           end
 
           # since we're in a local branch already, just reset to specified revision rather than merge
           execute << "#{git} fetch #{verbose} #{remote} && #{git} reset #{verbose} --hard #{revision}"
 
-          if configuration[:git_enable_submodules]
+          if variable(:git_enable_submodules)
             execute << "#{git} submodule #{verbose} init"
             execute << "for mod in `#{git} submodule status | awk '{ print $2 }'`; do #{git} config -f .git/config submodule.${mod}.url `#{git} config -f .gitmodules --get submodule.${mod}.url` && echo Synced $mod; done"
             execute << "#{git} submodule #{verbose} sync"
@@ -234,7 +234,7 @@ module Capistrano
 
         def command
           # For backwards compatibility with 1.x version of this module
-          configuration[:git] || super
+          variable(:git) || super
         end
 
         # Determines what the response should be for a particular bit of text
@@ -246,7 +246,7 @@ module Capistrano
           case text
           when /\bpassword.*:/i
             # git is prompting for a password
-            unless pass = configuration[:scm_password]
+            unless pass = variable(:scm_password)
               pass = Capistrano::CLI.password_prompt
             end
             "#{pass}\n"
@@ -255,7 +255,7 @@ module Capistrano
             "yes\n"
           when /passphrase/i
             # git is asking for the passphrase for the user's key
-            unless pass = configuration[:scm_passphrase]
+            unless pass = variable(:scm_passphrase)
               pass = Capistrano::CLI.password_prompt
             end
             "#{pass}\n"
