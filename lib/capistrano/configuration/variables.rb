@@ -112,7 +112,7 @@ module Capistrano
       private :protect
 
       def respond_to_with_variables?(sym, include_priv=false) #:nodoc:
-        @variables.has_key?(sym) || respond_to_without_variables?(sym, include_priv)
+        @variables.has_key?(sym.to_sym) || respond_to_without_variables?(sym, include_priv)
       end
 
       def method_missing_with_variables(sym, *args, &block) #:nodoc:

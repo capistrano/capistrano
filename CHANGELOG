@@ -1,10 +1,38 @@
-## 2.5.20
+## 2.6.0 / May 3 2011
 
+A rather large release, feature-version bump because of the new
+multiple-gateways feature as implemented by Ryan Duryea (way to go!)
+
+Please also note from this release that if you use Git submodules, the
+Git-version requirement for the new implementation is now >= 1.5.6, from
+previously un-documented. (1.5.6 is new-enough that I think this is
+acceptable)
+
+	* Upgrade Net::SSH-gateway dependency to 1.1 (fixes a thread-deadlocking bug on MRI	1.9)
+	* Respect "dry-run" on transfer methods (Florian Frank)
+	* Add support for multiple gateways: (Ryan Duryea)
+        set :gateway, {
+          'gate1.example.com' => 'server1.example.com',
+          [ 'gate2.example.com', 'gate3.example.com' ] => [ 'server5.example.com', 'server6.example.com' ]
+        }
+	* Properly support nested Git submodules, moves Git requirement to >= 1.5.6 [if	you rely upon submodules] (Ken Miller)
+  * Fetch tags into the remote cache, allows deploying a tag when using Git, with the remote_cache strategy (Florian Frank)
+  * Various fixes to path handling bugs in the copt strategy. (Philippe Rathé)
+
+## 2.5.21 / April 6 2011
+	
+	* Fixed to follow best-practice guidelines from Bundler (Ben Langfeld)
+	* No longer force a gemset for Capistrano development. (Ben Langfeld)
+
+## 2.5.20 / March 16 2011
+
+  * `deploy:migrations` will now always operate on the latest_release, not
+	current_release (Mike Vincent)
   * Adds a check for the presence of `rsync` when using the copy strategy with `rsync`. (Chris Griego)
   * Do not try to look up the `:release_path` on servers which are defined `:no_release` (Chris Griego)
   * Tiny patch to the `CVS` SCM code to be Ruby 1.9 compatible (Martin Carpenter)
   * Changed the default `Git` submodule behaviour to use `--recursive`, Lighthouse Issue #176. (Lee Hambley)
-  * `:public_children` can now be `set()`, with the default being as it ever was (Chris Griego) 
+  * `:public_children` can now be `set()`, the default is unchanged, thanks (Chris Griego)
   * Fixing the load path in the default `Capfile` to search vendored/unpacked Gems. Lighthouse Issue #174 (Mari Carmen/Rafael García)
   * Adds a `maintenance_basename` variable (default value is `maintenance`) to allow you to set the maintenance page name (Celestino Gomes)
   * Spelling fixes in inline-documentation (Tom Copeland)
@@ -12,7 +40,7 @@
 
 ## 2.5.19 / June 21, 2010
 
-  * Small bug fixes, no improvements for people who weren't experiencing problems anyway. 
+  * Small bug fixes, no improvements for people who weren't experiencing problems anyway.
 
 ## 2.5.18 / March 14, 2010
 

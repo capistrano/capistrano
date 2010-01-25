@@ -232,9 +232,28 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @strategy.deploy!
   end
 
-  def test_with_copy_cache_with_custom_cache_dir_should_use_specified_cache_dir
+  def test_with_copy_cache_with_custom_absolute_cache_dir_path_should_use_specified_cache_dir
     @config[:copy_cache] = "/u/caches/captest"
 
+    Dir.stubs(:tmpdir).returns("/temp/dir")
+    File.expects(:exists?).with("/u/caches/captest").returns(true)
+    Dir.expects(:chdir).with("/u/caches/captest").yields
+
+    @source.expects(:sync).with("154", "/u/caches/captest").returns(:local_sync)
+    @strategy.expects(:system).with(:local_sync)
+
+    FileUtils.expects(:mkdir_p).with("/temp/dir/1234567890")
+
+    prepare_directory_tree!("/u/caches/captest")
+
+    prepare_standard_compress_and_copy!
+    @strategy.deploy!
+  end
+
+  def test_with_copy_cache_with_custom_relative_cache_dir_path_should_use_specified_cache_dir
+    @config[:copy_cache] = "caches/captest"
+
+    Dir.stubs(:pwd).returns("/u")
     Dir.stubs(:tmpdir).returns("/temp/dir")
     File.expects(:exists?).with("/u/caches/captest").returns(true)
     Dir.expects(:chdir).with("/u/caches/captest").yields
@@ -276,13 +295,13 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
       File.expects(:directory?).with("app").returns(true)
       FileUtils.expects(:mkdir).with("/temp/dir/1234567890/app")
       File.expects(:directory?).with("foo.txt").returns(false)
-      FileUtils.expects(:ln).with("#{cache}/foo.txt", "/temp/dir/1234567890/foo.txt")
+      FileUtils.expects(:ln).with("foo.txt", "/temp/dir/1234567890/foo.txt")
 
       Dir.expects(:glob).with("app/*", File::FNM_DOTMATCH).returns(["app/.", "app/..", "app/bar.txt"])
 
       unless exclude
         File.expects(:directory?).with("app/bar.txt").returns(false)
-        FileUtils.expects(:ln).with("#{cache}/app/bar.txt", "/temp/dir/1234567890/app/bar.txt")
+        FileUtils.expects(:ln).with("app/bar.txt", "/temp/dir/1234567890/app/bar.txt")
       end
     end
 

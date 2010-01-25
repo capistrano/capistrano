@@ -1,11 +1,4 @@
-source :gemcutter
+source "http://rubygems.org"
 
-gem 'net-ssh'
-gem 'net-ssh-gateway'
-gem 'net-sftp'
-gem 'net-scp'
-gem 'highline'
-
-group :test do
-  gem "mocha"
-end
+# Specify your gem's dependencies in capistrano.gemspec
+gemspec
