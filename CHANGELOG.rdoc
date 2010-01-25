@@ -1,3 +1,16 @@
+== 2.5.14 / 18 January 2010
+
+Fixes a low-value bug, thanks to Chris G for the well submitted patch:
+
+  * #139 - Improves consistency of variable lookup, scm variables with a local_ prefix will be honoured with priority locally (Chris Griego)
+
+== 2.5.13 / 6 January 2010
+
+* Small maintenance release:
+
+  * #118 - Modified CLI test to not load user or system configuration file (Emily Price)
+  * #88  - Re-fixed a problem here, massive apologies to all concerned. (Hangover from 2.5.12)
+
 == 2.5.12 / 5 January 2010
 
 * Tweak the directory version listing (caused a lot of problems, please upgrade immediately)
