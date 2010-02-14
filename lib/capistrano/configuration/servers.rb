@@ -48,7 +48,9 @@ module Capistrano
             filter_server_list(hosts.uniq)
           end
         else
-          roles  = role_list_from(ENV['ROLES'] || options[:roles] || self.roles.keys)
+					roles = role_list_from(ENV['ROLES'] || options[:roles] || self.roles.keys)
+					roles = roles & Array(options[:roles]) if preserve_roles && !options[:roles].nil?
+
           only   = options[:only] || {}
           except = options[:except] || {}
           

@@ -5,9 +5,11 @@ require 'capistrano/configuration/servers'
 class ConfigurationServersTest < Test::Unit::TestCase
   class MockConfig
     attr_reader :roles
+		attr_accessor :preserve_roles
 
     def initialize
       @roles = {}
+			@preserve_roles = false
     end
 
     include Capistrano::Configuration::Servers
@@ -62,6 +64,33 @@ class ConfigurationServersTest < Test::Unit::TestCase
     ENV.delete('ROLES')
   end
 
+  def test_task_with_roles_as_environment_variable_and_preserve_roles_should_apply_only_to_existant_task_role
+    ENV['ROLES'] = "app,file"
+		@config.preserve_roles = true
+    task = new_task(:testing,@config, :roles => :app)
+    assert_equal %w(app1 app2 app3).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
+  ensure
+    ENV.delete('ROLES')
+	end
+
+  def test_task_with_roles_as_environment_variable_and_preserve_roles_should_apply_only_to_existant_task_roles
+    ENV['ROLES'] = "app,file,web"
+		@config.preserve_roles = true
+    task = new_task(:testing,@config, :roles => [ :app,:file ])
+    assert_equal %w(app1 app2 app3 file).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
+  ensure
+    ENV.delete('ROLES')
+	end
+
+  def test_task_with_roles_as_environment_variable_and_preserve_roles_should_not_apply_if_not_exists_those_task_roles
+    ENV['ROLES'] = "file,web"
+		@config.preserve_roles = true
+    task = new_task(:testing,@config, :roles => [ :app ])
+    assert_equal [], @config.find_servers_for_task(task).map { |s| s.host }.sort
+  ensure
+    ENV.delete('ROLES')
+	end
+	
   def test_task_with_hosts_as_environment_variable_should_apply_only_to_those_hosts
     ENV['HOSTS'] = "foo,bar"
     task = new_task(:testing)

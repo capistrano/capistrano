@@ -1,3 +1,9 @@
+== 2.5.15 / 14 Febuary 2010
+
+Fixes a feature request not to overwrite roles when using the ROLES environmental variable.
+
+  * #126 - The option to not overwriting the roles which are defined in the task definition.
+
 == 2.5.14 / 18 January 2010
 
 Fixes a low-value bug, thanks to Chris G for the well submitted patch:
