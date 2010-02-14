@@ -116,7 +116,7 @@ module Capistrano
             "Display the Capistrano version, and exit."
           ) do
             require 'capistrano/version'
-            puts "Capistrano v#{Capistrano::Version::STRING}"
+            puts "Capistrano v#{Capistrano::Version}"
             exit
           end
 
