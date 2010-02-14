@@ -45,14 +45,13 @@ _cset :version_dir,       "releases"
 _cset :shared_dir,        "shared"
 _cset :shared_children,   %w(system log pids)
 _cset :current_dir,       "current"
+_cset :restart_method     "apache"
 
 _cset(:releases_path)     { File.join(deploy_to, version_dir) }
 _cset(:shared_path)       { File.join(deploy_to, shared_dir) }
 _cset(:current_path)      { File.join(deploy_to, current_dir) }
 _cset(:release_path)      { File.join(releases_path, release_name) }
 
-# re: https://capistrano.lighthouseapp.com/projects/8716/tickets/88-getting-the-newest-directory
-# remove system inconsistencies with ls and let ruby sort the releases
 _cset(:releases)          { capture("ls -x #{releases_path}").split.sort }
 _cset(:current_release)   { File.join(releases_path, releases.last) }
 _cset(:previous_release)  { releases.length > 1 ? File.join(releases_path, releases[-2]) : nil }
