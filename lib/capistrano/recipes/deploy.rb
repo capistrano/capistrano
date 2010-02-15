@@ -45,7 +45,6 @@ _cset :version_dir,       "releases"
 _cset :shared_dir,        "shared"
 _cset :shared_children,   %w(system log pids)
 _cset :current_dir,       "current"
-_cset :restart_method     "apache"
 
 _cset(:releases_path)     { File.join(deploy_to, version_dir) }
 _cset(:shared_path)       { File.join(deploy_to, shared_dir) }
