@@ -79,6 +79,10 @@ module Capistrano
             "Make the output as quiet as possible."
           ) { options[:verbose] = 0 }
 
+          opts.on("-r", "--preserve-roles",
+            "Preserve task roles"
+          ) { options[:preserve_roles] = true }
+
           opts.on("-S", "--set-before NAME=VALUE",
             "Set a variable before the recipes are loaded."
           ) do |pair|
@@ -112,7 +116,7 @@ module Capistrano
             "Display the Capistrano version, and exit."
           ) do
             require 'capistrano/version'
-            puts "Capistrano v#{Capistrano::Version::STRING}"
+            puts "Capistrano v#{Capistrano::Version}"
             exit
           end
 

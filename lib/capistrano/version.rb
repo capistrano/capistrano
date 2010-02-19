@@ -1,18 +1,15 @@
-require 'net/ssh/version'
-
 module Capistrano
 
-  # Describes the current version of Capistrano.
-  class Version < Net::SSH::Version
-    MAJOR = 2
-    MINOR = 5
-    TINY  = 14
+  class Version
 
-    # The current version, as a Version instance
-    CURRENT = new(MAJOR, MINOR, TINY)
+    CURRENT = File.read(File.dirname(__FILE__) + '/../../VERSION')
 
-    # The current version, as a String instance
-    STRING  = CURRENT.to_s
+    STRING = CURRENT.to_s
+
+    def self.to_s
+      CURRENT
+    end
+    
   end
 
 end

@@ -93,6 +93,18 @@ class CLIOptionsTest < Test::Unit::TestCase
     assert_equal 0, @cli.options[:verbose]
   end
 
+  def test_parse_options_with_r_should_set_preserve_roles_option
+    @cli.args << "-r"
+    @cli.parse_options!
+    assert @cli.options[:preserve_roles]
+  end
+
+  def test_parse_options_with_preserve_roles_should_set_preserve_roles_option
+    @cli.args << "--preserve-roles"
+    @cli.parse_options!
+    assert @cli.options[:preserve_roles]
+  end
+
   def test_parse_options_with_S_should_set_pre_vars
     @cli.args << "-S" << "foo=bar"
     @cli.parse_options!
