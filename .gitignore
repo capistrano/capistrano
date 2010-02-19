@@ -7,3 +7,4 @@ pkg
 *.sh
 .DS_Store
 capistrano.gemspec
+tags
