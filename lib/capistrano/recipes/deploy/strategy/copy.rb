@@ -53,6 +53,11 @@ module Capistrano
               system(source.checkout(revision, copy_cache))
             end
 
+            # Check the return code of last system command and rollback if not 0
+            unless $? == 0
+              raise Capistrano::Error, "shell command failed with return code #{$?}"
+            end
+
             logger.debug "copying cache to deployment staging area #{destination}"
             Dir.chdir(copy_cache) do
               FileUtils.mkdir_p(destination)

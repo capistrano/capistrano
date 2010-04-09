@@ -1,4 +1,18 @@
-== 2.5.15 / 14 Febuary 2010
+== 2.5.18 / March 14, 2010
+
+Small fix for rolling back if a shell scripts exits non-zero; enabled a rollback if git (or other) externals fail during the deploy.
+
+  * #151 check return code status of system command to create local copy and rollback if not 0 (David King)
+
+== 2.5.17 / February 27, 2010
+
+Various small bug fixes.
+
+== 2.5.16 / February 14, 2010
+
+Fixed a small regression in 2.5.15
+
+== 2.5.15 / 14 February 2010
 
 Fixes a feature request not to overwrite roles when using the ROLES environmental variable.
 
