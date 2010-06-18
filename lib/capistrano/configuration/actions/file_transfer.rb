@@ -26,7 +26,7 @@ module Capistrano
           transfer(:up, from, to, options, &block)
           if mode
             mode = mode.is_a?(Numeric) ? mode.to_s(8) : mode.to_s
-            run "chmod #{mode} #{to}"
+            run "chmod #{mode} #{to}", options
           end
         end
 

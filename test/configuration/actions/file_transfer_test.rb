@@ -37,13 +37,13 @@ class ConfigurationActionsFileTransferTest < Test::Unit::TestCase
 
   def test_upload_with_mode_should_try_to_chmod
     @config.expects(:transfer).with(:up, "testl.txt", "testr.txt", :foo => "bar")
-    @config.expects(:run).with("chmod 775 testr.txt")
+    @config.expects(:run).with("chmod 775 testr.txt", {:foo => "bar"})
     @config.upload("testl.txt", "testr.txt", :mode => 0775, :foo => "bar")
   end
 
   def test_upload_with_symbolic_mode_should_try_to_chmod
     @config.expects(:transfer).with(:up, "testl.txt", "testr.txt", :foo => "bar")
-    @config.expects(:run).with("chmod g+w testr.txt")
+    @config.expects(:run).with("chmod g+w testr.txt", {:foo => "bar"})
     @config.upload("testl.txt", "testr.txt", :mode => "g+w", :foo => "bar")
   end
 
