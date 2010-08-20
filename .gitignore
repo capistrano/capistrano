@@ -8,3 +8,4 @@ pkg
 .DS_Store
 capistrano.gemspec
 tags
+.bundle/*

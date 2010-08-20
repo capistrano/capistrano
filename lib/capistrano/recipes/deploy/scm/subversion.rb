@@ -52,7 +52,7 @@ module Capistrano
         # executed (svn info), and will extract the revision from the response.
         def query_revision(revision)
           return revision if revision =~ /^\d+$/
-          command = scm(:info, repository, authentication, "-r#{revision}")
+          command = scm(:info, arguments, repository, authentication, "-r#{revision}")
           result = yield(command)
           yaml = YAML.load(result)
           raise "tried to run `#{command}' and got unexpected result #{result.inspect}" unless Hash === yaml
