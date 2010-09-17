@@ -155,6 +155,11 @@ module Capistrano
             execute << "#{git} submodule #{verbose} update"
           end
 
+          if variable(:git_enable_externals)
+            execute << "#{git} external init"
+            execute << "#{git} external update"
+          end
+
           execute.join(" && ")
         end
         
