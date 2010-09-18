@@ -18,7 +18,7 @@ module Capistrano
 
         def check!
           super.check do |d|
-            d.remote.command("rsync")
+            d.remote.command("rsync") unless copy_exclude.empty?
             d.remote.writable(shared_path)
           end
         end
