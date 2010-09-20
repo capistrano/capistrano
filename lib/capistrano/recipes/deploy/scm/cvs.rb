@@ -69,7 +69,8 @@ module Capistrano
         def query_revision(revision)
           return revision if revision_type(revision) == :date
           revision = yield(scm(cvs_root, :log, "-r#{revision}")).
-                       grep(/^date:/).
+                       split("\n").
+                       select { |line| line =~ /^date:/ }.
                        map { |line| line[/^date: (.*?);/, 1] }.
                        sort.last + " UTC"
           return revision
