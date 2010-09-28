@@ -101,8 +101,7 @@ module Capistrano
           logger.trace "compressing #{destination} to #{filename}"
           Dir.chdir(tmpdir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
 
-          upload(filename, remote_filename)
-          run "cd #{configuration[:releases_path]} && #{decompress(remote_filename).join(" ")} && rm #{remote_filename}"
+          distribute!
         ensure
           FileUtils.rm filename rescue nil
           FileUtils.rm_rf destination rescue nil
@@ -210,6 +209,12 @@ module Capistrano
           # preserve the directory structure in the file.
           def decompress(file)
             compression.decompress_command + [file]
+          end
+          
+          # Distributes the file to the remote servers
+          def distribute!
+            upload(filename, remote_filename)
+            run "cd #{configuration[:releases_path]} && #{decompress(remote_filename).join(" ")} && rm #{remote_filename}"
           end
       end
 
