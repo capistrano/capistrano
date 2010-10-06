@@ -5,6 +5,7 @@
 * Tiny patch to the `CVS` SCM code to be Ruby 1.9 compatible (Martin Carpenter)
 * Changed the default `Git` submodule behaviour to use `--recursive`, Lighthouse Issue #176. (Lee Hambley)
 * `:public_children` can now be `set()`, with the default being as it ever was (Chris Griego) 
+* Fixing the load path in the default `Capfile` to search vendored/unpacked Gems. Lighthouse Issue #174 (Mari Carmen/Rafael García)
 
 ## 2.5.19 / June 21, 2010
 
