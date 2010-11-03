@@ -211,8 +211,41 @@ namespace :deploy do
   DESC
   task :update_code, :except => { :no_release => true } do
     on_rollback { run "rm -rf #{release_path}; true" }
-    strategy.deploy!
+    transaction do
+      update_cache
+      compress_bundle
+      upload_bundle
+      decompress_bundle
+    end
     finalize_update
+  end
+
+  desc <<-DESC
+    [internal] Updates the local cached copy of the code
+  DESC
+  task :update_cache, :except => { :no_release => true } do
+    strategy.update_cache!
+  end
+
+  desc <<-DESC
+    [internal] Creates a compressed bundle from the local code cache
+  DESC
+  task :compress_bundle, :except => { :no_release => true } do
+    strategy.compress_bundle!
+  end
+
+  desc <<-DESC
+    [internal] Uploads the compressed bundle to the target node
+  DESC
+  task :upload_bundle, :except => { :no_release => true } do
+    strategy.upload_bundle!
+  end
+
+  desc <<-DESC
+    [internal] Decompress the uploaded bundle on the target node
+  DESC
+  task :decompress_bundle, :except => { :no_release => true } do
+    strategy.decompress_bundle!
   end
 
   desc <<-DESC

@@ -44,6 +44,16 @@ module Capistrano
         # servers, and uncompresses it on each of them into the deployment
         # directory.
         def deploy!
+          update_cache!
+          compress_bundle!
+          upload_bundle!
+          decompress_bundle!
+        ensure
+          FileUtils.rm filename rescue nil
+          FileUtils.rm_rf destination rescue nil
+        end
+
+        def update_cache!
           if copy_cache
             if File.exists?(copy_cache)
               logger.debug "refreshing local cache to revision #{revision} at #{copy_cache}"
@@ -97,15 +107,18 @@ module Capistrano
           end
 
           File.open(File.join(destination, "REVISION"), "w") { |f| f.puts(revision) }
+        end
 
-          logger.trace "compressing #{destination} to #{filename}"
+        def compress_bundle!
           Dir.chdir(tmpdir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
+        end
 
+        def upload_bundle!
           upload(filename, remote_filename)
+        end
+
+        def decompress_bundle!
           run "cd #{configuration[:releases_path]} && #{decompress(remote_filename).join(" ")} && rm #{remote_filename}"
-        ensure
-          FileUtils.rm filename rescue nil
-          FileUtils.rm_rf destination rescue nil
         end
 
         def check!
