@@ -110,6 +110,7 @@ module Capistrano
         end
 
         def compress_bundle!
+          logger.trace "compressing #{destination} to #{filename}"
           Dir.chdir(tmpdir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
         end
 
@@ -118,6 +119,7 @@ module Capistrano
         end
 
         def decompress_bundle!
+          logger.trace "decompressing #{remote_filename} in #{configuration[:releases_path]}"
           run "cd #{configuration[:releases_path]} && #{decompress(remote_filename).join(" ")} && rm #{remote_filename}"
         end
 
