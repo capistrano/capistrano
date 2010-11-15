@@ -96,6 +96,7 @@ end
 # returns the command output as a string
 def run_locally(cmd)
   logger.trace "executing locally: #{cmd.inspect}" if logger
+  output_on_stdout = nil
   elapsed = Benchmark.realtime do
     output_on_stdout = `#{cmd}`
   end
