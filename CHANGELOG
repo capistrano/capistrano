@@ -1,3 +1,6 @@
+## 2.5.20.1
+* Adds a configuration variable for git SCM recepies :checkout_as that lets you change the default name ('deploy') of the checked out branch on the deployment target after the initial git pull has occurred (Nathan Aschbacher)
+
 ## 2.5.20
 
 * Adds a check for the presence of `rsync` when using the copy strategy with `rsync`. (Chris Griego)
