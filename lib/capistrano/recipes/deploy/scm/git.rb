@@ -50,6 +50,13 @@ module Capistrano
       # tracking of repositories. This option is intended for use with the
       # <tt>:remote_cache</tt> strategy in a distributed git environment.
       #
+      # You can customize the name of the branch that will be checked out on the
+      # deployment target with <tt>:checkout_as</tt>.  The default value is 'deploy'.
+      # Making this unique per deployment is helpful if you need to deploy parallel 
+      # branches, and want to be able to apply hot-fixes to each one independently, 
+      # but need push them back to the same origin repository while keeping the 
+      # fixes segregated.
+      #
       # For example in the projects <tt>config/deploy.rb</tt>:
       #
       #   set :repository, "#{scm_user}@somehost:~/projects/project.git"
@@ -126,6 +133,10 @@ module Capistrano
         def origin
           variable(:remote) || 'origin'
         end
+        
+        def checkout_as
+          variable(:checkout_as) || 'deploy'
+        end
 
         # Performs a clone on the remote machine, then checkout on the branch
         # you want to deploy.
@@ -147,7 +158,7 @@ module Capistrano
           end
 
           # checkout into a local branch rather than a detached HEAD
-          execute << "cd #{destination} && #{git} checkout #{verbose} -b deploy #{revision}"
+          execute << "cd #{destination} && #{git} checkout #{verbose} -b #{checkout_as} #{revision}"
           
           if variable(:git_enable_submodules)
             execute << "#{git} submodule #{verbose} init"
