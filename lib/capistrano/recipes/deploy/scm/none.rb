@@ -32,6 +32,13 @@ module Capistrano
 
         alias_method :export, :checkout
 
+	# For copy cache to work we need this implemented
+	def sync(revision, destination
+	   #TODO windows
+	   #TODO check rsync
+	   "rsync -a #{repository}/ #{destination}/"
+	end
+
         # No versioning, so this just returns the argument, with no
         # modification.
         def query_revision(revision)
