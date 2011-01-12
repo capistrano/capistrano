@@ -56,6 +56,8 @@ module Capistrano
 
         # Translates a tag to a changeset if needed or just returns changeset.
         def query_revision(changeset)
+          return 0 if repository.to_s != 'local'
+          return changeset if (changeset =~ /^[0-9]{1,40}\:[0-9a-f]{12}$/ || changeset =~ /^[0-9]{1,40}$/)
           cmd = scm :log,
                     verbose,
                     "-r #{changeset}",
