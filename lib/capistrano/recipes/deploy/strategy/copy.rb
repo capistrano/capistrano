@@ -86,7 +86,7 @@ module Capistrano
             if copy_exclude.any?
               logger.debug "processing exclusions..."
               if copy_exclude.any?
-                copy_exclude.each do |pattern| 
+                copy_exclude.each do |pattern|
                   delete_list = Dir.glob(File.join(destination, pattern), File::FNM_DOTMATCH)
                   # avoid the /.. trap that deletes the parent directories
                   delete_list.delete_if { |dir| dir =~ /\/\.\.$/ }
@@ -183,21 +183,21 @@ module Capistrano
           # Commands are arrays, where the first element is the utility to be
           # used to perform the compression or decompression.
           Compression = Struct.new(:extension, :compress_command, :decompress_command)
-          
+
           # The compression method to use, defaults to :gzip.
           def compression
             remote_tar = configuration[:copy_remote_tar] || 'tar'
             local_tar = configuration[:copy_local_tar] || 'tar'
-            
+
             type = configuration[:copy_compression] || :gzip
             case type
-            when :gzip, :gz   then Compression.new("tar.gz",  [local_tar, 'czf'], [remote_tar, 'xzf'])
-            when :bzip2, :bz2 then Compression.new("tar.bz2", [local_tar, 'cjf'], [remote_tar, 'xjf'])
+            when :gzip, :gz   then Compression.new("tar.gz",  [local_tar, 'chzf'], [remote_tar, 'xzf'])
+            when :bzip2, :bz2 then Compression.new("tar.bz2", [local_tar, 'chjf'], [remote_tar, 'xjf'])
             when :zip         then Compression.new("zip",     %w(zip -qr), %w(unzip -q))
             else raise ArgumentError, "invalid compression type #{type.inspect}"
             end
           end
-          
+
           # Returns the command necessary to compress the given directory
           # into the given file.
           def compress(directory, file)
@@ -210,7 +210,7 @@ module Capistrano
           def decompress(file)
             compression.decompress_command + [file]
           end
-          
+
           # Distributes the file to the remote servers
           def distribute!
             upload(filename, remote_filename)
