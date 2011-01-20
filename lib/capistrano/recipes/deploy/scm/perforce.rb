@@ -94,7 +94,7 @@ module Capistrano
           # a fixed destination so the files must be copied from there to their 
           # intended resting place.          
           def p4_sync(revision, destination, options="")
-            scm authentication, :sync, options, "#{rev_no(revision)}", "&& cp -rf #{p4client_root} #{destination}"          
+            scm authentication, :sync, options, "#{rev_no(revision)}", "&& cp -af #{p4client_root} #{destination}"          
           end
 
           def p4client
