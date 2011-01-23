@@ -58,7 +58,7 @@ class RemoteDependencyTest < Test::Unit::TestCase
     assert !@dependency.file("/data/foo.txt").pass?
   end
 
-  def test_should_pas_if_file_found
+  def test_should_pass_if_file_found
     setup_for_a_configuration_run("test -f /data/foo.txt", true)
     assert @dependency.file("/data/foo.txt").pass?
   end
