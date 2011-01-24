@@ -43,6 +43,12 @@ module Capistrano
         self
       end
 
+      def deb(name, version, options={})
+        @message ||= "package `#{name}' #{version} could not be found"
+        try("dpkg -s #{name} | grep '^Version: #{version}'", options)
+        self
+      end
+
       def match(command, expect, options={})
         expect = Regexp.new(Regexp.escape(expect.to_s)) unless expect.is_a?(Regexp)
 
