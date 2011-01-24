@@ -7,7 +7,7 @@
 * `:public_children` can now be `set()`, with the default being as it ever was (Chris Griego) 
 * Fixing the load path in the default `Capfile` to search vendored/unpacked Gems. Lighthouse Issue #174 (Mari Carmen/Rafael García)
 * Adds a `maintenance_basename` variable (default value is `maintenance`) to allow you to set the maintenance page name (Celestino Gomes)
-
+* Spelling fixes in inline-documentation (Tom Copeland)
 
 ## 2.5.19 / June 21, 2010
 
