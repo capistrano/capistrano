@@ -1,17 +1,18 @@
 ## 2.5.20
 
-* Adds a check for the presence of `rsync` when using the copy strategy with `rsync`. (Chris Griego)
-* Do not try to look up the `:release_path` on servers which are defined `:no_release` (Chris Griego)
-* Tiny patch to the `CVS` SCM code to be Ruby 1.9 compatible (Martin Carpenter)
-* Changed the default `Git` submodule behaviour to use `--recursive`, Lighthouse Issue #176. (Lee Hambley)
-* `:public_children` can now be `set()`, with the default being as it ever was (Chris Griego) 
-* Fixing the load path in the default `Capfile` to search vendored/unpacked Gems. Lighthouse Issue #174 (Mari Carmen/Rafael García)
-* Adds a `maintenance_basename` variable (default value is `maintenance`) to allow you to set the maintenance page name (Celestino Gomes)
-* Spelling fixes in inline-documentation (Tom Copeland)
+  * Adds a check for the presence of `rsync` when using the copy strategy with `rsync`. (Chris Griego)
+  * Do not try to look up the `:release_path` on servers which are defined `:no_release` (Chris Griego)
+  * Tiny patch to the `CVS` SCM code to be Ruby 1.9 compatible (Martin Carpenter)
+  * Changed the default `Git` submodule behaviour to use `--recursive`, Lighthouse Issue #176. (Lee Hambley)
+  * `:public_children` can now be `set()`, with the default being as it ever was (Chris Griego) 
+  * Fixing the load path in the default `Capfile` to search vendored/unpacked Gems. Lighthouse Issue #174 (Mari Carmen/Rafael García)
+  * Adds a `maintenance_basename` variable (default value is `maintenance`) to allow you to set the maintenance page name (Celestino Gomes)
+  * Spelling fixes in inline-documentation (Tom Copeland)
+  * Make `zip` and `tar` handle symlinks the same way (zip follows symlinks by default, tar needs the option `-h`) (Ross Cooperman)
 
 ## 2.5.19 / June 21, 2010
 
-Small bug fixes, no improvements for people who weren't experiencing problems anyway. 
+  * Small bug fixes, no improvements for people who weren't experiencing problems anyway. 
 
 ## 2.5.18 / March 14, 2010
 
