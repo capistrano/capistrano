@@ -43,6 +43,18 @@ Use the `cap` script as follows:
 
 By default, the script will look for a file called one of `capfile` or `Capfile`. The `someaction` text indicates which task to execute. You can do "cap -h" to see all the available options and "cap -T" to see all the available tasks.
 
+## INTEGRATION WITH BUNDLER
+
+1.  In the application's Gemfile, add a dependency on Capistrano.
+
+    <pre>`group :development do
+      gem 'capistrano', :require => nil
+    end`</pre>
+
+2.  Regenerate the application's Gemfile.lock .
+
+    `$ bundle install`
+
 ## LICENSE:
 
 Permission is hereby granted, free of charge, to any person obtaining
