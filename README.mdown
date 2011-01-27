@@ -6,7 +6,7 @@ Capistrano was originally designed to simplify and automate deployment of web ap
 
 ## Documentation
 
-* [[http://github.com/capistrano/capistrano/wiki/Documentation-v2.x]]
+* [[https://github.com/capistrano/capistrano/wiki]]
 
 ## DEPENDENCIES
 
