@@ -9,3 +9,4 @@ pkg
 capistrano.gemspec
 tags
 .bundle/*
+Gemfile.lock

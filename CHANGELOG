@@ -1,18 +1,31 @@
-== 2.5.18 / March 14, 2010
+## 2.5.20
+
+* Adds a check for the presence of `rsync` when using the copy strategy with `rsync`. (Chris Griego)
+* Do not try to look up the `:release_path` on servers which are defined `:no_release` (Chris Griego)
+* Tiny patch to the `CVS` SCM code to be Ruby 1.9 compatible (Martin Carpenter)
+* Changed the default `Git` submodule behaviour to use `--recursive`, Lighthouse Issue #176. (Lee Hambley)
+* `:public_children` can now be `set()`, with the default being as it ever was (Chris Griego) 
+* Fixing the load path in the default `Capfile` to search vendored/unpacked Gems. Lighthouse Issue #174 (Mari Carmen/Rafael García)
+
+## 2.5.19 / June 21, 2010
+
+Small bug fixes, no improvements for people who weren't experiencing problems anyway. 
+
+## 2.5.18 / March 14, 2010
 
 Small fix for rolling back if a shell scripts exits non-zero; enabled a rollback if git (or other) externals fail during the deploy.
 
   * #151 check return code status of system command to create local copy and rollback if not 0 (David King)
 
-== 2.5.17 / February 27, 2010
+## 2.5.17 / February 27, 2010
 
 Various small bug fixes.
 
-== 2.5.16 / February 14, 2010
+## 2.5.16 / February 14, 2010
 
 Fixed a small regression in 2.5.15
 
-== 2.5.15 / 14 February 2010
+## 2.5.15 / 14 February 2010
 
 Fixes a feature request not to overwrite roles when using the ROLES environmental variable.
 
@@ -20,34 +33,34 @@ Fixes a feature request not to overwrite roles when using the ROLES environmenta
   * Removed the `upgrade` file as it has been a couple of years since 1.x was in the wild.
   * Slight internal re-factor of the way we calculate the `version`
 
-== 2.5.14 / 18 January 2010
+## 2.5.14 / 18 January 2010
 
 Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 
   * #139 - Improves consistency of variable lookup, scm variables with a local_ prefix will be honoured with priority locally (Chris Griego)
 
-== 2.5.13 / 6 January 2010
+## 2.5.13 / 6 January 2010
 
 * Small maintenance release:
 
   * #118 - Modified CLI test to not load user or system configuration file (Emily Price)
   * #88  - Re-fixed a problem here, massive apologies to all concerned. (Hangover from 2.5.12)
 
-== 2.5.12 / 5 January 2010
+## 2.5.12 / 5 January 2010
 
 * Tweak the directory version listing (caused a lot of problems, please upgrade immediately)
 
-== 2.5.11 / December 2009
+## 2.5.11 / December 2009
 
 * Deprecations and other small changes
 
-== 2.5.10 / 3 November 2009
+## 2.5.10 / 3 November 2009
 
 * Fixes Darcs remote repository problem when using the copy strategy [Alex `regularfry` Young]
 * Documentation improvements for embedding Capistrano [Lee Hambley]
 * Fixes ticket #95 -formally deprecating the before_something and after_something methods [Lee Hambley] 
 
-== 2.5.9 / 1 August 2009
+## 2.5.9 / 1 August 2009
 
 * Adds support for customizing which `tar` command to use. [Jeremy Wells]
 
@@ -62,11 +75,11 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
   * Improved web:disable task, now suggests a .htaccess block to use suggested by Rafael García
   * Includes more logger options (can now select stdout, stderr of a file) [Rafael García] 
 
-== 2.5.8 / July 2009
+## 2.5.8 / July 2009
 
 * Fixes a problem in 2.5.7 where deploy:finalize_update had been badly merged.
 
-== 2.5.6 & 2.5.7 / July 2009
+## 2.5.6 & 2.5.7 / July 2009
 
 * 2.5.7 masks a broken 2.5.6 release that was accidentally mirrored via Rubyforge.
 
@@ -80,12 +93,12 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 
 * Capify now creates the config directory in directories without one.
 
-== 2.5.5 / 24 Feb 2009
+## 2.5.5 / 24 Feb 2009
 
 * Make sure role(:foo) actually declares an (empty) role for :foo, even without server arguments [Jamis Buck]
 
 
-== 2.5.4 / 4 Feb 2009
+## 2.5.4 / 4 Feb 2009
 
 * When using rsync with the remote_cache strategy include -t switch to preserve file times [Kevin McCarthy]
 
@@ -100,7 +113,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Add supported environment variables to -H output [François Beausoleil]
 
 
-== 2.5.3 / December 6, 2008
+## 2.5.3 / December 6, 2008
 
 * Make previous_release return nil if there is no previous release [Mathias Meyer]
 
@@ -113,12 +126,12 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Fix issue with git SCM that caused "Unable to resolve revision" errors when there was trailing whitespace in git's output [Mark Zuneska, Daniel Berlinger and Evan Closson]
 
 
-== 2.5.2 / November 13, 2008
+## 2.5.2 / November 13, 2008
 
 * Fix issue with git SCM that caused "Unable to resolve revision for 'HEAD'" errors on deploy [Jamis Buck]
 
 
-== 2.5.1 / November 7, 2008
+## 2.5.1 / November 7, 2008
 
 * Add -t (--tools) switch for better task lists for external tools [Jamis Buck]
 
@@ -147,7 +160,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Ruby 1.9 compatibility [Jamis Buck]
 
 
-== 2.5.0 / August 28, 2008
+## 2.5.0 / August 28, 2008
 
 * Allow :gateway to be set to an array, in which case a chain of tunnels is created [Kerry Buckley]
 
@@ -186,17 +199,17 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Added -n/--dry-run switch, to display but not execute remote tasks [Paul Gross]
 
 
-== 2.4.3 / June 28, 2008
+## 2.4.3 / June 28, 2008
 
 * Fix gem dependencies so gem actually understands them [Jamis Buck]
 
 
-== 2.4.2 / June 27, 2008
+## 2.4.2 / June 27, 2008
 
 * Specify gem dependencies in rakefile [Jamis Buck]
 
 
-== 2.4.1 / June 27, 2008
+## 2.4.1 / June 27, 2008
 
 * Use Echoe to manage the Rakefile [Jamis Buck]
 
@@ -205,12 +218,12 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Changed capture() helper to not raise an exception on error, but to warn instead [Jeff Forcier]
 
 
-== 2.4.0 / June 13, 2008
+## 2.4.0 / June 13, 2008
 
 * Added :normalize_asset_timestamps option to deployment, defaulting to true, which allows asset timestamping to be disabled [John Trupiano]
 
 
-== 2.4.0 Preview Release #1 (2.3.101) / June 5, 2008 
+## 2.4.0 Preview Release #1 (2.3.101) / June 5, 2008 
 
 * Only make deploy:start, deploy:stop, and deploy:restart try sudo as :runner. The other sudo-enabled tasks (deploy:setup, deploy:cleanup, etc.) will now use the :admin_runner user (which by default is unset). [Jamis Buck]
 
@@ -255,7 +268,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Add debug switch for enabling conditional execution of commands [Mark Imbriaco]
 
 
-== 2.3.0 / May 2, 2008
+## 2.3.0 / May 2, 2008
 
 * Make deploy:setup obey the :use_sudo and :runner directives, and generalize the :use_sudo and :runner options into a try_sudo() helper method [Jamis Buck]
 
@@ -282,7 +295,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Improved "copy" strategy supports local caching and pattern exclusion (via :copy_cache and :copy_exclude variables) [Jamis Buck]
 
 
-== 2.2.0 / February 27, 2008
+## 2.2.0 / February 27, 2008
 
 * Fix git submodule support to init on sync [halorgium]
 
@@ -329,7 +342,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Prepare for Net::SSH v2 by making sure Capistrano only tries to load Net::SSH versions less than 1.99.0 [Jamis Buck]
 
 
-== 2.1.0 / October 14, 2007
+## 2.1.0 / October 14, 2007
 
 * Default to 0664 instead of 0660 on upload [Jamis Buck]
 
@@ -350,7 +363,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Use the --password switch for subversion by default, but add :scm_prefer_prompt variable (defaults to false) [Jamis Buck]
 
 
-== 2.0.100 (2.1 Preview 1) / September 1, 2007
+## 2.0.100 (2.1 Preview 1) / September 1, 2007
 
 * capify-generated Capfile will autoload all recipes from vendor/plugins/*/recipes/*.rb [Graeme Mathieson]
 
@@ -383,7 +396,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Change the "-h" output so that it does not say that "-q" is the default [Jamis Buck]
 
 
-== 2.0.0 / July 21, 2007
+## 2.0.0 / July 21, 2007
 
 * Make the "no matching servers" error more sane [halorgium]
 
@@ -412,7 +425,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Spelling corrections in docs [Tim Carey-Smith, Giles Bowkett]
 
 
-== 1.99.3 (2.0 Preview 4) / June 28, 2007
+## 1.99.3 (2.0 Preview 4) / June 28, 2007
 
 * Don't break task descriptions on a period that appears in the middle of a sentence [Jamis Buck]
 
@@ -445,7 +458,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Make sure symlink and finalize_update tasks reference the most recent release when called by themselves [Jamis Buck]
 
 
-== 1.99.2 (2.0 Preview 3) / June 15, 2007
+## 1.99.2 (2.0 Preview 3) / June 15, 2007
  
 * CVS SCM module [Brian Phillips]
 
@@ -470,7 +483,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Add :default_environment variable, which is applied to every command
 
 
-== 1.99.1 (2.0 Preview 2) / May 10, 2007
+## 1.99.1 (2.0 Preview 2) / May 10, 2007
 
 * Fix some documentation typos [eventualbuddha]
 
@@ -505,7 +518,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Make the copy strategy check out to a temporary directory [Jamis Buck]
 
 
-== 1.99.0 (2.0 Preview 1) / April 24, 2007
+## 1.99.0 (2.0 Preview 1) / April 24, 2007
 
 * Add `capify' script to make it easier to prepare a project for deployment using cap [Jamis Buck]
 
@@ -526,7 +539,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Merged the Configuration and Actor classes, performed various other massive refactorings of the code [Jamis Buck]
 
 
-== 1.4.1 / February 24, 2007
+## 1.4.1 / February 24, 2007
 
 * Use the no-auth-cache option with subversion so that username/password tokens do not get cached by capistrano usage [jonathan]
 
@@ -537,7 +550,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Add :env option to 'run' (and friends) so that you can specify environment variables to be injected into the new process' environment [Mathieu Lajugie]
 
 
-== 1.4.0 / February 3, 2007
+## 1.4.0 / February 3, 2007
 
 * Use the auth info for subversion more consistently [Jamis Buck]
 
@@ -564,12 +577,12 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Fix off-by-one bug in show_tasks width-computation [NeilW]
 
 
-== 1.3.1 / January 5, 2007
+## 1.3.1 / January 5, 2007
 
 * Fix connection problems when using gateways [Ezra Zygmuntowicz]
 
 
-== 1.3.0 / December 23, 2006
+## 1.3.0 / December 23, 2006
 
 * Deprecate rake integration in favor of invoking `cap' directly [Jamis Buck]
 
@@ -600,7 +613,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Added :as option to sudo, so you can specify who the command is executed as [Mark Imbriaco]
 
 
-== 1.2.0 / September 14, 2006
+## 1.2.0 / September 14, 2006
 
 * Add experimental 'shell' task [Jamis Buck]
 
@@ -684,7 +697,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Fix operator precedence problem in script for touching the revisions.log #3223 [jason.garber@emu.edu]
 
 
-== 1.1.0 / March 6th, 2006
+## 1.1.0 / March 6th, 2006
 
 * Simplify the generated capistrano.rake file, and make it easier to customize
 
@@ -697,12 +710,12 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Look for config/deploy.rb, capfile, and Capfile by default
 
 
-== 1.0.1 / February 20th, 2006
+## 1.0.1 / February 20th, 2006
 
 * Fix broken switchtower_invoke function in switchtower.rake (missing require statement)
 
 
-== 1.0.0 / Feburary 18th, 2006
+## 1.0.0 / Feburary 18th, 2006
 
 * Make CVS module's :local value default to "."
 
@@ -751,7 +764,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Set :actor key on SSH channel instances
 
 
-== 0.10.0 / January 2nd, 2006
+## 0.10.0 / January 2nd, 2006
 
 * Handle ssh password prompts like "someone's password:"
 
@@ -790,7 +803,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Require Net::SSH 1.0.5
 
 
-== 0.9.0 / October 18th, 2005
+## 0.9.0 / October 18th, 2005
 
 * Use process reaper instead of custom reap script for restarting
 

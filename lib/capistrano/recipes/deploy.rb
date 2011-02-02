@@ -1,3 +1,4 @@
+require 'benchmark'
 require 'yaml'
 require 'capistrano/recipes/deploy/scm'
 require 'capistrano/recipes/deploy/strategy'
@@ -51,13 +52,13 @@ _cset(:shared_path)       { File.join(deploy_to, shared_dir) }
 _cset(:current_path)      { File.join(deploy_to, current_dir) }
 _cset(:release_path)      { File.join(releases_path, release_name) }
 
-_cset(:releases)          { capture("ls -x #{releases_path}").split.sort }
+_cset(:releases)          { capture("ls -x #{releases_path}", :except => { :no_release => true }).split.sort }
 _cset(:current_release)   { File.join(releases_path, releases.last) }
 _cset(:previous_release)  { releases.length > 1 ? File.join(releases_path, releases[-2]) : nil }
 
-_cset(:current_revision)  { capture("cat #{current_path}/REVISION").chomp }
-_cset(:latest_revision)   { capture("cat #{current_release}/REVISION").chomp }
-_cset(:previous_revision) { capture("cat #{previous_release}/REVISION").chomp }
+_cset(:current_revision)  { capture("cat #{current_path}/REVISION",     :except => { :no_release => true }).chomp }
+_cset(:latest_revision)   { capture("cat #{current_release}/REVISION",  :except => { :no_release => true }).chomp }
+_cset(:previous_revision) { capture("cat #{previous_release}/REVISION", :except => { :no_release => true }).chomp if previous_release }
 
 _cset(:run_method)        { fetch(:use_sudo, true) ? :sudo : :run }
 
@@ -95,10 +96,14 @@ end
 # returns the command output as a string
 def run_locally(cmd)
   logger.trace "executing locally: #{cmd.inspect}" if logger
-  output_on_stdout = `#{cmd}`
+  output_on_stdout = nil
+  elapsed = Benchmark.realtime do
+    output_on_stdout = `#{cmd}`
+  end
   if $?.to_i > 0 # $? is command exit code (posix style)
     raise Capistrano::LocalArgumentError, "Command #{cmd} returned status code #{$?}"
   end
+  logger.trace "command finished in #{(elapsed * 1000).round}ms" if logger
   output_on_stdout
 end
 
@@ -224,7 +229,8 @@ namespace :deploy do
     public/stylesheets, and public/javascripts so that the times are \
     consistent (so that asset timestamping works).  This touch process \
     is only carried out if the :normalize_asset_timestamps variable is \
-    set to true, which is the default.
+    set to true, which is the default The asset directories can be overridden \
+    using the :public_children variable.
   DESC
   task :finalize_update, :except => { :no_release => true } do
     run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
@@ -242,7 +248,7 @@ namespace :deploy do
 
     if fetch(:normalize_asset_timestamps, true)
       stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
-      asset_paths = %w(images stylesheets javascripts).map { |p| "#{latest_release}/public/#{p}" }.join(" ")
+      asset_paths = fetch(:public_children, %w(images stylesheets javascripts)).map { |p| "#{latest_release}/public/#{p}" }.join(" ")
       run "find #{asset_paths} -exec touch -t #{stamp} {} ';'; true", :env => { "TZ" => "UTC" }
     end
   end

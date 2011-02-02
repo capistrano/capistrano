@@ -152,7 +152,7 @@ module Capistrano
           if variable(:git_enable_submodules)
             execute << "#{git} submodule #{verbose} init"
             execute << "#{git} submodule #{verbose} sync"
-            execute << "#{git} submodule #{verbose} update"
+            execute << "#{git} submodule #{verbose} update --recursive"
           end
 
           execute.join(" && ")

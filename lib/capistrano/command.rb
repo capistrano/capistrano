@@ -1,3 +1,4 @@
+require 'benchmark'
 require 'capistrano/errors'
 require 'capistrano/processable'
 
@@ -159,11 +160,13 @@ module Capistrano
     # fails (non-zero return code) on any of the hosts, this will raise a
     # Capistrano::CommandError.
     def process!
-      loop do
-        break unless process_iteration { @channels.any? { |ch| !ch[:closed] } }
+      elapsed = Benchmark.realtime do
+        loop do
+          break unless process_iteration { @channels.any? { |ch| !ch[:closed] } }
+        end
       end
 
-      logger.trace "command finished" if logger
+      logger.trace "command finished in #{(elapsed * 1000).round}ms" if logger
 
       if (failed = @channels.select { |ch| ch[:status] != 0 }).any?
         commands = failed.inject({}) { |map, ch| (map[ch[:command]] ||= []) << ch[:server]; map }
