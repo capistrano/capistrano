@@ -35,7 +35,7 @@ module Capistrano
 	# For rsync copy cache to work we need this implemented
 	def sync(revision, destination)
 	  if system("which rsync > /dev/null 2>&1")
-	    "rsync -a --delete #{repository}/ #{destination}/"
+	    "rsync -az --delete #{repository}/ #{destination}/"
 	  else 
 	    raise NotImplementedError, "Can't find rsync - `sync' is not implemented by #{self.class.name}"
 	  end
