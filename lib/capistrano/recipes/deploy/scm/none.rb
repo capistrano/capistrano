@@ -36,7 +36,7 @@ module Capistrano
 	def sync(revision, destination
 	   #TODO windows
 	   #TODO check rsync
-	   "rsync -a #{repository}/ #{destination}/"
+	   "rsync -a --delete #{repository}/ #{destination}/"
 	end
 
         # No versioning, so this just returns the argument, with no
