@@ -32,11 +32,13 @@ module Capistrano
 
         alias_method :export, :checkout
 
-	# For copy cache to work we need this implemented
-	def sync(revision, destination
-	   #TODO windows
-	   #TODO check rsync
-	   "rsync -a --delete #{repository}/ #{destination}/"
+	# For rsync copy cache to work we need this implemented
+	def sync(revision, destination)
+	  if system("which rsync > /dev/null 2>&1")
+	    "rsync -a --delete #{repository}/ #{destination}/"
+	  else 
+	    raise NotImplementedError, "Can't find rsync - `sync' is not implemented by #{self.class.name}"
+	  end
 	end
 
         # No versioning, so this just returns the argument, with no
