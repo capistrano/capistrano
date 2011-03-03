@@ -37,6 +37,12 @@ class RemoteDependencyTest < Test::Unit::TestCase
     assert_equal "gem `capistrano' 9.9 could not be found (host)", @dependency.message
   end
 
+  def test_should_use_standard_error_message_for_deb
+    setup_for_a_configuration_deb_run("dpkg", "1.15", false)
+    @dependency.deb("dpkg", "1.15")
+    assert_equal "package `dpkg' 1.15 could not be found (host)", @dependency.message
+  end
+
   def test_should_fail_if_directory_not_found
     setup_for_a_configuration_run("test -d /data", false)
     assert !@dependency.directory("/data").pass?
@@ -52,7 +58,7 @@ class RemoteDependencyTest < Test::Unit::TestCase
     assert !@dependency.file("/data/foo.txt").pass?
   end
 
-  def test_should_pas_if_file_found
+  def test_should_pass_if_file_found
     setup_for_a_configuration_run("test -f /data/foo.txt", true)
     assert @dependency.file("/data/foo.txt").pass?
   end
@@ -87,6 +93,16 @@ class RemoteDependencyTest < Test::Unit::TestCase
     assert @dependency.gem("capistrano", 9.9).pass?
   end
 
+  def test_should_pass_if_deb_found
+    setup_for_a_configuration_deb_run("dpkg", "1.15", true)
+    assert @dependency.deb("dpkg", "1.15").pass?
+  end
+
+  def test_should_fail_if_deb_not_found
+    setup_for_a_configuration_deb_run("dpkg", "1.15", false)
+    assert !@dependency.deb("dpkg", "1.15").pass?
+  end
+
   def test_should_use_alternative_message_if_provided
     setup_for_a_configuration_run("which cat", false)
     @dependency.command("cat").or("Sorry")
@@ -110,5 +126,10 @@ class RemoteDependencyTest < Test::Unit::TestCase
     @config.expects(:fetch).with(:gem_command, "gem").returns("gem")
     find_gem_cmd = "gem specification --version '#{version}' #{name} 2>&1 | awk 'BEGIN { s = 0 } /^name:/ { s = 1; exit }; END { if(s == 0) exit 1 }'"
     setup_for_a_configuration_run(find_gem_cmd, passing)
+  end
+
+  def setup_for_a_configuration_deb_run(name, version, passing)
+    find_deb_cmd = "dpkg -s #{name} | grep '^Version: #{version}'"
+    setup_for_a_configuration_run(find_deb_cmd, passing)
   end
 end
