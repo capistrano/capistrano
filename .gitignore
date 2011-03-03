@@ -10,3 +10,4 @@ capistrano.gemspec
 tags
 .bundle/*
 Gemfile.lock
+.rvmrc
