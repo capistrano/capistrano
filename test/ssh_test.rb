@@ -82,6 +82,15 @@ class SSHTest < Test::Unit::TestCase
     assert_equal success, Capistrano::SSH.connect(@server, :ssh_options => ssh_options, :user => "jamis", :port => 1235)
   end
 
+  def test_connect_with_verbose_option_should_set_verbose_option_on_ssh
+    Net::SSH.expects(:start).with(@server.host, "default-user", @options).returns(success = Object.new)
+    assert_equal success, Capistrano::SSH.connect(@server, :verbose => 0)
+    Net::SSH.expects(:start).with(@server.host, "default-user", @options.merge(:verbose => :debug)).returns(success = Object.new)
+    assert_equal success, Capistrano::SSH.connect(@server, :verbose => 1)
+    Net::SSH.expects(:start).with(@server.host, "default-user", @options.merge(:verbose => :debug)).returns(success = Object.new)
+    assert_equal success, Capistrano::SSH.connect(@server, :verbose => 2)
+  end
+
   def test_connect_with_ssh_options_should_see_server_options_override_ssh_options
     ssh_options = { :username => "JamisMan", :port => 8125, :forward_agent => true }
     server = server("jamis@capistrano:1235")

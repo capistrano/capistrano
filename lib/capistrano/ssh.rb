@@ -69,6 +69,8 @@ module Capistrano
       # Once we've loaded the config, we don't need Net::SSH to do it again.
       ssh_options[:config] = false
 
+      ssh_options[:verbose] = :debug if options[:verbose] && options[:verbose] > 0
+
       user = server.user || options[:user] || ssh_options[:username] ||
              ssh_options[:user] || ServerDefinition.default_user
       port = server.port || options[:port] || ssh_options[:port]
