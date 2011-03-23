@@ -36,11 +36,11 @@ class DeploySCMGitTest < Test::Unit::TestCase
     # With :scm_command
     git = "/opt/local/bin/git"
     @config[:scm_command] = git
-    assert_equal "#{git} clone -q git@somehost.com:project.git /var/www && cd /var/www && #{git} checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
+    assert_equal "#{git} clone -q git@somehost.com:project.git /var/www && cd /var/www && #{git} checkout -q -b deploy #{rev}", @source.checkout(rev, dest).gsub(/\s+/, ' ')
 
     # with submodules
     @config[:git_enable_submodules] = true
-    assert_equal "#{git} clone -q git@somehost.com:project.git /var/www && cd /var/www && #{git} checkout -q -b deploy #{rev} && #{git} submodule -q init && #{git} submodule -q sync && #{git} submodule -q update --recursive", @source.checkout(rev, dest)
+    assert_equal "#{git} clone -q git@somehost.com:project.git /var/www && cd /var/www && #{git} checkout -q -b deploy #{rev} && #{git} submodule -q init && #{git} submodule -q sync && #{git} submodule -q update --recursive", @source.checkout(rev, dest).gsub(/\s+/, ' ')
   end
 
   def test_checkout_with_verbose_should_not_use_q_switch
