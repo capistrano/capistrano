@@ -58,9 +58,10 @@ module Capistrano
               raise Capistrano::Error, "shell command failed with return code #{$?}"
             end
 
+            FileUtils.mkdir_p(destination)
+
             logger.debug "copying cache to deployment staging area #{destination}"
             Dir.chdir(copy_cache) do
-              FileUtils.mkdir_p(destination)
               queue = Dir.glob("*", File::FNM_DOTMATCH)
               while queue.any?
                 item = queue.shift
@@ -70,12 +71,12 @@ module Capistrano
                 next if copy_exclude.any? { |pattern| File.fnmatch(pattern, item) }
 
                 if File.symlink?(item)
-                  FileUtils.ln_s(File.readlink(File.join(copy_cache, item)), File.join(destination, item))
+                  FileUtils.ln_s(File.readlink(item), File.join(destination, item))
                 elsif File.directory?(item)
                   queue += Dir.glob("#{item}/*", File::FNM_DOTMATCH)
                   FileUtils.mkdir(File.join(destination, item))
                 else
-                  FileUtils.ln(File.join(copy_cache, item), File.join(destination, item))
+                  FileUtils.ln(item, File.join(destination, item))
                 end
               end
             end
@@ -99,12 +100,12 @@ module Capistrano
           File.open(File.join(destination, "REVISION"), "w") { |f| f.puts(revision) }
 
           logger.trace "compressing #{destination} to #{filename}"
-          Dir.chdir(tmpdir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
+          Dir.chdir(copy_dir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
 
           distribute!
         ensure
           FileUtils.rm filename rescue nil
-          FileUtils.rm_rf destination rescue nil
+          FileUtils.rm_rf destination unless copy_keep rescue nil
         end
 
         def check!
@@ -121,11 +122,15 @@ module Capistrano
         # is +true+, a default cache location will be returned.
         def copy_cache
           @copy_cache ||= configuration[:copy_cache] == true ?
-            File.join(Dir.tmpdir, configuration[:application]) :
-            configuration[:copy_cache]
+            File.expand_path(configuration[:application], Dir.tmpdir) :
+            File.expand_path(configuration[:copy_cache], Dir.pwd) rescue nil
         end
 
         private
+
+          def copy_keep
+            !!configuration[:copy_keep]
+          end
 
           # Specify patterns to exclude from the copy. This is only valid
           # when using a local cache.
@@ -136,7 +141,7 @@ module Capistrano
           # Returns the basename of the release_path, which will be used to
           # name the local copy and archive file.
           def destination
-            @destination ||= File.join(tmpdir, File.basename(configuration[:release_path]))
+            @destination ||= File.join(copy_dir, File.basename(configuration[:release_path]))
           end
 
           # Returns the value of the :copy_strategy variable, defaulting to
@@ -159,12 +164,12 @@ module Capistrano
           # Returns the name of the file that the source code will be
           # compressed to.
           def filename
-            @filename ||= File.join(tmpdir, "#{File.basename(destination)}.#{compression.extension}")
+            @filename ||= File.join(copy_dir, "#{File.basename(destination)}.#{compression.extension}")
           end
 
           # The directory to which the copy should be checked out
-          def tmpdir
-            @tmpdir ||= configuration[:copy_dir] || Dir.tmpdir
+          def copy_dir
+            @copy_dir ||= File.expand_path(configuration[:copy_dir] || Dir.tmpdir, Dir.pwd)
           end
 
           # The directory on the remote server to which the archive should be
