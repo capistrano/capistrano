@@ -140,11 +140,7 @@ module Capistrano
           end
 
           execute = []
-          if args.empty?
-            execute << "#{git} clone #{verbose} #{variable(:repository)} #{destination}"
-          else
-            execute << "#{git} clone #{verbose} #{args.join(' ')} #{variable(:repository)} #{destination}"
-          end
+          execute << "#{git} clone #{verbose} #{args.join(' ')} #{variable(:repository)} #{destination}"
 
           # checkout into a local branch rather than a detached HEAD
           execute << "cd #{destination} && #{git} checkout #{verbose} -b deploy #{revision}"
