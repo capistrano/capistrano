@@ -1,3 +1,8 @@
+## 2.5.21 / April 6 2011
+	
+	* Fixed to follow best-practice guidelines from Bundler (Ben Langfeld)
+	* No longer force a gemset for Capistrano development. (Ben Langfeld)
+
 ## 2.5.20 / March 16 2011
 
   * `deploy:migrations` will now always operate on the latest_release, not

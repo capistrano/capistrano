@@ -13,8 +13,6 @@ Gem::Specification.new do |s|
   s.description = %q{Capistrano is a utility and framework for executing commands in parallel on multiple remote machines, via SSH.}
   s.date        = %q{2011-03-22}
 
-  s.rubyforge_project = "testgem"
-
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
