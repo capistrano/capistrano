@@ -1,25 +1,25 @@
 ## Capistrano
 
-Capistrano is a utility and framework for executing commands in parallel on multiple remote machines, via SSH. It uses a simple DSL (borrowed in part from Rake, [[http://rake.rubyforge.org/]]) that allows you to define _tasks_, which may be applied to machines in certain roles. It also supports tunneling connections via some gateway machine to allow operations to be performed behind VPN's and firewalls.
+Capistrano is a utility and framework for executing commands in parallel on multiple remote machines, via SSH. It uses a simple DSL (borrowed in part from [Rake](http://rake.rubyforge.org/)) that allows you to define _tasks_, which may be applied to machines in certain roles. It also supports tunneling connections via some gateway machine to allow operations to be performed behind VPN's and firewalls.
 
 Capistrano was originally designed to simplify and automate deployment of web applications to distributed environments, and originally came bundled with a set of tasks designed for deploying Rails applications.
 
 ## Documentation
 
-* [[http://github.com/capistrano/capistrano/wiki/Documentation-v2.x]]
+* [http://github.com/capistrano/capistrano/wiki/Documentation-v2.x](http://github.com/capistrano/capistrano/wiki/Documentation-v2.x)
 
 ## DEPENDENCIES
 
-* [[Net::SSH|http://net-ssh.rubyforge.org]]
-* [[Net::SFTP|http://net-ssh.rubyforge.org]]
-* [[Net::SCP|http://net-ssh.rubyforge.org]]
-* [[Net::SSH::Gateway|http://net-ssh.rubyforge.org]]
-* [[HighLine|http://highline.rubyforge.org]]
+* [Net::SSH](http://net-ssh.rubyforge.org)
+* [Net::SFTP](http://net-ssh.rubyforge.org)
+* [Net::SCP](http://net-ssh.rubyforge.org)
+* [Net::SSH::Gateway](http://net-ssh.rubyforge.org)
+* [HighLine](http://highline.rubyforge.org)
 
 If you want to run the tests, you'll also need to have the following dependencies installed:
 
-* Echoe (for the Rakefile)
-* Mocha (http://mocha.rubyforge.org)
+* [Echoe](https://github.com/fauna/echoe)
+* [Mocha](http://mocha.rubyforge.org)
 
 ## ASSUMPTIONS
 
