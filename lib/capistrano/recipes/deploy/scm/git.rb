@@ -181,7 +181,7 @@ module Capistrano
           end
 
           # since we're in a local branch already, just reset to specified revision rather than merge
-          execute << "#{git} fetch #{verbose} #{remote} && #{git} reset #{verbose} --hard #{revision}"
+          execute << "#{git} fetch #{verbose} #{remote} && #{git} fetch --tags #{verbose} #{remote} && #{git} reset #{verbose} --hard #{revision}"
 
           if variable(:git_enable_submodules)
             execute << "#{git} submodule #{verbose} init"
