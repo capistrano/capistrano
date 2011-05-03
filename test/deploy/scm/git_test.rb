@@ -40,7 +40,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
 
     # with submodules
     @config[:git_enable_submodules] = true
-    assert_equal "#{git} clone -q git@somehost.com:project.git /var/www && cd /var/www && #{git} checkout -q -b deploy #{rev} && #{git} submodule -q init && #{git} submodule -q sync && #{git} submodule -q update --recursive", @source.checkout(rev, dest).gsub(/\s+/, ' ')
+    assert_equal "#{git} clone -q git@somehost.com:project.git /var/www && cd /var/www && #{git} checkout -q -b deploy #{rev} && #{git} submodule -q init && #{git} submodule -q sync && #{git} submodule -q update --init --recursive", @source.checkout(rev, dest).gsub(/\s+/, ' ')
   end
 
   def test_checkout_with_verbose_should_not_use_q_switch
@@ -101,7 +101,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
 
     # with submodules
     @config[:git_enable_submodules] = true
-    assert_equal "cd #{dest} && #{git} fetch -q origin && #{git} reset -q --hard #{rev} && #{git} submodule -q init && for mod in `#{git} submodule status | awk '{ print $2 }'`; do #{git} config -f .git/config submodule.${mod}.url `#{git} config -f .gitmodules --get submodule.${mod}.url` && echo Synced $mod; done && #{git} submodule -q sync && #{git} submodule -q update && #{git} clean -q -d -x -f", @source.sync(rev, dest)
+    assert_equal "cd #{dest} && #{git} fetch -q origin && #{git} reset -q --hard #{rev} && #{git} submodule -q init && for mod in `#{git} submodule status | awk '{ print $2 }'`; do #{git} config -f .git/config submodule.${mod}.url `#{git} config -f .gitmodules --get submodule.${mod}.url` && echo Synced $mod; done && #{git} submodule -q sync && #{git} submodule -q update --init --recursive && #{git} clean -q -d -x -f", @source.sync(rev, dest)
   end
 
   def test_sync_with_remote
@@ -138,7 +138,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
     @config[:git_enable_submodules] = true
     dest = "/var/www"
     rev = 'c2d9e79'
-    assert_equal "git clone -q -o username git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev} && git submodule -q init && git submodule -q sync && git submodule -q update --recursive", @source.checkout(rev, dest)
+    assert_equal "git clone -q -o username git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev} && git submodule -q init && git submodule -q sync && git submodule -q update --init --recursive", @source.checkout(rev, dest)
   end
 
   # Tests from base_test.rb, makin' sure we didn't break anything up there!
