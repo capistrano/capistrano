@@ -1,5 +1,6 @@
 require "utils"
 require 'capistrano/configuration/actions/invocation'
+require 'capistrano/configuration/actions/file_transfer'
 
 class ConfigurationActionsInvocationTest < Test::Unit::TestCase
   class MockConfig
@@ -7,9 +8,11 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     attr_accessor :debug
     attr_accessor :dry_run
 		attr_accessor :preserve_roles
+    attr_accessor :servers
 
     def initialize
       @options = {}
+      @servers = []
     end
 
     def [](*args)
@@ -24,13 +27,17 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
       @options.fetch(*args)
     end
 
+    def execute_on_servers(options = {})
+      yield @servers
+    end
+
     include Capistrano::Configuration::Actions::Invocation
+    include Capistrano::Configuration::Actions::FileTransfer
   end
 
   def setup
-    @config = MockConfig.new
+    @config = make_config
     @original_io_proc = MockConfig.default_io_proc
-    @config.stubs(:logger).returns(stub_everything)
   end
 
   def teardown
@@ -46,6 +53,15 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     @config.expects(:dry_run).returns(true)
     @config.expects(:execute_on_servers).never
     @config.run "ls", :foo => "bar"
+  end
+
+  def test_put_wont_transfer_if_dry_run
+    config = make_config
+    config.dry_run = true
+    config.servers = %w[ foo ]
+    config.expects(:sessions).returns({ 'foo-server' => 'bar' })
+    ::Capistrano::Transfer.expects(:process).never
+    config.put "foo", "bar", :mode => 0644
   end
 
   def test_add_default_command_options_should_return_bare_options_if_there_is_no_env_or_shell_specified
@@ -202,6 +218,12 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
   end
 
   private
+
+    def make_config
+      config = MockConfig.new
+      config.stubs(:logger).returns(stub_everything)
+      config
+    end
 
     def inspectable_proc
       Proc.new do |ch, stream, data|
