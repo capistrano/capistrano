@@ -4,7 +4,7 @@ require 'capistrano/configuration/actions/file_transfer'
 class ConfigurationActionsFileTransferTest < Test::Unit::TestCase
   class MockConfig
     include Capistrano::Configuration::Actions::FileTransfer
-    attr_accessor :sessions
+    attr_accessor :sessions, :dry_run
   end
 
   def setup

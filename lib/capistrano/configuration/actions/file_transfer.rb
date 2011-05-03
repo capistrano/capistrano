@@ -37,7 +37,11 @@ module Capistrano
         def transfer(direction, from, to, options={}, &block)
           execute_on_servers(options) do |servers|
             targets = servers.map { |s| sessions[s] }
-            Transfer.process(direction, from, to, targets, options.merge(:logger => logger), &block)
+            if dry_run
+              logger.debug "transfering: #{[direction, from, to, targets, options.merge(:logger => logger).inspect ] * ', '}"
+            else
+              Transfer.process(direction, from, to, targets, options.merge(:logger => logger), &block)
+            end
           end
         end
 
