@@ -24,13 +24,29 @@ module Capistrano
       class GatewayConnectionFactory #:nodoc:
         def initialize(gateway, options)
           @options = options
-          @options[:logger].debug "Creating gateway using #{[*gateway].join(', ')}" if @options[:logger]
           Thread.abort_on_exception = true
-          @gateways = [*gateway].collect { |g| ServerDefinition.new(g) }
-          tunnel = SSH.connection_strategy(@gateways[0], @options) do |host, user, connect_options|
+          @gateways = {}
+          if gateway.is_a?(Hash)
+            @options[:logger].debug "Creating multiple gateways using #{gateway.inspect}" if @options[:logger]
+            gateway.each do |gw, hosts|
+              gateway_connection = add_gateway(gw)
+              [*hosts].each do |host|
+                @gateways[:default] ||= gateway_connection
+                @gateways[host] = gateway_connection
+              end
+            end
+          else
+            @options[:logger].debug "Creating gateway using #{[*gateway].join(', ')}" if @options[:logger]
+            @gateways[:default] = add_gateway(gateway)
+          end
+        end
+
+        def add_gateway(gateway)
+          gateways = [*gateway].collect { |g| ServerDefinition.new(g) }
+          tunnel = SSH.connection_strategy(gateways[0], @options) do |host, user, connect_options|
             Net::SSH::Gateway.new(host, user, connect_options)
           end
-          @gateway = (@gateways[1..-1]).inject(tunnel) do |tunnel, destination|
+          (gateways[1..-1]).inject(tunnel) do |tunnel, destination|
             @options[:logger].debug "Creating tunnel to #{destination}" if @options[:logger]
             local_host = ServerDefinition.new("127.0.0.1", :user => destination.user, :port => tunnel.open(destination.host, (destination.port || 22)))
             SSH.connection_strategy(local_host, @options) do |host, user, connect_options|
@@ -41,10 +57,14 @@ module Capistrano
         
         def connect_to(server)
           @options[:logger].debug "establishing connection to `#{server}' via gateway" if @options[:logger]
-          local_host = ServerDefinition.new("127.0.0.1", :user => server.user, :port => @gateway.open(server.host, server.port || 22))
+          local_host = ServerDefinition.new("127.0.0.1", :user => server.user, :port => gateway_for(server).open(server.host, server.port || 22))
           session = SSH.connect(local_host, @options)
           session.xserver = server
           session
+        end
+
+        def gateway_for(server)
+          @gateways[server.host] || @gateways[:default]
         end
       end
 
@@ -87,7 +107,7 @@ module Capistrano
       def connection_factory
         @connection_factory ||= begin
           if exists?(:gateway)
-            logger.debug "establishing connection to gateway `#{fetch(:gateway)}'"
+            logger.debug "establishing connection to gateway `#{fetch(:gateway).inspect}'"
             GatewayConnectionFactory.new(fetch(:gateway), self)
           else
             DefaultConnectionFactory.new(self)

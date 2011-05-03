@@ -81,6 +81,15 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     assert_instance_of Capistrano::Configuration::Connections::GatewayConnectionFactory, @config.connection_factory
   end
   
+  def test_connection_factory_as_gateway_should_chain_gateways_if_gateway_variable_is_a_hash
+    @config.values[:gateway] = { ["j@gateway1", "k@gateway2"] => :default }
+    gateway1 = mock
+    Net::SSH::Gateway.expects(:new).with("gateway1", "j", :password => nil, :auth_methods => %w(publickey hostbased), :config => false).returns(gateway1)
+    gateway1.expects(:open).returns(65535)
+    Net::SSH::Gateway.expects(:new).with("127.0.0.1", "k", :port => 65535, :password => nil, :auth_methods => %w(publickey hostbased), :config => false).returns(stub_everything)
+    assert_instance_of Capistrano::Configuration::Connections::GatewayConnectionFactory, @config.connection_factory
+  end
+  
   def test_connection_factory_as_gateway_should_share_gateway_between_connections
     @config.values[:gateway] = "j@gateway"
     Net::SSH::Gateway.expects(:new).once.with("gateway", "j", :password => nil, :auth_methods => %w(publickey hostbased), :config => false).returns(stub_everything)
@@ -88,6 +97,26 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     assert_instance_of Capistrano::Configuration::Connections::GatewayConnectionFactory, @config.connection_factory
     @config.establish_connections_to(server("capistrano"))
     @config.establish_connections_to(server("another"))
+  end
+  
+  def test_connection_factory_as_gateway_should_share_gateway_between_like_connections_if_gateway_variable_is_a_hash
+    @config.values[:gateway] = { "j@gateway" => [ "capistrano", "another"] }
+    Net::SSH::Gateway.expects(:new).once.with("gateway", "j", :password => nil, :auth_methods => %w(publickey hostbased), :config => false).returns(stub_everything)
+    Capistrano::SSH.stubs(:connect).returns(stub_everything)
+    assert_instance_of Capistrano::Configuration::Connections::GatewayConnectionFactory, @config.connection_factory
+    @config.establish_connections_to(server("capistrano"))
+    @config.establish_connections_to(server("another"))
+  end
+  
+  def test_connection_factory_as_gateways_should_not_share_gateway_between_unlike_connections_if_gateway_variable_is_a_hash
+    @config.values[:gateway] = { "j@gateway" => [ "capistrano", "another"], "k@gateway2" => "yafhost" }
+    Net::SSH::Gateway.expects(:new).once.with("gateway", "j", :password => nil, :auth_methods => %w(publickey hostbased), :config => false).returns(stub_everything)
+    Net::SSH::Gateway.expects(:new).once.with("gateway2", "k", :password => nil, :auth_methods => %w(publickey hostbased), :config => false).returns(stub_everything)
+    Capistrano::SSH.stubs(:connect).returns(stub_everything)
+    assert_instance_of Capistrano::Configuration::Connections::GatewayConnectionFactory, @config.connection_factory
+    @config.establish_connections_to(server("capistrano"))
+    @config.establish_connections_to(server("another"))
+    @config.establish_connections_to(server("yafhost"))
   end
 
   def test_establish_connections_to_should_accept_a_single_nonarray_parameter
