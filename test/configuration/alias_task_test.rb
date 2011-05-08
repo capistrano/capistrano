@@ -57,6 +57,16 @@ class AliasTaskTest < Test::Unit::TestCase
     assert_equal task.on_error, new_task.on_error
   end
 
+  def test_aliased_task_should_preserve_max_hosts
+    @config.task(:foo, :max_hosts => 5) { 42 }
+    @config.alias_task 'new_foo', 'foo'
+
+    task = @config.find_task('foo')
+    new_task = @config.find_task('new_foo')
+
+    assert_equal task.max_hosts, new_task.max_hosts
+  end
+
   def test_raise_exception_when_task_doesnt_exist
     assert_raises(Capistrano::NoSuchTaskError) { @config.alias_task 'non_existant_task', 'fail_miserably' }
   end

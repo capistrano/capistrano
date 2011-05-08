@@ -15,6 +15,7 @@ module Capistrano
         options = {}
         options[:desc] = task.description
         options[:on_error] = task.on_error
+        options[:max_hosts] = task.max_hosts
 
         task(new_name, options, &task.body)
       end
