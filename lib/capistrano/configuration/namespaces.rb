@@ -189,6 +189,7 @@ module Capistrano
             end
           end
 
+          include Capistrano::Configuration::AliasTask
           include Capistrano::Configuration::Namespaces
           undef :desc, :next_description
         end
