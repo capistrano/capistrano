@@ -90,4 +90,21 @@ class AliasTaskTest < Test::Unit::TestCase
 
     assert_raises(ArgumentError) { @config.alias_task mock('x'), :foo }
   end
+
+  def test_should_include_namespace
+    @config.namespace(:outer) do
+      task(:foo) { 42 }
+      alias_task 'new_foo', 'foo'
+
+      namespace(:inner) do
+        task(:foo) { 43 }
+        alias_task 'new_foo', 'foo'
+      end
+    end
+
+    assert_equal 42, @config.find_and_execute_task('outer:new_foo')
+    assert_equal 42, @config.find_and_execute_task('outer:foo')
+    assert_equal 43, @config.find_and_execute_task('outer:inner:new_foo')
+    assert_equal 43, @config.find_and_execute_task('outer:inner:foo')
+  end
 end
