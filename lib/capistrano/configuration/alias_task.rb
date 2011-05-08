@@ -14,6 +14,7 @@ module Capistrano
 
         options = {}
         options[:desc] = task.description
+        options[:on_error] = task.on_error
 
         task(new_name, options, &task.body)
       end
