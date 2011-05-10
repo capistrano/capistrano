@@ -199,8 +199,8 @@ module Capistrano
 
         # Returns a string of diffs between two revisions
         def diff(from, to=nil)
-          from << "..#{to}" if to
-          scm :diff, from
+          return scm :diff, from unless to
+          scm :diff, "#{from}..#{to}"
         end
 
         # Returns a log of changes between the two revisions (inclusive).
