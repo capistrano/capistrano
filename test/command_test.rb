@@ -226,11 +226,25 @@ class CommandTest < Test::Unit::TestCase
     Capistrano::Command.process("ls -l", %w(a b c), :foo => "bar")
   end
 
-  def test_process_with_host_placeholder_should_substitute_placeholder_with_each_host
+  def test_process_with_host_placeholder_should_substitute_host_placeholder_with_each_host
     session = setup_for_extracting_channel_action do |ch|
       ch.expects(:exec).with(%(sh -c 'echo capistrano'))
     end
     Capistrano::Command.new("echo $CAPISTRANO:HOST$", [session])
+  end
+
+  class MockConfig
+    include Capistrano::Configuration::Roles
+  end
+  
+  def test_hostroles_substitution
+    @config = MockConfig.new
+    @config.server "capistrano", :db, :worker
+    server = @config.roles[:db].servers.first
+    channel = {:server => server, :host => 'capistrano'}
+    tree = Capistrano::Command::Tree.new(@config) { |t| t.else("echo $CAPISTRANO:HOSTROLES$") }
+    result = Capistrano::Command.new(tree, []).send(:replace_placeholders, "echo $CAPISTRANO:HOSTROLES$", channel)
+    assert result == "echo db,worker" || result == "echo worker,db"
   end
 
   def test_process_with_unknown_placeholder_should_not_replace_placeholder
