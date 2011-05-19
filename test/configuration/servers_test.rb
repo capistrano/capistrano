@@ -131,6 +131,14 @@ class ConfigurationServersTest < Test::Unit::TestCase
     ENV.delete('HOSTFILTER')
   end
 
+  def test_task_with_hostrolefilter_environment_variable_should_apply_only_to_those_hosts
+    ENV['HOSTROLEFILTER'] = "web"
+    task = new_task(:testing)
+    assert_equal %w(web1 web2).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
+  ensure
+    ENV.delete('HOSTROLEFILTER')
+  end
+
   def test_task_with_only_should_apply_only_to_matching_tasks
     task = new_task(:testing, @config, :roles => :app, :only => { :primary => true })
     assert_equal %w(app1), @config.find_servers_for_task(task).map { |s| s.host }

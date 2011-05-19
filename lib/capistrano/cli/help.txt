@@ -74,5 +74,8 @@ The following options are understood:
   <%= color 'HOSTFILTER', :bold %>
 	Execute tasks against this comma-separated list of host, but only if the host has the proper role for the task.
 
+  <%= color 'HOSTROLEFILTER', :bold %>
+	Execute tasks against the hosts in this comma-separated list of roles, but only if the host has the proper role for the task.
+
   <%= color 'ROLES', :bold %>
 	Execute tasks against this comma-separated list of roles.  Hosts which do not have the right roles will be skipped.
