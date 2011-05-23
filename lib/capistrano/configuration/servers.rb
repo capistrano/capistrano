@@ -42,8 +42,8 @@ module Capistrano
       #   # returns the given hosts, translated to ServerDefinition objects
       #   servers = find_servers :hosts => "jamis@example.host.com"
       def find_servers(options={})
-        return [] if options.key?(:hosts) && (options[:hosts].nil? || options[:hosts] == [])
-        return [] if options.key?(:roles) && (options[:roles].nil? || options[:roles] == [])
+        return [] if options.key?(:hosts) && (options[:hosts].nil? || [] == options[:hosts])
+        return [] if options.key?(:roles) && (options[:roles].nil? || [] == options[:roles])
         
         hosts  = server_list_from(ENV['HOSTS'] || options[:hosts])
         

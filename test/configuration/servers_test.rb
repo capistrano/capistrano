@@ -167,11 +167,17 @@ class ConfigurationServersTest < Test::Unit::TestCase
   def test_find_servers_with_hosts_nil_or_empty
     assert_equal [], @config.find_servers(:hosts => nil)
     assert_equal [], @config.find_servers(:hosts => [])
+    result = @config.find_servers(:hosts => @config.find_servers(:roles => :report)[0])
+    assert_equal 1, result.size
+    result = @config.find_servers(:hosts => "app1")
+    assert_equal 1, result.size
   end
   
   def test_find_servers_with_rolees_nil_or_empty
     assert_equal [], @config.find_servers(:roles => nil)
     assert_equal [], @config.find_servers(:roles => [])
+    result = @config.find_servers(:roles => :report)
+    assert_equal 1, result.size
   end
   
 end
