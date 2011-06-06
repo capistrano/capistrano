@@ -6,5 +6,7 @@ pkg
 *.gem
 *.sh
 .DS_Store
+tags
 .bundle/*
 Gemfile.lock
+.rvmrc
