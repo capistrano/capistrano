@@ -57,6 +57,32 @@ module Capistrano
         args.each { |host| roles[which] << ServerDefinition.new(host, options) }
       end
 
+      # Reset an existing role and make its associated servers list empty.
+      # (If the role does not exist, it creates the role and makes it empty)
+      #
+      # Usage:
+      #
+      #   reset_role :db
+      #
+      # This is helpful when toggling calling a task that contains calls to
+      # other tasks that need to be executed on different servers
+      # Example:
+      #
+      #  task :do_what_i_want do
+      #     reset_role :db
+      #     role :db, 'stagedb1'
+      #     dump_db
+      #     reset_role :db
+      #     role :db, 'devdb1'
+      #     dump_db
+      #  end
+      #
+      def reset_role(which)
+        which = which.to_sym
+
+        roles[which] = Role.new
+      end
+
       # An alternative way to associate servers with roles. If you have a server
       # that participates in multiple roles, this can be a DRYer way to describe
       # the relationships. Pass the host definition as the first parameter, and
