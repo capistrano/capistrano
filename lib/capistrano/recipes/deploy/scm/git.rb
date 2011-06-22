@@ -148,7 +148,11 @@ module Capistrano
           if variable(:git_enable_submodules)
             execute << "#{git} submodule #{verbose} init"
             execute << "#{git} submodule #{verbose} sync"
-            execute << "#{git} submodule #{verbose} update --init --recursive"
+            if false == variable(:git_submodules_recursive)
+              execute << "#{git} submodule #{verbose} update --init"
+            else
+              execute << "#{git} submodule #{verbose} update --init --recursive"
+            end
           end
 
           execute.join(" && ")
@@ -187,7 +191,11 @@ module Capistrano
             execute << "#{git} submodule #{verbose} init"
             execute << "for mod in `#{git} submodule status | awk '{ print $2 }'`; do #{git} config -f .git/config submodule.${mod}.url `#{git} config -f .gitmodules --get submodule.${mod}.url` && echo Synced $mod; done"
             execute << "#{git} submodule #{verbose} sync"
-            execute << "#{git} submodule #{verbose} update --init --recursive"
+            if false == variable(:git_submodules_recursive)
+              execute << "#{git} submodule #{verbose} update --init"
+            else
+              execute << "#{git} submodule #{verbose} update --init --recursive"
+            end
           end
 
           # Make sure there's nothing else lying around in the repository (for
