@@ -153,7 +153,7 @@ module Capistrano
           servers = find_servers_for_task(task, options)
 
           if servers.empty?
-            if ENV['HOSTFILTER']
+            if ENV['HOSTFILTER'] || task.options.merge(options)[:on_no_matching_servers] == :continue
               logger.info "skipping `#{task.fully_qualified_name}' because no servers matched"
               return
             else
@@ -167,7 +167,10 @@ module Capistrano
           end
         else
           servers = find_servers(options)
-          raise Capistrano::NoMatchingServersError, "no servers found to match #{options.inspect}" if servers.empty?
+          if servers.empty?
+            raise Capistrano::NoMatchingServersError, "no servers found to match #{options.inspect}" if options[:on_no_matching_servers] != :continue
+            return
+          end
         end
 
         servers = [servers.first] if options[:once]

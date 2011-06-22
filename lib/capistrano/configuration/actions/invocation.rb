@@ -111,6 +111,9 @@ module Capistrano
         # * :except - specifies a condition limiting which hosts will be selected to
         #   run the command. This is the inverse of :only (hosts that do _not_ match
         #   the condition will be selected).
+        # * :on_no_matching_servers - if :continue, will continue to execute tasks if
+        #   no matching servers are found for the host criteria. The default is to raise
+        #   a NoMatchingServersError exception.
         # * :once - if true, only the first matching server will be selected. The default
         #   is false (all matching servers will be selected).
         # * :max_hosts - specifies the maximum number of hosts that should be selected

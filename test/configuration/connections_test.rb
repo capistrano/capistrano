@@ -189,6 +189,11 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     assert_raises(Capistrano::NoMatchingServersError) { @config.execute_on_servers(:a => :b, :c => :d) { |list| } }
   end
 
+  def test_execute_on_servers_without_current_task_should_not_raise_error_if_no_matching_servers_and_continue_on_no_matching_servers
+    @config.expects(:find_servers).with(:a => :b, :c => :d, :on_no_matching_servers => :continue).returns([])
+    assert_nothing_raised { @config.execute_on_servers(:a => :b, :c => :d, :on_no_matching_servers => :continue) { |list| } }
+  end
+
   def test_execute_on_servers_should_raise_an_error_if_the_current_task_has_no_matching_servers_by_default
     @config.current_task = mock_task
     @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([])
@@ -198,7 +203,27 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
       end
     end
   end
-  
+
+  def test_execute_on_servers_should_not_raise_an_error_if_the_current_task_has_no_matching_servers_by_default_and_continue_on_no_matching_servers
+    @config.current_task = mock_task(:on_no_matching_servers => :continue)
+    @config.expects(:find_servers_for_task).with(@config.current_task, {}).returns([])
+    assert_nothing_raised do
+      @config.execute_on_servers do
+        flunk "should not get here"
+      end
+    end
+  end
+
+  def test_execute_on_servers_should_not_raise_an_error_if_the_current_task_has_no_matching_servers_by_default_and_command_continues_on_no_matching_servers
+    @config.current_task = mock_task
+    @config.expects(:find_servers_for_task).with(@config.current_task, :on_no_matching_servers => :continue).returns([])
+    assert_nothing_raised do
+      @config.execute_on_servers(:on_no_matching_servers => :continue) do
+        flunk "should not get here"
+      end
+    end
+  end
+
   def test_execute_on_servers_should_determine_server_list_from_active_task
     assert @config.sessions.empty?
     @config.current_task = mock_task
