@@ -28,7 +28,9 @@ _cset :deploy_via, :checkout
 _cset(:deploy_to) { "/u/apps/#{application}" }
 _cset(:revision)  { source.head }
 
-# Maintenance base filename
+_cset :rails_env, "production"
+_cset :rake, "rake"
+
 _cset :maintenance_basename, "maintenance"
 
 # =========================================================================
@@ -384,8 +386,6 @@ namespace :deploy do
       set :migrate_target, :latest
   DESC
   task :migrate, :roles => :db, :only => { :primary => true } do
-    rake = fetch(:rake, "rake")
-    rails_env = fetch(:rails_env, "production")
     migrate_env = fetch(:migrate_env, "")
     migrate_target = fetch(:migrate_target, :latest)
 
@@ -395,7 +395,7 @@ namespace :deploy do
       else raise ArgumentError, "unknown migration target #{migrate_target.inspect}"
       end
 
-    run "cd #{directory}; #{rake} RAILS_ENV=#{rails_env} #{migrate_env} db:migrate"
+    run "cd #{directory} && #{rake} RAILS_ENV=#{rails_env} #{migrate_env} db:migrate"
   end
 
   desc <<-DESC
