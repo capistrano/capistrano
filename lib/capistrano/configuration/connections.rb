@@ -138,8 +138,11 @@ module Capistrano
       # Destroys sessions for each server in the list.
       def teardown_connections_to(servers)
         servers.each do |server|
-          sessions[server].close
-          sessions.delete(server)
+          begin
+            sessions.delete(server).close
+          rescue IOError
+            # the TCP connection is already dead
+          end
         end
       end
 
