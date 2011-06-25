@@ -355,6 +355,24 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
     assert_equal 2, block_called
   end
   
+  def test_execute_on_servers_should_cope_with_already_dropped_connections_when_attempting_to_close_them
+    cap1 = server("cap1")
+    cap2 = server("cap2")
+    connection1 = mock()
+    connection2 = mock()
+    connection3 = mock()
+    connection4 = mock()
+    connection1.expects(:close).raises(IOError)
+    connection2.expects(:close)
+    connection3.expects(:close)
+    connection4.expects(:close)
+    @config.current_task = mock_task(:max_hosts => 1)
+    @config.expects(:find_servers_for_task).times(2).with(@config.current_task, {}).returns([cap1, cap2])
+    Capistrano::SSH.expects(:connect).times(4).returns(connection1).then.returns(connection2).then.returns(connection3).then.returns(connection4)
+    @config.execute_on_servers {}
+    @config.execute_on_servers {}
+  end
+  
   def test_connect_should_honor_once_option
     assert @config.sessions.empty?
     @config.current_task = mock_task
