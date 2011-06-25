@@ -266,7 +266,7 @@ module Capistrano
           # If verbose output is requested, return nil, otherwise return the
           # command-line switch for "quiet" ("-q").
           def verbose
-            variable(:scm_verbose) ? nil : "-q"
+            variable(:scm_verbose) ? "-q" : nil
           end
       end
     end
