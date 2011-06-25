@@ -3,16 +3,14 @@ module Capistrano
 
   class Version
 
-    CURRENT = File.read(File.dirname(__FILE__) + '/../../VERSION')
-
-    MAJOR, MINOR, TINY = CURRENT.scanf('%d.%d.%d')
-
-    STRING = CURRENT.to_s
+    MAJOR = 2
+    MINOR = 6
+    PATCH = 1
 
     def self.to_s
-      CURRENT
+      "#{MAJOR}.#{MINOR}.#{PATCH}.pre"
     end
-    
+
   end
 
 end

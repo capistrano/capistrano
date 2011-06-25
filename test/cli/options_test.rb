@@ -198,7 +198,7 @@ class CLIOptionsTest < Test::Unit::TestCase
 
   def test_parse_options_with_V_should_show_version_and_exit
     @cli.args << "-V"
-    @cli.expects(:puts).with { |s| s.include?(Capistrano::Version::STRING) }
+    @cli.expects(:puts).with { |s| s.include?(Capistrano::Version.to_s) }
     @cli.expects(:exit).raises(ExitException)
     assert_raises(ExitException) { @cli.parse_options! }
   end

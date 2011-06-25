@@ -1,3 +1,29 @@
+## 2.6.1 / June 25 2011
+
+A short maintenance release, Some fixes to the verbose flag inside the Git SCM
+as well as another argument for the (internal) `variable()` command, offering
+a default. The Git SCM is now verbose by default, but can be disabled by
+setting `:scm_verbose` to false.
+
+There has been an additional method added to string, within the context of the
+test suite, I'm always sketchy about adding additional methods to core
+classes, but it's a short term fix until I make the time to patch the test
+suite not to compare strings literally. The method is `String#compact`, and is
+implemented simply as `self.gsub(/\s+/, ' ')`.
+
+Here's the run-down of changes, and their committers, as always - a huge thank
+you to the community that continues to drive Capistrano's development.
+
+* `deploy:setup` now respects `:group_writable` (Mathew Davies)
+* Fixes to `:scm_verbose` for the Git module (defaults to On.) (Daniel Duvall)
+* Will now copy hidden files in the project's root into the release
+directory (Mark Jaquith)
+* Now handles closing already-dead connections in a sane way (does not raise
+an exception) (Will Bryant)
+* Renamed `Capistrano::VERSION::TINY` to `Capistrano::VERSION::PATCH` (Lee
+Hambley)
+* Removed the `VERSION` file (Lee Hambley)
+
 ## 2.6.0 / May 3 2011
 
 A rather large release, feature-version bump because of the new
