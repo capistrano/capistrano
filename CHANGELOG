@@ -14,8 +14,8 @@ implemented simply as `self.gsub(/\s+/, ' ')`.
 Here's the run-down of changes, and their committers, as always - a huge thank
 you to the community that continues to drive Capistrano's development.
 
-* `deploy:setup` now respects `:group_writable` (Mathew Davies)
-* Fixes to `:scm_verbose` for the Git module (defaults to On.) (Daniel Duvall)
+* `deploy:setup` now respects `:group_writable` (Daniel Duvall)
+* Fixes to `:scm_verbose` for the Git module (defaults to On.) (Matthew Davies)
 * Will now copy hidden files in the project's root into the release
 directory (Mark Jaquith)
 * Now handles closing already-dead connections in a sane way (does not raise
