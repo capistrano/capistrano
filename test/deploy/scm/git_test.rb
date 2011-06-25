@@ -31,7 +31,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
     @config[:repository] = "git@somehost.com:project.git"
     dest = "/var/www"
     rev = 'c2d9e79'
-    assert_equal "git clone -q  git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
+    assert_equal "git clone -q git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
 
     # With :scm_command
     git = "/opt/local/bin/git"
@@ -68,7 +68,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
     end
     assert_equal "d11006102c07c94e5d54dd0ee63dca825c93ed61", revision
   end
-  
+
   def test_query_revision_has_whitespace
     revision = @source.query_revision('HEAD') do |o|
       assert_equal "git ls-remote . HEAD", o

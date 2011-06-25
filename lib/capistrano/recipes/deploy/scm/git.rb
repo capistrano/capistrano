@@ -144,16 +144,16 @@ module Capistrano
 
           # checkout into a local branch rather than a detached HEAD
           execute << "cd #{destination} && #{git} checkout #{verbose} -b deploy #{revision}"
-          
+
           if variable(:git_enable_submodules)
             execute << "#{git} submodule #{verbose} init"
             execute << "#{git} submodule #{verbose} sync"
             execute << "#{git} submodule #{verbose} update --init --recursive"
           end
 
-          execute.join(" && ")
+          execute.join(" && ").compact
         end
-        
+
         # An expensive export. Performs a checkout as above, then
         # removes the repo.
         def export(revision, destination)
@@ -266,7 +266,7 @@ module Capistrano
           # If verbose output is requested, return nil, otherwise return the
           # command-line switch for "quiet" ("-q").
           def verbose
-            variable(:scm_verbose) ? "-q" : nil
+            variable(:scm_verbose, true) ? "-q" : nil
           end
       end
     end

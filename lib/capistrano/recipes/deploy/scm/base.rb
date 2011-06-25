@@ -161,11 +161,11 @@ module Capistrano
 
           # A helper for accessing variable values, which takes into
           # consideration the current mode ("normal" vs. "local").
-          def variable(name)
+          def variable(name, default = nil)
             if local? && configuration.exists?("local_#{name}".to_sym)
-              return configuration["local_#{name}".to_sym]
+              return configuration["local_#{name}".to_sym] || default
             else
-              configuration[name]
+              configuration[name] || default
             end
           end
 
