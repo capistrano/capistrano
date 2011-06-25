@@ -56,7 +56,7 @@ _cset(:current_path)      { File.join(deploy_to, current_dir) }
 _cset(:release_path)      { File.join(releases_path, release_name) }
 
 _cset(:releases)          { capture("ls -x #{releases_path}", :except => { :no_release => true }).split.sort }
-_cset(:current_release)   { File.join(releases_path, releases.last) }
+_cset(:current_release)   { releases.length > 0 ? File.join(releases_path, releases.last) : nil }
 _cset(:previous_release)  { releases.length > 1 ? File.join(releases_path, releases[-2]) : nil }
 
 _cset(:current_revision)  { capture("cat #{current_path}/REVISION",     :except => { :no_release => true }).chomp }
