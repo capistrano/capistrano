@@ -16,13 +16,9 @@ module Capistrano
         end
 
         task = find_task(old_name) or raise NoSuchTaskError, "the task `#{old_name}' does not exist"
+        task.name = new_name
 
-        options = {}
-        options[:desc] = task.description
-        options[:on_error] = task.on_error
-        options[:max_hosts] = task.max_hosts
-
-        task(new_name, options, &task.body)
+        define_task(task)
       end
     end
   end
