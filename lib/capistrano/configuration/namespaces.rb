@@ -97,11 +97,19 @@ module Capistrano
           raise ArgumentError, "defining a task named `#{name}' would shadow an existing #{thing} with that name"
         end
 
-        tasks[name] = TaskDefinition.new(name, self, {:desc => next_description(:reset)}.merge(options), &block)
+
+        task = TaskDefinition.new(name, self, {:desc => next_description(:reset)}.merge(options), &block)
+
+        define_task(task)
+      end
+
+      def define_task(task)
+        task_already_defined = tasks.key?(task.name)
+        tasks[task.name] = task
 
         if !task_already_defined
           metaclass = class << self; self; end
-          metaclass.send(:define_method, name) { execute_task(tasks[name]) }
+          metaclass.send(:define_method, task.name) { execute_task(tasks[task.name]) }
         end
       end
 
