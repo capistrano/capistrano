@@ -104,13 +104,10 @@ module Capistrano
       end
 
       def define_task(task)
-        task_already_defined = tasks.key?(task.name)
         tasks[task.name] = task
 
-        if !task_already_defined
-          metaclass = class << self; self; end
-          metaclass.send(:define_method, task.name) { execute_task(tasks[task.name]) }
-        end
+        metaclass = class << self; self; end
+        metaclass.send(:define_method, task.name) { execute_task(tasks[task.name]) }
       end
 
       # Find the task with the given name, where name is the fully-qualified
