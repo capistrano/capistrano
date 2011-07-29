@@ -87,6 +87,7 @@ module Capistrano
       begin
         connection_options = ssh_options.merge(
           :password => password_value,
+          :passphrase => options[:passphrase],
           :auth_methods => ssh_options[:auth_methods] || methods.shift
         )
 
