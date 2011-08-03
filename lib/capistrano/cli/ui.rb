@@ -22,7 +22,7 @@ module Capistrano
         def password_prompt(prompt="Password: ")
           ui.ask(prompt) { |q| q.echo = false }
         end
-        
+
         # Debug mode prompt
         def debug_prompt(cmd)
           ui.say("Preparing to execute command: #{cmd}")

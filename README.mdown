@@ -1,8 +1,15 @@
 ## Capistrano
 
-Capistrano is a utility and framework for executing commands in parallel on multiple remote machines, via SSH. It uses a simple DSL (borrowed in part from [Rake](http://rake.rubyforge.org/)) that allows you to define _tasks_, which may be applied to machines in certain roles. It also supports tunneling connections via some gateway machine to allow operations to be performed behind VPN's and firewalls.
+Capistrano is a utility and framework for executing commands in parallel on
+multiple remote machines, via SSH. It uses a simple DSL (borrowed in part from
+[Rake](http://rake.rubyforge.org/)) that allows you to define _tasks_, which may
+be applied to machines in certain roles. It also supports tunneling connections
+via some gateway machine to allow operations to be performed behind VPN's and
+firewalls.
 
-Capistrano was originally designed to simplify and automate deployment of web applications to distributed environments, and originally came bundled with a set of tasks designed for deploying Rails applications.
+Capistrano was originally designed to simplify and automate deployment of web
+applications to distributed environments, and originally came bundled with a set
+of tasks designed for deploying Rails applications.
 
 ## Documentation
 
@@ -16,17 +23,18 @@ Capistrano was originally designed to simplify and automate deployment of web ap
 * [Net::SSH::Gateway](http://net-ssh.rubyforge.org)
 * [HighLine](http://highline.rubyforge.org)
 
-If you want to run the tests, you'll also need to have the following dependencies installed:
-
-* [Echoe](https://github.com/fauna/echoe)
-* [Mocha](http://mocha.rubyforge.org)
+If you want to run the tests, you'll also need to install the dependencies with
+Bundler, see the `Gemfile` within .
 
 ## ASSUMPTIONS
 
-Capistrano is "opinionated software", which means it has very firm ideas about how things ought to be done, and tries to force those ideas on you. Some of the assumptions behind these opinions are:
+Capistrano is "opinionated software", which means it has very firm ideas about
+how things ought to be done, and tries to force those ideas on you. Some of the
+assumptions behind these opinions are:
 
 * You are using SSH to access the remote servers.
-* You either have the same password to all target machines, or you have public keys in place to allow passwordless access to them.
+* You either have the same password to all target machines, or you have public
+	keys in place to allow passwordless access to them.
 
 Do not expect these assumptions to change.
 
@@ -39,9 +47,12 @@ In general, you'll use Capistrano as follows:
 
 Use the `cap` script as follows:
 
-    cap sometask
+		cap sometask
 
-By default, the script will look for a file called one of `capfile` or `Capfile`. The `someaction` text indicates which task to execute. You can do "cap -h" to see all the available options and "cap -T" to see all the available tasks.
+By default, the script will look for a file called one of `capfile` or
+`Capfile`. The `someaction` text indicates which task to execute. You can do
+"cap -h" to see all the available options and "cap -T" to see all the available
+tasks.
 
 ## LICENSE:
 

@@ -1,4 +1,4 @@
-require "utils"
+require 'utils'
 require 'capistrano/configuration/loading'
 
 class ConfigurationLoadingTest < Test::Unit::TestCase
@@ -106,7 +106,7 @@ class ConfigurationLoadingTest < Test::Unit::TestCase
 
   def test_require_from_config_should_load_file_in_config_scope
     assert_nothing_raised do
-      @config.require "#{File.dirname(__FILE__)}/../fixtures/custom"
+      @config.require "#{File.expand_path(File.dirname(__FILE__))}/../fixtures/custom"
     end
     assert_equal :custom, @config.ping
   end
@@ -118,14 +118,14 @@ class ConfigurationLoadingTest < Test::Unit::TestCase
   end
 
   def test_require_from_config_should_return_false_when_called_a_second_time_with_same_args
-    assert @config.require("#{File.dirname(__FILE__)}/../fixtures/custom")
-    assert_equal false, @config.require("#{File.dirname(__FILE__)}/../fixtures/custom")
+    assert @config.require("#{File.expand_path(File.dirname(__FILE__))}/../fixtures/custom")
+    assert_equal false, @config.require("#{File.expand_path(File.dirname(__FILE__))}/../fixtures/custom")
   end
-  
+
   def test_require_in_multiple_instances_should_load_recipes_in_each_instance
     config2 = MockConfig.new
-    @config.require "#{File.dirname(__FILE__)}/../fixtures/custom"
-    config2.require "#{File.dirname(__FILE__)}/../fixtures/custom"
+    @config.require "#{File.expand_path(File.dirname(__FILE__))}/../fixtures/custom"
+    config2.require "#{File.expand_path(File.dirname(__FILE__))}/../fixtures/custom"
     assert_equal :custom, @config.ping
     assert_equal :custom, config2.ping
   end

@@ -214,7 +214,9 @@ class CommandTest < Test::Unit::TestCase
                 mock_session(new_channel[10]),
                 mock_session(new_channel[7])]
     cmd = Capistrano::Command.new("ls", sessions)
-    assert_nothing_raised { cmd.process! }
+    assert_nothing_raised do
+      cmd.process!
+    end
   end
 
   def test_process_should_instantiate_command_and_process!
@@ -240,11 +242,12 @@ class CommandTest < Test::Unit::TestCase
   private
 
     def mock_session(channel=nil)
-      stub('session', :open_channel => channel,
-        :preprocess => true,
-        :postprocess => true,
-        :listeners => {},
-        :xserver => server("capistrano"))
+      stub('session',
+           :open_channel => channel,
+           :preprocess   => true,
+           :postprocess  => true,
+           :listeners    => {},
+           :xserver      => server("capistrano"))
     end
 
     class MockChannel < Hash

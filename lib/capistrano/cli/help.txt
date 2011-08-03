@@ -33,7 +33,7 @@ The following options are understood:
 
   <%= color '-n, --dry-run', :bold %>
 	Causes Capistrano to simply display each remote command, without executing it. In this sense it is similar to --debug, but without the prompt. Note that commands executed locally are still run--only remote commands are skipped.
-  
+
   <%= color '-p, --password', :bold %>
 	Normally, cap will prompt for the password on-demand, the first time it is needed. This can make it hard to walk away from Capistrano, since you might not know if it will prompt for a password down the road. In such cases, you can use the -p option to force cap to prompt for the password immediately.
 
