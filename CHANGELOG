@@ -1,3 +1,44 @@
+## 2.8.0 / August 3 2011
+
+A short release, after the last. Announcing Rails 3.1 asset pipeline support.
+
+The asset pipeline support requires an additiona `load` in your `Capfile`.
+
+You can see information pertaining to the pull request, including the inline
+comments here: https://github.com/capistrano/capistrano/pull/35
+
+Documentation will be available soon in the wiki.
+
+* Drop-In Rails 3.1 asset pipeline support. (Chris Griego)
+
+## 2.7.0 / August 3 2011
+
+A fairly substantial release. There are fixes so that current_release works
+during dry-runs, (although, apparently still not with bundler.)
+
+The test-suite was also modified to work with Ruby 1.9.2, except in one case
+where Ruby 1.9.x calls `to_ary` and `to_a` on mocks, which still makes an
+error. 1.9.x has always been supported, but due to lack of maintenance on my
+part the tests didn't ever pass.
+
+The `start`, `stop` and `restart` tasks have been reduced to mere hooks into
+which extensions can define their own functionality.
+
+The `readme` was also slightly improved, simply tweaks to express how best to
+run the test suite.
+
+* Ensure dry-run works with `:current_release` variable (Carol Nichols)
+* Added a new variable `:git_submodules_recursive`, setting the value to false
+will ensure Git doesn't recursively initialize and checkout submodules. (Konstantin Kudryashov)
+* Added an additional task option, `:on_no_matching_servers`, setting the
+value to `:continue` will ensure tasks with no matched servers continue
+without error, instead of raising `Capistrano::NoMatchingServersError` as was
+the previous behaviour. (Chris Griego)
+
+A huge thanks to all contributors, as always!
+
+Remember: @capistranorb on twitter for news.
+
 ## 2.6.1 / June 25 2011
 
 A short maintenance release, Some fixes to the verbose flag inside the Git SCM
