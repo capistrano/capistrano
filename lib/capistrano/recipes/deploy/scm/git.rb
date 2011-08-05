@@ -221,18 +221,10 @@ module Capistrano
         def query_revision(revision)
           raise ArgumentError, "Deploying remote branches is no longer supported.  Specify the remote branch as a local branch for the git repository you're deploying from (ie: '#{revision.gsub('origin/', '')}' rather than '#{revision}')." if revision =~ /^origin\//
           return revision if revision =~ /^[0-9a-f]{40}$/
-
-          newrev = nil
-          # Search local repository for expanded sha
-          command = scm('rev-parse --revs-only', revision)
-          newrev = yield(command).to_s.strip
-          return newrev if newrev =~ /^[0-9a-f]{40}$/
-
-          # If sha is not found locally, search shas for branches in remote repository
-          # Note: git ls-remote only returns shas for branches.
           command = scm('ls-remote', repository, revision)
           result = yield(command)
           revdata = result.split(/[\t\n]/)
+          newrev = nil
           revdata.each_slice(2) do |refs|
             rev, ref = *refs
             if ref.sub(/refs\/.*?\//, '').strip == revision.to_s
@@ -240,6 +232,12 @@ module Capistrano
               break
             end
           end
+          return newrev if newrev =~ /^[0-9a-f]{40}$/
+
+          # If sha is not found on remote, try expanding from local repository
+          command = scm('rev-parse --revs-only', revision)
+          newrev = yield(command).to_s.strip
+
           raise "Unable to resolve revision for '#{revision}' on repository '#{repository}'." unless newrev =~ /^[0-9a-f]{40}$/
           return newrev
         end
