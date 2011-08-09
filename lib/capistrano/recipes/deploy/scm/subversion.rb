@@ -21,29 +21,29 @@ module Capistrano
         # Returns the command that will check out the given revision to the
         # given destination.
         def checkout(revision, destination)
-          scm :checkout, arguments, command_arguments(:checkout), verbose, authentication, "-r#{revision}", repository, destination
+          scm :checkout, arguments, arguments(:checkout), verbose, authentication, "-r#{revision}", repository, destination
         end
 
         # Returns the command that will do an "svn update" to the given
         # revision, for the working copy at the given destination.
         def sync(revision, destination)
-          scm :update, arguments, command_arguments(:update), verbose, authentication, "-r#{revision}", destination
+          scm :update, arguments, arguments(:update), verbose, authentication, "-r#{revision}", destination
         end
 
         # Returns the command that will do an "svn export" of the given revision
         # to the given destination.
         def export(revision, destination)
-          scm :export, arguments, command_arguments(:export), verbose, authentication, "-r#{revision}", repository, destination
+          scm :export, arguments, arguments(:export), verbose, authentication, "-r#{revision}", repository, destination
         end
 
         # Returns the command that will do an "svn diff" for the two revisions.
         def diff(from, to=nil)
-          scm :diff, repository, command_arguments(:diff), authentication, "-r#{from}:#{to || head}"
+          scm :diff, repository, arguments(:diff), authentication, "-r#{from}:#{to || head}"
         end
 
         # Returns an "svn log" command for the two revisions.
         def log(from, to=nil)
-          scm :log, repository, command_arguments(:log), authentication, "-r#{from}:#{to || head}"
+          scm :log, repository, arguments(:log), authentication, "-r#{from}:#{to || head}"
         end
 
         # Attempts to translate the given revision identifier to a "real"
@@ -52,7 +52,7 @@ module Capistrano
         # executed (svn info), and will extract the revision from the response.
         def query_revision(revision)
           return revision if revision =~ /^\d+$/
-          command = scm(:info, arguments, command_arguments(:info), repository, authentication, "-r#{revision}")
+          command = scm(:info, arguments, arguments(:info), repository, authentication, "-r#{revision}")
           result = yield(command)
           yaml = YAML.load(result)
           raise "tried to run `#{command}' and got unexpected result #{result.inspect}" unless Hash === yaml
