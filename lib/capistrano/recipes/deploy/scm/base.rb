@@ -189,6 +189,11 @@ module Capistrano
           def arguments
             variable(:scm_arguments)
           end
+
+          def command_arguments(command)
+            variable_name = "scm_arguments_#{command.to_s}".to_sym
+            variable(variable_name)
+          end
       end
 
     end
