@@ -38,6 +38,16 @@ module Capistrano
       # :copy_compression, which must be one of :gzip, :bz2, or
       # :zip, and which specifies how the source should be compressed for
       # transmission to each host.
+      #
+      # There is a possibility to pass a build command that will get
+      # executed if your code needs to be compiled or something needs to be
+      # done before the code is ready to run.
+      #
+      #   set :build_script, "make all"
+      #
+      # Note that if you use :copy_cache, the :build_script is used on the
+      # cache and thus you get faster compilation if your script does not
+      # recompile everything.
       class Copy < Base
         # Obtains a copy of the source code locally (via the #command method),
         # compresses it to a single file, copies that file to all target
@@ -57,6 +67,8 @@ module Capistrano
             unless $? == 0
               raise Capistrano::Error, "shell command failed with return code #{$?}"
             end
+
+            build(copy_cache)
 
             FileUtils.mkdir_p(destination)
 
@@ -84,6 +96,8 @@ module Capistrano
             logger.debug "getting (via #{copy_strategy}) revision #{revision} to #{destination}"
             system(command)
 
+            build(destination)
+
             if copy_exclude.any?
               logger.debug "processing exclusions..."
               if copy_exclude.any?
@@ -106,6 +120,18 @@ module Capistrano
         ensure
           FileUtils.rm filename rescue nil
           FileUtils.rm_rf destination rescue nil
+        end
+
+        def build(directory)
+          return unless configuration[:build_script]
+
+          Dir.chdir(directory) do
+            self.system(configuration[:build_script])
+            # Check the return code of last system command and rollback if not 0
+            unless $? == 0
+              raise Capistrano::Error, "shell command failed with return code #{$?}"
+            end
+          end
         end
 
         def check!
