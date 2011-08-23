@@ -8,7 +8,7 @@ gemspec
 # are merged here.
 #
 group :development do
-  gem 'rake'
+  gem 'rake', '0.8.7'
   gem 'ruby-debug',   :platform => :mri_18
   gem 'ruby-debug19', :platform => :mri_19
 end
