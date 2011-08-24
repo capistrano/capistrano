@@ -1,9 +1,9 @@
 require 'capistrano/recipes/deploy/scm/base'
 
-# Notes: 
+# Notes:
 #  no global verbose flag for scm_verbose
 #  sync, checkout and export are just sync in p4
-#  
+#
 module Capistrano
   module Deploy
     module SCM
@@ -27,7 +27,7 @@ module Capistrano
         def checkout(revision, destination)
           p4_sync(revision, destination, p4sync_flags)
         end
-        
+
         # Returns the command that will sync the given revision to the given
         # destination directory. The perforce client has a fixed destination so
         # the files must be copied from there to their intended resting place.
@@ -41,7 +41,7 @@ module Capistrano
         def export(revision, destination)
           p4_sync(revision, destination, p4sync_flags)
         end
-               
+
         # Returns the command that will do an "p4 diff2" for the two revisions.
         def diff(from, to=head)
           scm authentication, :diff2, "-u -db", "//#{p4client}/...#{rev_no(from)}", "//#{p4client}/...#{rev_no(to)}"
@@ -72,11 +72,11 @@ module Capistrano
 	          raise Capistrano::Error, "scm_password (or p4passwd) is incorrect or unset"
           when /Can.t create a new user.*/i
 	          raise Capistrano::Error, "scm_username (or p4user) is incorrect or unset"
-          when /Perforce client error\:/i	 
+          when /Perforce client error\:/i
 	          raise Capistrano::Error, "p4port is incorrect or unset"
           when /Client \'[\w\-\_\.]+\' unknown.*/i
 	          raise Capistrano::Error, "p4client is incorrect or unset"
-          end	             
+          end
         end
 
         private
@@ -90,11 +90,11 @@ module Capistrano
           end
 
           # Returns the command that will sync the given revision to the given
-          # destination directory with specific options. The perforce client has 
-          # a fixed destination so the files must be copied from there to their 
-          # intended resting place.          
+          # destination directory with specific options. The perforce client has
+          # a fixed destination so the files must be copied from there to their
+          # intended resting place.
           def p4_sync(revision, destination, options="")
-            scm authentication, :sync, options, "#{rev_no(revision)}", "&& cp -rf #{p4client_root} #{destination}"          
+            scm authentication, :sync, options, "#{rev_no(revision)}", "&& cp -rf #{p4client_root} #{destination}"
           end
 
           def p4client
@@ -108,7 +108,7 @@ module Capistrano
           def p4user
             variable(:p4user) || variable(:scm_username)
           end
-          
+
           def p4passwd
             variable(:p4passwd) || variable(:scm_password)
           end
@@ -120,16 +120,17 @@ module Capistrano
           def p4client_root
             variable(:p4client_root) || "`#{command} #{authentication} client -o | grep ^Root | cut -f2`"
           end
-          
-          def rev_no(revision)                     
+
+          def rev_no(revision)
+            return "@#{variable(:p4_label)}" if variable(:p4_label)
             case revision.to_s
             when "head"
               "#head"
-            when /^\d+/  
+            when /^\d+/
               "@#{revision}"
             else
               revision
-            end          
+            end
           end
       end
 
