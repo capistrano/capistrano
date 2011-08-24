@@ -39,11 +39,11 @@ class ConfigurationServersTest < Test::Unit::TestCase
     assert_equal %w(web1 web2).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
   end
 
-  def test_task_with_unknown_role_should_raise_exception
+  # NOTE Rather than throw an error, as it used to, we return an
+  #  empty array so that if a task is okay with a missing role it can continue on
+  def test_task_with_unknown_role_should_return_empty_array
     task = new_task(:testing, @config, :roles => :bogus)
-    assert_raises(ArgumentError) do
-      @config.find_servers_for_task(task)
-    end
+    assert_equal [], @config.find_servers_for_task(task)
   end
 
   def test_task_with_hosts_option_should_apply_only_to_those_hosts
