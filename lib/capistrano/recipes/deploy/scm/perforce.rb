@@ -122,7 +122,15 @@ module Capistrano
           end
 
           def rev_no(revision)
-            return "@#{variable(:p4_label)}" if variable(:p4_label)
+            if variable(:p4_label)
+              p4_label = if variable(:p4_label) =~ /\A@/
+                variable(:p4_label)
+              else
+                "@#{variable(:p4_label)}"
+              end
+              return p4_label
+            end
+
             case revision.to_s
             when "head"
               "#head"
