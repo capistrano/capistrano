@@ -377,6 +377,7 @@ namespace :deploy do
   task :migrate, :roles => :db, :only => { :primary => true } do
     migrate_env = fetch(:migrate_env, "")
     migrate_target = fetch(:migrate_target, :latest)
+    rake_cmd = fetch(:rake)
 
     directory = case migrate_target.to_sym
       when :current then current_path
@@ -384,7 +385,7 @@ namespace :deploy do
       else raise ArgumentError, "unknown migration target #{migrate_target.inspect}"
       end
 
-    run "cd #{directory} && #{rake} RAILS_ENV=#{rails_env} #{migrate_env} db:migrate"
+    run "cd #{directory} && #{rake_cmd} RAILS_ENV=#{rails_env} #{migrate_env} db:migrate"
   end
 
   desc <<-DESC
