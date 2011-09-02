@@ -10,6 +10,7 @@ class ConfigurationActionsFileTransferTest < Test::Unit::TestCase
   def setup
     @config = MockConfig.new
     @config.stubs(:logger).returns(stub_everything)
+    @config.stubs(:variables).returns({})
   end
 
   def test_put_should_delegate_to_upload
@@ -57,5 +58,19 @@ class ConfigurationActionsFileTransferTest < Test::Unit::TestCase
     @config.expects(:execute_on_servers).with(:foo => "bar").yields([:a, :b, :c])
     Capistrano::Transfer.expects(:process).with(:up, "testl.txt", "testr.txt", [1,2,3], {:foo => "bar", :logger => @config.logger})
     @config.transfer(:up, "testl.txt", "testr.txt", :foo => "bar")
+  end
+
+  def test_transfer_should_not_override_via_when_transfer_via_variable_not_set
+    @config.stubs(:execute_on_servers).yields([])
+    @config.expects(:variables).returns({})
+    Capistrano::Transfer.expects(:process).with(anything, anything, anything, anything, {:logger => @config.logger})
+    @config.transfer(anything, anything, anything)
+  end
+
+  def test_transfer_should_override_via_when_transfer_via_variable_set
+    @config.stubs(:execute_on_servers).yields([])
+    @config.expects(:variables).returns({:transfer_via => :foo})
+    Capistrano::Transfer.expects(:process).with(anything, anything, anything, anything, {:via => :foo, :logger => @config.logger})
+    @config.transfer(anything, anything, anything)
   end
 end

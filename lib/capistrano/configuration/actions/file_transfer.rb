@@ -35,6 +35,9 @@ module Capistrano
         end
 
         def transfer(direction, from, to, options={}, &block)
+          via = variables[:transfer_via]
+          options.merge!(:via => via) if via
+
           execute_on_servers(options) do |servers|
             targets = servers.map { |s| sessions[s] }
             if dry_run

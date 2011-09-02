@@ -7,8 +7,9 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     attr_reader :options
     attr_accessor :debug
     attr_accessor :dry_run
-		attr_accessor :preserve_roles
+    attr_accessor :preserve_roles
     attr_accessor :servers
+    attr_accessor :variables
 
     def initialize
       @options = {}
@@ -59,6 +60,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     config = make_config
     config.dry_run = true
     config.servers = %w[ foo ]
+    config.variables = {}
     config.expects(:sessions).returns({ 'foo-server' => 'bar' })
     ::Capistrano::Transfer.expects(:process).never
     config.put "foo", "bar", :mode => 0644
