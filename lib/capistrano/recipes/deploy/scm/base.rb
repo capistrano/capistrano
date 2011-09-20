@@ -186,8 +186,12 @@ module Capistrano
             variable(:repository)
           end
 
-          def arguments
-            variable(:scm_arguments)
+          def arguments(command = :all)
+            value = variable(:scm_arguments)
+            if value.is_a?(Hash)
+              value = value[command]
+            end
+            value
           end
       end
 
