@@ -205,6 +205,7 @@ class CommandTest < Test::Unit::TestCase
     new_channel = Proc.new do |times|
       ch = mock("channel")
       returns = [false] * (times-1)
+      ch.stubs(:to_ary)
       ch.stubs(:[]).with(:closed).returns(*(returns + [true]))
       ch.expects(:[]).with(:status).returns(0)
       ch
