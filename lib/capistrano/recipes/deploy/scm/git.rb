@@ -232,6 +232,12 @@ module Capistrano
               break
             end
           end
+          return newrev if newrev =~ /^[0-9a-f]{40}$/
+
+          # If sha is not found on remote, try expanding from local repository
+          command = scm('rev-parse --revs-only', revision)
+          newrev = yield(command).to_s.strip
+
           raise "Unable to resolve revision for '#{revision}' on repository '#{repository}'." unless newrev =~ /^[0-9a-f]{40}$/
           return newrev
         end
@@ -280,3 +286,4 @@ module Capistrano
     end
   end
 end
+

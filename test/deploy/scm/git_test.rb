@@ -15,7 +15,7 @@ class DeploySCMGitTest < Test::Unit::TestCase
 
   def test_head
     assert_equal "HEAD", @source.head
-    
+
     # With :branch
     @config[:branch] = "master"
     assert_equal "master", @source.head
@@ -61,10 +61,19 @@ class DeploySCMGitTest < Test::Unit::TestCase
     assert_equal "git log master..branch", @source.log('master', 'branch')
   end
 
-  def test_query_revision
+  def test_query_revision_from_remote
     revision = @source.query_revision('HEAD') do |o|
       assert_equal "git ls-remote . HEAD", o
       "d11006102c07c94e5d54dd0ee63dca825c93ed61\tHEAD"
+    end
+    assert_equal "d11006102c07c94e5d54dd0ee63dca825c93ed61", revision
+  end
+
+  def test_query_revision_falls_back_to_local
+    revision = @source.query_revision('d11006') do |o|
+      return nil if o == "git ls-remote . d11006"
+      assert_equal "git rev-parse --revs-only d11006", o
+      "d11006102c07c94e5d54dd0ee63dca825c93ed61"
     end
     assert_equal "d11006102c07c94e5d54dd0ee63dca825c93ed61", revision
   end
@@ -182,3 +191,4 @@ class DeploySCMGitTest < Test::Unit::TestCase
     assert_equal "/foo/bar/git", @source.command
   end
 end
+
