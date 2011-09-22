@@ -149,9 +149,9 @@ module Capistrano
             execute << "#{git} submodule #{verbose} init"
             execute << "#{git} submodule #{verbose} sync"
             if false == variable(:git_submodules_recursive)
-              execute << "#{git} submodule #{verbose} update --init"
+              execute << "#{git} submodule #{verbose} update"
             else
-              execute << "#{git} submodule #{verbose} update --init --recursive"
+              execute << "#{git} submodule #{verbose} update --recursive"
             end
           end
 
@@ -192,9 +192,9 @@ module Capistrano
             execute << "for mod in `#{git} submodule status | awk '{ print $2 }'`; do #{git} config -f .git/config submodule.${mod}.url `#{git} config -f .gitmodules --get submodule.${mod}.url` && echo Synced $mod; done"
             execute << "#{git} submodule #{verbose} sync"
             if false == variable(:git_submodules_recursive)
-              execute << "#{git} submodule #{verbose} update --init"
+              execute << "#{git} submodule #{verbose} update"
             else
-              execute << "#{git} submodule #{verbose} update --init --recursive"
+              execute << "#{git} submodule #{verbose} update --recursive"
             end
           end
 
