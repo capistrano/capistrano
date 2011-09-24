@@ -76,7 +76,7 @@ module Capistrano
             if revision == :head || revision.nil?
               nil
             else
-              "-r #{revision}"
+              "-r #{revision}".chomp
             end
           end
       end
