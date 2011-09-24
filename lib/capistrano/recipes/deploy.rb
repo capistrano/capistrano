@@ -32,6 +32,7 @@ _cset :rails_env, "production"
 _cset :rake, "rake"
 
 _cset :maintenance_basename, "maintenance"
+_cset(:maintenance_template_path) { File.join(File.dirname(__FILE__), "templates", "maintenance.rhtml") }
 
 # =========================================================================
 # These variables should NOT be changed unless you are very confident in
@@ -527,6 +528,10 @@ namespace :deploy do
               REASON="hardware upgrade" \\
               UNTIL="12pm Central Time"
 
+      You can use a different template for the maintenance page by setting the \
+      :maintenance_template_path variable in your deploy.rb file. The template file \ 
+      should either be a plaintext or an erb file.
+
       Further customization will require that you write your own task.
     DESC
     task :disable, :roles => :web, :except => { :no_release => true } do
@@ -549,7 +554,7 @@ namespace :deploy do
       reason = ENV['REASON']
       deadline = ENV['UNTIL']
 
-      template = File.read(File.join(File.dirname(__FILE__), "templates", "maintenance.rhtml"))
+      template = File.read(maintenance_template_path)
       result = ERB.new(template).result(binding)
 
       put result, "#{shared_path}/system/#{maintenance_basename}.html", :mode => 0644
