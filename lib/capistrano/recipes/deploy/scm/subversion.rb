@@ -27,7 +27,7 @@ module Capistrano
         # Returns the command that will do an "svn update" to the given
         # revision, for the working copy at the given destination.
         def sync(revision, destination)
-          scm :update, arguments, arguments(:update), verbose, authentication, "-r#{revision}", destination
+          scm :switch, arguments, verbose, authentication, "-r#{revision}", repository, destination
         end
 
         # Returns the command that will do an "svn export" of the given revision

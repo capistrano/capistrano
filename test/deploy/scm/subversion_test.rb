@@ -29,4 +29,12 @@ Last Changed Date: 2009-03-11 11:04:25 -0700 (Wed, 11 Mar 2009)
     end
     assert_equal 2095, revision
   end
+
+  def test_sync
+    @config[:repository] = "http://svn.github.com/capistrano/capistrano.git"
+    rev = '602'
+    dest = "/var/www"
+    assert_equal "svn switch -q  -r602 http://svn.github.com/capistrano/capistrano.git /var/www", @source.sync(rev, dest)
+  end
+
 end
