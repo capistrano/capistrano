@@ -1,3 +1,56 @@
+## 2.9.0 / September 24 2011
+
+A vairly heavy release, including some new features which most of you won't
+need, but power users have contributed, this also marks the beginning of the
+end of the 2.x series, more information will follow in due course, but with
+the proliferation of Bundler, and better ways to do deployment, we will be
+introducing heavier changes to Capistrano to keep the tool current.
+
+**Please note, following some reported problems with the asset pipeline code
+being not found, remember Capistrano needs to be in your Gemfile, and as such
+needs to be run with Bundler, otherwise you risk loading a system-wide version
+of Capistrano who's behaviour might be different from that specified in your
+Gemfile. This is also good practice because much of the deploy logic resides
+in the Gem, and you wouldn't want that to change without your knowledge. Rails
+applications include Cap in the Gemfile anyway, you should follow this
+convention.**
+
+* find_servers() will no longer raise if there are no servers, this behaviour
+can be modified by way of the `:on_no_matching_servers` option. Thanks to
+`@ppgengler`.
+
+* Short Git SHA1 fragments are now supported in commands such as `cap deploy
+-s revision=d7e99f` thanks to `@ndbroadbent`.
+
+* One can now specify individual SCM commands by setting
+`:scm_arguments_<command_name>`. Thanks to `@alextk`.
+
+* Travis CI build now passes thanks to @andrew, build tested against MRI
+`1.8.7`. `1.9.2` and `REE`.
+
+* Support for Perforce labels, I don't know much about this, but I believe
+it's much like deploying a Git tag, thanks to `@ak47`.
+
+* Git SCM now correctly adheres to the `:scm_verbose` setting. Thanks
+`@dubek`.
+
+* `set()` can now be used to set a `false` value, previously this was a no-op.
+Thanks to `@nilbus`.
+
+* Support for Git 1.6x submodules, The Git SCM strategy now queries Git on the
+server-side to ensure it supports the `--recursive` flag, if it doesn't then
+it will fall back to using the long-hand. Many thanks to all those involved in
+the discussion surrounding this topic, and to `@nilbus` for a beautifully
+clean solution which doesn't hold us back.
+
+* When using `:cached_copy` with Subversion, use `svn switch` to for more
+reliable switching of branches/etc. Thanks to `@iGEL` for the patch that we
+accepted finally, and to `@richmeyers` who also submitted a patch and
+contributed to the discssion.
+
+Other cleanups and minor improvements to the code and tests were committed by yours truly
+(@leehambley), @maxim, @ak47 and @andrew).
+
 ## 2.8.0 / August 3 2011
 
 A short release, after the last. Announcing Rails 3.1 asset pipeline support.
