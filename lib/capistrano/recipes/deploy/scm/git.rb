@@ -156,7 +156,7 @@ module Capistrano
             end
           end
 
-          execute.join(" && ").compact
+          execute.compact.join(" && ").gsub(/\s+/, ' ')
         end
 
         # An expensive export. Performs a checkout as above, then
