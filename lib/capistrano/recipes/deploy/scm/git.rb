@@ -151,7 +151,8 @@ module Capistrano
             if false == variable(:git_submodules_recursive)
               execute << "#{git} submodule #{verbose} update --init"
             else
-              execute << "#{git} submodule #{verbose} update --init --recursive"
+              execute << %Q(export GIT_RECURSIVE=$([ ! "`#{git} --version`" \\< "git version 1.6.5" ] && echo --recursive))
+              execute << "#{git} submodule #{verbose} update --init $GIT_RECURSIVE"
             end
           end
 
@@ -194,7 +195,8 @@ module Capistrano
             if false == variable(:git_submodules_recursive)
               execute << "#{git} submodule #{verbose} update --init"
             else
-              execute << "#{git} submodule #{verbose} update --init --recursive"
+              execute << %Q(export GIT_RECURSIVE=$([ ! "`#{git} --version`" \\< "git version 1.6.5" ] && echo --recursive))
+              execute << "#{git} submodule #{verbose} update --init $GIT_RECURSIVE"
             end
           end
 
