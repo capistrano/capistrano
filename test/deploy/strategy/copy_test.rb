@@ -288,6 +288,20 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @strategy.deploy!
   end
 
+  def test_with_build_script_should_run_script
+    @config[:build_script] = "mkdir bin"
+
+    Dir.expects(:tmpdir).returns("/temp/dir")
+    @source.expects(:checkout).with("154", "/temp/dir/1234567890").returns(:local_checkout)
+    @strategy.expects(:system).with(:local_checkout)
+
+    Dir.expects(:chdir).with("/temp/dir/1234567890").yields
+    @strategy.expects(:system).with("mkdir bin")
+
+    prepare_standard_compress_and_copy!
+    @strategy.deploy!
+  end
+
   private
 
     def prepare_directory_tree!(cache, exclude=false)
