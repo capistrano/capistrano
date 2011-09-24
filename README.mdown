@@ -54,6 +54,19 @@ By default, the script will look for a file called one of `capfile` or
 "cap -h" to see all the available options and "cap -T" to see all the available
 tasks.
 
+## CONTRIBUTING:
+
+* Fork Capistrano
+* Create a topic branch - `git checkout -b my_branch`
+* Rebase your branch so that all your changes are reflected in one
+  commit
+* Push to your branch - `git push origin my_branch`
+* Create a Pull Request from your branch, include as much documentation
+  as you can in the commit message/pull request, following these
+[guidelies on writing a good commit message](http://spheredev.org/wiki/Git_for_the_lazy#Writing_good_commit_messages)
+* That's it!
+
+
 ## LICENSE:
 
 Permission is hereby granted, free of charge, to any person obtaining
