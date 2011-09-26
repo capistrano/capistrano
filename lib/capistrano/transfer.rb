@@ -203,6 +203,8 @@ module Capistrano
       end
 
       def handle_error(error)
+        raise error if error.message.include?('expected a file to upload')
+
         transfer = session_map[error.session]
         transfer[:error] = error
         transfer[:failed] = true
