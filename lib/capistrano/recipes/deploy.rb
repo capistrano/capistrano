@@ -528,6 +528,17 @@ namespace :deploy do
               UNTIL="12pm Central Time"
 
       Further customization will require that you write your own task.
+
+      Please add something like this to your site's .htaccess file to redirect users to the maintenance page.
+
+      ErrorDocument 503 /system/#{maintenance_basename}.html
+      RewriteEngine On
+      RewriteCond %{REQUEST_URI} !\.(css|gif|jpg|png)$
+      RewriteCond %{DOCUMENT_ROOT}/system/#{maintenance_basename}.html -f
+      RewriteCond %{SCRIPT_FILENAME} !#{maintenance_basename}.html
+      RewriteRule ^.*$  -  [redirect=503,last]
+
+      More Info: http://www.shiftcommathree.com/articles/make-your-rails-maintenance-page-respond-with-a-503
     DESC
     task :disable, :roles => :web, :except => { :no_release => true } do
       require 'erb'
