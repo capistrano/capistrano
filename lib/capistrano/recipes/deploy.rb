@@ -409,7 +409,7 @@ namespace :deploy do
     will use sudo to clean up the old releases, but if sudo is not available \
     for your environment, set the :use_sudo variable to false instead.
   DESC
-  task :cleanup, :roles => [:app, :web, :db], :except => { :no_release => true } do
+  task :cleanup, :except => { :no_release => true } do
     count = fetch(:keep_releases, 5).to_i
     local_releases = capture("ls -xt #{releases_path}").split.reverse
     if count >= local_releases.length
