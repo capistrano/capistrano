@@ -23,7 +23,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @strategy.expects(:system).with(:local_checkout)
 
     Dir.expects(:chdir).with("/temp/dir").yields
-    @strategy.expects(:system).with("tar chzf 1234567890.tar.gz 1234567890")
+    @strategy.expects(:system).with("tar czf 1234567890.tar.gz 1234567890")
     @strategy.expects(:upload).with("/temp/dir/1234567890.tar.gz", "/tmp/1234567890.tar.gz")
     @strategy.expects(:run).with("cd /u/apps/test/releases && gtar xzf /tmp/1234567890.tar.gz && rm /tmp/1234567890.tar.gz")
 
@@ -45,7 +45,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @strategy.expects(:system).with(:local_checkout)
 
     Dir.expects(:chdir).with("/temp/dir").yields
-    @strategy.expects(:system).with("gtar chzf 1234567890.tar.gz 1234567890")
+    @strategy.expects(:system).with("gtar czf 1234567890.tar.gz 1234567890")
     @strategy.expects(:upload).with("/temp/dir/1234567890.tar.gz", "/tmp/1234567890.tar.gz")
     @strategy.expects(:run).with("cd /u/apps/test/releases && tar xzf /tmp/1234567890.tar.gz && rm /tmp/1234567890.tar.gz")
 
@@ -109,7 +109,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @source.expects(:checkout).with("154", "/temp/dir/1234567890").returns(:local_checkout)
 
     @strategy.expects(:system).with(:local_checkout)
-    @strategy.expects(:system).with("zip -qr 1234567890.zip 1234567890")
+    @strategy.expects(:system).with("zip -qyr 1234567890.zip 1234567890")
     @strategy.expects(:upload).with("/temp/dir/1234567890.zip", "/tmp/1234567890.zip")
     @strategy.expects(:run).with("cd /u/apps/test/releases && unzip -q /tmp/1234567890.zip && rm /tmp/1234567890.zip")
 
@@ -130,7 +130,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @source.expects(:checkout).with("154", "/temp/dir/1234567890").returns(:local_checkout)
 
     @strategy.expects(:system).with(:local_checkout)
-    @strategy.expects(:system).with("tar chjf 1234567890.tar.bz2 1234567890")
+    @strategy.expects(:system).with("tar cjf 1234567890.tar.bz2 1234567890")
     @strategy.expects(:upload).with("/temp/dir/1234567890.tar.bz2", "/tmp/1234567890.tar.bz2")
     @strategy.expects(:run).with("cd /u/apps/test/releases && tar xjf /tmp/1234567890.tar.bz2 && rm /tmp/1234567890.tar.bz2")
 
@@ -161,7 +161,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @source.expects(:checkout).with("154", "/other/path/1234567890").returns(:local_checkout)
 
     @strategy.expects(:system).with(:local_checkout)
-    @strategy.expects(:system).with("tar chzf 1234567890.tar.gz 1234567890")
+    @strategy.expects(:system).with("tar czf 1234567890.tar.gz 1234567890")
     @strategy.expects(:upload).with("/other/path/1234567890.tar.gz", "/tmp/1234567890.tar.gz")
     @strategy.expects(:run).with("cd /u/apps/test/releases && tar xzf /tmp/1234567890.tar.gz && rm /tmp/1234567890.tar.gz")
 
@@ -182,7 +182,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @source.expects(:checkout).returns(:local_checkout)
 
     @strategy.expects(:system).with(:local_checkout)
-    @strategy.expects(:system).with("tar chzf 1234567890.tar.gz 1234567890")
+    @strategy.expects(:system).with("tar czf 1234567890.tar.gz 1234567890")
     @strategy.expects(:upload).with("/temp/dir/1234567890.tar.gz", "/somewhere/else/1234567890.tar.gz")
     @strategy.expects(:run).with("cd /u/apps/test/releases && tar xzf /somewhere/else/1234567890.tar.gz && rm /somewhere/else/1234567890.tar.gz")
 
@@ -321,7 +321,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
 
     def prepare_standard_compress_and_copy!
       Dir.expects(:chdir).with("/temp/dir").yields
-      @strategy.expects(:system).with("tar chzf 1234567890.tar.gz 1234567890")
+      @strategy.expects(:system).with("tar czf 1234567890.tar.gz 1234567890")
       @strategy.expects(:upload).with("/temp/dir/1234567890.tar.gz", "/tmp/1234567890.tar.gz")
       @strategy.expects(:run).with("cd /u/apps/test/releases && tar xzf /tmp/1234567890.tar.gz && rm /tmp/1234567890.tar.gz")
 
