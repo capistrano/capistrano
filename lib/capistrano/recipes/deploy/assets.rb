@@ -3,6 +3,8 @@ load 'deploy' unless defined?(_cset)
 _cset :asset_env, "RAILS_GROUPS=assets"
 _cset :assets_prefix, "assets"
 
+_cset :normalize_asset_timestamps, false
+
 before 'deploy:finalize_update', 'deploy:assets:symlink'
 after 'deploy:update_code', 'deploy:assets:precompile'
 
