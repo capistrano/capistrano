@@ -49,7 +49,7 @@ _cset(:release_name)      { set :deploy_timestamped, true; Time.now.utc.strftime
 
 _cset :version_dir,       "releases"
 _cset :shared_dir,        "shared"
-_cset :shared_children,   %w(system log pids)
+_cset :shared_children,   %w(public/system log tmp/pids)
 _cset :current_dir,       "current"
 
 _cset(:releases_path)     { File.join(deploy_to, version_dir) }
@@ -184,7 +184,7 @@ namespace :deploy do
   DESC
   task :setup, :except => { :no_release => true } do
     dirs = [deploy_to, releases_path, shared_path]
-    dirs += shared_children.map { |d| File.join(shared_path, d) }
+    dirs += shared_children.map { |d| File.join(shared_path, d.split('/').last) }
     run "#{try_sudo} mkdir -p #{dirs.join(' ')}"
     run "#{try_sudo} chmod g+w #{dirs.join(' ')}" if fetch(:group_writable, true)
   end
@@ -246,11 +246,11 @@ namespace :deploy do
     run <<-CMD
       rm -rf #{latest_release}/log #{latest_release}/public/system #{latest_release}/tmp/pids &&
       mkdir -p #{latest_release}/public &&
-      mkdir -p #{latest_release}/tmp &&
-      ln -s #{shared_path}/log #{latest_release}/log &&
-      ln -s #{shared_path}/system #{latest_release}/public/system &&
-      ln -s #{shared_path}/pids #{latest_release}/tmp/pids
+      mkdir -p #{latest_release}/tmp
     CMD
+    shared_children.map do |d|
+      run "ln -s #{shared_path}/#{d.split('/').last} #{latest_release}/#{d}"
+    end
 
     if fetch(:normalize_asset_timestamps, true)
       stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
