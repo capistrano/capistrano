@@ -375,6 +375,8 @@ namespace :deploy do
       set :migrate_target, :latest
   DESC
   task :migrate, :roles => :db, :only => { :primary => true } do
+    rake = fetch(:rake, "rake")
+    rails_env = fetch(:rails_env, "production")
     migrate_env = fetch(:migrate_env, "")
     migrate_target = fetch(:migrate_target, :latest)
 
