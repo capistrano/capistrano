@@ -29,7 +29,7 @@ _cset(:deploy_to) { "/u/apps/#{application}" }
 _cset(:revision)  { source.head }
 
 _cset :rails_env, "production"
-_cset :rake, "rake"
+_cset :rake_bin, "rake"
 
 _cset :maintenance_basename, "maintenance"
 
@@ -384,7 +384,7 @@ namespace :deploy do
       else raise ArgumentError, "unknown migration target #{migrate_target.inspect}"
       end
 
-    run "cd #{directory} && #{rake} RAILS_ENV=#{rails_env} #{migrate_env} db:migrate"
+    run "cd #{directory} && #{rake_bin} RAILS_ENV=#{rails_env} #{migrate_env} db:migrate"
   end
 
   desc <<-DESC
