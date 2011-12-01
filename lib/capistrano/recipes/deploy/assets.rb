@@ -36,7 +36,7 @@ namespace :deploy do
         set :asset_env, "RAILS_GROUPS=assets"
     DESC
     task :precompile, :roles => :web, :except => { :no_release => true } do
-      run "cd #{latest_release} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:precompile"
+      run "cd #{latest_release} && #{rake_bin} RAILS_ENV=#{rails_env} #{asset_env} assets:precompile"
     end
 
     desc <<-DESC
@@ -51,7 +51,7 @@ namespace :deploy do
         set :asset_env, "RAILS_GROUPS=assets"
     DESC
     task :clean, :roles => :web, :except => { :no_release => true } do
-      run "cd #{latest_release} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:clean"
+      run "cd #{latest_release} && #{rake_bin} RAILS_ENV=#{rails_env} #{asset_env} assets:clean"
     end
   end
 end
