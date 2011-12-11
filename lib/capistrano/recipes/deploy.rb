@@ -201,7 +201,7 @@ namespace :deploy do
   task :update do
     transaction do
       update_code
-      symlink
+      create_symlink
     end
   end
 
@@ -269,7 +269,7 @@ namespace :deploy do
     deploy, including `restart') or the 'update' task (which does everything \
     except `restart').
   DESC
-  task :symlink, :except => { :no_release => true } do
+  task :create_symlink, :except => { :no_release => true } do
     on_rollback do
       if previous_release
         run "rm -f #{current_path}; ln -s #{previous_release} #{current_path}; true"
@@ -401,7 +401,7 @@ namespace :deploy do
     set :migrate_target, :latest
     update_code
     migrate
-    symlink
+    create_symlink
     restart
   end
 
