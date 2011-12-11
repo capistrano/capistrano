@@ -535,23 +535,21 @@ namespace :deploy do
       should either be a plaintext or an erb file.
 
       Further customization will require that you write your own task.
+
+      Please add something like this to your site's .htaccess file to redirect users to the maintenance page.
+
+      ErrorDocument 503 /system/#{maintenance_basename}.html
+      RewriteEngine On
+      RewriteCond %{REQUEST_URI} !\.(css|gif|jpg|png)$
+      RewriteCond %{DOCUMENT_ROOT}/system/#{maintenance_basename}.html -f
+      RewriteCond %{SCRIPT_FILENAME} !#{maintenance_basename}.html
+      RewriteRule ^.*$  -  [redirect=503,last]
+
+      More Info: http://www.shiftcommathree.com/articles/make-your-rails-maintenance-page-respond-with-a-503
     DESC
     task :disable, :roles => :web, :except => { :no_release => true } do
       require 'erb'
       on_rollback { run "rm #{shared_path}/system/#{maintenance_basename}.html" }
-
-      warn <<-EOHTACCESS
-
-        # Please add something like this to your site's htaccess to redirect users to the maintenance page.
-        # More Info: http://www.shiftcommathree.com/articles/make-your-rails-maintenance-page-respond-with-a-503
-
-        ErrorDocument 503 /system/#{maintenance_basename}.html
-        RewriteEngine On
-        RewriteCond %{REQUEST_URI} !\.(css|gif|jpg|png)$
-        RewriteCond %{DOCUMENT_ROOT}/system/#{maintenance_basename}.html -f
-        RewriteCond %{SCRIPT_FILENAME} !#{maintenance_basename}.html
-        RewriteRule ^.*$  -  [redirect=503,last]
-      EOHTACCESS
 
       reason = ENV['REASON']
       deadline = ENV['UNTIL']
