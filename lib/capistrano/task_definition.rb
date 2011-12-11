@@ -29,6 +29,11 @@ module Capistrano
         end
       end
     end
+    
+    def name=(value)
+      raise ArgumentError, "expected a valid task name" if !value.respond_to?(:to_sym)
+      @name = value.to_sym
+    end
 
     # Returns the description for this task, with newlines collapsed and
     # whitespace stripped. Returns the empty string if there is no
