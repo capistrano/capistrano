@@ -12,7 +12,7 @@ module Capistrano
 
           base.default_io_proc = Proc.new do |ch, stream, out|
             level = stream == :err ? :important : :info
-            ch[:options][:logger].send(level, out, ch[:server])
+            ch[:options][:logger].send(level, out, "#{stream} :: #{ch[:server]}")
           end
         end
 
@@ -231,7 +231,7 @@ module Capistrano
             if out =~ /^Sorry, try again/
               if prompt_host.nil? || prompt_host == ch[:server]
                 prompt_host = ch[:server]
-                logger.important out, ch[:server]
+                logger.important out, "#{stream} :: #{ch[:server]}"
                 reset! :password
               end
             end
