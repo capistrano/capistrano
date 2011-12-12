@@ -4,11 +4,11 @@ module Capistrano
   class Version
 
     MAJOR = 2
-    MINOR = 9
+    MINOR = 10
     PATCH = 0
 
     def self.to_s
-      "#{MAJOR}.#{MINOR}.#{PATCH}"
+      "#{MAJOR}.#{MINOR}.#{PATCH}.pre"
     end
 
   end

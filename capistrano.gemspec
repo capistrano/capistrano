@@ -3,6 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "capistrano/version"
 
 Gem::Specification.new do |s|
+
   s.name        = "capistrano"
   s.version     = Capistrano::Version.to_s
   s.platform    = Gem::Platform::RUBY
@@ -44,4 +45,5 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<highline>, [">= 0"])
     s.add_dependency(%q<mocha>, [">= 0"])
   end
+
 end
