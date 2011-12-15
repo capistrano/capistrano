@@ -32,6 +32,7 @@ _cset :rails_env, "production"
 _cset :rake, "rake"
 
 _cset :maintenance_basename, "maintenance"
+_cset(:maintenance_template_path) { File.join(File.dirname(__FILE__), "templates", "maintenance.rhtml") }
 
 # =========================================================================
 # These variables should NOT be changed unless you are very confident in
@@ -200,7 +201,7 @@ namespace :deploy do
   task :update do
     transaction do
       update_code
-      symlink
+      create_symlink
     end
   end
 
@@ -268,7 +269,7 @@ namespace :deploy do
     deploy, including `restart') or the 'update' task (which does everything \
     except `restart').
   DESC
-  task :symlink, :except => { :no_release => true } do
+  task :create_symlink, :except => { :no_release => true } do
     on_rollback do
       if previous_release
         run "rm -f #{current_path}; ln -s #{previous_release} #{current_path}; true"
@@ -375,6 +376,8 @@ namespace :deploy do
       set :migrate_target, :latest
   DESC
   task :migrate, :roles => :db, :only => { :primary => true } do
+    rake = fetch(:rake, "rake")
+    rails_env = fetch(:rails_env, "production")
     migrate_env = fetch(:migrate_env, "")
     migrate_target = fetch(:migrate_target, :latest)
 
@@ -398,7 +401,7 @@ namespace :deploy do
     set :migrate_target, :latest
     update_code
     migrate
-    symlink
+    create_symlink
     restart
   end
 
@@ -409,7 +412,7 @@ namespace :deploy do
     will use sudo to clean up the old releases, but if sudo is not available \
     for your environment, set the :use_sudo variable to false instead.
   DESC
-  task :cleanup, :roles => [:app, :web, :db], :except => { :no_release => true } do
+  task :cleanup, :except => { :no_release => true } do
     count = fetch(:keep_releases, 5).to_i
     local_releases = capture("ls -xt #{releases_path}").split.reverse
     if count >= local_releases.length
@@ -527,6 +530,10 @@ namespace :deploy do
               REASON="hardware upgrade" \\
               UNTIL="12pm Central Time"
 
+      You can use a different template for the maintenance page by setting the \
+      :maintenance_template_path variable in your deploy.rb file. The template file \ 
+      should either be a plaintext or an erb file.
+
       Further customization will require that you write your own task.
     DESC
     task :disable, :roles => :web, :except => { :no_release => true } do
@@ -549,7 +556,7 @@ namespace :deploy do
       reason = ENV['REASON']
       deadline = ENV['UNTIL']
 
-      template = File.read(File.join(File.dirname(__FILE__), "templates", "maintenance.rhtml"))
+      template = File.read(maintenance_template_path)
       result = ERB.new(template).result(binding)
 
       put result, "#{shared_path}/system/#{maintenance_basename}.html", :mode => 0644

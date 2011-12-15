@@ -133,6 +133,14 @@ class TransferTest < Test::Unit::TestCase
     transfer.process!
   end
 
+  def test_uploading_a_non_existing_file_should_raise_an_understandable_error
+    s = session('app1')
+    error = Capistrano::Processable::SessionAssociation.on(ArgumentError.new('expected a file to upload'), s)
+    transfer = Capistrano::Transfer.new(:up, "from", "to", [], :via => :scp)
+    transfer.expects(:process_iteration).raises(error)
+    assert_raise(ArgumentError, 'expected a file to upload') { transfer.process! }
+  end
+
   private
 
     class ExceptionWithSession < ::Exception

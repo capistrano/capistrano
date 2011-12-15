@@ -25,6 +25,19 @@ class TaskDefinitionTest < Test::Unit::TestCase
     assert_equal "default", task.fully_qualified_name
   end
 
+  def test_name_should_change_task_name
+    task = new_task(:foo)
+    task.name = :bar
+
+    assert_equal :bar, task.name
+  end
+
+  def test_raise_an_exception_when_task_names_can_not_be_converted
+    task = new_task('valid task name')
+
+    assert_raises(ArgumentError) { task.name = ['invalid task name'] }
+  end
+
   def test_deprecation_warning_on_method_name_beginning_with_before_underscore
     name = "before_test"
     Kernel.expects(:warn).with("[Deprecation Warning] Naming tasks with before_ and after_ is deprecated, please see the new before() and after() methods. (Offending task name was #{name})")
