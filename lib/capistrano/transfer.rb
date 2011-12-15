@@ -117,7 +117,7 @@ module Capistrano
 
       def prepare_scp_transfer(from, to, session)
         real_callback = callback || Proc.new do |channel, name, sent, total|
-          logger.trace "[#{channel[:host]}] #{name}" if logger && sent == 0
+          logger.trace "#{transport} #{operation} #{from} -> #{to}", channel[:host] if logger && sent == 0
         end
 
         channel = case direction
@@ -167,9 +167,9 @@ module Capistrano
             if callback
               callback.call(event, op, *args)
             elsif event == :open
-              logger.trace "[#{op[:host]}] #{args[0].remote}"
+              logger.trace "#{transport} #{operation} #{from} -> #{to}", op[:host]
             elsif event == :finish
-              logger.trace "[#{op[:host]}] done"
+              logger.trace "#{transport} #{operation} #{from} -> #{to} done", op[:host]
             end
           end
 
