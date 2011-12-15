@@ -219,6 +219,8 @@ module Capistrano
                   command_line = [environment, shell, cmd].compact.join(" ")
                   ch[:command] = command_line
 
+                  logger.trace command_line, ch[:server] if logger
+
                   ch.exec(command_line)
                   ch.send_data(options[:data]) if options[:data]
                 else
