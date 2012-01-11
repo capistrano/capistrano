@@ -59,7 +59,7 @@ module Capistrano
           cmd = scm :log,
                     verbose,
                     "-r #{changeset}",
-                    "--template '{node|short}'"
+                    '--template "{node|short}"'
                     yield cmd
         end
 
