@@ -542,7 +542,7 @@ namespace :deploy do
 
       warn <<-EOHTACCESS
 
-        # Please add something like this to your site's htaccess to redirect users to the maintenance page.
+        # Please add something like this to your site's Apache htaccess to redirect users to the maintenance page.
         # More Info: http://www.shiftcommathree.com/articles/make-your-rails-maintenance-page-respond-with-a-503
 
         ErrorDocument 503 /system/#{maintenance_basename}.html
@@ -551,6 +551,17 @@ namespace :deploy do
         RewriteCond %{DOCUMENT_ROOT}/system/#{maintenance_basename}.html -f
         RewriteCond %{SCRIPT_FILENAME} !#{maintenance_basename}.html
         RewriteRule ^.*$  -  [redirect=503,last]
+
+        # Or if you are using Nginx add this to your server config:
+
+        if (-f $document_root/system/maintenance.html) {
+          return 503;
+        }
+        error_page 503 @maintenance;
+        location @maintenance {
+          rewrite  ^(.*)$  /system/maintenance.html last;
+          break;
+        }
       EOHTACCESS
 
       reason = ENV['REASON']
