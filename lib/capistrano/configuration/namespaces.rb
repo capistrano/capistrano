@@ -156,7 +156,7 @@ module Capistrano
         return nil if parent.nil?
         return tasks[DEFAULT_TASK]
       end
-  
+
       # Returns the tasks in this namespace as an array of TaskDefinition
       # objects. If a non-false parameter is given, all tasks in all
       # namespaces under this namespace will be returned as well.

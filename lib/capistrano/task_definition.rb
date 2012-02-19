@@ -1,22 +1,18 @@
 require 'capistrano/server_definition'
 
 module Capistrano
-  # Represents the definition of a single task.
+
   class TaskDefinition
+
     attr_reader :name, :namespace, :options, :body, :desc, :on_error, :max_hosts
 
     def initialize(name, namespace, options={}, &block)
-
-      if name.to_s =~ /^(?:before_|after_)/
-        Kernel.warn("[Deprecation Warning] Naming tasks with before_ and after_ is deprecated, please see the new before() and after() methods. (Offending task name was #{name})")
-      end
-
       @name, @namespace, @options = name, namespace, options
-      @desc = @options.delete(:desc)
-      @on_error = options.delete(:on_error)
+      @desc      = @options.delete(:desc)
+      @on_error  = options.delete(:on_error)
       @max_hosts = options[:max_hosts] && options[:max_hosts].to_i
-      @body = block or raise ArgumentError, "a task requires a block"
-      @servers = nil
+      @body      = block or raise ArgumentError, "a task requires a block"
+      @servers   = nil
     end
 
     # Returns the task's fully-qualified name, including the namespace
@@ -29,7 +25,7 @@ module Capistrano
         end
       end
     end
-    
+
     def name=(value)
       raise ArgumentError, "expected a valid task name" if !value.respond_to?(:to_sym)
       @name = value.to_sym
@@ -76,5 +72,6 @@ module Capistrano
     def continue_on_error?
       @on_error == :continue
     end
+
   end
 end

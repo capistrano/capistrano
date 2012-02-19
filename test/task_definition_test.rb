@@ -38,18 +38,6 @@ class TaskDefinitionTest < Test::Unit::TestCase
     assert_raises(ArgumentError) { task.name = ['invalid task name'] }
   end
 
-  def test_deprecation_warning_on_method_name_beginning_with_before_underscore
-    name = "before_test"
-    Kernel.expects(:warn).with("[Deprecation Warning] Naming tasks with before_ and after_ is deprecated, please see the new before() and after() methods. (Offending task name was #{name})")
-    new_task(name)
-  end
-
-  def test_deprecation_warning_on_method_name_beginning_with_after_underscore
-    name = "after_test"
-    Kernel.expects(:warn).with("[Deprecation Warning] Naming tasks with before_ and after_ is deprecated, please see the new before() and after() methods. (Offending task name was #{name})")
-    new_task(name)
-  end
-
   def test_fqn_in_namespace_when_default_should_be_namespace_fqn
     ns = namespace("outer:inner")
     task = new_task(:default, ns)
