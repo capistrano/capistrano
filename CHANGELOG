@@ -1,3 +1,24 @@
+## 2.11.0 / Febuary 20 2012
+
+This release replaces and fixes a broken 2.10.0 release (see below for
+information)
+
+This release includes all fixes as documented for 2.10.0, plus additional code
+cleanup (SHA: 3eecac2), as well as changing the public API from
+`deploy:symlink`, to `deploy:create_symlink`
+
+* Remove a testing dependency on `ruby-debug` (Lee Hambley, reported by Serg
+Podtynnyi)
+
+* Formerly deprecate `deploy:symlink`, this move was prompted by the Rake
+namespace fiasco of their 0.9.0 release, and is replaced by
+`deploy:create_symlink`. If you are looking for a place to hook asset related
+tasks, please consider `deploy:finalize_update`. Replaced by
+`deploy:create_symlink`, `deploy:symlink` now raises a deprecation warning,
+and defers to `deploy:symlink`. (Lee Hambley)
+
+* Update the 2.10.0 changelog. (Lee Hambley, reported by Jérémy Lecour)
+
 ## 2.10.0 / Febuary 19 2012
 
 If you are reading this after Febuary 20th 2012, do not be surprised when you
