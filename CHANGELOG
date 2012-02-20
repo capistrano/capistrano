@@ -1,3 +1,28 @@
+## 2.10.0 / Febuary 19 2012
+
+If you are reading this after Febuary 20th 2012, do not be surprised when you
+cannot find 2.10.0 on Rubygems.org, it has been removed because of a breaking
+API change. It is replaced logically enough by 2.11.0 where the API is still
+changed, but now issues a warning and falls back to the expected behaviour.
+
+The CHANGELOG for this release was updated retrospectively, I'm sorry I missed
+that when releasing the gem, 2.10.0 apparently not my finest hour as a
+maintainer.
+
+Ths fixes in this release include
+
+* Include sample NGinx config for `deploy:web:disable`(added by Roger Ertesvåg)
+
+* Fix gemspec time format warning (reported by Tony Arcieri, fixed by building the Gem against Ruby-1.9.3)
+
+* Finally removed deprecated `before_` and `after_` tasks. (Lee Hambley)
+
+* Rake 0.9.x compatibility (reported by James Miller, fixed by Lee Hambley)
+
+* More detailed logging output (fixed by Huang Liang)
+
+* Includes multistage, without `capistrano-ext`. `require 'capistrano/ext/multistage'` (fixed by Lee Hambley)
+
 ## 2.9.0 / September 24 2011
 
 A vairly heavy release, including some new features which most of you won't
