@@ -261,6 +261,14 @@ namespace :deploy do
   end
 
   desc <<-DESC
+    Deprecated API. This has become deploy:create_symlink, please update your recipes
+  DESC
+  task :symlink, :except => { :no_release => true } do
+    Kernel.warn "[Deprecation Warning] This API has changed, please hook `deploy:create_symlink` instead of `deploy:symlink`."
+    create_symlink
+  end
+
+  desc <<-DESC
     Updates the symlink to the most recently deployed version. Capistrano works \
     by putting each new release of your application in its own directory. When \
     you deploy a new version, this task's job is to update the `current' symlink \
