@@ -107,9 +107,6 @@ module Capistrano
           callbacks[event] << ProcCallback.new(block, options)
         else
           args.each do |name|
-            if name =~ /^(?:deploy\:symlink|symlink)$/
-              Kernel.warn("[API Change] deploy:symlink no longer exists, please use deploy:create_symlink")
-            end
             callbacks[event] << TaskCallback.new(self, name, options)
           end
         end

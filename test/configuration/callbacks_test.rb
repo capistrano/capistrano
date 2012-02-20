@@ -111,18 +111,6 @@ class ConfigurationCallbacksTest < Test::Unit::TestCase
     assert_raises(ArgumentError) { @config.on(:before, :first) { blah } }
   end
 
-  def test_calling_on_before_symlink_should_raise_a_warning
-    Kernel.expects(:warn).with("[API Change] deploy:symlink no longer exists, please use deploy:create_symlink").once
-    task = stub(:fully_qualified_name => "any:old:thing")
-    @config.on(:before, 'deploy:symlink', 'anything')
-  end
-
-  def test_calling_on_after_symlink_should_raise_a_warning
-    Kernel.expects(:warn).with("[API Change] deploy:symlink no longer exists, please use deploy:create_symlink").once
-    task = stub(:fully_qualified_name => "any:old:thing")
-    @config.on(:after, 'deploy:symlink', 'anything')
-  end
-
   def test_trigger_without_constraints_should_invoke_all_callbacks
     task = stub(:fully_qualified_name => "any:old:thing")
     @config.on(:before, :first, "second:third")
