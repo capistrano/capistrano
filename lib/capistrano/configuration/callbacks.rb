@@ -19,17 +19,12 @@ module Capistrano
       end
 
       def invoke_task_directly_with_callbacks(task) #:nodoc:
-        before = find_hook(task, :before)
-        execute_task(before) if before
-
+        
         trigger :before, task
 
         result = invoke_task_directly_without_callbacks(task)
 
         trigger :after, task
-
-        after = find_hook(task, :after)
-        execute_task(after) if after
 
         return result
       end
@@ -131,20 +126,6 @@ module Capistrano
           pending.each { |callback| callback.call }
         end
       end
-
-      private
-
-        # Looks for before_foo or after_foo tasks. This method of extending tasks
-        # is now discouraged (though not formally deprecated). You should use the
-        # before and after methods to declare hooks for such callbacks.
-        def find_hook(task, hook)
-          if task == task.namespace.default_task
-            result = task.namespace.search_task("#{hook}_#{task.namespace.name}")
-            return result if result
-          end
-
-          task.namespace.search_task("#{hook}_#{task.name}")
-        end
 
     end
   end

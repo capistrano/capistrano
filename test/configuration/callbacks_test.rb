@@ -186,47 +186,4 @@ class ConfigurationCallbacksTest < Test::Unit::TestCase
     assert_equal [task], @config.called
   end
 
-  def test_execute_task_with_named_before_hook_should_call_named_before_hook
-    ns = stub("namespace", :default_task => nil, :name => "old", :fully_qualified_name => "any:old")
-    task = stub(:fully_qualified_name => "any:old:thing", :name => "thing", :namespace => ns)
-    before_task = stub(:fully_qualified_name => "any:old:before_thing", :name => "before_thing", :namespace => ns)
-
-    ns.stubs(:search_task).returns(nil)
-    ns.expects(:search_task).with("before_thing").returns(before_task)
-
-    @config.execute_task(task)
-    assert_equal [before_task, task], @config.called
-  end
-
-  def test_execute_task_with_named_after_hook_should_call_named_after_hook
-    ns = stub("namespace", :default_task => nil, :name => "old", :fully_qualified_name => "any:old")
-    task = stub(:fully_qualified_name => "any:old:thing", :name => "thing", :namespace => ns)
-    after_task = stub(:fully_qualified_name => "any:old:after_thing", :name => "after_thing", :namespace => ns)
-
-    ns.stubs(:search_task).returns(nil)
-    ns.expects(:search_task).with("after_thing").returns(after_task)
-
-    @config.execute_task(task)
-    assert_equal [task, after_task], @config.called
-  end
-
-  def test_execute_task_with_on_hooks_should_trigger_hooks_around_task
-    ns = stub("namespace", :default_task => nil, :name => "old", :fully_qualified_name => "any:old")
-    task = stub(:fully_qualified_name => "any:old:thing", :name => "thing", :namespace => ns)
-    before_task = stub(:fully_qualified_name => "any:old:before_thing", :name => "before_thing", :namespace => ns)
-    after_task = stub(:fully_qualified_name => "any:old:after_thing", :name => "after_thing", :namespace => ns)
-
-    ns.stubs(:search_task).returns(nil)
-    ns.expects(:search_task).with("before_thing").returns(before_task)
-    ns.expects(:search_task).with("after_thing").returns(after_task)
-
-    @config.before("any:old:thing", :first_this, :then_this)
-    @config.after("any:old:thing", :and_then_this, :lastly_this)
-
-    [:first_this, :then_this, :and_then_this, :lastly_this].each do |t|
-      @config.expects(:find_and_execute_task).with(t)
-    end
-
-    @config.execute_task(task)
-  end
 end
