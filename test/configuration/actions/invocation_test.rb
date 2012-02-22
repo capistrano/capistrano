@@ -59,7 +59,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     config = make_config
     config.dry_run = true
     config.servers = %w[ foo ]
-    config.expects(:sessions).returns({ 'foo-server' => 'bar' })
+    config.expects(:execute_on_servers).never
     ::Capistrano::Transfer.expects(:process).never
     config.put "foo", "bar", :mode => 0644
   end
@@ -203,7 +203,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     a = mock("channel", :called => true)
     b = mock("stream", :called => true)
     c = mock("data", :called => true)
-  
+
     callback[a, b, c]
   end
 
