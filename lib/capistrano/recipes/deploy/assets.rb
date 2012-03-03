@@ -40,7 +40,7 @@ namespace :deploy do
     task :precompile, :roles => :web, :except => { :no_release => true } do
       from = source.next_revision(current_revision)
       begin
-        run unindent(<<-CMD)
+        run <<-CMD.unindent
           cd #{latest_release};
           COUNT=`#{source.local.log(from)} -- app/assets/ lib/assets/
             vendor/assets/ | wc -l`;
