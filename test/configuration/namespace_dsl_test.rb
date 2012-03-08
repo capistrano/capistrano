@@ -308,4 +308,25 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     end
     assert_nil @config.find_task("outer::inner")
   end
+  
+  def test_kernel_method_clashing_should_not_affect_method_delegation_to_parent
+    @config.class.class_eval do
+      def some_weird_method() 'config' end
+    end
+    
+    @config.namespace(:clash) {}
+    namespace = @config.namespaces[:clash]
+    assert_equal 'config', namespace.some_weird_method
+    
+    Kernel.module_eval do
+      def some_weird_method() 'kernel' end
+    end
+    
+    @config.namespace(:clash2) {}
+    namespace = @config.namespaces[:clash2]
+    assert_equal 'config', namespace.some_weird_method
+    
+    Kernel.send :remove_method, :some_weird_method
+    @config.class.send :remove_method, :some_weird_method
+  end
 end
