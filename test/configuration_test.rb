@@ -16,7 +16,7 @@ class ConfigurationTest < Test::Unit::TestCase
     process_args = Proc.new do |tree, session, opts|
       tree.fallback.command == "echo 'hello world'" &&
       session == [:session] &&
-      opts == { :logger => @config.logger }
+      opts == { :logger => @config.logger, :verbose_command_log => false }
     end
 
     Capistrano::Command.expects(:process).with(&process_args)
