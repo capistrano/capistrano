@@ -3,8 +3,17 @@
 require 'optparse'
 require 'fileutils'
 
+options = {:capfile => nil, :deployfile => nil}
 OptionParser.new do |opts|
   opts.banner = "Usage: #{File.basename($0)} [path]"
+  
+  opts.on("-c", "--capfile [CAPFILE_TEMPLATE]", "Capfile template") do |capfile|
+     options[:capfile] = capfile
+  end
+  
+  opts.on("-d", "--deployfile [DEPLOYFILE_TEMPLATE]", "Deployfile template") do |deployfile|
+     options[:deployfile] = deployfile
+  end
 
   opts.on("-h", "--help", "Displays this help info") do
     puts opts
@@ -28,6 +37,14 @@ elsif !File.directory?(ARGV.first)
   abort "`#{ARGV.first}' is not a directory."
 elsif ARGV.length > 1
   abort "Too many arguments; please specify only the directory to capify."
+end
+
+if options[:capfile]
+   abort "#{options[:capfile]} does not exist" unless File.exists?(options[:capfile])
+end
+
+if options[:deployfile]
+   abort "#{options[:deployfile]} does not exist" unless File.exists?(options[:deployfile])
 end
 
 def unindent(string)
@@ -70,6 +87,14 @@ role :db,  "your slave db-server here"
 #     run "#{try_sudo} touch #{File.join(current_path,\'tmp\',\'restart.txt\')}"
 #   end
 # end'}
+
+if options[:capfile]
+   files["Capfile"] = File.open(options[:capfile]).read
+end
+
+if options[:deployfile]
+   files["config/deploy.rb"] = File.open(options[:deployfile]).read
+end
 
 base = ARGV.shift
 files.each do |file, content|
