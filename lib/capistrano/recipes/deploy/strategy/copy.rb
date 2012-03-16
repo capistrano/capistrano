@@ -70,16 +70,7 @@ module Capistrano
 
             build(destination)
 
-            if copy_exclude.any?
-              logger.debug "processing exclusions..."
-
-              copy_exclude.each do |pattern|
-                delete_list = Dir.glob(File.join(destination, pattern), File::FNM_DOTMATCH)
-                # avoid the /.. trap that deletes the parent directories
-                delete_list.delete_if { |dir| dir =~ /\/\.\.$/ }
-                FileUtils.rm_rf(delete_list.compact)
-              end
-            end
+            remove_excluded_files if copy_exclude.any?
           end
 
           File.open(File.join(destination, "REVISION"), "w") { |f| f.puts(revision) }
@@ -169,6 +160,17 @@ module Capistrano
           def  copy_repository_to_server
             logger.debug "getting (via #{copy_strategy}) revision #{revision} to #{destination}"
             system(command)
+          end
+
+          def remove_excluded_files
+            logger.debug "processing exclusions..."
+
+            copy_exclude.each do |pattern|
+              delete_list = Dir.glob(File.join(destination, pattern), File::FNM_DOTMATCH)
+              # avoid the /.. trap that deletes the parent directories
+              delete_list.delete_if { |dir| dir =~ /\/\.\.$/ }
+              FileUtils.rm_rf(delete_list.compact)
+            end
           end
 
           # Specify patterns to exclude from the copy. This is only valid
