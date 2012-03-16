@@ -66,8 +66,7 @@ module Capistrano
             build(copy_cache)
             copy_cache_to_server
           else
-            logger.debug "getting (via #{copy_strategy}) revision #{revision} to #{destination}"
-            system(command)
+            copy_repository_to_server
 
             build(destination)
 
@@ -165,6 +164,11 @@ module Capistrano
                 end
               end
             end
+          end
+
+          def  copy_repository_to_server
+            logger.debug "getting (via #{copy_strategy}) revision #{revision} to #{destination}"
+            system(command)
           end
 
           # Specify patterns to exclude from the copy. This is only valid
