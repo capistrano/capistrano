@@ -64,29 +64,7 @@ module Capistrano
             rollback_changes if last_command_failed?
 
             build(copy_cache)
-
-            FileUtils.mkdir_p(destination)
-
-            logger.debug "copying cache to deployment staging area #{destination}"
-            Dir.chdir(copy_cache) do
-              queue = Dir.glob("*", File::FNM_DOTMATCH)
-              while queue.any?
-                item = queue.shift
-                name = File.basename(item)
-
-                next if name == "." || name == ".."
-                next if copy_exclude.any? { |pattern| File.fnmatch(pattern, item) }
-
-                if File.symlink?(item)
-                  FileUtils.ln_s(File.readlink(item), File.join(destination, item))
-                elsif File.directory?(item)
-                  queue += Dir.glob("#{item}/*", File::FNM_DOTMATCH)
-                  FileUtils.mkdir(File.join(destination, item))
-                else
-                  FileUtils.ln(item, File.join(destination, item))
-                end
-              end
-            end
+            copy_cache_to_server
           else
             logger.debug "getting (via #{copy_strategy}) revision #{revision} to #{destination}"
             system(command)
@@ -162,6 +140,31 @@ module Capistrano
 
           def last_command_failed?
             $? != 0
+          end
+
+          def copy_cache_to_server
+            FileUtils.mkdir_p(destination)
+
+            logger.debug "copying cache to deployment staging area #{destination}"
+            Dir.chdir(copy_cache) do
+              queue = Dir.glob("*", File::FNM_DOTMATCH)
+              while queue.any?
+                item = queue.shift
+                name = File.basename(item)
+
+                next if name == "." || name == ".."
+                next if copy_exclude.any? { |pattern| File.fnmatch(pattern, item) }
+
+                if File.symlink?(item)
+                  FileUtils.ln_s(File.readlink(item), File.join(destination, item))
+                elsif File.directory?(item)
+                  queue += Dir.glob("#{item}/*", File::FNM_DOTMATCH)
+                  FileUtils.mkdir(File.join(destination, item))
+                else
+                  FileUtils.ln(item, File.join(destination, item))
+                end
+              end
+            end
           end
 
           # Specify patterns to exclude from the copy. This is only valid
