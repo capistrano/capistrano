@@ -73,7 +73,7 @@ module Capistrano
             remove_excluded_files if copy_exclude.any?
           end
 
-          File.open(File.join(destination, "REVISION"), "w") { |f| f.puts(revision) }
+          create_revision_file
 
           logger.trace "compressing #{destination} to #{filename}"
           Dir.chdir(copy_dir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
@@ -171,6 +171,10 @@ module Capistrano
               delete_list.delete_if { |dir| dir =~ /\/\.\.$/ }
               FileUtils.rm_rf(delete_list.compact)
             end
+          end
+
+          def create_revision_file
+            File.open(File.join(destination, "REVISION"), "w") { |f| f.puts(revision) }
           end
 
           # Specify patterns to exclude from the copy. This is only valid
