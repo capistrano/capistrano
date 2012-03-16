@@ -57,7 +57,8 @@ module Capistrano
           if copy_cache
             copy_repository_to_local_cache
             build(copy_cache)
-            copy_cache_to_server
+
+            copy_cache_to_staging_area
           else
             copy_repository_to_server
 
@@ -123,7 +124,7 @@ module Capistrano
             $? != 0
           end
 
-          def copy_cache_to_server
+          def copy_cache_to_staging_area
             FileUtils.mkdir_p(destination)
 
             logger.debug "copying cache to deployment staging area #{destination}"
