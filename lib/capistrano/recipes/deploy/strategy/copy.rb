@@ -61,7 +61,7 @@ module Capistrano
               create_local_cache
             end
 
-            rollback_changes if last_command_failed?
+            raise_command_failed if last_command_failed?
 
             build(copy_cache)
             copy_cache_to_server
@@ -79,8 +79,7 @@ module Capistrano
 
           distribute!
         ensure
-          FileUtils.rm filename rescue nil
-          FileUtils.rm_rf destination rescue nil
+          rollback_changes
         end
 
         def build(directory)
@@ -89,7 +88,7 @@ module Capistrano
           Dir.chdir(directory) do
             self.system(configuration[:build_script])
 
-            rollback_changes if last_command_failed?
+            raise_command_failed if last_command_failed?
           end
         end
 
@@ -123,7 +122,7 @@ module Capistrano
             system(source.checkout(revision, copy_cache))
           end
 
-          def rollback_changes
+          def raise_command_failed
             raise Capistrano::Error, "shell command failed with return code #{$?}"
           end
 
@@ -181,6 +180,10 @@ module Capistrano
             Dir.chdir(copy_dir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
           end
 
+          def rollback_changes
+            FileUtils.rm filename rescue nil
+            FileUtils.rm_rf destination rescue nil
+          end
           # Specify patterns to exclude from the copy. This is only valid
           # when using a local cache.
           def copy_exclude
