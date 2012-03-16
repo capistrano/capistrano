@@ -61,16 +61,13 @@ module Capistrano
             copy_cache_to_staging_area
           else
             copy_repository_to_server
-
             build(destination)
 
             remove_excluded_files if copy_exclude.any?
           end
 
           create_revision_file
-
           compress_repository
-
           distribute!
         ensure
           rollback_changes
