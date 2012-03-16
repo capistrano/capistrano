@@ -75,8 +75,7 @@ module Capistrano
 
           create_revision_file
 
-          logger.trace "compressing #{destination} to #{filename}"
-          Dir.chdir(copy_dir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
+          compress_repository
 
           distribute!
         ensure
@@ -175,6 +174,11 @@ module Capistrano
 
           def create_revision_file
             File.open(File.join(destination, "REVISION"), "w") { |f| f.puts(revision) }
+          end
+
+          def compress_repository
+            logger.trace "compressing #{destination} to #{filename}"
+            Dir.chdir(copy_dir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
           end
 
           # Specify patterns to exclude from the copy. This is only valid
