@@ -61,10 +61,7 @@ module Capistrano
               create_local_cache
             end
 
-            # Check the return code of last system command and rollback if not 0
-            unless $? == 0
-              raise Capistrano::Error, "shell command failed with return code #{$?}"
-            end
+            rollback_changes if last_command_failed?
 
             build(copy_cache)
 
@@ -159,6 +156,14 @@ module Capistrano
           def create_local_cache
             logger.debug "preparing local cache at #{copy_cache}"
             system(source.checkout(revision, copy_cache))
+          end
+
+          def rollback_changes
+            raise Capistrano::Error, "shell command failed with return code #{$?}"
+          end
+
+          def last_command_failed?
+            $? != 0
           end
 
           # Specify patterns to exclude from the copy. This is only valid
