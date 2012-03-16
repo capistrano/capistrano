@@ -121,10 +121,8 @@ module Capistrano
 
           Dir.chdir(directory) do
             self.system(configuration[:build_script])
-            # Check the return code of last system command and rollback if not 0
-            unless $? == 0
-              raise Capistrano::Error, "shell command failed with return code #{$?}"
-            end
+
+            rollback_changes if last_command_failed?
           end
         end
 
