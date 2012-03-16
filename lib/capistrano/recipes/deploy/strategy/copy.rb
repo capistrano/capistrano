@@ -56,8 +56,7 @@ module Capistrano
         def deploy!
           if copy_cache
             if File.exists?(copy_cache)
-              logger.debug "refreshing local cache to revision #{revision} at #{copy_cache}"
-              system(source.sync(revision, copy_cache))
+              refresh_local_cache
             else
               logger.debug "preparing local cache at #{copy_cache}"
               system(source.checkout(revision, copy_cache))
@@ -152,6 +151,11 @@ module Capistrano
         end
 
         private
+
+          def refresh_local_cache
+            logger.debug "refreshing local cache to revision #{revision} at #{copy_cache}"
+            system(source.sync(revision, copy_cache))
+          end
 
           # Specify patterns to exclude from the copy. This is only valid
           # when using a local cache.
