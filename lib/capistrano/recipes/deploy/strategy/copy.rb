@@ -55,14 +55,7 @@ module Capistrano
         # directory.
         def deploy!
           if copy_cache
-            if File.exists?(copy_cache)
-              refresh_local_cache
-            else
-              create_local_cache
-            end
-
-            raise_command_failed if last_command_failed?
-
+            copy_repository_to_local_cache
             build(copy_cache)
             copy_cache_to_server
           else
@@ -184,6 +177,17 @@ module Capistrano
             FileUtils.rm filename rescue nil
             FileUtils.rm_rf destination rescue nil
           end
+
+          def copy_repository_to_local_cache
+            if File.exists?(copy_cache)
+              refresh_local_cache
+            else
+              create_local_cache
+            end
+
+            raise_command_failed if last_command_failed?
+          end
+
           # Specify patterns to exclude from the copy. This is only valid
           # when using a local cache.
           def copy_exclude
