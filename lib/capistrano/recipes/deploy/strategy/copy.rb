@@ -58,8 +58,7 @@ module Capistrano
             if File.exists?(copy_cache)
               refresh_local_cache
             else
-              logger.debug "preparing local cache at #{copy_cache}"
-              system(source.checkout(revision, copy_cache))
+              create_local_cache
             end
 
             # Check the return code of last system command and rollback if not 0
@@ -155,6 +154,11 @@ module Capistrano
           def refresh_local_cache
             logger.debug "refreshing local cache to revision #{revision} at #{copy_cache}"
             system(source.sync(revision, copy_cache))
+          end
+
+          def create_local_cache
+            logger.debug "preparing local cache at #{copy_cache}"
+            system(source.checkout(revision, copy_cache))
           end
 
           # Specify patterns to exclude from the copy. This is only valid
