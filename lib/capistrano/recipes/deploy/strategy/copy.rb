@@ -156,7 +156,7 @@ module Capistrano
             end
           end
 
-          def  copy_repository_to_server
+          def copy_repository_to_server
             logger.debug "getting (via #{copy_strategy}) revision #{revision} to #{destination}"
             system(command)
           end
