@@ -54,11 +54,7 @@ module Capistrano
         # servers, and uncompresses it on each of them into the deployment
         # directory.
         def deploy!
-          if copy_cache
-            run_copy_cache_strategy
-          else
-            run_copy_strategy
-          end
+          copy_cache ? run_copy_cache_strategy : run_copy_strategy
 
           create_revision_file
           compress_repository
