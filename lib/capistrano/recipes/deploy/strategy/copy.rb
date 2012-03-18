@@ -123,21 +123,16 @@ module Capistrano
 
           def copy_cache_to_staging_area
             FileUtils.mkdir_p(destination)
-
             logger.debug "copying cache to deployment staging area #{destination}"
+
             Dir.chdir(copy_cache) do
-              queue = Dir.glob("*", File::FNM_DOTMATCH)
-              while queue.any?
-                item = queue.shift
-                name = File.basename(item)
+              queue = queue_files
 
-                next if name == "." || name == ".."
-                next if copy_exclude.any? { |pattern| File.fnmatch(pattern, item) }
-
+              queue.each do |item|
                 if File.symlink?(item)
                   FileUtils.ln_s(File.readlink(item), File.join(destination, item))
                 elsif File.directory?(item)
-                  queue += Dir.glob("#{item}/*", File::FNM_DOTMATCH)
+                  queue.concat queue_files("#{item}/*")
                   FileUtils.mkdir(File.join(destination, item))
                 else
                   FileUtils.ln(item, File.join(destination, item))
@@ -145,6 +140,15 @@ module Capistrano
               end
             end
           end
+
+          def queue_files directory="*"
+            Dir.glob(directory, File::FNM_DOTMATCH).reject! { |file| excluded_files_contain? file }
+          end
+
+          def excluded_files_contain? file
+            copy_exclude.any? { |p| File.fnmatch(p, file) } or [ ".", ".."].include? File.basename(file)
+          end
+
 
           def copy_repository_to_server
             logger.debug "getting (via #{copy_strategy}) revision #{revision} to #{destination}"
