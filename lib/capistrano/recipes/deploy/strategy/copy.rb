@@ -122,33 +122,52 @@ module Capistrano
           end
 
           def copy_cache_to_staging_area
-            FileUtils.mkdir_p(destination)
             logger.debug "copying cache to deployment staging area #{destination}"
+            create_destination
 
             Dir.chdir(copy_cache) do
-              queue = queue_files
-
-              queue.each do |item|
-                if File.symlink?(item)
-                  FileUtils.ln_s(File.readlink(item), File.join(destination, item))
-                elsif File.directory?(item)
-                  queue.concat queue_files("#{item}/*")
-                  FileUtils.mkdir(File.join(destination, item))
-                else
-                  FileUtils.ln(item, File.join(destination, item))
-                end
-              end
+              copy_files(queue_files)
             end
           end
 
-          def queue_files directory="*"
-            Dir.glob(directory, File::FNM_DOTMATCH).reject! { |file| excluded_files_contain? file }
+          def create_destination
+            FileUtils.mkdir_p(destination)
+          end
+
+          def copy_files files
+            files.each { |filename| process_file(filename) }
+          end
+
+          def process_file filename
+            return copy_symlink(filename) if File.symlink? filename
+            return copy_directory(filename) if File.directory? filename
+            copy_hardlink filename
+          end
+
+          def copy_symlink name
+            FileUtils.ln_s(File.readlink(item), File.join(destination, name))
+          end
+
+          def copy_directory name
+            FileUtils.mkdir(File.join(destination, name))
+            copy_files(queue_files(name))
+          end
+
+          def copy_hardlink name
+            FileUtils.ln(name, File.join(destination, name))
+          end
+
+          def queue_files directory=nil
+            Dir.glob(pattern_for(directory), File::FNM_DOTMATCH).reject! { |file| excluded_files_contain? file }
+          end
+
+          def pattern_for directory
+            !directory.nil? ? "#{directory}/*" : "*"
           end
 
           def excluded_files_contain? file
             copy_exclude.any? { |p| File.fnmatch(p, file) } or [ ".", ".."].include? File.basename(file)
           end
-
 
           def copy_repository_to_server
             logger.debug "getting (via #{copy_strategy}) revision #{revision} to #{destination}"
@@ -274,10 +293,14 @@ module Capistrano
             compression.decompress_command + [file]
           end
 
+          def decompress_remote_file
+            run "cd #{configuration[:releases_path]} && #{decompress(remote_filename).join(" ")} && rm #{remote_filename}"
+          end
+
           # Distributes the file to the remote servers
           def distribute!
             upload(filename, remote_filename)
-            run "cd #{configuration[:releases_path]} && #{decompress(remote_filename).join(" ")} && rm #{remote_filename}"
+            decompress_remote_file
           end
       end
 
