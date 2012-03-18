@@ -55,15 +55,9 @@ module Capistrano
         # directory.
         def deploy!
           if copy_cache
-            copy_repository_to_local_cache
-            run_build_script_on copy_cache
-
-            copy_cache_to_staging_area
+            run_copy_cache_strategy
           else
-            copy_repository_to_server
-            run_build_script_on destination
-
-            remove_excluded_files if copy_exclude.any?
+            run_copy_strategy
           end
 
           create_revision_file
@@ -74,11 +68,9 @@ module Capistrano
         end
 
         def run_build_script_on directory
-          return unless build_script
-
           execute "running build script on #{directory}" do
             Dir.chdir(directory) { system(build_script) }
-          end
+          end if build_script
         end
 
         def check!
@@ -100,6 +92,18 @@ module Capistrano
         end
 
         private
+
+          def run_copy_cache_strategy
+            copy_repository_to_local_cache
+            run_build_script_on copy_cache
+            copy_cache_to_staging_area
+          end
+
+          def run_copy_strategy
+            copy_repository_to_server
+            run_build_script_on destination
+            remove_excluded_files if copy_exclude.any?
+          end
 
           def execute description, &block
             logger.debug description
@@ -134,10 +138,7 @@ module Capistrano
           def copy_cache_to_staging_area
             execute "copying cache to deployment staging area #{destination}" do
               create_destination
-
-              Dir.chdir(copy_cache) do
-                copy_files(queue_files)
-              end
+              Dir.chdir(copy_cache) { copy_files(queue_files) }
             end
           end
 
@@ -150,13 +151,12 @@ module Capistrano
           end
 
           def process_file name
-            return copy_symlink(name) if File.symlink? name
-            return copy_directory(name) if File.directory? name
-            copy_hardlink name
+            filetype = File.ftype(name)
+            send "copy_#{filetype}", name
           end
 
-          def copy_symlink name
-            FileUtils.ln_s(File.readlink(item), File.join(destination, name))
+          def copy_link name
+            FileUtils.ln_s(File.readlink(name), File.join(destination, name))
           end
 
           def copy_directory name
@@ -164,7 +164,7 @@ module Capistrano
             copy_files(queue_files(name))
           end
 
-          def copy_hardlink name
+          def copy_file name
             FileUtils.ln(name, File.join(destination, name))
           end
 
@@ -182,8 +182,12 @@ module Capistrano
 
           def copy_repository_to_server
             execute "getting (via #{copy_strategy}) revision #{revision} to #{destination}" do
-              system(command)
+              copy_repository_via_strategy
             end
+          end
+
+          def copy_repository_via_strategy
+              system(command)
           end
 
           def remove_excluded_files
