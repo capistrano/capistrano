@@ -76,6 +76,7 @@ module Capistrano
         def build(directory)
           return unless configuration[:build_script]
 
+          logger.debug "running build script on #{directory}"
           Dir.chdir(directory) do
             self.system(configuration[:build_script])
 
