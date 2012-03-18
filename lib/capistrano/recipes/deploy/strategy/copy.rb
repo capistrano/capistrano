@@ -56,12 +56,12 @@ module Capistrano
         def deploy!
           if copy_cache
             copy_repository_to_local_cache
-            build(copy_cache)
+            run_build_script_on copy_cache
 
             copy_cache_to_staging_area
           else
             copy_repository_to_server
-            build(destination)
+            run_build_script_on destination
 
             remove_excluded_files if copy_exclude.any?
           end
@@ -73,7 +73,7 @@ module Capistrano
           rollback_changes
         end
 
-        def build(directory)
+        def run_build_script_on directory
           return unless build_script
 
           execute "running build script on #{directory}" do
