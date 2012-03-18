@@ -90,7 +90,7 @@ module Capistrano
       # Usage:
       #
       #  on :before, "some:hook", "another:hook", :only => "deploy:update"
-      #  on :after, "some:hook", :except => "deploy:symlink"
+      #  on :after, "some:hook", :except => "deploy:create_symlink"
       #  on :before, "global:hook"
       #  on :after, :only => :deploy do
       #    puts "after deploy here"
