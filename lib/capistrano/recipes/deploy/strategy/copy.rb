@@ -74,10 +74,10 @@ module Capistrano
         end
 
         def build(directory)
-          return unless configuration[:build_script]
+          return unless build_script
 
           execute "running build script on #{directory}" do
-            Dir.chdir(directory) { self.system(configuration[:build_script]) }
+            Dir.chdir(directory) { system(build_script) }
           end
         end
 
@@ -215,6 +215,10 @@ module Capistrano
           def copy_repository_to_local_cache
             return refresh_local_cache if File.exists?(copy_cache)
             create_local_cache
+          end
+
+          def build_script
+            configuration[:build_script]
           end
 
           # Specify patterns to exclude from the copy. This is only valid
