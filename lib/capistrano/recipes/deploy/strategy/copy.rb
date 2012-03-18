@@ -151,8 +151,13 @@ module Capistrano
           end
 
           def process_file name
-            filetype = File.ftype(name)
-            send "copy_#{filetype}", name
+            send "copy_#{filetype(name)}", name
+          end
+
+          def filetype name
+            filetype = File.ftype name
+            filetype = "file" unless ["link", "directory"].include? filetype
+            filetype
           end
 
           def copy_link name
