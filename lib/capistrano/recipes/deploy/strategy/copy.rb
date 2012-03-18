@@ -135,13 +135,13 @@ module Capistrano
           end
 
           def copy_files files
-            files.each { |filename| process_file(filename) }
+            files.each { |name| process_file(name) }
           end
 
-          def process_file filename
-            return copy_symlink(filename) if File.symlink? filename
-            return copy_directory(filename) if File.directory? filename
-            copy_hardlink filename
+          def process_file name
+            return copy_symlink(name) if File.symlink? name
+            return copy_directory(name) if File.directory? name
+            copy_hardlink name
           end
 
           def copy_symlink name
