@@ -76,11 +76,8 @@ module Capistrano
         def build(directory)
           return unless configuration[:build_script]
 
-          logger.debug "running build script on #{directory}"
-          Dir.chdir(directory) do
-            self.system(configuration[:build_script])
-
-            raise_command_failed if last_command_failed?
+          execute "running build script on #{directory}" do
+            Dir.chdir(directory) { self.system(configuration[:build_script]) }
           end
         end
 
@@ -104,14 +101,26 @@ module Capistrano
 
         private
 
+          def execute description, &block
+            logger.debug description
+            handle_system_errors &block
+          end
+
+          def handle_system_errors &block
+            block.call
+            raise_command_failed if last_command_failed?
+          end
+
           def refresh_local_cache
-            logger.debug "refreshing local cache to revision #{revision} at #{copy_cache}"
-            system(source.sync(revision, copy_cache))
+            execute "refreshing local cache to revision #{revision} at #{copy_cache}" do
+              system(source.sync(revision, copy_cache))
+            end
           end
 
           def create_local_cache
-            logger.debug "preparing local cache at #{copy_cache}"
-            system(source.checkout(revision, copy_cache))
+            execute "preparing local cache at #{copy_cache}" do
+              system(source.checkout(revision, copy_cache))
+            end
           end
 
           def raise_command_failed
@@ -123,11 +132,12 @@ module Capistrano
           end
 
           def copy_cache_to_staging_area
-            logger.debug "copying cache to deployment staging area #{destination}"
-            create_destination
+            execute "copying cache to deployment staging area #{destination}" do
+              create_destination
 
-            Dir.chdir(copy_cache) do
-              copy_files(queue_files)
+              Dir.chdir(copy_cache) do
+                copy_files(queue_files)
+              end
             end
           end
 
@@ -171,8 +181,9 @@ module Capistrano
           end
 
           def copy_repository_to_server
-            logger.debug "getting (via #{copy_strategy}) revision #{revision} to #{destination}"
-            system(command)
+            execute "getting (via #{copy_strategy}) revision #{revision} to #{destination}" do
+              system(command)
+            end
           end
 
           def remove_excluded_files
@@ -191,8 +202,9 @@ module Capistrano
           end
 
           def compress_repository
-            logger.trace "compressing #{destination} to #{filename}"
-            Dir.chdir(copy_dir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
+            execute "Compressing #{destination} to #{filename}" do
+              Dir.chdir(copy_dir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
+            end
           end
 
           def rollback_changes
@@ -201,13 +213,8 @@ module Capistrano
           end
 
           def copy_repository_to_local_cache
-            if File.exists?(copy_cache)
-              refresh_local_cache
-            else
-              create_local_cache
-            end
-
-            raise_command_failed if last_command_failed?
+            return refresh_local_cache if File.exists?(copy_cache)
+            create_local_cache
           end
 
           # Specify patterns to exclude from the copy. This is only valid
