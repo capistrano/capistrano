@@ -63,7 +63,7 @@ module Capistrano
           rollback_changes
         end
 
-        def run_build_script_on directory
+        def build directory
           execute "running build script on #{directory}" do
             Dir.chdir(directory) { system(build_script) }
           end if build_script
@@ -91,13 +91,13 @@ module Capistrano
 
           def run_copy_cache_strategy
             copy_repository_to_local_cache
-            run_build_script_on copy_cache
+            build copy_cache
             copy_cache_to_staging_area
           end
 
           def run_copy_strategy
             copy_repository_to_server
-            run_build_script_on destination
+            build destination
             remove_excluded_files if copy_exclude.any?
           end
 
