@@ -49,6 +49,12 @@ module Capistrano
         self
       end
 
+      def rpm(name, version, options={})
+        @message ||= "package `#{name}' #{version} could not be found"
+        try("rpm -q #{name} | grep '#{version}'", options)
+        self
+      end
+
       def match(command, expect, options={})
         expect = Regexp.new(Regexp.escape(expect.to_s)) unless expect.is_a?(Regexp)
 

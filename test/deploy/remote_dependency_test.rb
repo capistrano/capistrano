@@ -43,6 +43,12 @@ class RemoteDependencyTest < Test::Unit::TestCase
     assert_equal "package `dpkg' 1.15 could not be found (host)", @dependency.message
   end
 
+  def test_should_use_standard_error_message_for_rpm
+    setup_for_a_configuration_rpm_run("rpm", "4.8", false)
+    @dependency.rpm("rpm", "4.8")
+    assert_equal "package `rpm' 4.8 could not be found (host)", @dependency.message
+  end
+
   def test_should_fail_if_directory_not_found
     setup_for_a_configuration_run("test -d /data", false)
     assert !@dependency.directory("/data").pass?
@@ -131,5 +137,10 @@ class RemoteDependencyTest < Test::Unit::TestCase
   def setup_for_a_configuration_deb_run(name, version, passing)
     find_deb_cmd = "dpkg -s #{name} | grep '^Version: #{version}'"
     setup_for_a_configuration_run(find_deb_cmd, passing)
+  end
+
+  def setup_for_a_configuration_rpm_run(name, version, passing)
+    find_rpm_cmd = "rpm -q #{name} | grep '#{version}'"
+    setup_for_a_configuration_run(find_rpm_cmd, passing)
   end
 end
