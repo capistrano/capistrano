@@ -30,6 +30,14 @@ class AliasTaskTest < Test::Unit::TestCase
     assert @config.tasks.key?(:new_foo)
   end
 
+  def test_original_task_remain_with_same_name
+    @config.task(:foo) { 42 }
+    @config.alias_task 'new_foo', 'foo'
+
+    assert_equal :foo, @config.tasks[:foo].name
+    assert_equal :new_foo, @config.tasks[:new_foo].name
+  end
+
   def test_aliased_task_do_the_same
     @config.task(:foo) { 42 }
     @config.alias_task 'new_foo', 'foo'
