@@ -38,8 +38,24 @@ namespace :deploy do
         set :asset_env, "RAILS_GROUPS=assets"
     DESC
     task :precompile, :roles => :web, :except => { :no_release => true } do
-      run "cd #{latest_release} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:precompile"
-    end
+      from = source.next_revision(current_revision)
+      begin
+        run <<-CMD.unindent
+          cd #{latest_release};
+          COUNT=`#{source.local.log(from)} -- app/assets/ lib/assets/
+            vendor/assets/ | wc -l`;
+          if [ #{ENV['FORCE'] ? 1 : '$COUNT'} -gt 0 ]; then
+            #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:precompile;
+          else
+            echo Skipping asset pre-compilation because there were no
+              asset changes;
+          fi
+        CMD
+      rescue Capistrano::CommandError => e
+        # occurs when assets:precompile task is missing (prior to Rails 3.1)
+        puts "Skipping task 'assets:precompile' (#{e.class}: #{e.message})"
+      end # rescue
+    end # task :precompile
 
     desc <<-DESC
       Run the asset clean rake task. Use with caution, this will delete \
