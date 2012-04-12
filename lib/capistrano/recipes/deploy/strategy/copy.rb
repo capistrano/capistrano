@@ -54,83 +54,19 @@ module Capistrano
         # servers, and uncompresses it on each of them into the deployment
         # directory.
         def deploy!
-          if copy_cache
-            if File.exists?(copy_cache)
-              logger.debug "refreshing local cache to revision #{revision} at #{copy_cache}"
-              system(source.sync(revision, copy_cache))
-            else
-              logger.debug "preparing local cache at #{copy_cache}"
-              system(source.checkout(revision, copy_cache))
-            end
+          copy_cache ? run_copy_cache_strategy : run_copy_strategy
 
-            # Check the return code of last system command and rollback if not 0
-            unless $? == 0
-              raise Capistrano::Error, "shell command failed with return code #{$?}"
-            end
-
-            build(copy_cache)
-
-            FileUtils.mkdir_p(destination)
-
-            logger.debug "copying cache to deployment staging area #{destination}"
-            Dir.chdir(copy_cache) do
-              queue = Dir.glob("*", File::FNM_DOTMATCH)
-              while queue.any?
-                item = queue.shift
-                name = File.basename(item)
-
-                next if name == "." || name == ".."
-                next if copy_exclude.any? { |pattern| File.fnmatch(pattern, item) }
-
-                if File.symlink?(item)
-                  FileUtils.ln_s(File.readlink(item), File.join(destination, item))
-                elsif File.directory?(item)
-                  queue += Dir.glob("#{item}/*", File::FNM_DOTMATCH)
-                  FileUtils.mkdir(File.join(destination, item))
-                else
-                  FileUtils.ln(item, File.join(destination, item))
-                end
-              end
-            end
-          else
-            logger.debug "getting (via #{copy_strategy}) revision #{revision} to #{destination}"
-            system(command)
-
-            build(destination)
-
-            if copy_exclude.any?
-              logger.debug "processing exclusions..."
-
-              copy_exclude.each do |pattern|
-                delete_list = Dir.glob(File.join(destination, pattern), File::FNM_DOTMATCH)
-                # avoid the /.. trap that deletes the parent directories
-                delete_list.delete_if { |dir| dir =~ /\/\.\.$/ }
-                FileUtils.rm_rf(delete_list.compact)
-              end
-            end
-          end
-
-          File.open(File.join(destination, "REVISION"), "w") { |f| f.puts(revision) }
-
-          logger.trace "compressing #{destination} to #{filename}"
-          Dir.chdir(copy_dir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
-
+          create_revision_file
+          compress_repository
           distribute!
         ensure
-          FileUtils.rm filename rescue nil
-          FileUtils.rm_rf destination rescue nil
+          rollback_changes
         end
 
-        def build(directory)
-          return unless configuration[:build_script]
-
-          Dir.chdir(directory) do
-            self.system(configuration[:build_script])
-            # Check the return code of last system command and rollback if not 0
-            unless $? == 0
-              raise Capistrano::Error, "shell command failed with return code #{$?}"
-            end
-          end
+        def build directory
+          execute "running build script on #{directory}" do
+            Dir.chdir(directory) { system(build_script) }
+          end if build_script
         end
 
         def check!
@@ -152,6 +88,143 @@ module Capistrano
         end
 
         private
+
+          def run_copy_cache_strategy
+            copy_repository_to_local_cache
+            build copy_cache
+            copy_cache_to_staging_area
+          end
+
+          def run_copy_strategy
+            copy_repository_to_server
+            build destination
+            remove_excluded_files if copy_exclude.any?
+          end
+
+          def execute description, &block
+            logger.debug description
+            handle_system_errors &block
+          end
+
+          def handle_system_errors &block
+            block.call
+            raise_command_failed if last_command_failed?
+          end
+
+          def refresh_local_cache
+            execute "refreshing local cache to revision #{revision} at #{copy_cache}" do
+              system(source.sync(revision, copy_cache))
+            end
+          end
+
+          def create_local_cache
+            execute "preparing local cache at #{copy_cache}" do
+              system(source.checkout(revision, copy_cache))
+            end
+          end
+
+          def raise_command_failed
+            raise Capistrano::Error, "shell command failed with return code #{$?}"
+          end
+
+          def last_command_failed?
+            $? != 0
+          end
+
+          def copy_cache_to_staging_area
+            execute "copying cache to deployment staging area #{destination}" do
+              create_destination
+              Dir.chdir(copy_cache) { copy_files(queue_files) }
+            end
+          end
+
+          def create_destination
+            FileUtils.mkdir_p(destination)
+          end
+
+          def copy_files files
+            files.each { |name| process_file(name) }
+          end
+
+          def process_file name
+            send "copy_#{filetype(name)}", name
+          end
+
+          def filetype name
+            filetype = File.ftype name
+            filetype = "file" unless ["link", "directory"].include? filetype
+            filetype
+          end
+
+          def copy_link name
+            FileUtils.ln_s(File.readlink(name), File.join(destination, name))
+          end
+
+          def copy_directory name
+            FileUtils.mkdir(File.join(destination, name))
+            copy_files(queue_files(name))
+          end
+
+          def copy_file name
+            FileUtils.ln(name, File.join(destination, name))
+          end
+
+          def queue_files directory=nil
+            Dir.glob(pattern_for(directory), File::FNM_DOTMATCH).reject! { |file| excluded_files_contain? file }
+          end
+
+          def pattern_for directory
+            !directory.nil? ? "#{directory}/*" : "*"
+          end
+
+          def excluded_files_contain? file
+            copy_exclude.any? { |p| File.fnmatch(p, file) } or [ ".", ".."].include? File.basename(file)
+          end
+
+          def copy_repository_to_server
+            execute "getting (via #{copy_strategy}) revision #{revision} to #{destination}" do
+              copy_repository_via_strategy
+            end
+          end
+
+          def copy_repository_via_strategy
+              system(command)
+          end
+
+          def remove_excluded_files
+            logger.debug "processing exclusions..."
+
+            copy_exclude.each do |pattern|
+              delete_list = Dir.glob(File.join(destination, pattern), File::FNM_DOTMATCH)
+              # avoid the /.. trap that deletes the parent directories
+              delete_list.delete_if { |dir| dir =~ /\/\.\.$/ }
+              FileUtils.rm_rf(delete_list.compact)
+            end
+          end
+
+          def create_revision_file
+            File.open(File.join(destination, "REVISION"), "w") { |f| f.puts(revision) }
+          end
+
+          def compress_repository
+            execute "Compressing #{destination} to #{filename}" do
+              Dir.chdir(copy_dir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }
+            end
+          end
+
+          def rollback_changes
+            FileUtils.rm filename rescue nil
+            FileUtils.rm_rf destination rescue nil
+          end
+
+          def copy_repository_to_local_cache
+            return refresh_local_cache if File.exists?(copy_cache)
+            create_local_cache
+          end
+
+          def build_script
+            configuration[:build_script]
+          end
 
           # Specify patterns to exclude from the copy. This is only valid
           # when using a local cache.
@@ -237,10 +310,14 @@ module Capistrano
             compression.decompress_command + [file]
           end
 
+          def decompress_remote_file
+            run "cd #{configuration[:releases_path]} && #{decompress(remote_filename).join(" ")} && rm #{remote_filename}"
+          end
+
           # Distributes the file to the remote servers
           def distribute!
             upload(filename, remote_filename)
-            run "cd #{configuration[:releases_path]} && #{decompress(remote_filename).join(" ")} && rm #{remote_filename}"
+            decompress_remote_file
           end
       end
 
