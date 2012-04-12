@@ -12,7 +12,7 @@ module Capistrano
           opts = options.dup
           upload(StringIO.new(data), path, opts)
         end
-    
+
         # Get file remote_path from FIRST server targeted by
         # the current task and transfer it to local machine as path.
         #
@@ -35,13 +35,12 @@ module Capistrano
         end
 
         def transfer(direction, from, to, options={}, &block)
+          if dry_run
+            return logger.debug "transfering: #{[direction, from, to] * ', '}"
+          end
           execute_on_servers(options) do |servers|
             targets = servers.map { |s| sessions[s] }
-            if dry_run
-              logger.debug "transfering: #{[direction, from, to, targets, options.merge(:logger => logger).inspect ] * ', '}"
-            else
               Transfer.process(direction, from, to, targets, options.merge(:logger => logger), &block)
-            end
           end
         end
 
