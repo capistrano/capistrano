@@ -7,7 +7,7 @@ load 'deploy'
 map = { "diff_from_last_deploy"  => "deploy:pending:diff",
         "update"                 => "deploy:update",
         "update_code"            => "deploy:update_code",
-        "symlink"                => "deploy:symlink",
+        "symlink"                => "deploy:create_symlink",
         "restart"                => "deploy:restart",
         "rollback"               => "deploy:rollback",
         "cleanup"                => "deploy:cleanup",
