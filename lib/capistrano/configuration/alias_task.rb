@@ -15,7 +15,8 @@ module Capistrano
           raise ArgumentError, "expected a valid task name"
         end
 
-        task = find_task(old_name) or raise NoSuchTaskError, "the task `#{old_name}' does not exist"
+        original_task = find_task(old_name) or raise NoSuchTaskError, "the task `#{old_name}' does not exist"
+        task = original_task.dup # Dup. task to avoid modify original task
         task.name = new_name
 
         define_task(task)
