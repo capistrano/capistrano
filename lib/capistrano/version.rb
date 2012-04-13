@@ -4,7 +4,7 @@ module Capistrano
   class Version
 
     MAJOR = 2
-    MINOR = 11
+    MINOR = 12
     PATCH = 0
 
     def self.to_s

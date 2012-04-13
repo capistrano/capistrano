@@ -1,3 +1,23 @@
+## 2.12.0 / April 13 2012
+
+This release revserts the very verbose logging introduced in the previous version, it also
+enables a handful of power-user features which are largely un-documented, but shouldn't be
+important unless you are looking for them. Undocumented code shouldn't scare you, simply
+read through deploy.rb in the Gem if you want to know how a new feature works!
+
+ * Update mapped commands to remove symlink deprecation warning. Despo Pentara (despo)
+ * Add the "rpm" remote dependency. Nick Hoffman (nickhoffman)
+ * Add commented deploy:cleanup task to default recipe. Jean-Philippe Doyle (j15e)
+ * Teach deploy:web:enable to fail gracefully. Lee Marlow (lmarlow)
+ * Ticket 193 alias task show wrong name when it is not overridden. Rafa García (rgo)
+ * Allow configuration of which roles assets are precompiled on. Frederick Cheung (fcheung)
+ * Fix transfer action to honor dry-run flag. Serg Podtynnyi (shtirlic)
+ * Changed single to double quotes for Windows, fixes a Windows bug in the HG module. Matthew J Morrison (mattjmorrison)
+ * Add UnsharedRemoteCache (copied from eycap gem). Ben Symonds (bensymonds)
+
+As ever, a sincere thanks to all contributors, and do not hesitate to contact me if this
+release causes problems for you.
+
 ## 2.11.0 / Febuary 20 2012
 
 This release replaces and fixes a broken 2.10.0 release (see below for
@@ -186,7 +206,7 @@ acceptable)
   * Various fixes to path handling bugs in the copt strategy. (Philippe Rathé)
 
 ## 2.5.21 / April 6 2011
-	
+
 	* Fixed to follow best-practice guidelines from Bundler (Ben Langfeld)
 	* No longer force a gemset for Capistrano development. (Ben Langfeld)
 
@@ -255,7 +275,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 
 * Fixes Darcs remote repository problem when using the copy strategy [Alex `regularfry` Young]
 * Documentation improvements for embedding Capistrano [Lee Hambley]
-* Fixes ticket #95 -formally deprecating the before_something and after_something methods [Lee Hambley] 
+* Fixes ticket #95 -formally deprecating the before_something and after_something methods [Lee Hambley]
 
 ## 2.5.9 / 1 August 2009
 
@@ -270,7 +290,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
   * #77  - Copy command doesn't work on Solaris due to tar/gtar
   * #76  - Invalid Subversion URL
   * Improved web:disable task, now suggests a .htaccess block to use suggested by Rafael García
-  * Includes more logger options (can now select stdout, stderr of a file) [Rafael García] 
+  * Includes more logger options (can now select stdout, stderr of a file) [Rafael García]
 
 ## 2.5.8 / July 2009
 
@@ -420,7 +440,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 * Added :normalize_asset_timestamps option to deployment, defaulting to true, which allows asset timestamping to be disabled [John Trupiano]
 
 
-## 2.4.0 Preview Release #1 (2.3.101) / June 5, 2008 
+## 2.4.0 Preview Release #1 (2.3.101) / June 5, 2008
 
 * Only make deploy:start, deploy:stop, and deploy:restart try sudo as :runner. The other sudo-enabled tasks (deploy:setup, deploy:cleanup, etc.) will now use the :admin_runner user (which by default is unset). [Jamis Buck]
 
@@ -448,7 +468,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 
 * Revert "make sudo helper play nicely with complex command chains", since it broke stuff [Jamis Buck]
 
-* Make set(:default_shell, false) work for not using a shell on a per-command basis [Ryan McGeary] 
+* Make set(:default_shell, false) work for not using a shell on a per-command basis [Ryan McGeary]
 
 * Improved test coverage [Ryan McGeary]
 
@@ -656,7 +676,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
 
 
 ## 1.99.2 (2.0 Preview 3) / June 15, 2007
- 
+
 * CVS SCM module [Brian Phillips]
 
 * Fix typo in Perforce SCM module [Chris Bailey]
@@ -866,7 +886,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
       on_rollback { run "ln -nfs #{previous_release} #{current_path}" }
       run "ln -nfs #{current_release} #{current_path}"
     end
-    
+
     cap symlink # will not run on 192.168.0.3
 
 * Deprecate the -r/--recipe switch in favor of -f/--file (for more make/rake-like semantics) [Jamis Buck]
@@ -882,7 +902,7 @@ Fixes a low-value bug, thanks to Chris G for the well submitted patch:
     task :setup, :roles => [ :app, :web, :db ]
       # normally this would run every where
     end
-    
+
     ROLES=app cap setup # this will only run for the app role, overwritting the default declaration
 
 * Added :hosts option to task definition that allows you to specify cross-cutting tasks [DHH]. Example:
