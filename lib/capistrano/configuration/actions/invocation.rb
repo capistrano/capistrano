@@ -175,11 +175,7 @@ module Capistrano
 
           execute_on_servers(options) do |servers|
             targets = servers.map { |s| sessions[s] }
-            Command.process(tree, targets, options.merge(
-                :logger => logger,
-                :verbose_command_log => fetch(:verbose_command_log, false)
-              )
-            )
+            Command.process(tree, targets, options.merge(:logger => logger))
           end
         end
 
