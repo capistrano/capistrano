@@ -1,6 +1,6 @@
 ## 2.12.0 / April 13 2012
 
-This release revserts the very verbose logging introduced in the previous version, it also
+This release reverts the very verbose logging introduced in the previous version, it also
 enables a handful of power-user features which are largely un-documented, but shouldn't be
 important unless you are looking for them. Undocumented code shouldn't scare you, simply
 read through deploy.rb in the Gem if you want to know how a new feature works!
