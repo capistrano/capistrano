@@ -245,7 +245,11 @@ namespace :deploy do
     # mkdir -p is making sure that the directories are there for some SCM's that don't
     # save empty folders
     shared_children.map do |d|
-      run "rm -rf #{latest_release}/#{d} && mkdir -p #{latest_release}/#{d.split('/').first}"
+  		if (d.rindex('/')) then
+  		  run "rm -rf #{latest_release}/#{d} && mkdir -p #{latest_release}/#{d.slice(0..(d.rindex('/')))}"
+      else
+        run "rm -rf #{latest_release}/#{d}"
+  		end
       run "ln -s #{shared_path}/#{d.split('/').last} #{latest_release}/#{d}"
     end
 
