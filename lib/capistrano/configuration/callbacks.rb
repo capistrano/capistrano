@@ -107,6 +107,18 @@ module Capistrano
           callbacks[event] << ProcCallback.new(block, options)
         else
           args.each do |name|
+            [:only, :except].each do |key|
+              if options[key] == 'deploy:symlink'
+                warn "[Deprecation Warning] This API has changed, please hook `deploy:create_symlink` instead of `deploy:symlink`."
+                options[key] = 'deploy:create_symlink'
+              elsif options[key].is_a?(Array) && options[key].include?('deploy:symlink')
+                warn "[Deprecation Warning] This API has changed, please hook `deploy:create_symlink` instead of `deploy:symlink`."
+                options[key] = options[key].collect do |task|
+                  task == 'deploy:symlink' ? 'deploy:create_symlink' : task
+                end
+              end
+            end
+            
             callbacks[event] << TaskCallback.new(self, name, options)
           end
         end

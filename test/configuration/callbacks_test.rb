@@ -39,9 +39,29 @@ class ConfigurationCallbacksTest < Test::Unit::TestCase
     @config.before :bar, :foo, "bing:blang", :zip => :zing
   end
 
+  def test_before_should_map_before_deploy_symlink
+    @config.before "deploy:symlink", "bing:blang"
+    assert_equal ["deploy:create_symlink"], @config.callbacks[:before].last.only
+  end
+
+  def test_before_should_map_before_deploy_symlink_array
+    @config.before ["deploy:symlink", "bingo:blast"], "bing:blang"
+    assert_equal ["deploy:create_symlink", "bingo:blast"], @config.callbacks[:before].last.only
+  end
+
   def test_after_should_delegate_to_on
     @config.expects(:on).with(:after, :foo, "bing:blang", {:only => :bar, :zip => :zing})
     @config.after :bar, :foo, "bing:blang", :zip => :zing
+  end
+
+  def test_after_should_map_before_deploy_symlink
+    @config.after "deploy:symlink", "bing:blang"
+    assert_equal ["deploy:create_symlink"], @config.callbacks[:after].last.only
+  end
+
+  def test_after_should_map_before_deploy_symlink_array
+    @config.after ["deploy:symlink", 'bingo:blast'], "bing:blang"
+    assert_equal ["deploy:create_symlink", 'bingo:blast'], @config.callbacks[:after].last.only
   end
 
   def test_on_with_single_reference_should_add_task_callback
