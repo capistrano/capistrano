@@ -28,14 +28,14 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<net-sftp>, [">= 2.0.0"])
       s.add_runtime_dependency(%q<net-scp>, [">= 1.0.0"])
       s.add_runtime_dependency(%q<net-ssh-gateway>, [">= 1.1.0"])
-      s.add_development_dependency(%q<mocha>, [">= 0"])
+      s.add_development_dependency(%q<mocha>, ["0.9.12"])
     else
       s.add_dependency(%q<net-ssh>, [">= 2.0.14"])
       s.add_dependency(%q<net-sftp>, [">= 2.0.0"])
       s.add_dependency(%q<net-scp>, [">= 1.0.0"])
       s.add_dependency(%q<net-ssh-gateway>, [">= 1.1.0"])
       s.add_dependency(%q<highline>, [">= 0"])
-      s.add_dependency(%q<mocha>, [">= 0"])
+      s.add_dependency(%q<mocha>, ["0.9.12"])
     end
   else
     s.add_dependency(%q<net-ssh>, [">= 2.0.14"])
@@ -43,6 +43,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<net-scp>, [">= 1.0.0"])
     s.add_dependency(%q<net-ssh-gateway>, [">= 1.1.0"])
     s.add_dependency(%q<highline>, [">= 0"])
-    s.add_dependency(%q<mocha>, [">= 0"])
+    s.add_dependency(%q<mocha>, ["0.9.12"])
   end
 end
