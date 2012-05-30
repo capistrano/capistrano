@@ -79,6 +79,9 @@ class ShellTest < Test::Unit::TestCase
     end
   end
   
+  def test_sessions
+    assert_equal(0, @shell.send(:sessions).size)
+  end
   
   private
   
