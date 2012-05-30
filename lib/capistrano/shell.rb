@@ -251,10 +251,10 @@ HELP
           puts "scoping #{scope_type} #{scope_value}"
         end
       end
-    end
 
-    # All open sessions, needed to satisfy the Command::Processable include
-    def sessions
-      configuration.sessions.values
+      # All open sessions, needed to satisfy the Command::Processable include
+      def sessions
+        configuration.sessions.values
+      end
     end
 end
