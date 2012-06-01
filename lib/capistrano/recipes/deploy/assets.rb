@@ -16,7 +16,7 @@ namespace :deploy do
       for the assets directory. Assets are shared across deploys to avoid \
       mid-deploy mismatches between old application html asking for assets \
       and getting a 404 file not found error. The assets cache is shared \
-      for efficiency. If you cutomize the assets path prefix, override the \
+      for efficiency. If you customize the assets path prefix, override the \
       :assets_prefix variable to match.
     DESC
     task :symlink, :roles => assets_role, :except => { :no_release => true } do
