@@ -22,7 +22,7 @@ _cset(:repository)  { abort "Please specify the repository that houses your appl
 # are not sufficient.
 # =========================================================================
 
-_cset :scm, :subversion
+_cset :scm, :git
 _cset :deploy_via, :checkout
 
 _cset(:deploy_to) { "/u/apps/#{application}" }
@@ -213,7 +213,7 @@ namespace :deploy do
     task (if you want to perform the `restart' task separately).
 
     You will need to make sure you set the :scm variable to the source \
-    control software you are using (it defaults to :subversion), and the \
+    control software you are using (it defaults to :git), and the \
     :deploy_via variable to the strategy you want to use to deploy (it \
     defaults to :checkout).
   DESC
