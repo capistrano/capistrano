@@ -79,8 +79,8 @@ class ShellTest < Test::Unit::TestCase
     end
   end
   
-  def test_sessions
-    assert_equal(0, @shell.send(:sessions).size)
+  def test_can_access_its_sessions
+    assert_nothing_raised(Exception) { @shell.process_iteration }
   end
   
   private
