@@ -6,10 +6,11 @@ require 'stringio'
 class DeployStrategyCopyTest < Test::Unit::TestCase
   def setup
     @config = { :application => "captest",
-                :logger => Capistrano::Logger.new(:output => StringIO.new),
                 :releases_path => "/u/apps/test/releases",
                 :release_path => "/u/apps/test/releases/1234567890",
                 :real_revision => "154" }
+    @config.stubs(:logger).returns(stub_everything)
+
     @source = mock("source")
     @config.stubs(:source).returns(@source)
     @strategy = Capistrano::Deploy::Strategy::Copy.new(@config)
