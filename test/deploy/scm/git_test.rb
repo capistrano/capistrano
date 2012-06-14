@@ -33,6 +33,11 @@ class DeploySCMGitTest < Test::Unit::TestCase
     rev = 'c2d9e79'
     assert_equal "git clone -q git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
 
+    # with upload_pack config
+    @config[:git_upload_pack] = "/opt/bin/git-upload-pack"
+    assert_equal "git clone -q --upload-pack=/opt/bin/git-upload-pack git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
+    @config[:git_upload_pack] = nil
+
     # With :scm_command
     git = "/opt/local/bin/git"
     @config[:scm_command] = git
@@ -86,6 +91,14 @@ class DeploySCMGitTest < Test::Unit::TestCase
     assert_equal "d11006102c07c94e5d54dd0ee63dca825c93ed61", revision
   end
 
+  def test_query_revision_with_upload_pack
+    @config[:git_upload_pack] = "/opt/bin/git-upload-pack"
+    @source.query_revision('HEAD') do |o|
+      assert_equal "git ls-remote --upload-pack=/opt/bin/git-upload-pack . HEAD", o
+      "d11006102c07c94e5d54dd0ee63dca825c93ed61\tHEAD"
+    end
+  end
+
   def test_query_revision_falls_back_to_local
     revision = @source.query_revision('d11006') do |o|
       return nil if o == "git ls-remote . d11006"
@@ -119,6 +132,12 @@ class DeploySCMGitTest < Test::Unit::TestCase
     dest = "/var/www"
     rev = 'c2d9e79'
     assert_equal "cd #{dest} && git fetch  -q origin && git fetch --tags  -q origin && git reset -q --hard #{rev} && git clean -q -d -x -f", @source.sync(rev, dest)
+
+
+    # with :git_upload_pack
+    @config[:git_upload_pack] = "/opt/bin/git-upload-pack"
+    assert_equal "cd #{dest} && git fetch --upload-pack=/opt/bin/git-upload-pack -q origin && git fetch --tags --upload-pack=/opt/bin/git-upload-pack -q origin && git reset -q --hard #{rev} && git clean -q -d -x -f", @source.sync(rev, dest)
+    @config[:git_upload_pack] = nil
 
     # With :scm_command
     git = "/opt/local/bin/git"
