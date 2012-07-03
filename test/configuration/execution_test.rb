@@ -170,6 +170,6 @@ class ConfigurationExecutionTest < Test::Unit::TestCase
 
     def new_task(namespace, name, options={}, &block)
       block ||= stack_inspector
-      namespace.tasks[name] = Capistrano::TaskDefinition.new(name, namespace, &block)
+      namespace.tasks[name] = Capistrano::TaskDefinition.new(name, namespace, options, &block)
     end
 end
