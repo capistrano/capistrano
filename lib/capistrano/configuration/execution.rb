@@ -81,27 +81,104 @@ module Capistrano
         task_call_frames.last.task
       end
 
-      # Executes the task with the given name, without invoking any associated
-      # callbacks.
-      def execute_task(task)
-        logger.debug "executing `#{task.fully_qualified_name}'"
+      # Executes the task or task continuation with the given name, without invoking any associated callbacks.
+      def execute_task(task, &block)
+        logger.debug "executing the task #{task.continuation? ? "continuation " : ""}`#{task.fully_qualified_name}'"
         push_task_call_frame(task)
-        invoke_task_directly(task)
+        invoke_task_directly(task, &block)
       ensure
         pop_task_call_frame
       end
 
-      # Attempts to locate the task at the given fully-qualified path, and
-      # execute it. If no such task exists, a Capistrano::NoSuchTaskError will
-      # be raised.
+      # Attempts execute the task and task continuations at the given fully-qualified path. If no such task or task
+      # continuations exist, a Capistrano::NoSuchTaskError will be raised.
       def find_and_execute_task(path, hooks={})
-        task = find_task(path) or raise NoSuchTaskError, "the task `#{path}' does not exist"
+        explicit_paths = path.split("::", -1)
+        explicit_paths = [""] if explicit_paths.empty?
 
-        trigger(hooks[:before], task) if hooks[:before]
-        result = execute_task(task)
-        trigger(hooks[:after], task) if hooks[:after]
+        task_continuations = explicit_paths[0...-1].map do |path|
+          parts = path.split(":", -1)
+          current_ns = self
+          current_parts = []
+          task = nil
 
-        result
+          while !parts.empty?
+            next_part = parts.shift.to_sym
+            current_parts.push(next_part)
+
+            if current_ns.namespaces.key?(next_part)
+              current_ns = current_ns.namespaces[next_part]
+            elsif current_ns.tasks.key?(next_part)
+              task = current_ns.tasks[next_part]
+
+              if task.continuation?
+                raise ArgumentError, "the task continuation `#{current_parts.join(":")}' cannot have redundant name" \
+                  " components `#{parts.join(":")}'" \
+                  if !parts.empty?
+              else
+                raise ArgumentError, "expected the task continuation `#{current_parts.join(":")}', not a normal task"
+              end
+            else
+              raise NoSuchTaskError, "the task continuation `#{current_parts.join(":")}' does not exist"
+            end
+          end
+
+          raise NoSuchTaskError, "the task continuation `#{current_parts.join(":")}' does not exist" if task.nil?
+
+          task
+        end
+
+        parts = explicit_paths[-1].split(":", -1)
+        current_ns = self
+        current_parts = []
+        task = nil
+
+        while !parts.empty?
+          next_part = parts.shift.to_sym
+          current_parts.push(next_part)
+
+          if current_ns.namespaces.key?(next_part)
+            current_ns = current_ns.namespaces[next_part]
+          elsif current_ns.tasks.key?(next_part)
+            task = current_ns.tasks[next_part]
+
+            if !task.continuation?
+              raise ArgumentError, "the task `#{current_parts.join(":")}' cannot have redundant name components" \
+                " `#{parts.join(":")}'" \
+                if !parts.empty?
+            else
+              task_continuations.push(task)
+              task = nil
+            end
+          else
+            raise NoSuchTaskError, "the task `#{current_parts.join(":")}' does not exist"
+          end
+        end
+
+        task = current_ns.tasks[Capistrano::Configuration::Namespaces::DEFAULT_TASK] if task.nil?
+
+        raise NoSuchTaskError, "the task `#{current_parts.join(":")}' does not exist" if task.nil?
+
+        # Build an aggregate continuation representing the execution of all the applied task continuations.
+
+        current_continuation = Proc.new { |&block| block.call }
+
+        task_continuations.each do |task_continuation|
+          current_continuation = Execution.add_continuation(current_continuation) do |&block|
+            trigger(hooks[:before], task_continuation) if !hooks[:before].nil?
+            result = execute_task(task_continuation, &block)
+            trigger(hooks[:after], task_continuation) if !hooks[:after].nil?
+            result
+          end
+        end
+
+        # Execute the task within the aggregate continuation.
+        current_continuation.call do
+          trigger(hooks[:before], task) if !hooks[:before].nil?
+          result = execute_task(task)
+          trigger(hooks[:after], task) if !hooks[:after].nil?
+          result
+        end
       end
 
       # Wraps the given continuation with the current continuation.
@@ -144,9 +221,9 @@ module Capistrano
         task_call_frames.pop
       end
 
-      # Invokes the task's body directly, without setting up the call frame.
-      def invoke_task_directly(task)
-        task.namespace.instance_eval(&task.body)
+      # Invokes the task or task continuation's body directly, without setting up the call frame.
+      def invoke_task_directly(task, &block)
+        task.namespace.send("_execute_#{task.name}".to_sym, &block)
       end
     end
   end

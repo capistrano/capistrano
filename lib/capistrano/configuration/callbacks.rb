@@ -18,11 +18,11 @@ module Capistrano
         @callbacks = {}
       end
 
-      def invoke_task_directly_with_callbacks(task) #:nodoc:
-
+      def invoke_task_directly_with_callbacks(task, &block) #:nodoc:
+        
         trigger :before, task
 
-        result = invoke_task_directly_without_callbacks(task)
+        result = invoke_task_directly_without_callbacks(task, &block)
 
         trigger :after, task
 
