@@ -104,6 +104,17 @@ module Capistrano
         result
       end
 
+      # Wraps the given continuation with the current continuation.
+      def self.add_continuation(current_continuation, &continuation)
+        # The new continuation.
+        Proc.new do |&block|
+          # Invoke the current continuation with a Proc wrapping an invocation of the old continuation as its argument.
+          current_continuation.call do
+            continuation.call(&block)
+          end
+        end
+      end
+
     protected
 
       def rollback!

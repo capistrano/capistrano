@@ -66,11 +66,7 @@ module Capistrano
         name = name.to_sym
         raise ArgumentError, "expected a block" unless block_given?
 
-        namespace_already_defined = namespaces.key?(name)
-        if all_methods.any? { |m| m.to_sym == name } && !namespace_already_defined
-          thing = tasks.key?(name) ? "task" : "method"
-          raise ArgumentError, "defining a namespace named `#{name}' would shadow an existing #{thing} with that name"
-        end
+        ensure_not_shadowing(:namespace, name)
 
         namespaces[name] ||= Namespace.new(name, self)
         namespaces[name].instance_eval(&block)
@@ -78,10 +74,8 @@ module Capistrano
         # make sure any open description gets terminated
         namespaces[name].desc(nil)
 
-        if !namespace_already_defined
-          metaclass = class << self; self; end
-          metaclass.send(:define_method, name) { namespaces[name] }
-        end
+        metaclass = class << self; self; end
+        metaclass.send(:define_method, name) { namespaces[name] }
       end
 
       # Describe a new task. If a description is active (see #desc), it is added
@@ -91,12 +85,7 @@ module Capistrano
         name = name.to_sym
         raise ArgumentError, "expected a block" unless block_given?
 
-        task_already_defined = tasks.key?(name)
-        if all_methods.any? { |m| m.to_sym == name } && !task_already_defined
-          thing = namespaces.key?(name) ? "namespace" : "method"
-          raise ArgumentError, "defining a task named `#{name}' would shadow an existing #{thing} with that name"
-        end
-
+        ensure_not_shadowing(:task, name)
 
         task = TaskDefinition.new(name, self, {:desc => next_description(:reset)}.merge(options), &block)
 
@@ -108,6 +97,7 @@ module Capistrano
 
         metaclass = class << self; self; end
         metaclass.send(:define_method, task.name) { execute_task(tasks[task.name]) }
+        metaclass.send(:define_method, "_execute_#{task.name}".to_s, &task.body)
       end
 
       # Find the task with the given name, where name is the fully-qualified
@@ -170,6 +160,32 @@ module Capistrano
 
         def all_methods
           public_methods.concat(protected_methods).concat(private_methods)
+        end
+
+        # Ensures that the given entity type and name do not shadow an existing entity.
+        def ensure_not_shadowing(type, name)
+          case type
+            when :namespace
+              defined = namespaces.key?(name)
+            when :task
+              defined = tasks.key?(name)
+            else
+              raise ArgumentError, "the name `#{name}' could not be resolved to an entity"
+          end
+
+          if all_methods.any? { |m| m.to_sym == name } && !defined
+            if namespaces.key?(name)
+              other_type = :namespace
+            elsif tasks.key?(name)
+              other_type = :task
+            else
+              raise ArgumentError, "the name `#{name}' could not be resolved to an entity"
+            end
+
+            raise ArgumentError, "defining the #{type} `#{name}' would shadow an existing #{other_type} with that name"
+          end
+
+          defined
         end
 
         class Namespace
