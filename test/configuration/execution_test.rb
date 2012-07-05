@@ -152,6 +152,56 @@ class ConfigurationExecutionTest < Test::Unit::TestCase
     @config.find_and_execute_task("t1", :after => :outgoing)
   end
 
+  def test_find_and_execute_task_should_nest_task_continuations
+    count = 0
+    counts = []
+
+    task_continuation_bodies = (1...4).map do |i|
+      Proc.new do |&block|
+        counts.push(count)
+        count += i
+        block.call
+        count -= i
+        counts.push(count)
+      end
+    end
+
+    new_task(@config, :tc1, &task_continuation_bodies[0])
+    new_task(@config, :tc2, &task_continuation_bodies[1])
+    new_task(@config, :tc3, &task_continuation_bodies[2])
+    new_task(@config, :t1) { counts.push(count) }
+
+    @config.find_and_execute_task("tc1:tc2:tc3:t1")
+
+    assert_equal counts, [0, 1, 3, 6, 3, 1, 0]
+  end
+
+  def test_find_and_execute_task_should_accept_task_continuations_specified_with_double_colon_syntax
+    new_task(@config, :tc1) { |&block| block.call }
+    new_task(@config, :tc2) { |&block| block.call }
+    new_task(@config, :t1) {}
+
+    assert_nothing_raised { @config.find_and_execute_task("tc1::tc2:t1") }
+    assert_nothing_raised { @config.find_and_execute_task("tc1::tc2::t1") }
+  end
+
+  def test_find_and_execute_task_should_raise_exception_for_tasks_specified_with_double_colon_syntax
+    new_task(@config, :tc1) { |&block| block.call }
+    new_task(@config, :t1) {}
+    new_task(@config, :t2) {}
+
+    assert_raises(ArgumentError) { @config.find_and_execute_task("tc1:t1::t2") }
+    assert_raises(ArgumentError) { @config.find_and_execute_task("tc1::t1::t2") }
+  end
+
+  def test_find_and_execute_task_should_raise_exception_for_extra_task_continuations_specified_with_double_colon_syntax
+    new_task(@config, :tc1) { |&block| block.call }
+    new_task(@config, :tc2) { |&block| block.call }
+    new_task(@config, :t1) {}
+
+    assert_raises(ArgumentError) { @config.find_and_execute_task("tc1:tc2::t1") }
+  end
+
   private
 
     def stack_inspector
