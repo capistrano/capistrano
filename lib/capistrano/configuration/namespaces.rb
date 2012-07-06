@@ -75,7 +75,7 @@ module Capistrano
         namespaces[name].desc(nil)
 
         metaclass = class << self; self; end
-        metaclass.send(:define_method, name) { namespaces[name] }
+        metaclass.send(:define_method, name) { NamespaceContext.new(namespaces[name]) }
       end
 
       # Describe a new task. If a description is active (see #desc), it is added
@@ -95,8 +95,21 @@ module Capistrano
       def define_task(task)
         tasks[task.name] = task
 
-        metaclass = class << self; self; end
-        metaclass.send(:define_method, task.name) { execute_task(tasks[task.name]) }
+        if !task.continuation?
+          execute_task_body = Proc.new { execute_task(task) }
+        else
+          execute_task_body = Proc.new do
+            ns_context = NamespaceContext.new(self)
+            ns_context.task_continuations.push(task)
+            ns_context
+          end
+        end
+
+        metaclass = class << self
+          self
+        end
+
+        metaclass.send(:define_method, task.name, &execute_task_body)
         metaclass.send(:define_method, "_execute_#{task.name}".to_s, &task.body)
       end
 
@@ -213,6 +226,68 @@ module Capistrano
           include Capistrano::Configuration::AliasTask
           include Capistrano::Configuration::Namespaces
           undef :desc, :next_description
+        end
+
+        class NamespaceContext
+          extend Forwardable
+
+          # The namespace that this context is currently attached to.
+          attr_reader :namespace
+
+          # The applied task continuations.
+          attr_accessor :task_continuations
+
+          def_delegator :@namespace, :top
+          def_delegator :@namespace, :fully_qualified_name
+          def_delegator :@namespace, :find_task
+          def_delegator :@namespace, :search_task
+          def_delegator :@namespace, :default_task
+          def_delegator :@namespace, :task_list
+
+          def initialize(namespace)
+            @namespace = namespace
+            @task_continuations = []
+          end
+
+          # Delegates {#method_missing} calls for namespaces, tasks, and task continuations to the underlying namespace.
+          def method_missing(sym, *args, &block)
+            raise "this namespace context is no longer valid" if @namespace.nil?
+
+            if @namespace.namespaces.key?(sym)
+              ns_context = @namespace.send(sym, *args, &block)
+              @namespace = ns_context.namespace
+              self
+            elsif @namespace.tasks.key?(sym)
+              if !@namespace.tasks[sym].continuation?
+                # Build an aggregate continuation representing the execution of all the applied task continuations.
+                current_continuation = Proc.new { |&block| block.call }
+
+                @task_continuations.each do |task_continuation|
+                  current_continuation = Execution.add_continuation(current_continuation) do |&block|
+                    @namespace.execute_task(task_continuation, &block)
+                  end
+                end
+
+                # Execute the task within the aggregate continuation.
+                current_continuation.call { @namespace.send(sym, *args, &block) }
+                @namespace = nil
+                @task_continuations = []
+              else
+                ns_context = @namespace.send(sym, *args, &block)
+                @task_continuations.concat(ns_context.task_continuations)
+              end
+
+              self
+            else
+              super
+            end
+          end
+
+          # Resets the underlying namespace to the top-level namespace.
+          def top
+            @namespace = @namespace.top
+            self
+          end
         end
     end
   end
