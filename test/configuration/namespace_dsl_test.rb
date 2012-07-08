@@ -119,6 +119,14 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     @config.original
   end
 
+  def test_calling_defined_task_continuation_and_task_should_delegate_to_task_continuation_first
+    @config.task(:tc1) { |&block| block.call }
+    @config.namespace(:ns1) { task(:t1) {} }
+
+    @config.expects(:execute_task).with(@config.tasks[:tc1])
+    @config.tc1.ns1.t1
+  end
+
   def test_role_inside_namespace_should_raise_error
     assert_raises(NotImplementedError) do
       @config.namespace(:outer) do
@@ -299,6 +307,44 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
   def test_top_should_return_topmost_parent_if_self_is_deeply_nested
     @config.namespace(:outer) { namespace(:middle) { namespace(:inner) {} } }
     assert_equal @config, @config.namespaces[:outer].namespaces[:middle].namespaces[:inner].top
+  end
+
+  def test_namespace_contexts_should_remember_underlying_namespace
+    @config.namespace(:ns1) { namespace(:ns2) {} }
+
+    assert_equal @config.ns1.namespace, @config.namespaces[:ns1]
+    assert_equal @config.ns1.ns2.namespace, @config.namespaces[:ns1].namespaces[:ns2]
+    assert_equal @config.ns1.ns2.top.namespace, @config
+  end
+
+  def test_namespace_contexts_should_remember_applied_task_continuations
+    @config.namespace(:ns1) do
+      task(:tc1) { |&block| block.call }
+      namespace(:ns2) { task(:tc2) { |&block| block.call } }
+    end
+
+    assert_equal @config.ns1.ns2.task_continuations.size, 0
+    assert_equal @config.ns1.tc1.task_continuations.size, 1
+    assert_equal @config.ns1.tc1.task_continuations[-1], @config.namespaces[:ns1].tasks[:tc1]
+    assert_equal @config.ns1.tc1.top.ns1.ns2.tc2.task_continuations.size, 2
+    assert_equal @config.ns1.tc1.top.ns1.ns2.tc2.task_continuations[-1],
+                 @config.namespaces[:ns1].namespaces[:ns2].tasks[:tc2]
+  end
+
+  def test_namespace_context_methods_should_return_namespace_context
+    @config.namespace(:ns1) { task(:tc1) { |&block| block.call } }
+
+    assert @config.ns1.is_a?(Capistrano::Configuration::NamespaceContext)
+    assert @config.ns1.tc1.is_a?(Capistrano::Configuration::NamespaceContext)
+    assert @config.ns1.tc1.top.is_a?(Capistrano::Configuration::NamespaceContext)
+  end
+
+  def test_namespace_contexts_should_not_respond_to_parent_namespace_methods
+    @config.namespace(:ns1) { namespace(:ns2) {} }
+
+    assert_raises(NoMethodError) { @config.ns1.ns1 }
+    assert_raises(NoMethodError) { @config.ns1.ns2.ns2 }
+    assert_raises(NoMethodError) { @config.ns1.ns2.ns1 }
   end
 
   def test_find_task_should_return_nil_when_empty_inner_task
