@@ -176,6 +176,25 @@ class ConfigurationExecutionTest < Test::Unit::TestCase
     assert_equal counts, [0, 1, 3, 6, 3, 1, 0]
   end
 
+  def test_find_and_execute_task_should_apply_task_continuations_only_once
+    count = 0
+    counts = []
+
+    new_task(@config, :tc1) do |&block|
+      counts.push(count)
+      count += 1
+      block.call
+      count -= 1
+      counts.push(count)
+    end
+
+    new_task(@config, :t1) { counts.push(count) }
+
+    @config.find_and_execute_task("tc1:tc1:t1")
+
+    assert_equal counts, [0, 1, 0]
+  end
+
   def test_find_and_execute_task_should_accept_task_continuations_specified_with_double_colon_syntax
     new_task(@config, :tc1) { |&block| block.call }
     new_task(@config, :tc2) { |&block| block.call }
