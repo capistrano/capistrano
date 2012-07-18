@@ -27,8 +27,13 @@ module Capistrano
       def task_call_frames
         Thread.current[:task_call_frames] ||= []
       end
-      
-      
+
+      # The Array of task continuations currently on the call stack, whose primary purpose is to inform {#execute_task}
+      # on not applying the same task continuation twice.
+      def task_continuations
+        Thread.current[:task_continuations] ||= []
+      end
+
       # The stack of tasks that have registered rollback handlers within the
       # current transaction. If this is nil, then there is no transaction
       # that is currently active.
@@ -83,11 +88,17 @@ module Capistrano
 
       # Executes the task or task continuation with the given name, without invoking any associated callbacks.
       def execute_task(task, &block)
-        logger.debug "executing the task #{task.continuation? ? "continuation " : ""}`#{task.fully_qualified_name}'"
-        push_task_call_frame(task)
-        invoke_task_directly(task, &block)
-      ensure
-        pop_task_call_frame
+        if !task.continuation? || !task_continuations.include?(task)
+          begin
+            logger.debug "executing the task #{task.continuation? ? "continuation " : ""}`#{task.fully_qualified_name}'"
+            push_task_call_frame(task)
+            invoke_task_directly(task, &block)
+          ensure
+            pop_task_call_frame
+          end
+        else
+          block.call
+        end
       end
 
       # Attempts execute the task and task continuations at the given fully-qualified path. If no such task or task
@@ -213,12 +224,16 @@ module Capistrano
       end
 
       def push_task_call_frame(task)
+        task_continuations.push(task) if task.continuation?
+
         frame = TaskCallFrame.new(task)
         task_call_frames.push frame
       end
 
       def pop_task_call_frame
-        task_call_frames.pop
+        frame = task_call_frames.pop
+
+        task_continuations.pop if frame.task.continuation?
       end
 
       # Invokes the task or task continuation's body directly, without setting up the call frame.
