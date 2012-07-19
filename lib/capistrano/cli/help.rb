@@ -39,17 +39,35 @@ module Capistrano
             tasks = tasks.reject { |t| t.description.empty? || t.description =~ /^\[internal\]/ }
           end
 
-          tasks = tasks.sort_by { |task| task.fully_qualified_name }
+          tasks = tasks.sort do |t1, t2|
+            c = t1.fully_qualified_name <=> t2.fully_qualified_name
 
-          longest = tasks.map { |task| task.fully_qualified_name.length }.max
+            next c if c != 0
+
+            c1 = t1.continuation?
+            c2 = t2.continuation?
+
+            if !c1 and c2
+              -1
+            elsif c1 and !c2
+              1
+            else
+              0
+            end
+          end
+
+          # Calculate the longest fully-qualified task name length and round up to a multiple of 4.
+          longest = tasks.map { |task| task.fully_qualified_name.length + (task.continuation? ? 2 : 0) }.max
+          longest = ((longest / 4) + 1) * 4
           max_length = output_columns - longest - LINE_PADDING
           max_length = MIN_MAX_LEN if max_length < MIN_MAX_LEN
 
           tasks.each do |task|
             if tool_output
-              puts "cap #{task.fully_qualified_name}"
+              puts "cap #{task.continuation? ? "->" : ""}#{task.fully_qualified_name}"
             else
-              puts "cap %-#{longest}s # %s" % [task.fully_qualified_name, task.brief_description(max_length)]
+              puts "cap %-#{longest}s# %s" % [(task.continuation? ? "->" : "") + task.fully_qualified_name,
+                                              task.brief_description(max_length)]
             end
           end
 
