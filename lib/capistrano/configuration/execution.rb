@@ -59,7 +59,7 @@ module Capistrano
           rollback!
           raise
         ensure
-          self.rollback_requests = nil if Thread.main == Thread.current
+          self.rollback_requests = nil
         end
       end
 
@@ -108,8 +108,7 @@ module Capistrano
 
       def rollback!
         return if Thread.current[:rollback_requests].nil?
-        Thread.current[:rolled_back] = true
-   
+
         # throw the task back on the stack so that roles are properly
         # interpreted in the scope of the task in question.
         rollback_requests.reverse.each do |frame|
