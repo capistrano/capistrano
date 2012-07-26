@@ -254,6 +254,14 @@ class CommandTest < Test::Unit::TestCase
     Capistrano::Command.new("echo $CAPISTRANO:OTHER$", [session])
   end
 
+  def test_input_stream_closed_when_eof_option_is_true
+    channel = nil
+    session = setup_for_extracting_channel_action { |ch| channel = ch }
+    channel.expects(:eof!)
+    Capistrano::Command.new("cat", [session], :data => "here we go", :eof => true)
+    assert_equal({ :data => 'here we go', :eof => true }, channel[:options])
+  end
+
   private
 
     def mock_session(channel=nil)

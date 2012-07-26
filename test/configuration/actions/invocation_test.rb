@@ -45,7 +45,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
   end
 
   def test_run_options_should_be_passed_to_execute_on_servers
-    @config.expects(:execute_on_servers).with(:foo => "bar")
+    @config.expects(:execute_on_servers).with(:foo => "bar", :eof => true)
     @config.run "ls", :foo => "bar"
   end
 
