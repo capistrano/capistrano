@@ -7,7 +7,7 @@ module Capistrano
     INFO      = 1
     DEBUG     = 2
     TRACE     = 3
-    
+
     MAX_LEVEL = 3
 
     def initialize(options={})
@@ -20,7 +20,7 @@ module Capistrano
       end
 
       @options = options
-      @level = 0
+      @level = options[:level] || 0
     end
 
     def close
