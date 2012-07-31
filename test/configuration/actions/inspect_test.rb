@@ -12,7 +12,7 @@ class ConfigurationActionsInspectTest < Test::Unit::TestCase
   end
 
   def test_stream_should_pass_options_through_to_run
-    @config.expects(:invoke_command).with("tail -f foo.log", :once => true)
+    @config.expects(:invoke_command).with("tail -f foo.log", :once => true, :eof => true)
     @config.stream("tail -f foo.log", :once => true)
   end
 
@@ -33,7 +33,7 @@ class ConfigurationActionsInspectTest < Test::Unit::TestCase
   end
 
   def test_capture_should_pass_options_merged_with_once_to_run
-    @config.expects(:invoke_command).with("hostname", :foo => "bar", :once => true)
+    @config.expects(:invoke_command).with("hostname", :foo => "bar", :once => true, :eof => true)
     @config.capture("hostname", :foo => "bar")
   end
 

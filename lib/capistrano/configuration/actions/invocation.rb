@@ -138,11 +138,16 @@ module Capistrano
         #   and the values should be their corresponding values. The default is
         #   empty, but may be modified by changing the +default_environment+
         #   Capistrano variable.
+        # * :eof - if true, the standard input stream will be closed after sending
+        #   any data specified in the :data option. If false, the input stream is
+        #   left open. The default is to close the input stream only if no block is
+        #   passed.
         #
         # Note that if you set these keys in the +default_run_options+ Capistrano
         # variable, they will apply for all invocations of #run, #invoke_command,
         # and #parallel.
         def run(cmd, options={}, &block)
+          options = options.merge(:eof => !block_given?) if options[:eof].nil?
           block ||= self.class.default_io_proc
           tree = Command::Tree.new(self) { |t| t.else(cmd, &block) }
           run_tree(tree, options)

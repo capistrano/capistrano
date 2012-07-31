@@ -221,6 +221,7 @@ module Capistrano
 
                   ch.exec(command_line)
                   ch.send_data(options[:data]) if options[:data]
+                  ch.eof! if options[:eof]
                 else
                   # just log it, don't actually raise an exception, since the
                   # process method will see that the status is not zero and will
