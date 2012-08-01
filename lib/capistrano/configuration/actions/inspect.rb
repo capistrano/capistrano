@@ -20,7 +20,7 @@ module Capistrano
         #     stream "tail -f #{shared_path}/log/fastcgi.crash.log"
         #   end
         def stream(command, options={})
-          invoke_command(command, options) do |ch, stream, out|
+          invoke_command(command, options.merge(:eof => true)) do |ch, stream, out|
             puts out if stream == :out
             warn "[err :: #{ch[:server]}] #{out}" if stream == :err
           end
@@ -31,7 +31,7 @@ module Capistrano
         # string. The command is invoked via #invoke_command.
         def capture(command, options={})
           output = ""
-          invoke_command(command, options.merge(:once => true)) do |ch, stream, data|
+          invoke_command(command, options.merge(:once => true, :eof => true)) do |ch, stream, data|
             case stream
             when :out then output << data
             when :err then warn "[err :: #{ch[:server]}] #{data}"
