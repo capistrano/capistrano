@@ -17,7 +17,7 @@ of tasks designed for deploying Rails applications.
 
 ## Documentation
 
-* [http://github.com/capistrano/capistrano/wiki/Documentation-v2.x](http://github.com/capistrano/capistrano/wiki/Documentation-v2.x)
+* [https://github.com/capistrano/capistrano/wiki](https://github.com/capistrano/capistrano/wiki)
 
 ## DEPENDENCIES
 
