@@ -176,8 +176,6 @@ module Capistrano
           def initialize(name, parent)
             @parent = parent
             @name = name
-            
-            explicitly_define_clashing_kernel_methods
           end
 
           def role(*args)
@@ -199,17 +197,6 @@ module Capistrano
           include Capistrano::Configuration::AliasTask
           include Capistrano::Configuration::Namespaces
           undef :desc, :next_description
-          
-          protected
-            def explicitly_define_clashing_kernel_methods
-              (parent.public_methods & Kernel.methods).each do |m|
-                next if self.method(m).owner == self.class
-                if parent.method(m).owner == parent.class
-                  metaclass = class << self; self; end
-                  metaclass.send(:define_method, m) {|*args, &block| parent.send(m, *args, &block)}
-                end
-              end
-            end
         end
     end
   end
