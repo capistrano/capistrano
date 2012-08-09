@@ -322,8 +322,6 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
       def some_weird_method() 'kernel' end
     end
     
-    @config.namespace(:clash2) {}
-    namespace = @config.namespaces[:clash2]
     assert_equal 'config', namespace.some_weird_method
     
     Kernel.send :remove_method, :some_weird_method

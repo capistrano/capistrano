@@ -214,3 +214,23 @@ module Capistrano
     end
   end
 end
+
+module Kernel
+  class << self
+    alias_method :method_added_without_capistrano, :method_added
+
+    # Detect method additions to Kernel and remove them in the Namespace class
+    def method_added(name)
+      result = method_added_without_capistrano(name)
+      return result if self != Kernel
+
+      namespace = Capistrano::Configuration::Namespaces::Namespace
+
+      if namespace.method_defined?(name) && namespace.method(name).owner == Kernel
+        namespace.send :undef_method, name
+      end
+
+      result
+    end
+  end
+end
