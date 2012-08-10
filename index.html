@@ -1,0 +1,197 @@
+<html>
+
+  <head>
+    <title>Capistrano - Remote multi-server automation tool</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <style>
+      body {
+        margin-top: 60px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <ul class="nav">
+            <a class="brand" href="#">Capistrano.rb</a>
+          </ul>
+          <ul class="nav pull-right">
+            <li><a href="https://github.com/capistrano/capistrano">Source Code</a></li>
+            <li><a href="https://github.com/capistrano/capistrano/issues">Issues</a></li>
+            <li><a href="https://github.com/capistrano/capistrano/wiki">Wiki</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="span12" style="text-align: center">
+          <img src="http://farm6.staticflickr.com/5041/5343836674_fe4cdbf26e.jpg" alt=""/>
+        </div>
+        <div class="span12">
+          <div class="wrap">
+            <div id="wiki-body" class="gollum-markdown-content instapaper_body">
+              <div class="markdown-body">
+                <h2>General Resources &amp; Beginner Guides</h2>
+
+                <p>If you are new to Capistrano 2.x please read <a class="internal present" href="https://github.com/capistrano/capistrano/wiki/2.x-Getting-Started">Getting Started</a>, once you are familiar with the basics you may want to read <a class="internal present" href="https://github.com/capistrano/capistrano/wiki/2.x-from-the-beginning">From the beginning</a> which is a much more detailed tutorial.</p>
+
+                <p>You may also want to read, and or contribute to the <a href="http://github.com/leehambley/capistrano-handbook/blob/master/index.markdown">Capistrano handbook</a> - an immature document that holds some really useful tips, but needs a lot more work!</p>
+
+                <ul>
+                  <li><a href="http://help.github.com/deploy-with-capistrano/">Github Guide to Deploying with Capistrano</a></li>
+                </ul><h2>Frameworks &amp; Tools</h2>
+
+                <ul>
+                  <li><p><a class="internal absent" href="https://github.com/capistrano/capistrano/wiki/Using-Capistrano-2.x-with-Rails-2.x">Using Capistrano 2.x with Rails 2.x</a></p></li>
+                  <li><p><a href="http://gembundler.com/deploying.html">Using Capistrano 2.x with Bundler</a></p></li>
+                  <li><p><a href="http://rvm.beginrescueend.com/integration/capistrano/">Using Capistrano 2.x with RVM</a></p></li>
+                </ul><h2>Intermediate Resources</h2>
+
+                <ul>
+                  <li><a class="internal present" href="https://github.com/capistrano/capistrano/wiki/2.x-Default-Deployment-Behaviour">Default Deployment Behaviour</a></li>
+                  <li><a href="http://www.simonecarletti.com/blog/2009/06/capistrano-and-database-yml/">Managing `database.yml` Securely</a></li>
+                  <li><a href="http://matthewtodd.org/2008/04/24/rails-tip-4-writing-capistrano-recipes-to-be-loaded-from-gems.html/">Packaging Recipes</a></li>
+                </ul><h2>Reference Resources</h2>
+
+                <ul>
+                  <li><a href="http://rubydoc.info/github/capistrano/capistrano/master/frames">API Documentation</a></li>
+                  <li>DSL Documentation
+
+                  <ul>
+                    <li>
+                    <a class="internal present" href="https://github.com/capistrano/capistrano/wiki/2.x-DSL-Documentation-Action-Module">Action Module</a> (<code>put()</code>, <code>get()</code>, <code>run()</code>, <code>stream()</code>, <code>capture()</code>, etc)</li>
+                    <li>
+                    <a class="internal present" href="https://github.com/capistrano/capistrano/wiki/2.x-DSL-Documentation-Configuration-Module">Configuration Module</a> (<code>namespace()</code>, <code>task()</code>, <code>set()</code>, <code>fetch()</code>, etc)</li>
+                  </ul>
+                  </li>
+                  <li><a class="internal present" href="https://github.com/capistrano/capistrano/wiki/2.x-Significant-Configuration-Variables">Configuration Variables</a></li>
+                  <li><a class="internal present" href="https://github.com/capistrano/capistrano/wiki/Capistrano-Tasks">Capistrano Tasks</a></li>
+                </ul><h2>Useful Background Knowledge (3rd Party Articles)</h2>
+
+                <ul>
+                  <li>
+                  <p>Unix Shell</p>
+
+                  <ul>
+                    <li>
+                    <a href="http://codex.wordpress.org/UNIX_Shell_Skills">Unix shell skills</a> (Wordpress guide, but very readable for beginners)</li>
+                  </ul>
+                  </li>
+                  <li>
+                  <p>Bash </p>
+
+                  <ul>
+                    <li><a href="http://wiki.bash-hackers.org/scripting/basics">Shell scripting for beginners</a></li>
+                  </ul>
+                  </li>
+                  <li>
+                  <p>SSH</p>
+
+                  <ul>
+                    <li><a href="http://kimmo.suominen.com/docs/ssh/">Getting Started with SSH</a></li>
+                    <li><a href="http://en.wikipedia.org/wiki/Ssh-agent">What is an SSH Agent</a></li>
+                    <li><a href="http://unixwiz.net/techtips/ssh-agent-forwarding.html">How SSH Agent Forwarding Works</a></li>
+                    <li><a href="http://help.github.com/deploy-keys/">What are deploy keys?</a></li>
+                  </ul>
+                  </li>
+                </ul><h2>Semi-Official Extensions</h2>
+
+                <ul>
+                  <li><a class="internal present" href="https://github.com/capistrano/capistrano/wiki/2.x-Multistage-Extension">Capistrano Multistage, Deploying to Multiple Environments</a></li>
+                  <li><a href="http://github.com/leehambley/railsless-deploy/">Rails-less Deploy</a></li>
+                </ul><h2>3rd Party Extensions</h2>
+
+                <ul>
+                  <li>
+                  <a href="http://github.com/SciMed/capistrano-windows-server">capistrano-windows-server</a> Deploy Rails apps to Windows servers</li>
+                  <li>
+                  <a href="http://rubygems.org/gems/capistrano-offroad">capistrano-offroad</a> For deploying non-rails apps, specially Django</li>
+                  <li>
+                  <a href="http://github.com/zenchild/capistrano_winrm">capistrano_winrm</a> Run commands against MS Windows servers with WinRM</li>
+                  <li>
+                  <a href="https://github.com/forward/capify-ec2">capify-ec2</a> A number of utilities to help with deploying to amazon ec2 instances</li>
+                  <li>
+                  <a href="https://github.com/forward/resque_utils">resque_utils</a> Helper tasks for remote Resque deployments (requeue &amp; remove failed jobs)</li>
+                  <li>
+                  <a href="https://github.com/augustash/capistrano-ash">capistrano-ash</a> For deploying Magento, Drupal, WordPress, and Zend/Doctrine apps</li>
+                  <li>
+                  <a href="http://www.playframework.org/modules/capistrano">play-capistrano</a> For deploying/controlling remote Play Framework apps</li>
+                  <li>
+                  <a href="http://capifony.org/">capifony</a> For deploying symfony and Symfony2 apps</li>
+                  <li>
+                  <a href="https://github.com/jadb/capcake">capcake</a> extension of Capistrano, deploy CakePHP apps</li>
+                  <li>
+                  <a href="https://github.com/cramerdev/capistrano-chef">capistrano-chef</a> Integrates Capistrano with Chef search</li>
+                  <li>
+                  <a href="https://github.com/mydrive/capistrano-deploytags">capistrano-deploytags</a> Track your current and all previous releases with Git tags automatically at deployment time</li>
+                  <li>
+                  <a href="https://github.com/mydrive/capistrano-detect-migrations">capistrano-detect-migrations</a> Automatically discover and warn about pending Rails migrations with Git before you deploy</li>
+                  <li>
+                  <a href="https://github.com/cramerdev/capistrano-notifier">capistrano-notifier</a> Notify via mail and StatsD when deploying</li>
+                  <li>
+                  <a href="https://github.com/mcollina/capistrano-remote-cache-with-project-root">capistrano-remote-cache-with-project-root</a> Adds a new deployment strategy to deploy your app from an internal folder (non-root).</li>
+                </ul><h2>3rd Party Tutorials</h2>
+
+                <ul>
+                  <li>Testing
+
+                  <ul>
+                    <li><a href="http://pivotallabs.com/users/jdean/blog/articles/763-testing-capistrano-recipes-with-cucumber">Testing Capistrano with Cucumber</a></li>
+                  </ul>
+                  </li>
+                  <li>Other Software Packages
+
+                  <ul>
+                    <li>
+                    <a href="http://tempe.st/2008/07/deploying-drupal-with-capistrano/">Drupal</a> </li>
+                    <li>Wordpress</li>
+                    <li><a href="http://github.com/jestro/wordpress-capistrano/tree/master">http://github.com/jestro/wordpress-capistrano/tree/master</a></li>
+                    <li><a href="http://whomwah.com/2006/05/21/deploying-wordpress-using-capistrano/">http://whomwah.com/2006/05/21/deploying-wordpress-using-capistrano/</a></li>
+                    <li><a href="http://devblog.imedo.de/2008/6/23/wordpress-deployment-with-capistrano-2-and-git">http://devblog.imedo.de/2008/6/23/wordpress-deployment-with-capistrano-2-and-git</a></li>
+                    <li><a href="http://www.tractionco.com/blog/95-deploying-wordpress-with-capistrano-and-svn">http://www.tractionco.com/blog/95-deploying-wordpress-with-capistrano-and-svn</a></li>
+                    <li><a href="http://theme.fm/2011/08/tutorial-deploying-wordpress-with-capistrano-2082/">http://theme.fm/2011/08/tutorial-deploying-wordpress-with-capistrano-2082/</a></li>
+                  </ul>
+                  </li>
+                  <li>Other Languages / Frameworks
+
+                  <ul>
+                    <li>PHP</li>
+                    <li><a href="http://mathew-davies.co.uk/2009/10/28/php-deployment.html">http://mathew-davies.co.uk/2009/10/28/php-deployment.html</a></li>
+                    <li><a href="http://hivelogic.com/articles/view/deploying-expressionengine-github-capistrano">http://hivelogic.com/articles/view/deploying-expressionengine-github-capistrano</a></li>
+                    <li><a href="http://blog.servergrove.com/2011/09/07/deploying-symfony2-projects-on-shared-hosting-with-capifony">http://blog.servergrove.com/2011/09/07/deploying-symfony2-projects-on-shared-hosting-with-capifony</a></li>
+                    <li><a href="http://github.com/leehambley/railsless-deploy/">Any Non-Rails Project</a></li>
+                  </ul>
+                  </li>
+                </ul><h2>Seeking Assistance</h2>
+
+                <p>Help first and foremost via the <a href="http://groups.google.com/group/capistrano">Capistrano Google Group</a>. Community support is also also often available in <a href="http://webchat.freenode.net/?channels=Capistrano">#Capistrano on freenode</a>.</p>
+
+                <p>There are extensive archives of questions and answers also at <a href="http://stackoverflow.com/questions/tagged/capistrano">stackoverflow.com, tagged #capistrano</a>.</p>
+
+                <p>For bugs and problems please open an issue in the <a href="http://capistrano.lighthouseapp.com/">lighthouse project tracker</a> - preferably with a patch, test-case, or steps-to-reproduce. Pull requests on Github will be ignored without a corresponding ticket, as there is no history of changes or forum for discussion without submitting a ticket.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      var _gauges = _gauges || [];
+      (function() {
+        var t   = document.createElement('script');
+        t.type  = 'text/javascript';
+        t.async = true;
+        t.id    = 'gauges-tracker';
+        t.setAttribute('data-site-id', '5024da2ef5a1f51f0f000001');
+        t.src = '//secure.gaug.es/track.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(t, s);
+      })();
+    </script>
+  </body>
+</html>
