@@ -26,6 +26,7 @@ of tasks designed for deploying Rails applications.
 * [Net::SCP](http://net-ssh.rubyforge.org)
 * [Net::SSH::Gateway](http://net-ssh.rubyforge.org)
 * [HighLine](http://highline.rubyforge.org)
+* [Ruby](http://www.ruby-lang.org/en/) &#x2265; 1.8.7
 
 If you want to run the tests, you'll also need to install the dependencies with
 Bundler, see the `Gemfile` within .
