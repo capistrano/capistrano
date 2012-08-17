@@ -52,7 +52,7 @@ In general, you'll use Capistrano as follows:
 
 Use the `cap` script as follows:
 
-		cap sometask
+    cap sometask
 
 By default, the script will look for a file called one of `capfile` or
 `Capfile`. The `someaction` text indicates which task to execute. You can do
