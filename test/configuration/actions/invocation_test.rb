@@ -115,6 +115,11 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     @config.sudo "ls"
   end
 
+  def test_sudo_should_keep_input_stream_open
+    @config.expects(:execute_on_servers).with(:foo => "bar")
+    @config.sudo "ls", :foo => "bar"
+  end
+
   def test_sudo_should_use_sudo_variable_definition
     @config.expects(:run).with("/opt/local/bin/sudo -p 'sudo password: ' ls", {})
     @config.options[:sudo] = "/opt/local/bin/sudo"
