@@ -147,7 +147,9 @@ module Capistrano
         # variable, they will apply for all invocations of #run, #invoke_command,
         # and #parallel.
         def run(cmd, options={}, &block)
-          options = options.merge(:eof => !block_given?) if options[:eof].nil?
+          if options[:eof].nil? && !cmd.include?(sudo)
+            options = options.merge(:eof => !block_given?)
+          end
           block ||= self.class.default_io_proc
           tree = Command::Tree.new(self) { |t| t.else(cmd, &block) }
           run_tree(tree, options)
