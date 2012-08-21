@@ -1,3 +1,22 @@
+## 2.13.1 / August 21 2012
+
+This release contains multiple bugfixes and handling of exotic situations. The
+`Configuration#capture` method should now work in spite of `ActiveSupport`
+shenanigans. Thank you, the community, for all of your contributions:
+
+ * Close input streams when sending commands that don't read input. Dylan Smith
+   (dylanahsmith)
+ * Listen for method definition on `Kernel` and undefine on `Namespace`. Chris
+   Griego (cgriego)
+ * Fixed shell `Thread.abort_on_exception` bug. George Malamidis (nutrun)
+ * Adding a log method to `Capistrano::Deploy::SCM::None` to maintain
+   consistency with other SCM classes. Kevin Lawver (kplawver)
+ * Add deprecation warning if someone uses old `deploy:symlink` syntax on
+   callbacks. Ken Mazaika (kenmazaika)
+ * Simplify the `finalize_update` code by respecting the `:shared_children`
+   variable during removal and recreation of the parent. John Knight
+   (knightlabs)
+
 ## 2.12.0 / April 13 2012
 
 This release reverts the very verbose logging introduced in the previous version, it also
