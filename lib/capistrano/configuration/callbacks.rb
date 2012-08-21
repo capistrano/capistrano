@@ -19,7 +19,7 @@ module Capistrano
       end
 
       def invoke_task_directly_with_callbacks(task) #:nodoc:
-        
+
         trigger :before, task
 
         result = invoke_task_directly_without_callbacks(task)
@@ -106,22 +106,28 @@ module Capistrano
         elsif block
           callbacks[event] << ProcCallback.new(block, options)
         else
-          args.each do |name|
-            [:only, :except].each do |key|
-              if options[key] == 'deploy:symlink'
-                warn "[Deprecation Warning] This API has changed, please hook `deploy:create_symlink` instead of `deploy:symlink`."
-                options[key] = 'deploy:create_symlink'
-              elsif options[key].is_a?(Array) && options[key].include?('deploy:symlink')
-                warn "[Deprecation Warning] This API has changed, please hook `deploy:create_symlink` instead of `deploy:symlink`."
-                options[key] = options[key].collect do |task|
-                  task == 'deploy:symlink' ? 'deploy:create_symlink' : task
-                end
-              end
-            end
-            
-            callbacks[event] << TaskCallback.new(self, name, options)
-          end
+          args = filter_deprecated_tasks(args)
+          options[:only] = filter_deprecated_tasks(options[:only])
+          options[:expect] = filter_deprecated_tasks(options[:expect])
+
+          callbacks[event].concat(args.map { |name| TaskCallback.new(self, name, options) })
         end
+      end
+
+      # Filters the given task name or names and attempts to replace deprecated tasks with their equivalents.
+      def filter_deprecated_tasks(names)
+        deprecation_msg = "[Deprecation Warning] This API has changed, please hook `deploy:create_symlink` instead of" \
+          " `deploy:symlink`."
+
+        if names == "deploy:symlink"
+          warn deprecation_msg
+          names = "deploy:create_symlink"
+        elsif names.is_a?(Array)
+          warn deprecation_msg
+          names = names.map { |name| name == "deploy:symlink" ? "deploy:create_symlink" : name }
+        end
+
+        names
       end
 
       # Trigger the named event for the named task. All associated callbacks

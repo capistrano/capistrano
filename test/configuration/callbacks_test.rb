@@ -40,8 +40,10 @@ class ConfigurationCallbacksTest < Test::Unit::TestCase
   end
 
   def test_before_should_map_before_deploy_symlink
-    @config.before "deploy:symlink", "bing:blang"
-    assert_equal ["deploy:create_symlink"], @config.callbacks[:before].last.only
+    @config.before "deploy:symlink", "bing:blang", "deploy:symlink"
+    assert_equal "bing:blang", @config.callbacks[:before][0].source
+    assert_equal "deploy:create_symlink", @config.callbacks[:before][1].source
+    assert_equal ["deploy:create_symlink"], @config.callbacks[:before][1].only
   end
 
   def test_before_should_map_before_deploy_symlink_array
@@ -55,13 +57,15 @@ class ConfigurationCallbacksTest < Test::Unit::TestCase
   end
 
   def test_after_should_map_before_deploy_symlink
-    @config.after "deploy:symlink", "bing:blang"
-    assert_equal ["deploy:create_symlink"], @config.callbacks[:after].last.only
+    @config.after "deploy:symlink", "bing:blang", "deploy:symlink"
+    assert_equal "bing:blang", @config.callbacks[:after][0].source
+    assert_equal "deploy:create_symlink", @config.callbacks[:after][1].source
+    assert_equal ["deploy:create_symlink"], @config.callbacks[:after][1].only
   end
 
   def test_after_should_map_before_deploy_symlink_array
-    @config.after ["deploy:symlink", 'bingo:blast'], "bing:blang"
-    assert_equal ["deploy:create_symlink", 'bingo:blast'], @config.callbacks[:after].last.only
+    @config.after ["deploy:symlink", "bingo:blast"], "bing:blang"
+    assert_equal ["deploy:create_symlink", "bingo:blast"], @config.callbacks[:after].last.only
   end
 
   def test_on_with_single_reference_should_add_task_callback
