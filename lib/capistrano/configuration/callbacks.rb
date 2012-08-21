@@ -122,7 +122,7 @@ module Capistrano
         if names == "deploy:symlink"
           warn deprecation_msg
           names = "deploy:create_symlink"
-        elsif names.is_a?(Array)
+        elsif names.is_a?(Array) && names.include?("deploy:symlink")
           warn deprecation_msg
           names = names.map { |name| name == "deploy:symlink" ? "deploy:create_symlink" : name }
         end
