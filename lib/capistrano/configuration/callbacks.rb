@@ -108,7 +108,7 @@ module Capistrano
         else
           args = filter_deprecated_tasks(args)
           options[:only] = filter_deprecated_tasks(options[:only])
-          options[:expect] = filter_deprecated_tasks(options[:expect])
+          options[:except] = filter_deprecated_tasks(options[:except])
 
           callbacks[event].concat(args.map { |name| TaskCallback.new(self, name, options) })
         end
