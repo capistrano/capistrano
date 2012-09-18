@@ -1,4 +1,4 @@
-## 2.13.3 / August 21 2012
+## 2.13.4 / August 21 2012
 
 This release contains multiple bugfixes and handling of exotic situations. The
 `Configuration#capture` method should now work in spite of `ActiveSupport`
