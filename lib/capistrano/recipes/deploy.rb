@@ -1,5 +1,6 @@
 require 'benchmark'
 require 'yaml'
+require 'shellwords'
 require 'capistrano/recipes/deploy/scm'
 require 'capistrano/recipes/deploy/strategy'
 
@@ -240,23 +241,29 @@ namespace :deploy do
     using the :public_children variable.
   DESC
   task :finalize_update, :except => { :no_release => true } do
-    run "chmod -R g+w #{latest_release}" if fetch(:group_writable, true)
+    escaped_release = latest_release.to_s.shellescape
+    commands = []
+    commands << "chmod -R -- g+w #{escaped_release}" if fetch(:group_writable, true)
 
     # mkdir -p is making sure that the directories are there for some SCM's that don't
     # save empty folders
-    shared_children.map do |d|
-  		if (d.rindex('/')) then
-  		  run "rm -rf #{latest_release}/#{d} && mkdir -p #{latest_release}/#{d.slice(0..(d.rindex('/')))}"
+    shared_children.map do |dir|
+      d = dir.shellescape
+      if (dir.rindex('/')) then
+        commands += ["rm -rf -- #{escaped_release}/#{d}",
+                     "mkdir -p -- #{escaped_release}/#{dir.slice(0..(dir.rindex('/'))).shellescape}"]
       else
-        run "rm -rf #{latest_release}/#{d}"
+        commands << "rm -rf -- #{escaped_release}/#{d}"
   		end
-      run "ln -s #{shared_path}/#{d.split('/').last} #{latest_release}/#{d}"
+      commands << "ln -s -- #{shared_path}/#{dir.split('/').last.shellescape} #{escaped_release}/#{d}"
     end
+
+    run commands.join(' && ') if commands.any?
 
     if fetch(:normalize_asset_timestamps, true)
       stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
-      asset_paths = fetch(:public_children, %w(images stylesheets javascripts)).map { |p| "#{latest_release}/public/#{p}" }
-      run("find #{asset_paths.join(" ")} -exec touch -t #{stamp} {} ';'; true", :env => { "TZ" => "UTC" }) if asset_paths.any?
+      asset_paths = fetch(:public_children, %w(images stylesheets javascripts)).map { |p| "#{escaped_release}/public/#{p}" }
+      run("find #{asset_paths.join(" ").shellescape} -exec touch -t -- #{stamp} {} ';'; true", :env => { "TZ" => "UTC" }) if asset_paths.any?
     end
   end
 
