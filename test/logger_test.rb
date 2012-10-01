@@ -5,7 +5,8 @@ require 'stringio'
 class LoggerTest < Test::Unit::TestCase
   def setup
     @io = StringIO.new
-    @logger = Capistrano::Logger.new(:output => @io)
+    # Turn off formatting for these tests. Formatting is tested in `logger_formatting_test.rb`.
+    @logger = Capistrano::Logger.new(:output => @io, :disable_formatters => true)
   end
 
   def test_logger_should_use_STDERR_by_default
