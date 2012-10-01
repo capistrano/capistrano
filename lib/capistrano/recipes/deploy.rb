@@ -120,11 +120,8 @@ def run_echo command_line, ignore_failure=nil
         stdout_lines.sub!(/.*\n/) { command_output << $& ; logger.info $&.strip ; '' }
         stderr_lines.sub!(/.*\n/) { command_output << $& ; logger.info $&.strip ; '' }
       end
-    rescue EOFError => ex
+    rescue EOFError
       ;
-    rescue => ex
-      puts "EXCEPTION (#{ex.class.name}) DURING COMMAND EXECUTION:  #{ex.message}"
-      raise
     end
   end
   command_output
