@@ -2,6 +2,7 @@ require 'benchmark'
 require 'yaml'
 require 'capistrano/recipes/deploy/scm'
 require 'capistrano/recipes/deploy/strategy'
+require 'open4'
 
 def _cset(name, *args, &block)
   unless exists?(name)
@@ -98,13 +99,48 @@ ensure
   ENV[name] = saved
 end
 
+def run_echo command_line, ignore_failure=nil
+  command_output = ""
+  Open4::popen4(command_line) do |pid, stdin, stdout, stderr|
+    stdout_lines = ""
+    stderr_lines = ""
+    begin
+      loop do
+        # check whether stdout, stderr or both are
+        #  ready to be read from without blocking
+        IO.select([stdout,stderr]).flatten.compact.each { |io|
+          # stdout, if ready, goes to stdout_lines
+          stdout_lines += io.readpartial(1024) if io.fileno == stdout.fileno
+          # stderr, if ready, goes to stdout_lines
+          stderr_lines += io.readpartial(1024) if io.fileno == stderr.fileno
+        }
+        break if stdout.closed? && stderr.closed?
+        # if we acumulated any complete lines (\n-terminated)
+        #  in either stdout/err_lines, output them now
+        stdout_lines.sub!(/.*\n/) { command_output << $& ; logger.info $&.strip ; '' }
+        stderr_lines.sub!(/.*\n/) { command_output << $& ; logger.info $&.strip ; '' }
+      end
+    rescue EOFError => ex
+      ;
+    rescue => ex
+      puts "EXCEPTION (#{ex.class.name}) DURING COMMAND EXECUTION:  #{ex.message}"
+      raise
+    end
+  end
+  command_output
+end
+
 # logs the command then executes it locally.
 # returns the command output as a string
-def run_locally(cmd)
+def run_locally(cmd, options = {})
   logger.trace "executing locally: #{cmd.inspect}" if logger
   output_on_stdout = nil
   elapsed = Benchmark.realtime do
-    output_on_stdout = `#{cmd}`
+    output_on_stdout = if options[:echo]
+                         run_echo(cmd)
+                       else
+                         `#{cmd}`
+                       end
   end
   if $?.to_i > 0 # $? is command exit code (posix style)
     raise Capistrano::LocalArgumentError, "Command #{cmd} returned status code #{$?}"
