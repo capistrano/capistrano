@@ -23,7 +23,7 @@ _cset(:repository)  { abort "Please specify the repository that houses your appl
 # are not sufficient.
 # =========================================================================
 
-_cset :scm, scm_default
+_cset(:scm) { scm_default }
 _cset :deploy_via, :checkout
 
 _cset(:deploy_to) { "/u/apps/#{application}" }
