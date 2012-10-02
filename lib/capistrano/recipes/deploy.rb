@@ -23,7 +23,7 @@ _cset(:repository)  { abort "Please specify the repository that houses your appl
 # are not sufficient.
 # =========================================================================
 
-_cset :scm, :subversion
+_cset :scm, scm_default
 _cset :deploy_via, :checkout
 
 _cset(:deploy_to) { "/u/apps/#{application}" }
@@ -79,6 +79,33 @@ _cset(:latest_release) { exists?(:deploy_timestamped) ? release_path : current_r
 # =========================================================================
 # These are helper methods that will be available to your recipes.
 # =========================================================================
+
+# Checks known version control directories to intelligently set the version 
+# control in-use. For example, if a .svn directory exists in the project, 
+# it will set the :scm variable to :subversion, if a .git directory exists 
+# in the project, it will set the :scm variable to :git and so on. If no 
+# directory is found, it will default to :git.
+def scm_default
+  if File.exist? '.git'
+    :git
+  elsif File.exist? '.accurev'
+    :accurev
+  elsif File.exist? '.bzr'
+    :bzr
+  elsif File.exist? '.cvs'
+    :cvs
+  elsif File.exist? '_darcs'
+    :darcs
+  elsif File.exist? '.hg'
+    :mercurial
+  elsif File.exist? '.perforce'
+    :perforce
+  elsif File.exist? '.svn'
+    :subversion
+  else
+    :none
+  end
+end
 
 # Auxiliary helper method for the `deploy:check' task. Lets you set up your
 # own dependencies.
