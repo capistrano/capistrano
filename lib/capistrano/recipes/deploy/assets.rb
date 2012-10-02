@@ -6,8 +6,8 @@ _cset :assets_role, [:web]
 
 _cset :normalize_asset_timestamps, false
 
-before 'deploy:finalize_update', 'deploy:assets:symlink'
 after 'deploy:update_code', 'deploy:assets:precompile'
+after 'deploy:assets:precompile', 'deploy:assets:symlink'
 
 namespace :deploy do
   namespace :assets do
