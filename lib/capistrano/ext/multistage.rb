@@ -15,7 +15,6 @@ Capistrano::Configuration.instance.load do
     desc "Set the target stage to `#{name}'."
     task(name) do
       set :stage, name.to_sym
-      set :rails_env, name
       load "#{location}/#{stage}"
     end
   end
