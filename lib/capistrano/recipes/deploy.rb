@@ -456,7 +456,7 @@ namespace :deploy do
   DESC
   task :cleanup, :except => { :no_release => true } do
     count = fetch(:keep_releases, 5).to_i
-    local_releases = capture("ls -xt #{releases_path}").split.reverse
+    local_releases = Dir::entries(releases_path).select{|x| x =~ /[0-9]+/}.sort
     if count >= local_releases.length
       logger.important "no old releases to clean up"
     else
