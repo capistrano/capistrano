@@ -21,7 +21,6 @@ namespace :deploy do
     DESC
     task :symlink, :roles => assets_role, :except => { :no_release => true } do
       run <<-CMD
-        rm -rf #{latest_release}/public/#{assets_prefix} &&
         mkdir -p #{latest_release}/public &&
         mkdir -p #{shared_path}/assets/#{release_name} &&
         ln -s #{shared_path}/assets/#{release_name} #{latest_release}/public/#{assets_prefix}
