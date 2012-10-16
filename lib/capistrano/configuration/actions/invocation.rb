@@ -159,18 +159,26 @@ module Capistrano
         # use, but should instead be called indirectly, via #run or #parallel,
         # or #invoke_command.
         def run_tree(tree, options={}) #:nodoc:
+          # Build a list of log messages to show only if dry_run,
+          # or there are any servers available to execute the command
+          log_before_executing = []
+          show_logs = Proc.new {|logs| logs.each {|level, message| @logger.send(level, message)}}
+
           if tree.branches.empty? && tree.fallback
-            logger.debug "executing #{tree.fallback}"
+            log_before_executing << [:debug, "executing #{tree.fallback}"]
           elsif tree.branches.any?
-            logger.debug "executing multiple commands in parallel"
+            log_before_executing << [:debug, "executing multiple commands in parallel"]
             tree.each do |branch|
-              logger.trace "-> #{branch}"
+              log_before_executing << [:trace, "-> #{branch}"]
             end
           else
             raise ArgumentError, "attempt to execute without specifying a command"
           end
 
-          return if dry_run || (debug && continue_execution(tree) == false)
+          if dry_run || (debug && continue_execution(tree) == false)
+            show_logs[log_before_executing]
+            return
+          end
 
           options = add_default_command_options(options)
 
@@ -181,6 +189,7 @@ module Capistrano
           end
 
           execute_on_servers(options) do |servers|
+            show_logs[log_before_executing]
             targets = servers.map { |s| sessions[s] }
             Command.process(tree, targets, options.merge(:logger => logger))
           end
