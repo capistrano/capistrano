@@ -59,7 +59,7 @@ _cset(:shared_path)       { File.join(deploy_to, shared_dir) }
 _cset(:current_path)      { File.join(deploy_to, current_dir) }
 _cset(:release_path)      { File.join(releases_path, release_name) }
 
-_cset(:releases)          { capture("ls -x #{releases_path}", :except => { :no_release => true }).split.sort }
+_cset(:releases)          { capture("ls -d #{releases_path}/*/ | grep '^.*/[0-9]'", :except => { :no_release => true }).split.sort }
 _cset(:current_release)   { releases.length > 0 ? File.join(releases_path, releases.last) : nil }
 _cset(:previous_release)  { releases.length > 1 ? File.join(releases_path, releases[-2]) : nil }
 
