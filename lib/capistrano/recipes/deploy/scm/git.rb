@@ -138,6 +138,7 @@ module Capistrano
           if depth = variable(:git_shallow_clone)
             args << "--depth #{depth}"
           end
+          args << upload_pack if upload_pack
 
           execute = []
           execute << "#{git} clone #{verbose} #{args.join(' ')} #{variable(:repository)} #{destination}"
@@ -186,7 +187,7 @@ module Capistrano
           end
 
           # since we're in a local branch already, just reset to specified revision rather than merge
-          execute << "#{git} fetch #{verbose} #{remote} && #{git} fetch --tags #{verbose} #{remote} && #{git} reset #{verbose} --hard #{revision}"
+          execute << "#{git} fetch #{upload_pack} #{verbose} #{remote} && #{git} fetch --tags #{upload_pack} #{verbose} #{remote} && #{git} reset #{verbose} --hard #{revision}"
 
           if variable(:git_enable_submodules)
             execute << "#{git} submodule #{verbose} init"
@@ -223,7 +224,11 @@ module Capistrano
         def query_revision(revision)
           raise ArgumentError, "Deploying remote branches is no longer supported.  Specify the remote branch as a local branch for the git repository you're deploying from (ie: '#{revision.gsub('origin/', '')}' rather than '#{revision}')." if revision =~ /^origin\//
           return revision if revision =~ /^[0-9a-f]{40}$/
-          command = scm('ls-remote', repository, revision)
+          remote_args = [repository, revision]
+          if upload_pack
+            remote_args.unshift(upload_pack)
+          end
+          command = scm('ls-remote', *remote_args)
           result = yield(command)
           revdata = result.split(/[\t\n]/)
           newrev = nil
@@ -283,6 +288,10 @@ module Capistrano
           # command-line switch for "quiet" ("-q").
           def verbose
             variable(:scm_verbose) ? nil : "-q"
+          end
+
+          def upload_pack
+            variable(:git_upload_pack) ? "--upload-pack=#{variable(:git_upload_pack)}" : nil
           end
       end
     end
