@@ -5,6 +5,7 @@ require 'capistrano/configuration/callbacks'
 require 'capistrano/configuration/connections'
 require 'capistrano/configuration/execution'
 require 'capistrano/configuration/loading'
+require 'capistrano/configuration/log_formatters'
 require 'capistrano/configuration/namespaces'
 require 'capistrano/configuration/roles'
 require 'capistrano/configuration/servers'
@@ -34,7 +35,7 @@ module Capistrano
 
     # The includes must come at the bottom, since they may redefine methods
     # defined in the base class.
-    include AliasTask, Connections, Execution, Loading, Namespaces, Roles, Servers, Variables
+    include AliasTask, Connections, Execution, Loading, LogFormatters, Namespaces, Roles, Servers, Variables
 
     # Mix in the actions
     include Actions::FileTransfer, Actions::Inspect, Actions::Invocation
