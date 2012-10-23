@@ -21,10 +21,9 @@ namespace :deploy do
     DESC
     task :symlink, :roles => assets_role, :except => { :no_release => true } do
       run <<-CMD
-        rm -rf #{latest_release}/public/#{assets_prefix} &&
         mkdir -p #{latest_release}/public &&
-        mkdir -p #{shared_path}/assets &&
-        ln -s #{shared_path}/assets #{latest_release}/public/#{assets_prefix}
+        mkdir -p #{shared_path}/assets/#{release_name} &&
+        ln -s #{shared_path}/assets/#{release_name} #{latest_release}/public/#{assets_prefix}
       CMD
     end
 
@@ -55,6 +54,27 @@ namespace :deploy do
     DESC
     task :clean, :roles => assets_role, :except => { :no_release => true } do
       run "cd #{latest_release} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:clean"
+    end
+
+    desc <<-DESC
+Clean up old asset releases. By default, the last 5 releases are kept on each \
+server (though you can change this with the keep_releases variable). All \
+other deployed revisions are removed from the server. By default, this \
+will use sudo to clean up the old releases, but if sudo is not available \
+for your environment, set the :use_sudo variable to false instead.
+    DESC
+    task :cleanup, :roles => assets_role, :except => { :no_release => true } do
+      count = fetch(:keep_releases, 5).to_i
+      asset_releases = capture("ls -xt #{shared_path}/assets").split.reverse
+      if count >= asset_releases.length
+        logger.important "no old assets to clean up"
+      else
+        logger.info "keeping #{count} of #{asset_releases.length} deployed asset releases"
+        directories = (asset_releases - asset_releases.last(count)).map { |release|
+          File.join("#{shared_path}/assets", release) }.join(" ")
+
+        try_sudo "rm -rf #{directories}"
+      end
     end
   end
 end
