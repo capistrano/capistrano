@@ -32,9 +32,6 @@ _cset(:revision)  { source.head }
 _cset :rails_env, "production"
 _cset :rake, "rake"
 
-_cset :maintenance_basename, "maintenance"
-_cset(:maintenance_template_path) { File.join(File.dirname(__FILE__), "templates", "maintenance.rhtml") }
-
 # =========================================================================
 # These variables should NOT be changed unless you are very confident in
 # what you are doing. Make sure you understand all the implications of your
