@@ -1,4 +1,13 @@
-## 2.13.4 / August 21 2012
+## 2.13.5 (tentative) / October 26 2012
+
+* Merged in `capistrano_colors` gem, and renamed to 'log_formatters', since it does much more than just colors
+  (@ndbroadbent)
+* Use more intelligence in setting the :scm variable based on known version control directory names (@czarneckid)
+* Remove the deploy:web:{disable, enable} tasks (@carsomyr)
+* Group finalize_update shell commands into one command, harden shell calls with #shellescape, and separate arguments
+  with -- (@ndbroadbent)
+
+## 2.13.0 / August 21 2012
 
 This release contains multiple bugfixes and handling of exotic situations. The
 `Configuration#capture` method should now work in spite of `ActiveSupport`
