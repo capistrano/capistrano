@@ -160,7 +160,7 @@ module Capistrano
         # or #invoke_command.
         def run_tree(tree, options={}) #:nodoc:
           if tree.branches.empty? && tree.fallback
-            logger.debug "executing #{tree.fallback}"
+            logger.debug "executing #{tree.fallback}" unless options[:silent]
           elsif tree.branches.any?
             logger.debug "executing multiple commands in parallel"
             tree.each do |branch|
