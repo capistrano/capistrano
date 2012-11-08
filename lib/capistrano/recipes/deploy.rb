@@ -287,7 +287,8 @@ namespace :deploy do
     if fetch(:normalize_asset_timestamps, true)
       stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
       asset_paths = fetch(:public_children, %w(images stylesheets javascripts)).map { |p| "#{escaped_release}/public/#{p}" }
-      run("find #{asset_paths.join(" ").shellescape} -exec touch -t -- #{stamp} {} ';'; true", :env => { "TZ" => "UTC" }) if asset_paths.any?
+      run("find #{asset_paths.join(" ")} -exec touch -t #{stamp} -- {} ';'; true",
+          :env => { "TZ" => "UTC" }) if asset_paths.any?
     end
   end
 
