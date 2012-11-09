@@ -83,10 +83,11 @@ module Capistrano
 
           # Builds the set of authentication switches that perforce understands.
           def authentication
-            [ p4port   && "-p #{p4port}",
-              p4user   && "-u #{p4user}",
-              p4passwd && "-P #{p4passwd}",
-              p4client && "-c #{p4client}" ].compact.join(" ")
+            [ p4port    && "-p #{p4port}",
+              p4user    && "-u #{p4user}",
+              p4passwd  && "-P #{p4passwd}",
+              p4client  && "-c #{p4client}",
+              p4charset && "-C #{p4charset}" ].compact.join(" ")
           end
 
           # Returns the command that will sync the given revision to the given
@@ -111,6 +112,10 @@ module Capistrano
 
           def p4passwd
             variable(:p4passwd) || variable(:scm_password)
+          end
+          
+          def p4charset
+            variable(:p4charset)
           end
 
           def p4sync_flags
