@@ -63,8 +63,13 @@ namespace :deploy do
         manifest = YAML.load(manifest_yml)
         current_assets = manifest.to_a.flatten.map {|a| [a, "#{a}.gz"] }.flatten
         logger.info "Updating mtimes for ~#{current_assets.count} assets..."
-        command = "touch -cm -- " << current_assets.map {|a| "#{shared_path}/assets/#{a}".shellescape }.join(' ')
-        run command, :silent => true
+        put current_assets.map{|a| "#{shared_path}/assets/#{a}" }.join("\n"), "#{deploy_to}/TOUCH_ASSETS"
+        run <<-CMD.compact
+          cat #{deploy_to.shellescape}/TOUCH_ASSETS | while read asset; do
+            touch -cm -- "$asset";
+          done &&
+          rm -f -- #{deploy_to.shellescape}/TOUCH_ASSETS
+        CMD
       end
     end
 
@@ -112,20 +117,20 @@ namespace :deploy do
         current_assets += %w(manifest.yml sources_manifest.yml)
 
         # Write the list of required assets to server.
-        # Files must be sorted in dictionary order using Linux sort
         logger.info "Writing required assets to #{deploy_to}/REQUIRED_ASSETS..."
-        escaped_assets = current_assets.to_a.join("\\n").gsub("\"", "\\\"")
-        run "printf -- \"#{escaped_assets}\" | sort > #{deploy_to.shellescape}/REQUIRED_ASSETS", :silent => true
+        escaped_assets = current_assets.sort.join("\n").gsub("\"", "\\\"") << "\n"
+        put escaped_assets, "#{deploy_to}/REQUIRED_ASSETS"
 
         # Finds all files older than X minutes, then removes them if they are not referenced
         # in REQUIRED_ASSETS.
         expire_after_mins = (expire_assets_after.to_f / 60.0).to_i
         logger.info "Removing assets that haven't been deployed for #{expire_after_mins} minutes..."
+        # LC_COLLATE=C tells the `sort` and `comm` commands to sort files in byte order.
         run <<-CMD.compact
           cd -- #{shared_path.shellescape}/assets/ &&
           for f in $(
-            find * -mmin +#{expire_after_mins.to_s.shellescape} -type f | sort |
-            comm -23 -- - #{deploy_to.shellescape}/REQUIRED_ASSETS
+            find * -mmin +#{expire_after_mins.to_s.shellescape} -type f | LC_COLLATE=C sort |
+            LC_COLLATE=C comm -23 -- - #{deploy_to.shellescape}/REQUIRED_ASSETS
           ); do
             echo "Removing unneeded asset: $f";
             rm -f -- "$f";
