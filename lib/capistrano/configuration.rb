@@ -44,7 +44,7 @@ module Capistrano
     include Callbacks
 
     ((self.instance_methods & Kernel.methods) - Namespaces::Namespace.instance_methods).each do |name|
-      Namespaces::Namespace.send(:undef_method, name)
+      Namespaces::Namespace.send(:undef_method, name) if Namespaces::Namespace.method_defined? name
     end
   end
 end
