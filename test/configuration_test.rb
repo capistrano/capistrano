@@ -74,4 +74,12 @@ class ConfigurationTest < Test::Unit::TestCase
     assert !@config[:called_inner_first]
   end
 
+  def test_undefined_methods_dont_raise_an_error
+    klass = Capistrano::Configuration
+    klass.send :define_method, :nonexistent_method do ; end
+    assert_nothing_raised do
+      klass.remove_methods_from_namespace!
+    end
+  end
+
 end
