@@ -21,11 +21,14 @@ module Capistrano
       readers = sessions.map { |session| session.listeners.keys }.flatten.reject { |io| io.closed? }
       writers = readers.select { |io| io.respond_to?(:pending_write?) && io.pending_write? }
 
-      if readers.any? || writers.any?
-        readers, writers, = IO.select(readers, writers, nil, wait)
+      read_sockets = readers.reject {|s| s.class.name =~ /Pageant/ }
+      write_sockets = writers.nil? ? [] : writers.reject {|s| s.class.name =~ /Pageant/ }
+
+      if read_sockets.any? || write_sockets.any?
+        read_sockets, write_sockets, = IO.select(read_sockets, write_sockets, nil, wait)
       end
 
-      if readers
+      if read_sockets
         ensure_each_session do |session|
           ios = session.listeners.keys
           session.postprocess(ios & readers, ios & writers)
