@@ -166,7 +166,22 @@ module Capistrano
         end
       end
 
-      logger.trace "command finished in #{(elapsed * 1000).round}ms" if logger
+      if logger
+        milliseconds = (elapsed * 1000).round.to_i
+
+        time_string = "(unknown time)"
+        if milliseconds < 1000
+          time_string = "#{milliseconds}ms"
+        else
+          hours = (milliseconds / (1000*60*60)).to_i
+          minutes = ((milliseconds % (1000*60*60)) / (1000*60)).to_i
+          seconds = (((milliseconds % (1000*60*60)) % (1000*60)) / 1000)
+          time_string = "#{seconds}s"
+          time_string = "#{minutes}m #{time_string}" if minutes > 0 or hours > 0
+          time_string = "#{hours}h #{time_string}" if hours > 0
+        end
+        logger.trace "command finished in #{time_string}"
+      end
 
       if (failed = @channels.select { |ch| ch[:status] != 0 }).any?
         commands = failed.inject({}) { |map, ch| (map[ch[:command]] ||= []) << ch[:server]; map }
