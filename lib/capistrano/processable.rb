@@ -1,3 +1,5 @@
+require 'net/ssh/ruby_compat'
+
 module Capistrano
   module Processable
     module SessionAssociation
@@ -21,14 +23,11 @@ module Capistrano
       readers = sessions.map { |session| session.listeners.keys }.flatten.reject { |io| io.closed? }
       writers = readers.select { |io| io.respond_to?(:pending_write?) && io.pending_write? }
 
-      read_sockets = readers.reject {|s| s.class.name =~ /Pageant/ }
-      write_sockets = writers.nil? ? [] : writers.reject {|s| s.class.name =~ /Pageant/ }
-
-      if read_sockets.any? || write_sockets.any?
-        read_sockets, write_sockets, = IO.select(read_sockets, write_sockets, nil, wait)
+      if readers.any? || writers.any?
+        readers, writers, = Net::SSH::Compat.io_select(readers, writers, nil, wait)
       end
 
-      if read_sockets
+      if readers
         ensure_each_session do |session|
           ios = session.listeners.keys
           session.postprocess(ios & readers, ios & writers)
