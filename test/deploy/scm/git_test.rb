@@ -125,9 +125,13 @@ class DeploySCMGitTest < Test::Unit::TestCase
     @config[:scm_command] = git
     assert_equal "cd #{dest} && #{git} fetch -q origin && #{git} fetch --tags -q origin && #{git} reset -q --hard #{rev} && #{git} clean -q -d -x -f", @source.sync(rev, dest)
 
+    # With :git_clean_exclude
+    @config[:git_clean_exclude] = ["build/output", "cache/package"]
+    assert_equal "cd #{dest} && #{git} fetch -q origin && #{git} fetch --tags -q origin && #{git} reset -q --hard #{rev} && #{git} clean -q -d -x -f -e build/output -e cache/package", @source.sync(rev, dest)
+
     # with submodules
     @config[:git_enable_submodules] = true
-    assert_equal "cd #{dest} && #{git} fetch -q origin && #{git} fetch --tags -q origin && #{git} reset -q --hard #{rev} && #{git} submodule -q init && #{git} submodule -q sync && export GIT_RECURSIVE=$([ ! \"`#{git} --version`\" \\< \"git version 1.6.5\" ] && echo --recursive) && #{git} submodule -q update --init $GIT_RECURSIVE && #{git} clean -q -d -x -f", @source.sync(rev, dest)
+    assert_equal "cd #{dest} && #{git} fetch -q origin && #{git} fetch --tags -q origin && #{git} reset -q --hard #{rev} && #{git} submodule -q init && #{git} submodule -q sync && export GIT_RECURSIVE=$([ ! \"`#{git} --version`\" \\< \"git version 1.6.5\" ] && echo --recursive) && #{git} submodule -q update --init $GIT_RECURSIVE && #{git} clean -q -d -x -f -e build/output -e cache/package", @source.sync(rev, dest)
   end
 
   def test_sync_with_remote
