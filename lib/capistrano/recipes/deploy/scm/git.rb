@@ -137,6 +137,13 @@ module Capistrano
           args << "-o #{remote}" unless remote == 'origin'
           if depth = variable(:git_shallow_clone)
             args << "--depth #{depth}"
+
+            # For a shallow clone you should provide a real branch name to be cloned,
+            # tags or revisions result mostly in error anyway
+            if branch = variable(:branch)
+              args << "-b #{branch}"
+            end
+
           end
 
           execute = []
