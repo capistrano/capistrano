@@ -43,8 +43,13 @@ module Capistrano
     # Must mix last, because it hooks into previously defined methods
     include Callbacks
 
-    ((self.instance_methods & Kernel.methods) - Namespaces::Namespace.instance_methods).each do |name|
-      Namespaces::Namespace.send(:undef_method, name)
+    def self.remove_methods_from_namespace!
+      ((self.instance_methods & Kernel.methods) - Namespaces::Namespace.instance_methods).each do |name|
+        Namespaces::Namespace.send(:undef_method, name) if Namespaces::Namespace.method_defined? name
+      end
     end
+
+    remove_methods_from_namespace!
+
   end
 end
