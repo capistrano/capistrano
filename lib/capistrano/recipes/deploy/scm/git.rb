@@ -135,6 +135,7 @@ module Capistrano
 
           args = []
           args << "-o #{remote}" unless remote == 'origin'
+          args << "-b #{head}" unless head == 'HEAD'
           if depth = variable(:git_shallow_clone)
             args << "--depth #{depth}"
           end
