@@ -213,7 +213,7 @@ module Kernel
 
       namespace = Capistrano::Configuration::Namespaces::Namespace
 
-      if namespace.method_defined?(name) && namespace.method(name).owner == Kernel
+      if namespace.method_defined?(name) && namespace.instance_method(name).owner == Kernel
         namespace.send :undef_method, name
       end
 

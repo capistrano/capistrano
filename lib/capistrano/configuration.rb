@@ -43,7 +43,14 @@ module Capistrano
     # Must mix last, because it hooks into previously defined methods
     include Callbacks
 
-    ((self.instance_methods & Kernel.methods) - Namespaces::Namespace.instance_methods).each do |name|
+    (self.instance_methods & Kernel.methods).select do |name|
+      # Select the instance methods owned by the Configuration class.
+      self.instance_method(name).owner.to_s.start_with?("Capistrano::Configuration")
+    end.select do |name|
+      # Of those, select methods that are being shadowed by the Kernel module in the Namespace class.
+      Namespaces::Namespace.method_defined?(name) && Namespaces::Namespace.instance_method(name).owner == Kernel
+    end.each do |name|
+      # Undefine the shadowed methods, since we want Namespace objects to defer handling to the Configuration object.
       Namespaces::Namespace.send(:undef_method, name)
     end
   end
