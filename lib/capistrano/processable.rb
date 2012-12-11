@@ -1,3 +1,5 @@
+require 'net/ssh/ruby_compat'
+
 module Capistrano
   module Processable
     module SessionAssociation
@@ -22,7 +24,7 @@ module Capistrano
       writers = readers.select { |io| io.respond_to?(:pending_write?) && io.pending_write? }
 
       if readers.any? || writers.any?
-        readers, writers, = IO.select(readers, writers, nil, wait)
+        readers, writers, = Net::SSH::Compat.io_select(readers, writers, nil, wait)
       end
 
       if readers
