@@ -15,7 +15,7 @@ class DeploySCMDarcsTest < Test::Unit::TestCase
   # We should be able to pick a specific hash.
   def test_checkout_hash
     hsh = "*version_hash*"
-    assert_match(%r{--to-match=.hash #{Regexp.quote(hsh)}}, 
+    assert_match(%r{--to-match=.hash #{Regexp.quote(hsh)}},
                  @source.checkout(hsh, "*foo_location*"),
                 "Specifying a revision hash got the --to-match option wrong.")
   end
@@ -31,7 +31,7 @@ class DeploySCMDarcsTest < Test::Unit::TestCase
   # Leaving the revision as nil shouldn't break anything.
   def test_checkout_nil
     assert_no_match(%r{--to-match}, @source.checkout(nil, "*foo_location*"),
-                    "Leaving the revision as nil incorrectly produced a --to-match option.") 
+                    "Leaving the revision as nil incorrectly produced a --to-match option.")
   end
 end
 

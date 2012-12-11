@@ -27,8 +27,8 @@ module Capistrano
       def task_call_frames
         Thread.current[:task_call_frames] ||= []
       end
-      
-      
+
+
       # The stack of tasks that have registered rollback handlers within the
       # current transaction. If this is nil, then there is no transaction
       # that is currently active.

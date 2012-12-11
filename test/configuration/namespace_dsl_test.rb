@@ -146,7 +146,7 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
 
   def test_parent_for_namespace_should_be_the_top_level
     @config.namespace(:outer) {}
-    assert_equal @config, @config.namespaces[:outer].parent    
+    assert_equal @config, @config.namespaces[:outer].parent
   end
 
   def test_fqn_for_nested_namespace_should_be_color_delimited
@@ -238,7 +238,7 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     ns = @config.namespaces[:outer]
     assert ns.respond_to?(:original_initialize_called)
   end
-  
+
   def test_namespace_should_accept_respond_to_with_include_priv_parameter
     @config.namespace(:outer) {}
     ns = @config.namespaces[:outer]
@@ -308,16 +308,16 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     end
     assert_nil @config.find_task("outer::inner")
   end
-  
+
   def test_kernel_method_clashing_should_not_affect_method_delegation_to_parent
     @config.class.class_eval do
       def some_weird_method() 'config' end
     end
-    
+
     @config.namespace(:clash) {}
     namespace = @config.namespaces[:clash]
     assert_equal 'config', namespace.some_weird_method
-    
+
     Kernel.module_eval do
       def some_weird_method() 'kernel' end
     end
@@ -325,7 +325,7 @@ class ConfigurationNamespacesDSLTest < Test::Unit::TestCase
     @config.namespace(:clash2) {}
     namespace = @config.namespaces[:clash2]
     assert_equal 'config', namespace.some_weird_method
-    
+
     Kernel.send :remove_method, :some_weird_method
     @config.class.send :remove_method, :some_weird_method
   end

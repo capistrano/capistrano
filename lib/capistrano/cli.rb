@@ -20,7 +20,7 @@ module Capistrano
     #   Capistrano::CLI.parse(%W(-vvvv -f config/deploy update_code)).execute!
     #
     # Note that you can also embed cap directly by creating a new Configuration
-    # instance and setting it up, The above snippet, redone using the 
+    # instance and setting it up, The above snippet, redone using the
     # Configuration class directly, would look like:
     #
     #   require 'capistrano'

@@ -126,7 +126,7 @@ class ConfigurationCallbacksTest < Test::Unit::TestCase
     assert_equal 1, @config.callbacks[:before].length
     assert_equal %w(primary), @config.callbacks[:before].first.except
   end
-  
+
   def test_on_without_tasks_or_block_should_raise_error
     assert_raises(ArgumentError) { @config.on(:before) }
   end

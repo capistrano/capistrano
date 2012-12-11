@@ -7,7 +7,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     attr_reader :options
     attr_accessor :debug
     attr_accessor :dry_run
-		attr_accessor :preserve_roles
+    attr_accessor :preserve_roles
     attr_accessor :servers
 
     def initialize

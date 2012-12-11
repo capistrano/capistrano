@@ -18,7 +18,7 @@ module Capistrano
         yield self
         self
       end
-  
+
       def remote
         dep = RemoteDependency.new(configuration)
         @dependencies << dep

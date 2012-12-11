@@ -89,11 +89,11 @@ module Capistrano
             "yes\n"
           end
         end
-        
+
         private
 
         # Fine grained mercurial commands
-        def clone(destination) 
+        def clone(destination)
           scm :clone,
               verbose,
               "--noupdate", # do not update to tip when cloning is done
@@ -124,7 +124,7 @@ module Capistrano
             else            "--verbose"
           end
         end
-        
+
         # honor Cap 2.1+'s :scm_prefer_prompt if present
         def scm_password_or_prompt
           @scm_password_or_prompt ||= variable(:scm_password) ||

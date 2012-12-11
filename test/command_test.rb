@@ -236,7 +236,7 @@ class CommandTest < Test::Unit::TestCase
   class MockConfig
     include Capistrano::Configuration::Roles
   end
-  
+
   def test_hostroles_substitution
     @config = MockConfig.new
     @config.server "capistrano", :db, :worker

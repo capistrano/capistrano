@@ -39,7 +39,7 @@ Capistrano::Configuration.instance.load do
         else
           abort "No stage specified. Please specify one of: #{stages.join(', ')} (e.g. `cap #{stages.first} #{ARGV.last}')"
         end
-      end 
+      end
     end
 
     desc "Stub out the staging config files."
