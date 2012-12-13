@@ -92,3 +92,58 @@ class LoggerFormattingTest < Test::Unit::TestCase
     @logger.device = @io
   end
 end
+
+class DefaultLoggerFormattersTest < Test::Unit::TestCase
+  def setup
+    @expected_default_formatter_values = [
+      # TRACE
+      { :match => /command finished/,          :color => :white,   :style => :dim, :level => 3, :priority => -10 },
+      { :match => /executing locally/,         :color => :yellow,  :level => 3, :priority => -20 },
+
+      # DEBUG
+      { :match => /executing `.*/,             :color => :green,   :level => 2, :priority => -10, :timestamp => true },
+      { :match => /.*/,                        :color => :yellow,  :level => 2, :priority => -30 },
+
+      # INFO
+      { :match => /.*out\] (fatal:|ERROR:).*/, :color => :red,     :level => 1, :priority => -10 },
+      { :match => /Permission denied/,         :color => :red,     :level => 1, :priority => -20 },
+      { :match => /sh: .+: command not found/, :color => :magenta, :level => 1, :priority => -30 },
+
+      # IMPORTANT
+      { :match => /^err ::/,                   :color => :red,     :level => 0, :priority => -10 },
+      { :match => /.*/,                        :color => :blue,    :level => 0, :priority => -20 }
+    ]
+
+    @custom_default_formatter_values = [
+      { :match => /.*/,  :color => :white }
+    ]
+
+  end
+
+  def test_default_formatters_api
+    assert Capistrano::Logger.respond_to? :default_formatters
+    assert Capistrano::Logger.respond_to? :default_formatters=
+  end
+
+  def test_default_formatters_values
+    assert_equal @expected_default_formatter_values, Capistrano::Logger.default_formatters
+    assert_equal @expected_default_formatter_values, Capistrano::Logger.instance_variable_get("@formatters")
+    assert_equal nil, Capistrano::Logger.instance_variable_get("@sorted_formatters")
+  end
+
+  def test_set_default_formatters_values
+    # when given an array
+    Capistrano::Logger.default_formatters = @custom_default_formatter_values
+
+    assert_equal @custom_default_formatter_values, Capistrano::Logger.default_formatters
+    Capistrano::Logger.default_formatters = @custom_default_formatter_values
+    assert_equal @custom_default_formatter_values, Capistrano::Logger.instance_variable_get("@formatters")
+    assert_equal nil, Capistrano::Logger.instance_variable_get("@sorted_formatters")
+
+    # when given a single formatter values hash
+    Capistrano::Logger.default_formatters = @custom_default_formatter_values.first
+
+    assert_equal @custom_default_formatter_values, Capistrano::Logger.default_formatters
+  end
+
+end
