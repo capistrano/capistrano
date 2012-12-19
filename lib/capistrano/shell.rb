@@ -64,6 +64,9 @@ INTRO
           return false
         when /^set -(\w)\s*(\S+)/
           set_option($1, $2)
+        when /^set :(.*)\s+(.*)/
+          configuration.set($1, $2)
+          puts "updated :#{$1} to #{$2}"
         when /^(?:(with|on)\s*(\S+))?\s*(\S.*)?/i
           process_command($1, $2, $3)
         else
