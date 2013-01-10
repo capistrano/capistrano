@@ -1,5 +1,8 @@
-## 2.13.5 (tentative) / October 26 2012
+## 2.14.0 / January 9 2013
 
+* Removed ui.output_cols limit of 80 chars (@aussielunix)
+* Added :p4charset variable for Perforce command line (@randyinla)
+* Added support for rolling back assets, and removing expired assets (@ndbroadbent)
 * Merged in `capistrano_colors` gem, and renamed to 'log_formatters', since it does much more than just colors
   (@ndbroadbent)
 * Use more intelligence in setting the :scm variable based on known version control directory names (@czarneckid)
