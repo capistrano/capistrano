@@ -1,8 +1,9 @@
-require 'benchmark'
-require 'yaml'
-require 'shellwords'
-require 'capistrano/recipes/deploy/scm'
-require 'capistrano/recipes/deploy/strategy'
+require "benchmark"
+require "set"
+require "shellwords"
+require "yaml"
+require "capistrano/recipes/deploy/scm"
+require "capistrano/recipes/deploy/strategy"
 
 def _cset(name, *args, &block)
   unless exists?(name)
