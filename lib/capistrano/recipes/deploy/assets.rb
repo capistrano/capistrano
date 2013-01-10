@@ -45,7 +45,7 @@ namespace :deploy do
     task :precompile, :roles => assets_role, :except => { :no_release => true } do
       run <<-CMD.compact
         cd -- #{latest_release.shellescape} &&
-        #{rake} RAILS_ENV=#{rails_env.shellescape} #{asset_env.shellescape} assets:precompile &&
+        #{rake} RAILS_ENV=#{rails_env.shellescape} #{asset_env} assets:precompile &&
         cp -- #{shared_path.shellescape}/assets/manifest.yml #{current_release.shellescape}/assets_manifest.yml
       CMD
     end
@@ -154,7 +154,7 @@ namespace :deploy do
         run <<-CMD.compact
           cd -- #{previous_release.shellescape} &&
           cp -f -- #{previous_manifest.shellescape} #{shared_path.shellescape}/assets/manifest.yml &&
-          #{rake} RAILS_ENV=#{rails_env.shellescape} #{asset_env.shellescape} assets:precompile:nondigest
+          #{rake} RAILS_ENV=#{rails_env.shellescape} #{asset_env} assets:precompile:nondigest
         CMD
       end
     end
