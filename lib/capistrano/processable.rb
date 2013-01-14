@@ -21,8 +21,18 @@ module Capistrano
       readers = sessions.map { |session| session.listeners.keys }.flatten.reject { |io| io.closed? }
       writers = readers.select { |io| io.respond_to?(:pending_write?) && io.pending_write? }
 
-      if readers.any? || writers.any?
-        readers, writers, = IO.select(readers, writers, nil, wait)
+      io_timeout = 10
+      loop do
+        if readers.any? || writers.any?
+          rs, ws, = IO.select(readers, writers, nil, io_timeout)
+          if rs.nil? && ws.nil?
+            logger.info("Waiting for #{@channels.select{ |ch| !ch[:closed] }.map { |ch| ch[:server] }.join(',')}")
+          else
+            readers = rs
+            writers = ws
+            break
+          end
+        end
       end
 
       if readers
