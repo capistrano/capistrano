@@ -154,6 +154,16 @@ class CommandTest < Test::Unit::TestCase
     assert_equal 5, channel[:status]
   end
 
+  def test_on_request_should_log_exit_signal_if_logger_present
+    data = mock(:read_string => "TERM")
+    logger = stub_everything
+
+    session = setup_for_extracting_channel_action([:on_request, "exit-signal"], data)
+    logger.expects(:important).with("command received signal TERM", server("capistrano"))
+
+    Capistrano::Command.new("puppet", [session], :logger => logger)
+  end
+
   def test_on_close_should_set_channel_closed
     channel = nil
     session = setup_for_extracting_channel_action(:on_close) { |ch| channel = ch }
@@ -236,7 +246,7 @@ class CommandTest < Test::Unit::TestCase
   class MockConfig
     include Capistrano::Configuration::Roles
   end
-  
+
   def test_hostroles_substitution
     @config = MockConfig.new
     @config.server "capistrano", :db, :worker

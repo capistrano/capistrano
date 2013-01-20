@@ -243,6 +243,13 @@ module Capistrano
                 ch[:status] = data.read_long
               end
 
+              channel.on_request("exit-signal") do |ch, data|
+                if logger
+                  exit_signal = data.read_string
+                  logger.important "command received signal #{exit_signal}", ch[:server]
+                end
+              end
+
               channel.on_close do |ch|
                 ch[:closed] = true
               end
