@@ -199,11 +199,13 @@ HELP
       # thread and generally gets things ready for the REPL.
       def setup
         configuration.logger.level = Capistrano::Logger::INFO
+        wait_for = 0.1
 
         @mutex = Mutex.new
         @bgthread = Thread.new do
           loop do
-            @mutex.synchronize { process_iteration(0.1) }
+            ret = @mutex.synchronize { process_iteration(wait_for) }
+            sleep wait_for if !ret
           end
         end
       end
