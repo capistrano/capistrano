@@ -23,6 +23,8 @@ module Capistrano
 
       if readers.any? || writers.any?
         readers, writers, = IO.select(readers, writers, nil, wait)
+      else
+        return false
       end
 
       if readers
