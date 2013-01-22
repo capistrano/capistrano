@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   s.extra_rdoc_files = [
-    "README.mdown"
+    "README.md"
   ]
 
   if s.respond_to? :specification_version then
