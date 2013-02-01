@@ -1,0 +1,13 @@
+#!/usr/bin/env cap
+require 'capistrano/install'
+
+# Loads configuation
+load 'config/deploy.rb'
+
+# require bundled deployment tasks
+require 'capistrano/deploy'
+#require 'capistrano/rails'
+# require 'capistrano/heroku'
+
+# Loads any rake tasks from lib/deploy/tasks
+Dir.glob('lib/deploy/tasks/*.rake').each { |r| import r }

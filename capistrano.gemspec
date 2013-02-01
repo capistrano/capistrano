@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["PENDING"]
   gem.description   = %q{PENDING: Write a gem description}
   gem.summary       = %q{PENDING: Write a gem summary}
-  gem.homepage      = "PENDING"
+  gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = 'cap'

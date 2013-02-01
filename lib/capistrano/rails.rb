@@ -1,1 +1,1 @@
-import File.expand_path(File.join(File.dirname(__FILE__),'tasks/rails.rake'))
+import File.expand_path("../tasks/rails.rake", __FILE__)

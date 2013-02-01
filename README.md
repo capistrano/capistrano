@@ -2,37 +2,38 @@
 
 wip - aim here is to get 'something' up and running
 
-Initial goals:
+TODO:
 
-  - harness rake for dsl
-  - create a working capify equivalent
-    - create Capfile
-    - create lib/tasks/deploy
-    - create config/deploy/
-    - write config/deploy.rb with example configuration
+  - [x] harness rake for dsl
+  - [x] create a working capify equivalent
+    - [x] create Capfile
+    - [x] create lib/tasks/deploy
+    - [x] create config/deploy/
+    - [x] write config/deploy.rb with example configuration
 
-  - basic configuration object
-  - basic 'capistrano/rails' example to allow testing with real apps, helping to flush out requirements
-  - don't care too much about testing at this point (rspec included for my reference)
+  - [x] basic configuration object
+  - [x] pass any necessary configuration from deploy.rb to SSHKit
+  - [x] basic 'capistrano/deploy' noop example
+  - [x] don't care too much about testing at this point (rspec included for my reference)
 
+  - [ ] before/after task hooks
+  - [ ] consider requiring default tasks via configuration (strategy?) rather than Capfile
+  - [ ] write more default tasks
+  - [ ] handle multiple stage file generation
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'capistrano'
+    gem 'capistrano' github: 'capistrano/capistrano', branch: :wip
 
 And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install capistrano
-
 Capify:
 
-    $ cap install
+    $ bundle exec cap install
 
 ## Usage
 

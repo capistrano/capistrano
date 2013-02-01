@@ -18,14 +18,14 @@ module Capistrano
 
     def method_missing(key, value=nil)
       return set(key, value) if value
-      get(key)
+      fetch(key)
     end
 
     def set(key, value)
       @env[key] = value
     end
 
-    def get(value)
+    def fetch(value)
       @env[value]
     end
 
@@ -34,7 +34,8 @@ module Capistrano
     end
 
     def role(title, servers)
-      roles.merge!(title => servers)
+      hosts = servers.map { |s| SSHKit::Host.new(s) }
+      roles.merge!(title => hosts)
     end
 
     def roles
