@@ -6,15 +6,20 @@ require 'capistrano/version'
 Gem::Specification.new do |gem|
   gem.name          = "capistrano"
   gem.version       = Capistrano::VERSION
-  gem.authors       = ["TODO"]
-  gem.email         = ["TODO"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
-  gem.homepage      = ""
+  gem.authors       = ["PENDING"]
+  gem.email         = ["PENDING"]
+  gem.description   = %q{PENDING: Write a gem description}
+  gem.summary       = %q{PENDING: Write a gem summary}
+  gem.homepage      = "PENDING"
 
   gem.files         = `git ls-files`.split($/)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.executables   = 'cap'
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+
   gem.add_dependency 'sshkit'
+  gem.add_dependency 'rake', '>= 10.0.0'
+
+  gem.add_development_dependency 'rspec'
+  gem.add_development_dependency 'mocha'
 end

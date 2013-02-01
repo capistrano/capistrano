@@ -1,6 +1,20 @@
 # Capistrano
 
-TODO: Write a gem description
+wip - aim here is to get 'something' up and running
+
+Initial goals:
+
+  - harness rake for dsl
+  - create a working capify equivalent
+    - create Capfile
+    - create lib/tasks/deploy
+    - create config/deploy/
+    - write config/deploy.rb with example configuration
+
+  - basic configuration object
+  - basic 'capistrano/rails' example to allow testing with real apps, helping to flush out requirements
+  - don't care too much about testing at this point (rspec included for my reference)
+
 
 ## Installation
 
@@ -16,14 +30,12 @@ Or install it yourself as:
 
     $ gem install capistrano
 
+Capify:
+
+    $ cap install
+
 ## Usage
 
-TODO: Write usage instructions here
+    $ cap -vT
 
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+    $ cap deploy
