@@ -147,7 +147,6 @@ namespace :deploy do
       if capture("[ -e #{previous_manifest.shellescape} ] && echo true || echo false").strip != 'true'
         puts "#{previous_manifest} is missing! Cannot roll back assets. " <<
              "Please run deploy:assets:precompile to update your assets when the rollback is finished."
-        return false
       else
         run <<-CMD.compact
           cd -- #{previous_release.shellescape} &&
