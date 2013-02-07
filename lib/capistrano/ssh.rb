@@ -70,7 +70,7 @@ module Capistrano
       port = server.port || options[:port] || ssh_options[:port]
 
       # the .ssh/config file might have changed the host-name on us
-      host = ssh_options.fetch(:host_name, server.host) 
+      host = ssh_options.fetch(:host_name, server.host)
 
       ssh_options[:port] = port if port
 

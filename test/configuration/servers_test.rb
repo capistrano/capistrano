@@ -5,11 +5,11 @@ require 'capistrano/configuration/servers'
 class ConfigurationServersTest < Test::Unit::TestCase
   class MockConfig
     attr_reader :roles
-		attr_accessor :preserve_roles
+    attr_accessor :preserve_roles
 
     def initialize
       @roles = {}
-			@preserve_roles = false
+      @preserve_roles = false
     end
 
     include Capistrano::Configuration::Servers
@@ -66,31 +66,31 @@ class ConfigurationServersTest < Test::Unit::TestCase
 
   def test_task_with_roles_as_environment_variable_and_preserve_roles_should_apply_only_to_existant_task_role
     ENV['ROLES'] = "app,file"
-		@config.preserve_roles = true
+    @config.preserve_roles = true
     task = new_task(:testing,@config, :roles => :app)
     assert_equal %w(app1 app2 app3).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
   ensure
     ENV.delete('ROLES')
-	end
+  end
 
   def test_task_with_roles_as_environment_variable_and_preserve_roles_should_apply_only_to_existant_task_roles
     ENV['ROLES'] = "app,file,web"
-		@config.preserve_roles = true
+    @config.preserve_roles = true
     task = new_task(:testing,@config, :roles => [ :app,:file ])
     assert_equal %w(app1 app2 app3 file).sort, @config.find_servers_for_task(task).map { |s| s.host }.sort
   ensure
     ENV.delete('ROLES')
-	end
+  end
 
   def test_task_with_roles_as_environment_variable_and_preserve_roles_should_not_apply_if_not_exists_those_task_roles
     ENV['ROLES'] = "file,web"
-		@config.preserve_roles = true
+    @config.preserve_roles = true
     task = new_task(:testing,@config, :roles => [ :app ])
     assert_equal [], @config.find_servers_for_task(task).map { |s| s.host }.sort
   ensure
     ENV.delete('ROLES')
-	end
-	
+  end
+
   def test_task_with_hosts_as_environment_variable_should_apply_only_to_those_hosts
     ENV['HOSTS'] = "foo,bar"
     task = new_task(:testing)
@@ -163,7 +163,7 @@ class ConfigurationServersTest < Test::Unit::TestCase
     assert_equal %w(app1 app2 app3), @config.find_servers(:roles => lambda { :app }).map { |s| s.host }.sort
     assert_equal %w(app2 file), @config.find_servers(:roles => lambda { [:report, :file] }).map { |s| s.host }.sort
   end
-  
+
   def test_find_servers_with_hosts_nil_or_empty
     assert_equal [], @config.find_servers(:hosts => nil)
     assert_equal [], @config.find_servers(:hosts => [])
@@ -172,12 +172,12 @@ class ConfigurationServersTest < Test::Unit::TestCase
     result = @config.find_servers(:hosts => "app1")
     assert_equal 1, result.size
   end
-  
+
   def test_find_servers_with_rolees_nil_or_empty
     assert_equal [], @config.find_servers(:roles => nil)
     assert_equal [], @config.find_servers(:roles => [])
     result = @config.find_servers(:roles => :report)
     assert_equal 1, result.size
   end
-  
+
 end

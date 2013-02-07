@@ -69,13 +69,13 @@ module Capistrano
         def handle_data(state, stream, text)
           case text
           when /\(P4PASSWD\) invalid or unset\./i
-	          raise Capistrano::Error, "scm_password (or p4passwd) is incorrect or unset"
+            raise Capistrano::Error, "scm_password (or p4passwd) is incorrect or unset"
           when /Can.t create a new user.*/i
-	          raise Capistrano::Error, "scm_username (or p4user) is incorrect or unset"
+            raise Capistrano::Error, "scm_username (or p4user) is incorrect or unset"
           when /Perforce client error\:/i
-	          raise Capistrano::Error, "p4port is incorrect or unset"
+            raise Capistrano::Error, "p4port is incorrect or unset"
           when /Client \'[\w\-\_\.]+\' unknown.*/i
-	          raise Capistrano::Error, "p4client is incorrect or unset"
+            raise Capistrano::Error, "p4client is incorrect or unset"
           end
         end
 
@@ -113,7 +113,7 @@ module Capistrano
           def p4passwd
             variable(:p4passwd) || variable(:scm_password)
           end
-          
+
           def p4charset
             variable(:p4charset)
           end

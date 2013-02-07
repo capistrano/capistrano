@@ -68,7 +68,7 @@ module Capistrano
         raise ArgumentError, "you must associate a server with at least one role" if roles.empty?
         roles.each { |name| role(name, host, options) }
       end
-      
+
       def role_names_for_host(host)
         roles.map {|role_name, role| role_name if role.include?(host) }.compact || []
       end

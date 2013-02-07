@@ -41,7 +41,7 @@ class DeploySCMBzrTest < Test::Unit::TestCase
                          'before:revid:aaaa@bbbb-1234567890',
                          'last:3',
                          nil, {}, [], true, false, 1.34, ]
-    
+
     revision_samples.each do |revivsion_spec|
       assert_equal(revivsion_spec,
                    @source.query_revision(revivsion_spec),

@@ -69,7 +69,7 @@ module Capistrano
         # etc. are handled here.
         def handle_data(state, stream, text)
           host = state[:channel][:host]
-	        logger.info "[#{host} :: #{stream}] #{text}"
+          logger.info "[#{host} :: #{stream}] #{text}"
           case text
           when /\bpassword.*:/i
             # subversion is prompting for a password

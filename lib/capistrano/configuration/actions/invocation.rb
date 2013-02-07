@@ -59,7 +59,7 @@ module Capistrano
         #
         # The string specified as the first argument to +when+ may be any valid
         # Ruby code. It has access to the following variables and methods:
-        # 
+        #
         # * +in?(role)+ returns true if the server participates in the given role
         # * +server+ is the ServerDefinition object for the server. This can be
         #   used to get the host-name, etc.
@@ -121,7 +121,7 @@ module Capistrano
         #   to run, then the hosts will be run in groups of max_hosts. The default is nil,
         #   which indicates that there is no maximum host limit. Please note this does not
         #   limit the number of SSH channels that can be open, only the number of hosts upon
-        #   which this will be called. 
+        #   which this will be called.
         # * :shell - says which shell should be used to invoke commands. This
         #   defaults to "sh". Setting this to false causes Capistrano to invoke
         #   the commands directly, without wrapping them in a shell invocation.
@@ -279,7 +279,7 @@ module Capistrano
         def sudo_prompt
           fetch(:sudo_prompt, "sudo password: ")
         end
-        
+
         def continue_execution(tree)
           if tree.branches.length == 1
             continue_execution_for_branch(tree.branches.first)

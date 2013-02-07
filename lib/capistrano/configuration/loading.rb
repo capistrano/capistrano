@@ -141,9 +141,9 @@ module Capistrano
         # look to see if this specific configuration instance has ever seen
         # these arguments to require before
         if @loaded_features.include?(args)
-          return false 
+          return false
         end
-        
+
         @loaded_features << args
         begin
           original_instance, self.class.instance = self.class.instance, self

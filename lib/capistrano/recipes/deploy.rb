@@ -78,10 +78,10 @@ _cset(:latest_release) { exists?(:deploy_timestamped) ? release_path : current_r
 # These are helper methods that will be available to your recipes.
 # =========================================================================
 
-# Checks known version control directories to intelligently set the version 
-# control in-use. For example, if a .svn directory exists in the project, 
-# it will set the :scm variable to :subversion, if a .git directory exists 
-# in the project, it will set the :scm variable to :git and so on. If no 
+# Checks known version control directories to intelligently set the version
+# control in-use. For example, if a .svn directory exists in the project,
+# it will set the :scm variable to :subversion, if a .git directory exists
+# in the project, it will set the :scm variable to :git and so on. If no
 # directory is found, it will default to :git.
 def scm_default
   if File.exist? '.git'
@@ -153,7 +153,7 @@ end
 # THUS, if you want to try to run something via sudo, and what to use the
 # root user, you'd just to try_sudo('something'). If you wanted to try_sudo as
 # someone else, you'd just do try_sudo('something', :as => "bob"). If you
-# always wanted sudo to run as a particular user, you could do 
+# always wanted sudo to run as a particular user, you could do
 # set(:admin_runner, "bob").
 def try_sudo(*args)
   options = args.last.is_a?(Hash) ? args.pop : {}
@@ -279,7 +279,7 @@ namespace :deploy do
                      "mkdir -p -- #{escaped_release}/#{dir.slice(0..(dir.rindex('/'))).shellescape}"]
       else
         commands << "rm -rf -- #{escaped_release}/#{d}"
-  		end
+      end
       commands << "ln -s -- #{shared_path}/#{dir.split('/').last.shellescape} #{escaped_release}/#{d}"
     end
 
