@@ -110,9 +110,7 @@ namespace :deploy do
         current_assets = Set.new
         manifests.each do |yaml|
           manifest = YAML.load(yaml)
-          current_assets += manifest.to_a.flatten.flat_map do |file|
-            [file, "#{file}.gz"]
-          end
+          current_assets += manifest.to_a.flatten.map {|f| [f, "#{f}.gz"] }.flatten
         end
         current_assets += %w(manifest.yml sources_manifest.yml)
 
