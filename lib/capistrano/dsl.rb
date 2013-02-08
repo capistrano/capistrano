@@ -1,6 +1,14 @@
 module Capistrano
   module DSL
 
+    def t(key)
+      I18n.t(key, scope: :capistrano)
+    end
+
+    def stage_set?
+      !!Capistrano::Env.configuration.stage
+    end
+
     def before(task, prerequisite, *args, &block)
       rerequisite = Rake::Task.define_task(prerequisite, *args, &block) if block_given?
       Rake::Task[task].enhance [prerequisite]

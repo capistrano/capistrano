@@ -1,6 +1,10 @@
 #!/usr/bin/env cap
+require 'capistrano/install'
+
+# Loads configuation
+load 'config/deploy.rb'
+
 # require bundled deployment tasks
-# remove to start from scratch
 require 'capistrano/deploy'
 
 # require tasks from contrib gems

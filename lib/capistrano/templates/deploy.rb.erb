@@ -1,5 +1,6 @@
 # example configuration
 Capistrano::Env.configure do |config|
+  config.stage :<%= stage %>
   config.role :app, %w{example.com}
   config.role :web, %w{example.com}
   config.role :db, %w{example.com}

@@ -12,14 +12,13 @@ TODO:
     - [x] write config/deploy.rb with example configuration
 
   - [x] basic configuration object
-  - [x] pass any necessary configuration from deploy.rb to SSHKit
   - [x] basic 'capistrano/deploy' noop example
   - [x] don't care too much about testing at this point (rspec included for my reference)
 
   - [x] before/after task hooks
-  - [ ] consider requiring default tasks via configuration (strategy?) rather than Capfile
-  - [ ] write more default tasks
-  - [ ] handle multiple stage file generation
+  - [x] handle multi stage
+  - [ ] pass any necessary configuration from deploy.rb to SSHKit
+  - [ ] is Capfile still legit? (although capfile/capfile.rb are already alternatives by default)
 
 ## Installation
 
@@ -29,17 +28,31 @@ Add this line to your application's Gemfile:
 
 And then execute:
 
-    $ bundle
+    $ bundle --binstubs
 
 Capify:
 
-    $ bundle exec cap install
+    $ cap install
+
+This creates the following files:
+
+- `Capfile`
+- `lib/deploy/tasks`
+- `config/deploy/staging.rb`
+- `config/deploy/production.rb`
+
+To create different stages:
+
+    $ cap install STAGES=local,sandbox,qa,production
 
 ## Usage
 
     $ cap -vT
 
-    $ cap deploy
+    $ cap staging deploy
+    $ cap production deploy
+
+## Tasks
 
 ## Before / After
 
@@ -61,9 +74,10 @@ Where calling on the same task name, executed in order of inclusion
       #
     end
 
+## Configuration
 
 
-
+## SSHKit
 
 
 
