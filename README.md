@@ -18,6 +18,8 @@ TODO:
   - [x] before/after task hooks
   - [x] handle multi stage
   - [x] pass any necessary configuration from deploy.rb to SSHKit
+  - [ ] more helpful DSL
+  - [ ] abstract some useful sshkit commands
   - [ ] is Capfile still legit? (although capfile/capfile.rb are already alternatives by default)
   - [ ] add examples to README
 

@@ -13,37 +13,30 @@ namespace :deploy do
 
   desc "starting"
   task :starting do
-    puts t(:starting)
   end
 
   desc "start"
   task :start do
-    puts t(:start)
   end
 
   desc "update"
   task :update do
-    puts t(:update)
   end
 
   desc "finalize"
   task :finalize do
-    puts t(:finalize)
   end
 
   desc "restart"
   task :restart do
-    puts t(:restart)
   end
 
   desc "finishing"
   task :finishing do
-    puts t(:finishing)
   end
 
   desc "finished"
   task :finished do
-    puts t(:finished)
   end
 
   before :starting, :ensure_stage do
