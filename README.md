@@ -19,6 +19,7 @@ TODO:
   - [x] handle multi stage
   - [x] pass any necessary configuration from deploy.rb to SSHKit
   - [ ] is Capfile still legit? (although capfile/capfile.rb are already alternatives by default)
+  - [ ] add examples to README
 
 ## Installation
 
