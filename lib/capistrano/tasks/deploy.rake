@@ -45,7 +45,7 @@ end
 desc "Deploy"
 task :deploy do
   %w{starting start update finalize restart finishing finished}.each do |stage|
-    invoke stage
+    invoke "deploy:#{stage}"
   end
 end
 task default: :deploy

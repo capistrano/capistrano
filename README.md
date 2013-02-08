@@ -16,7 +16,7 @@ TODO:
   - [x] basic 'capistrano/deploy' noop example
   - [x] don't care too much about testing at this point (rspec included for my reference)
 
-  - [ ] before/after task hooks
+  - [x] before/after task hooks
   - [ ] consider requiring default tasks via configuration (strategy?) rather than Capfile
   - [ ] write more default tasks
   - [ ] handle multiple stage file generation
@@ -40,3 +40,30 @@ Capify:
     $ cap -vT
 
     $ cap deploy
+
+## Before / After
+
+Where calling on the same task name, executed in order of inclusion
+
+
+    # call an existing task
+    before :starting, :ensure_user
+
+    after :finishing, :notify
+
+
+    # or define in block
+    before :starting, :ensure_user do
+      #
+    end
+
+    after :finishing, :notify do
+      #
+    end
+
+
+
+
+
+
+

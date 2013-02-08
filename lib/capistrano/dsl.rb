@@ -1,8 +1,20 @@
 module Capistrano
   module DSL
 
+    def before(task, prerequisite, *args, &block)
+      rerequisite = Rake::Task.define_task(prerequisite, *args, &block) if block_given?
+      Rake::Task[task].enhance [prerequisite]
+    end
+
+    def after(task, post_task, *args, &block)
+      post_task = Rake::Task.define_task(post_task, *args, &block) if block_given?
+      Rake::Task[task].enhance do
+        invoke(post_task)
+      end
+    end
+
     def invoke(task)
-      ::Rake::Task["deploy:#{task}"].invoke
+      Rake::Task[task].invoke
     end
 
     def fetch(key)
