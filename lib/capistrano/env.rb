@@ -8,7 +8,7 @@ module Capistrano
 
     class << self
       def configure(&block)
-        @env = new &block
+        @env ||= new &block
       end
 
       def configuration
@@ -22,15 +22,15 @@ module Capistrano
     end
 
     def set(key, value)
-      @env[key] = value
+      env[key] = value
     end
 
     def fetch(value)
-      @env[value]
+      env[value]
     end
 
     def respond_to?(method)
-      @env.has_key?(method)
+      env.has_key?(method)
     end
 
     def role(title, servers)
@@ -41,5 +41,8 @@ module Capistrano
     def roles
       @roles ||= {}
     end
+
+    private
+    attr_reader :env
   end
 end

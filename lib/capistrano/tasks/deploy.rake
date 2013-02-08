@@ -1,8 +1,13 @@
 include Capistrano::DSL
 
-# SSHKit.configure do |sshkit|
-#   sshkit.format = env.format
-# end
+
+stages.each do |stage|
+  Rake::Task.define_task(stage) do
+    load "config/deploy/#{stage}.rb"
+    set(:stage, stage.to_sym)
+    configure_ssh_kit
+  end
+end
 
 namespace :deploy do
 

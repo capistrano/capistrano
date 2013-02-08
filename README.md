@@ -1,4 +1,4 @@
-# Capistrano
+# Capistrano [![Build Status](https://travis-ci.org/capistrano/capistrano.png?branch=v3)](https://travis-ci.org/capistrano/capistrano)
 
 wip - aim here is to get 'something' up and running
 
@@ -17,14 +17,14 @@ TODO:
 
   - [x] before/after task hooks
   - [x] handle multi stage
-  - [ ] pass any necessary configuration from deploy.rb to SSHKit
+  - [x] pass any necessary configuration from deploy.rb to SSHKit
   - [ ] is Capfile still legit? (although capfile/capfile.rb are already alternatives by default)
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'capistrano' github: 'capistrano/capistrano', branch: :wip
+    gem 'capistrano' github: 'capistrano/capistrano', branch: :v3
 
 And then execute:
 
