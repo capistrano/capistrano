@@ -55,6 +55,10 @@ To create different stages:
     $ cap staging deploy
     $ cap production deploy
 
+    $ cap production deploy --dry-run
+    $ cap production deploy --prereqs
+
+
 ## Tasks
 
 ## Before / After
