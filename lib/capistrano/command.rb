@@ -95,6 +95,12 @@ module Capistrano
         end
       end
 
+      class ElseBranch < Branch
+        def to_s
+          "\"else\" :: #{command.inspect}"
+        end
+      end
+
       def initialize(config)
         @configuration = config
         @branches = []
@@ -106,7 +112,7 @@ module Capistrano
       end
 
       def else(command, &block)
-        @fallback = Branch.new(command, {}, block)
+        @fallback = ElseBranch.new(command, {}, block)
       end
 
       def branches_for(server)
