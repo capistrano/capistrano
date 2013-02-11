@@ -59,7 +59,7 @@ module Capistrano
         #
         # The string specified as the first argument to +when+ may be any valid
         # Ruby code. It has access to the following variables and methods:
-        # 
+        #
         # * +in?(role)+ returns true if the server participates in the given role
         # * +server+ is the ServerDefinition object for the server. This can be
         #   used to get the host-name, etc.
@@ -121,7 +121,7 @@ module Capistrano
         #   to run, then the hosts will be run in groups of max_hosts. The default is nil,
         #   which indicates that there is no maximum host limit. Please note this does not
         #   limit the number of SSH channels that can be open, only the number of hosts upon
-        #   which this will be called. 
+        #   which this will be called.
         # * :shell - says which shell should be used to invoke commands. This
         #   defaults to "sh". Setting this to false causes Capistrano to invoke
         #   the commands directly, without wrapping them in a shell invocation.
@@ -159,20 +159,25 @@ module Capistrano
         # use, but should instead be called indirectly, via #run or #parallel,
         # or #invoke_command.
         def run_tree(tree, options={}) #:nodoc:
-          if tree.branches.empty? && tree.fallback
-            logger.debug "executing #{tree.fallback}" unless options[:silent]
-          elsif tree.branches.any?
-            logger.debug "executing multiple commands in parallel"
-            tree.each do |branch|
-              logger.trace "-> #{branch}"
+          options = add_default_command_options(options)
+
+          if tree.branches.any? || tree.fallback
+            _, servers = filter_servers(options)
+            branches = servers.map{|server| tree.branches_for(server)}.compact
+            case branches.size
+            when 0
+              logger.debug "no code to execute" unless options[:silent]
+            when 1
+              logger.debug "executing #{branches.first}" unless options[:silent]
+            else
+              logger.debug "executing multiple commands in parallel"
+              branches.each{ |branch| logger.trace "-> #{branch.to_s(true)}" }
             end
           else
             raise ArgumentError, "attempt to execute without specifying a command"
           end
 
           return if dry_run || (debug && continue_execution(tree) == false)
-
-          options = add_default_command_options(options)
 
           tree.each do |branch|
             if branch.command.include?(sudo)
@@ -279,7 +284,7 @@ module Capistrano
         def sudo_prompt
           fetch(:sudo_prompt, "sudo password: ")
         end
-        
+
         def continue_execution(tree)
           if tree.branches.length == 1
             continue_execution_for_branch(tree.branches.first)
