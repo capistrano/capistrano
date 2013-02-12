@@ -166,7 +166,14 @@ module Capistrano
             branches = servers.map{|server| tree.branches_for(server)}.compact
             case branches.size
             when 0
-              logger.debug "no code to execute" unless options[:silent]
+              branches = tree.branches.dup + [tree.fallback]
+              case branches.size
+              when 1
+                logger.debug "no servers for #{branches.first}"
+              else
+                logger.debug "no servers for commands"
+                branches.each{ |branch| logger.trace "-> #{branch.to_s(true)}" }
+              end
             when 1
               logger.debug "executing #{branches.first}" unless options[:silent]
             else
