@@ -54,18 +54,18 @@ module Capistrano
             exit
           end
 
-					opts.on("-l", "--logger [STDERR|STDOUT|file]",
-						"Choose logger method. STDERR used by default."
-					) do |value|
-						options[:output] = if value.nil? || value.upcase == 'STDERR'
-																 # Using default logger.
-																 nil
-															 elsif value.upcase == 'STDOUT'
-																 $stdout
-															 else
-																 value
-															 end
-					end
+          opts.on("-l", "--logger [STDERR|STDOUT|file]",
+            "Choose logger method. STDERR used by default."
+          ) do |value|
+            options[:output] = if value.nil? || value.upcase == 'STDERR'
+                                 # Using default logger.
+                                 nil
+                               elsif value.upcase == 'STDOUT'
+                                 $stdout
+                               else
+                                 value
+                               end
+          end
 
           opts.on("-n", "--dry-run",
             "Prints out commands without running them."
