@@ -68,7 +68,7 @@ tasks.
 * Push to your branch - `git push origin my_branch`
 * Create a Pull Request from your branch, include as much documentation
   as you can in the commit message/pull request, following these
-[guidelines on writing a good commit message](http://spheredev.org/wiki/Git_for_the_lazy#Writing_good_commit_messages)
+[guidelines on writing a good commit message](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
 * That's it!
 
 
