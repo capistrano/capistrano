@@ -48,7 +48,7 @@ module Capistrano
       roles[name]
     end
 
-    def all_roles
+    def all
       roles.values.flatten
     end
 
