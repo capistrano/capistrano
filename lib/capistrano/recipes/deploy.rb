@@ -279,7 +279,7 @@ namespace :deploy do
                      "mkdir -p -- #{escaped_release}/#{dir.slice(0..(dir.rindex('/'))).shellescape}"]
       else
         commands << "rm -rf -- #{escaped_release}/#{d}"
-  		end
+      end
       commands << "ln -s -- #{shared_path}/#{dir.split('/').last.shellescape} #{escaped_release}/#{d}"
     end
 
