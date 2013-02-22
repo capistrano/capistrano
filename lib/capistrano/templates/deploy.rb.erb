@@ -6,4 +6,5 @@ Capistrano::Env.configure do |config|
   config.role :db, %w{example.com}
   config.path '/var/www/my_app/current'
   config.format :pretty # :dot
+  config.log_level :debug # :info
 end

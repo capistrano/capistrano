@@ -28,6 +28,7 @@ module Capistrano
     def configure_ssh_kit
       SSHKit.configure do |sshkit|
         sshkit.format = env.format
+        sshkit.output_verbosity = env.log_level
       end
     end
 
