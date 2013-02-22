@@ -262,7 +262,7 @@ namespace :deploy do
     public/stylesheets, and public/javascripts so that the times are \
     consistent (so that asset timestamping works).  This touch process \
     is only carried out if the :normalize_asset_timestamps variable is \
-    set to true, which is the default The asset directories can be overridden \
+    set to true, which is the default. The asset directories can be overridden \
     using the :public_children variable.
   DESC
   task :finalize_update, :except => { :no_release => true } do
