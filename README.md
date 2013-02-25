@@ -55,7 +55,7 @@ Use the `cap` script as follows:
     cap sometask
 
 By default, the script will look for a file called one of `capfile` or
-`Capfile`. The `someaction` text indicates which task to execute. You can do
+`Capfile`. The `sometask` text indicates which task to execute. You can do
 "cap -h" to see all the available options and "cap -T" to see all the available
 tasks.
 
