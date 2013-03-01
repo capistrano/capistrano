@@ -1,4 +1,7 @@
 #!/usr/bin/env cap
+# loads dsl, sets up stages
+require 'capistrano/setup'
+
 # require bundled deployment tasks
 # remove to start from scratch
 require 'capistrano/deploy'
