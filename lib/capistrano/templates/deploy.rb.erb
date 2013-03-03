@@ -4,7 +4,8 @@ Capistrano::Env.configure do |config|
   config.role :app, %w{example.com}
   config.role :web, %w{example.com}
   config.role :db, %w{example.com}
-  config.path '/var/www/my_app/current'
+  config.deploy_to '/var/www/my_app'
   config.format :pretty # :dot
   config.log_level :debug # :info
+  config.pty true
 end

@@ -8,11 +8,11 @@ module Capistrano
 
     class << self
       def configure(&block)
-        @env ||= new &block
+        @env = new &block
       end
 
       def configuration
-        @env
+        @env ||= configure
       end
     end
 
@@ -25,8 +25,8 @@ module Capistrano
       env[key] = value
     end
 
-    def fetch(value)
-      env[value]
+    def fetch(value, default=nil)
+      env.fetch(value, default)
     end
 
     def respond_to?(method)

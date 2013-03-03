@@ -7,4 +7,3 @@ stages.each do |stage|
     configure_ssh_kit
   end
 end
-

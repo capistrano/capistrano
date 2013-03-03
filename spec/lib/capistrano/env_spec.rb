@@ -36,6 +36,45 @@ module Capistrano
 
     let(:env) { Env.new }
 
+    describe '#set' do
+      it 'sets the value' do
+        env.set(:host, 'example')
+        expect(env.host).to eq 'example'
+      end
+    end
+
+    describe '#fetch' do
+      context 'without default' do
+        subject { env.fetch(:host) }
+
+        context 'value is set' do
+          before do
+            env.set(:host, 'example')
+          end
+
+          it 'returns the value' do
+            expect(subject).to eq 'example'
+          end
+        end
+
+        context 'value is not set' do
+          it 'returns nil' do
+            expect(subject).to eq nil
+          end
+        end
+      end
+
+      context 'with default' do
+        subject { env.fetch(:host, 'default') }
+
+        context 'value is not set' do
+          it 'returns the default value' do
+            expect(subject).to eq 'default'
+          end
+        end
+      end
+    end
+
     describe "#role" do
       before do
         SSHKit::Host.expects(:new).with('example.com').returns(app)

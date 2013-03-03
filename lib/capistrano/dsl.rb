@@ -1,18 +1,6 @@
 module Capistrano
   module DSL
 
-    def t(key)
-      I18n.t(key, scope: :capistrano)
-    end
-
-    def stages
-      Dir["config/deploy/*.rb"].map { |f| File.basename(f, ".rb") }
-    end
-
-    def stage_set?
-      !!env.stage
-    end
-
     def before(task, prerequisite, *args, &block)
       prerequisite = Rake::Task.define_task(prerequisite, *args, &block) if block_given?
       Rake::Task[task].enhance [prerequisite]
@@ -25,43 +13,66 @@ module Capistrano
       end
     end
 
-    def configure_ssh_kit
-      SSHKit.configure do |sshkit|
-        sshkit.format = env.format
-        sshkit.output_verbosity = env.log_level
-      end
-    end
-
     def invoke(task)
       Rake::Task[task].invoke
     end
 
-    def fetch(key)
-      env.fetch(key)
+    def t(*args)
+      I18n.t(*args, scope: :capistrano)
+    end
+
+    def stages
+      Dir['config/deploy/*.rb'].map { |f| File.basename(f, '.rb') }
+    end
+
+    def stage_set?
+      !!fetch(:stage, false)
+    end
+
+    def configure_ssh_kit
+      SSHKit.configure do |sshkit|
+        sshkit.format = fetch(:format, :pretty)
+        sshkit.output_verbosity = fetch(:log_level, :debug)
+        sshkit.backend.configure do |backend|
+          backend.pty = fetch(:pty, false)
+        end
+      end
+    end
+
+    def fetch(key, default=nil)
+      config.fetch(key, default)
     end
 
     def set(key, value)
-      env.set(key, value)
+      config.set(key, value)
     end
 
-    def role(name)
-      roles[name]
+    def role(*args)
+      config.roles.values_at(*args).flatten
     end
 
     def all
-      roles.values.flatten
+      config.roles.values.flatten
     end
 
-    def configuration
+    def config
       Env.configuration
     end
 
-    def env
-      configuration
+    def deploy_path
+      "#{fetch(:deploy_to)}/current"
     end
 
-    def roles
-      env.roles
+    def shared_path
+      "#{fetch(:deploy_to)}/shared"
+    end
+
+    def deploy_user
+      fetch(:user)
+    end
+
+    def error(message)
+      #TODO logging
     end
   end
 end
