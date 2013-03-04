@@ -29,7 +29,7 @@ module Capistrano
         # is setup such that a deploy could succeed.
         def check!
           Dependencies.new(configuration) do |d|
-            if (exists?(:stage)
+            if exists?(:stage)
               d.remote.directory(configuration[:releases_path]).or("`#{configuration[:releases_path]}' does not exist. Please run `cap #{configuration[:stage]} deploy:setup'.")
             else
               d.remote.directory(configuration[:releases_path]).or("`#{configuration[:releases_path]}' does not exist. Please run `cap deploy:setup'.")
