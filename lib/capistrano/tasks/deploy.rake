@@ -4,8 +4,8 @@ namespace :deploy do
   task :starting do
   end
 
-  desc "start"
-  task :start do
+  desc "started"
+  task :started do
   end
 
   desc "update"
@@ -38,7 +38,7 @@ end
 
 desc "Deploy"
 task :deploy do
-  %w{starting start update finalize restart finishing finished}.each do |stage|
+  %w{starting started update finalize restart finishing finished}.each do |stage|
     invoke "deploy:#{stage}"
   end
 end

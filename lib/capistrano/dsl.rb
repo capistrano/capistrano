@@ -60,19 +60,47 @@ module Capistrano
     end
 
     def deploy_path
-      "#{fetch(:deploy_to)}/current"
+      "#{fetch(:deploy_to)}"
+    end
+
+    def current_path
+      "#{deploy_path}/current"
+    end
+
+    def releases_path
+      "#{deploy_path}/releases"
+    end
+
+    def release_path
+      "#{releases_path}/#{timestamp}"
+    end
+
+    def timestamp
+      config.timestamp
+    end
+
+    def repo_path
+      "#{deploy_path}/repo"
     end
 
     def shared_path
-      "#{fetch(:deploy_to)}/shared"
+      "#{deploy_path}/shared"
+    end
+
+    def revision_log
+      "#{deploy_path}/revisions.log"
     end
 
     def deploy_user
       fetch(:user)
     end
 
+    def info(message)
+      puts message
+    end
+
     def error(message)
-      #TODO logging
+      puts message
     end
   end
 end

@@ -2,6 +2,9 @@
 # loads dsl, sets up stages
 require 'capistrano/setup'
 
+# provides remote execution of arbitrary commands
+require 'capistrano/console'
+
 # require bundled deployment tasks
 # remove to start from scratch
 require 'capistrano/deploy'

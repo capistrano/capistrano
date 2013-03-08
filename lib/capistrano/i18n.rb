@@ -11,6 +11,10 @@ en = {
   finished: 'Finished',
   stage_not_set: 'Stage not set',
   written_stage_file: 'create config/deploy/%{stage}.rb',
+  console: {
+    welcome: 'capistrano console - enter command to execute on %{stage}',
+    bye: 'bye'
+  },
   error: {
     user: {
       does_not_exist: 'User %{user} does not exists',

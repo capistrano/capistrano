@@ -58,7 +58,6 @@ To create different stages:
     $ cap production deploy --dry-run
     $ cap production deploy --prereqs
 
-
 ## Tasks
 
 ## Before / After
@@ -80,6 +79,12 @@ Where calling on the same task name, executed in order of inclusion
     after :finishing, :notify do
       #
     end
+
+## Console
+
+Execute arbitrary remote commands as `deploy_user`
+
+    $ cap staging console
 
 ## Configuration
 

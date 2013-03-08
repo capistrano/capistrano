@@ -33,6 +33,10 @@ module Capistrano
       env.has_key?(method)
     end
 
+    def timestamp
+      @timestamp ||= Time.now.utc.strftime("%Y%m%d%H%M%S")
+    end
+
     def role(title, servers)
       hosts = servers.map { |s| SSHKit::Host.new(s) }
       roles.merge!(title => hosts)
