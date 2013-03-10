@@ -30,33 +30,31 @@ module Capistrano
     end
 
     def configure_ssh_kit
-      SSHKit.configure do |sshkit|
-        sshkit.format = fetch(:format, :pretty)
-        sshkit.output_verbosity = fetch(:log_level, :debug)
-        sshkit.backend.configure do |backend|
-          backend.pty = fetch(:pty, false)
-        end
-      end
+      env.configure_backend
     end
 
     def fetch(key, default=nil)
-      config.fetch(key, default)
+      env.fetch(key, default)
     end
 
     def set(key, value)
-      config.set(key, value)
+      env.set(key, value)
     end
 
-    def role(*args)
-      config.roles.values_at(*args).flatten
+    def role(name, servers)
+      env.role(name, servers)
+    end
+
+    def roles(*names)
+      env.roles_for(names)
     end
 
     def all
-      config.roles.values.flatten
+      env.all_roles
     end
 
-    def config
-      Env.configuration
+    def env
+      Configuration.env
     end
 
     def deploy_path
@@ -75,8 +73,12 @@ module Capistrano
       "#{releases_path}/#{timestamp}"
     end
 
-    def timestamp
-      config.timestamp
+    def release_timestamp
+      env.timestamp.strftime("%Y%m%d%H%M%S")
+    end
+
+    def asset_timestamp
+      env.timestamp.strftime("%Y%m%d%H%M.%S")
     end
 
     def repo_path

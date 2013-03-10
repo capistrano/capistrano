@@ -18,9 +18,11 @@ TODO:
   - [x] before/after task hooks
   - [x] handle multi stage
   - [x] pass any necessary configuration from deploy.rb to SSHKit
-  - [ ] more helpful DSL
-  - [ ] abstract some useful sshkit commands
-  - [ ] is Capfile still legit? (although capfile/capfile.rb are already alternatives by default)
+
+  - [x] support set/fetch/role configuration
+  - [ ] support existing significant configuration variables
+  - [ ] basic deploy
+  - [ ] basic rollback
   - [ ] add examples to README
 
 ## Installation
@@ -57,6 +59,19 @@ To create different stages:
 
     $ cap production deploy --dry-run
     $ cap production deploy --prereqs
+
+## Configuration
+
+    # config/deploy.rb
+
+    set :application, 'example app'
+
+    # config/deploy/production.rb
+
+    set :stage, :production
+    role :app, %w{example.com}
+    role :web, %w{example.com}
+    role :db, %w{example.com}
 
 ## Tasks
 

@@ -10,7 +10,7 @@ en = {
   finishing: 'Finishing',
   finished: 'Finished',
   stage_not_set: 'Stage not set',
-  written_stage_file: 'create config/deploy/%{stage}.rb',
+  written_file: 'create %{file}',
   console: {
     welcome: 'capistrano console - enter command to execute on %{stage}',
     bye: 'bye'

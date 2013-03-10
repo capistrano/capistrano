@@ -5,7 +5,7 @@ require 'capistrano/version'
 require 'capistrano/i18n'
 require 'capistrano/dsl'
 require 'capistrano/application'
-require 'capistrano/env'
+require 'capistrano/configuration'
 
 module Capistrano
 end
