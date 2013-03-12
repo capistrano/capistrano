@@ -20,10 +20,11 @@ TODO:
   - [x] pass any necessary configuration from deploy.rb to SSHKit
 
   - [x] support set/fetch/role configuration
+  - [x] basic deploy
   - [ ] support existing significant configuration variables
-  - [ ] basic deploy
   - [ ] basic rollback
   - [ ] add examples to README
+  - [ ] set configuration defaults, add commented out examples to templates
 
 ## Installation
 
