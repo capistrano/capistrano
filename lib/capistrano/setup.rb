@@ -5,6 +5,6 @@ stages.each do |stage|
     load "config/deploy.rb"
     load "config/deploy/#{stage}.rb"
     set(:stage, stage.to_sym)
-    configure_ssh_kit
+    configure_backend
   end
 end

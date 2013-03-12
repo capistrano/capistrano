@@ -78,7 +78,7 @@ module Capistrano
       private
 
       def fetch(name)
-        roles.fetch(name) { "role #{name} is not defined" }
+        roles.fetch(name) { raise "role #{name} is not defined" }
       end
 
       def roles

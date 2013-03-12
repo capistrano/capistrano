@@ -9,9 +9,28 @@ require 'capistrano/console'
 # remove to start from scratch
 require 'capistrano/deploy'
 
-# require tasks from contrib gems
+require 'capistrano/bundler'
 # require 'capistrano/rails'
 # require 'capistrano/heroku'
 
 # Loads any rake tasks from lib/deploy/tasks
 Dir.glob('lib/deploy/tasks/*.rake').each { |r| import r }
+
+
+desc "Restart"
+task :restart do
+  on role(:app) do
+    as deploy_user do
+      # restart
+    end
+  end
+end
+
+after :restart, :clear_cache do
+  on role(:app) do
+    as deploy_user do
+      # clear cache
+    end
+  end
+end
+
