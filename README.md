@@ -22,6 +22,8 @@ TODO:
   - [x] support set/fetch/role configuration
   - [x] basic deploy
   - [ ] support existing significant configuration variables
+  - [ ] ask
+  - [ ] support primary servers `on primary(:db)`
   - [ ] basic rollback
   - [ ] add examples to README
   - [ ] set configuration defaults, add commented out examples to templates
