@@ -22,6 +22,8 @@ TODO:
   - [x] support set/fetch/role configuration
   - [x] basic deploy
   - [x] ask
+  - [x] add `deploy:check`
+  - [ ] simplify default deploy
   - [ ] prefer `roles(:all)` over `all_roles`
   - [ ] support primary servers `on primary(:db)`
   - [ ] basic rollback

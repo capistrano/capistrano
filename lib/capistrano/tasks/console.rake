@@ -1,3 +1,4 @@
+desc 'Execute remote commands'
 task :console do
   stage = fetch(:stage)
   puts I18n.t('console.welcome', scope: :capistrano, stage: stage)

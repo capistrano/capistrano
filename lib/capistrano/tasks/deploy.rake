@@ -1,7 +1,7 @@
 namespace :deploy do
+
   task :started do
-    invoke 'deploy:ensure:directories'
-    invoke "#{scm}:prepare"
+    invoke 'deploy:check'
   end
 
   task :update do
@@ -11,24 +11,22 @@ namespace :deploy do
 
   task :finalize do
     invoke 'deploy:symlink:release'
-    invoke 'deploy:normalise_assets'
-  end
-
-  after :restart, 'deploy:web:ensure'
-
-  task :finishing do
-    invoke 'deploy:cleanup'
   end
 
   task :finished do
     invoke 'deploy:log_revision'
   end
 
-  namespace :check do
-
+  desc 'Check required files and directories exist'
+  task :check do
+    invoke "#{scm}:check"
+    invoke 'deploy:check:directories'
+    invoke 'deploy:check:linked_dirs'
+    invoke 'deploy:check:linked_files'
   end
 
-  namespace :ensure do
+  namespace :check do
+    desc 'Check shared and release directories exist'
     task :directories do
       on all do
         unless test "[ -d #{shared_path} ]"
@@ -40,41 +38,9 @@ namespace :deploy do
         end
       end
     end
-  end
 
-  namespace :symlink do
-    task :release do
-      on all do
-        execute :rm, '-rf', current_path
-        execute :ln, '-s', release_path, current_path
-      end
-    end
-
-    task :shared do
-      # configuration exists
-      on all do
-        fetch(:linked_files).each do |file|
-          unless test "[ -f #{shared_path}/#{file} ]"
-            # create config file
-          end
-        end
-      end
-
-      # configuration is symlinked
-      on all do
-        fetch(:linked_files).each do |file|
-          target = File.join(release_path, file)
-          source = File.join(shared_path, file)
-          unless test "[ -L #{target} ]"
-            if test "[ -f #{target} ]"
-              execute :rm, target
-            end
-            execute :ln, '-s', source, target
-          end
-        end
-      end
-
-      # tmp/log/public folders exist in shared
+    desc 'Check directories to be linked exist in shared'
+    task :linked_dirs do
       on all do
         fetch(:linked_dirs).each do |dir|
           dir = File.join(shared_path, dir)
@@ -83,12 +49,50 @@ namespace :deploy do
           end
         end
       end
+    end
 
-      # tmp/log/public folders are symlinked
+    desc 'Check files to be linked exist in shared'
+    task :linked_files do
+      on all do
+        fetch(:linked_files).each do |file|
+          parent = File.join(shared_path, File.dirname(file))
+          unless test "[ -d #{parent} ]"
+            execute :mkdir, '-p', parent
+          end
+          unless test "[ -f #{File.join(shared_path, file)} ]"
+            error "linked file #{file} does not exist"
+            exit 1
+          end
+        end
+      end
+    end
+  end
+
+  namespace :symlink do
+    desc 'Symlink release to current'
+    task :release do
+      on all do
+        execute :rm, '-rf', current_path
+        execute :ln, '-s', release_path, current_path
+      end
+    end
+
+    desc 'Symlink files and directories from shared to release'
+    task :shared do
+      invoke 'deploy:symlink:linked_files'
+      invoke 'deploy:symlink:linked_dirs'
+    end
+
+    desc 'Symlink linked directories'
+    task :linked_dirs do
       on all do
         fetch(:linked_dirs).each do |dir|
           target = File.join(release_path, dir)
           source = File.join(shared_path, dir)
+          parent = File.join(release_path, File.dirname(dir))
+          unless test "[ -d #{parent} ]"
+            execute :mkdir, '-p', parent
+          end
           unless test "[ -L #{target} ]"
             if test "[ -f #{target} ]"
               execute :rm, '-rf', target
@@ -98,38 +102,29 @@ namespace :deploy do
         end
       end
     end
-  end
 
-  namespace :web do
-    task :ensure do
-      on roles(:web) do
-        within shared_path do
-          file = File.join(shared_path, maintenance_page)
-          if test "[ -f #{shared_path}/#{file} ]"
-            execute :rm, file
+    desc 'Symlink linked files'
+    task :linked_files do
+      on all do
+        fetch(:linked_files).each do |file|
+          target = File.join(release_path, file)
+          source = File.join(shared_path, file)
+          parent = File.join(release_path, File.dirname(file))
+          unless test "[ -d #{parent} ]"
+            execute :mkdir, '-p', parent
+          end
+          unless test "[ -L #{target} ]"
+            if test "[ -f #{target} ]"
+              execute :rm, target
+            end
+            execute :ln, '-s', source, target
           end
         end
       end
     end
   end
 
-  task :disable do
-    on all do
-      within shared_path do
-        execute :touch, maintenance_page
-      end
-    end
-  end
-
-  task :normalise_assets do
-    on roles(:web) do
-      within release_path do
-        assets = %{public/images public/javascripts public/stylesheets}
-        execute :find, "#{assets} -exec touch -t #{asset_timestamp} {} ';'; true"
-      end
-    end
-  end
-
+  desc 'Clean up old releases'
   task :cleanup do
     on all do
       count = fetch(:keep_releases, 5).to_i
@@ -143,6 +138,7 @@ namespace :deploy do
     end
   end
 
+  desc 'Log details of the deploy'
   task :log_revision do
     on roles(:web) do
       within releases_path do
