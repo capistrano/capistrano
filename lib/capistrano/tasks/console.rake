@@ -10,9 +10,7 @@ task :console do
     else
       begin
         on all do
-          as deploy_user do
-            execute command
-          end
+          execute command
         end
       rescue => e
         puts e

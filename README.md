@@ -102,7 +102,7 @@ Where calling on the same task name, executed in order of inclusion
 
 ## Console
 
-Execute arbitrary remote commands as `deploy_user`
+Execute arbitrary remote commands
 
     $ cap staging console
 

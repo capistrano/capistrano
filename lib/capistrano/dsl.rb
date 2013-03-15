@@ -20,10 +20,6 @@ module Capistrano
       I18n.t(*args, scope: :capistrano)
     end
 
-    def deploy_user
-      fetch(:deploy_user)
-    end
-
     def scm
       fetch(:scm)
     end
