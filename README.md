@@ -22,12 +22,12 @@ TODO:
   - [x] support set/fetch/role configuration
   - [x] basic deploy
   - [x] ask
-  - [ ] support existing significant configuration variables
   - [ ] prefer `roles(:all)` over `all_roles`
   - [ ] support primary servers `on primary(:db)`
   - [ ] basic rollback
-  - [ ] add examples to README
+  - [ ] support existing significant configuration variables
   - [ ] set configuration defaults, add commented out examples to templates
+  - [ ] add examples to README
 
 ## Installation
 

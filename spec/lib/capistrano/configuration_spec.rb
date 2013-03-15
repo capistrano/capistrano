@@ -97,7 +97,14 @@ module Capistrano
         end
       end
 
-      context 'block is passed' do
+      context 'value is a proc' do
+        subject { config.fetch(:key, Proc.new { :proc } ) }
+        it 'calls the proc' do
+          expect(subject).to eq :proc
+        end
+      end
+
+      context 'block is passed to fetch' do
         subject { config.fetch(:key, :default) { fail 'we need this!' } }
 
         it 'returns the block value' do

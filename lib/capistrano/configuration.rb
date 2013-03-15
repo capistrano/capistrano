@@ -103,9 +103,6 @@ module Capistrano
         @response ||= $stdin.gets.chomp
       end
 
-      def set(key, value)
-      end
-
       def question
         I18n.t(:question, key: key, default_value: default, scope: :capistrano)
       end
