@@ -4,8 +4,7 @@ set :deploy_to, '/var/www/my_app'
 set :scm, :git
 set :repo, 'git@example.com:me/my_repo.git'
 
-set :migrations, :migrate
-set :branch, :master
+ask :branch, :master
 
 set :linked_files, %w{config/database.yml}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}

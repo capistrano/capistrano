@@ -14,6 +14,10 @@ module Capistrano
         env.set(key, value)
       end
 
+      def ask(key, value)
+        env.ask(key, value)
+      end
+
       def role(name, servers)
         env.role(name, servers)
       end

@@ -21,8 +21,9 @@ TODO:
 
   - [x] support set/fetch/role configuration
   - [x] basic deploy
+  - [x] ask
   - [ ] support existing significant configuration variables
-  - [ ] ask
+  - [ ] prefer `roles(:all)` over `all_roles`
   - [ ] support primary servers `on primary(:db)`
   - [ ] basic rollback
   - [ ] add examples to README
@@ -66,12 +67,13 @@ To create different stages:
 ## Configuration
 
     # config/deploy.rb
-
     set :application, 'example app'
 
     # config/deploy/production.rb
-
     set :stage, :production
+
+    ask :branch, :master
+
     role :app, %w{example.com}
     role :web, %w{example.com}
     role :db, %w{example.com}

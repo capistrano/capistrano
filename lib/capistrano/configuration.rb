@@ -7,15 +7,21 @@ module Capistrano
       end
     end
 
+    def ask(key, default=nil)
+      question = Question.new(self, key, default)
+      set(key, question)
+    end
+
     def set(key, value)
       config[key] = value
     end
 
     def fetch(key, default=nil, &block)
-      if block_given?
-        config.fetch(key, &block)
+      value = fetch_for(key, default, &block)
+      if value.respond_to?(:call)
+        set(key, value.call)
       else
-        config.fetch(key, default)
+        value
       end
     end
 
@@ -55,6 +61,55 @@ module Capistrano
       @config ||= Hash.new
     end
 
+    def fetch_for(key, default, &block)
+      if block_given?
+        config.fetch(key, &block)
+      else
+        config.fetch(key, default)
+      end
+    end
+
+    class Question
+
+      def initialize(env, key, default)
+        @env, @key, @default = env, key, default
+      end
+
+      def call
+        ask_question
+        save_response
+      end
+
+      private
+      attr_reader :env, :key, :default
+
+      def ask_question
+        $stdout.puts question
+      end
+
+      def save_response
+        env.set(key, value)
+      end
+
+      def value
+        if response.empty?
+          default
+        else
+          response
+        end
+      end
+
+      def response
+        @response ||= $stdin.gets.chomp
+      end
+
+      def set(key, value)
+      end
+
+      def question
+        I18n.t(:question, key: key, default_value: default, scope: :capistrano)
+      end
+    end
 
     class Roles
       include Enumerable

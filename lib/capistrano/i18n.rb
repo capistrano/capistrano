@@ -11,6 +11,7 @@ en = {
   finished: 'Finished',
   stage_not_set: 'Stage not set',
   written_file: 'create %{file}',
+  question: 'Please enter %{key}: |%{default_value}|',
   console: {
     welcome: 'capistrano console - enter command to execute on %{stage}',
     bye: 'bye'

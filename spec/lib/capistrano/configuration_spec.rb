@@ -98,10 +98,69 @@ module Capistrano
       end
 
       context 'block is passed' do
-        subject { config.fetch(:key, :default) { :block } }
+        subject { config.fetch(:key, :default) { fail 'we need this!' } }
 
         it 'returns the block value' do
-          expect(subject).to eq :block
+          expect { subject }.to raise_error
+        end
+      end
+    end
+
+    describe 'asking' do
+      let(:question) { stub }
+
+      before do
+        Configuration::Question.expects(:new).with(config, :branch, :default).
+          returns(question)
+      end
+
+      it 'prompts for the value when fetching' do
+        config.ask(:branch, :default)
+        expect(config.fetch(:branch)).to eq question
+      end
+    end
+  end
+
+  describe Configuration::Question do
+    let(:question) { Configuration::Question.new(env, key, default) }
+    let(:default) { :default }
+    let(:key) { :branch }
+    let(:env) { stub }
+
+    describe '.new' do
+      it 'takes a key, default' do
+        question
+      end
+    end
+
+    describe '#call' do
+      subject { question.call }
+
+      context 'value is entered' do
+        let(:branch) { 'branch' }
+
+        before do
+          $stdout.expects(:puts).with('Please enter branch: |default|')
+          $stdin.expects(:gets).returns(branch)
+        end
+
+        it 'sets the value' do
+          env.expects(:set).with(key, branch)
+          question.call
+        end
+      end
+
+      context 'value is not entered' do
+        let(:branch) { default }
+
+        before do
+          $stdout.expects(:puts).with('Please enter branch: |default|')
+          $stdin.expects(:gets).returns('')
+        end
+
+        it 'sets the default as the value' do
+          env.expects(:set).with(key, branch)
+          question.call
         end
       end
     end
