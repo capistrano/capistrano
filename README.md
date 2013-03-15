@@ -29,6 +29,7 @@ TODO:
   - [ ] basic rollback
   - [ ] support existing significant configuration variables
   - [ ] set configuration defaults, add commented out examples to templates
+  - [ ] better descriptions for tasks
   - [ ] add examples to README
 
 ## Installation
