@@ -11,7 +11,7 @@ task :install do
   stage_rb = File.expand_path("../../templates/stage.rb.erb", __FILE__)
   capfile = File.expand_path("../../templates/Capfile", __FILE__)
 
-  mkdir_p config_dir
+  mkdir_p deploy_dir
 
   template = File.read(deploy_rb)
   file = File.join(config_dir, 'deploy.rb')
