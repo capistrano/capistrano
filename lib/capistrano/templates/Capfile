@@ -5,16 +5,18 @@ require 'capistrano/setup'
 # provides remote execution of arbitrary commands
 require 'capistrano/console'
 
-# require bundled deployment tasks
-# remove to start from scratch
+# includes default deployment tasks
+# remove to start completely from scratch
 require 'capistrano/deploy'
 
-require 'capistrano/bundler'
-# require 'capistrano/rails'
+# require 'capistrano/bundler'
+# require 'capistrano/rails/all'
+# require 'capistrano/rails/assets'
+# require 'capistrano/rails/migrations'
 # require 'capistrano/heroku'
 
-# Loads any rake tasks from lib/deploy/tasks
-Dir.glob('lib/deploy/tasks/*.rake').each { |r| import r }
+# loads any rake tasks from lib/capistrano/tasks
+# Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
 
 
 desc "Restart"

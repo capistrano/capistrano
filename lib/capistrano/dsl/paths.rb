@@ -1,32 +1,38 @@
+require 'pathname'
 module Capistrano
   module DSL
     module Paths
-      def deploy_path
+
+      def deploy_to
         fetch(:deploy_to)
       end
 
+      def deploy_path
+        Pathname.new(deploy_to)
+      end
+
       def current_path
-        File.join(deploy_path, 'current')
+        deploy_path.join('current')
       end
 
       def releases_path
-        File.join(deploy_path, 'releases')
+        deploy_path.join('releases')
       end
 
       def release_path
-        File.join(releases_path, release_timestamp)
+        releases_path.join(release_timestamp)
       end
 
       def repo_path
-        File.join(deploy_path, 'repo')
+        deploy_path.join('repo')
       end
 
       def shared_path
-        File.join(deploy_path, 'shared')
+        deploy_path.join('shared')
       end
 
       def revision_log
-        File.join(deploy_path, 'revisions.log')
+        deploy_path.join('revisions.log')
       end
 
       def release_timestamp

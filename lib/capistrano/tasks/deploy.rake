@@ -43,7 +43,7 @@ namespace :deploy do
     task :linked_dirs do
       on all do
         fetch(:linked_dirs).each do |dir|
-          dir = File.join(shared_path, dir)
+          dir = shared_path.join(dir)
           unless test "[ -d #{dir} ]"
             execute :mkdir, '-p', dir
           end
@@ -55,11 +55,12 @@ namespace :deploy do
     task :linked_files do
       on all do
         fetch(:linked_files).each do |file|
-          parent = File.join(shared_path, File.dirname(file))
+          file_path = shared_path.join(file)
+          parent = file_path.dirname
           unless test "[ -d #{parent} ]"
             execute :mkdir, '-p', parent
           end
-          unless test "[ -f #{File.join(shared_path, file)} ]"
+          unless test "[ -f #{file_path} ]"
             error "linked file #{file} does not exist"
             exit 1
           end
@@ -87,9 +88,9 @@ namespace :deploy do
     task :linked_dirs do
       on all do
         fetch(:linked_dirs).each do |dir|
-          target = File.join(release_path, dir)
-          source = File.join(shared_path, dir)
-          parent = File.join(release_path, File.dirname(dir))
+          target = release_path.join(dir)
+          source = shared_path.join(dir)
+          parent = target.dirname
           unless test "[ -d #{parent} ]"
             execute :mkdir, '-p', parent
           end
@@ -107,9 +108,9 @@ namespace :deploy do
     task :linked_files do
       on all do
         fetch(:linked_files).each do |file|
-          target = File.join(release_path, file)
-          source = File.join(shared_path, file)
-          parent = File.join(release_path, File.dirname(file))
+          target = release_path.join(file)
+          source = shared_path.join(file)
+          parent = target.dirname
           unless test "[ -d #{parent} ]"
             execute :mkdir, '-p', parent
           end
@@ -132,7 +133,7 @@ namespace :deploy do
       if releases.length >= count
         info "keeping #{count} of #{releases.length} deployed releases"
         directories = (releases - releases.last(count)).map { |release|
-          File.join(releases_path, release) }.join(" ")
+          releases_path.join(release) }.join(" ")
         execute :rm, '-rf', directories
       end
     end
