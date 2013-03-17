@@ -23,8 +23,8 @@ TODO:
   - [x] basic deploy
   - [x] ask
   - [x] add `deploy:check`
+  - [x] prefer `roles(:all)` over `all_roles`
   - [ ] simplify default deploy
-  - [ ] prefer `roles(:all)` over `all_roles`
   - [ ] support primary servers `on primary(:db)`
   - [ ] basic rollback
   - [ ] support existing significant configuration variables

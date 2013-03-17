@@ -10,7 +10,7 @@ task :console do
       break
     else
       begin
-        on all do
+        on roles :all do
           execute command
         end
       rescue => e

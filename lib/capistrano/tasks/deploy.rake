@@ -28,40 +28,30 @@ namespace :deploy do
   namespace :check do
     desc 'Check shared and release directories exist'
     task :directories do
-      on all do
-        unless test "[ -d #{shared_path} ]"
-          execute :mkdir, '-p', shared_path
-        end
-
-        unless test "[ -d #{releases_path} ]"
-          execute :mkdir, '-p', releases_path
-        end
+      on roles :all do
+        execute :mkdir, '-pv', shared_path, releases_path
       end
     end
 
     desc 'Check directories to be linked exist in shared'
     task :linked_dirs do
-      on all do
+      on roles :app do
         fetch(:linked_dirs).each do |dir|
           dir = shared_path.join(dir)
-          unless test "[ -d #{dir} ]"
-            execute :mkdir, '-p', dir
-          end
+          execute :mkdir, '-pv', dir
         end
       end
     end
 
     desc 'Check files to be linked exist in shared'
     task :linked_files do
-      on all do
+      on roles :app do |host|
         fetch(:linked_files).each do |file|
           file_path = shared_path.join(file)
           parent = file_path.dirname
-          unless test "[ -d #{parent} ]"
-            execute :mkdir, '-p', parent
-          end
+          execute :mkdir, '-pv', parent
           unless test "[ -f #{file_path} ]"
-            error "linked file #{file} does not exist"
+            error t(:linked_file_does_not_exist, file: file, host: host)
             exit 1
           end
         end
@@ -72,7 +62,7 @@ namespace :deploy do
   namespace :symlink do
     desc 'Symlink release to current'
     task :release do
-      on all do
+      on roles :app do
         execute :rm, '-rf', current_path
         execute :ln, '-s', release_path, current_path
       end
@@ -86,14 +76,12 @@ namespace :deploy do
 
     desc 'Symlink linked directories'
     task :linked_dirs do
-      on all do
+      on roles :app do
         fetch(:linked_dirs).each do |dir|
           target = release_path.join(dir)
           source = shared_path.join(dir)
           parent = target.dirname
-          unless test "[ -d #{parent} ]"
-            execute :mkdir, '-p', parent
-          end
+          execute :mkdir, '-pv', parent
           unless test "[ -L #{target} ]"
             if test "[ -f #{target} ]"
               execute :rm, '-rf', target
@@ -106,14 +94,12 @@ namespace :deploy do
 
     desc 'Symlink linked files'
     task :linked_files do
-      on all do
+      on roles :app do
         fetch(:linked_files).each do |file|
           target = release_path.join(file)
           source = shared_path.join(file)
           parent = target.dirname
-          unless test "[ -d #{parent} ]"
-            execute :mkdir, '-p', parent
-          end
+          execute :mkdir, '-pv', parent
           unless test "[ -L #{target} ]"
             if test "[ -f #{target} ]"
               execute :rm, target
@@ -127,12 +113,11 @@ namespace :deploy do
 
   desc 'Clean up old releases'
   task :cleanup do
-    on all do
-      count = fetch(:keep_releases, 5).to_i
-      releases = capture("ls -xt #{releases_path}").split.reverse
-      if releases.length >= count
-        info "keeping #{count} of #{releases.length} deployed releases"
-        directories = (releases - releases.last(count)).map { |release|
+    on roles :all do
+      release = capture(:ls, '-xt', releases_path).split.reverse
+      if releases.count >= keep_releases
+        info t(:keeping_releases, keep_releases: keep_releases, releases: releases.count)
+        directories = (releases - releases.last(keep_releases)).map { |release|
           releases_path.join(release) }.join(" ")
         execute :rm, '-rf', directories
       end
@@ -141,7 +126,7 @@ namespace :deploy do
 
   desc 'Log details of the deploy'
   task :log_revision do
-    on roles(:web) do
+    on roles :app do
       within releases_path do
         execute %{echo "#{revision_log_message}" >> #{revision_log}}
       end

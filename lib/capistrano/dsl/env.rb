@@ -26,10 +26,6 @@ module Capistrano
         env.roles_for(names)
       end
 
-      def all
-        env.all_roles
-      end
-
       def env
         Configuration.env
       end

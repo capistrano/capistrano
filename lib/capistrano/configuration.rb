@@ -33,10 +33,6 @@ module Capistrano
       roles.fetch_roles(names)
     end
 
-    def all_roles
-      roles.all
-    end
-
     def configure_backend
       SSHKit.configure do |sshkit|
         sshkit.format = fetch(:format, :pretty)
@@ -116,11 +112,7 @@ module Capistrano
       end
 
       def fetch_roles(names)
-        names.map { |name| fetch name }.flatten.uniq
-      end
-
-      def all
-        roles.values.flatten.uniq
+        roles_for(names).flatten.uniq
       end
 
       def each
@@ -131,6 +123,14 @@ module Capistrano
 
       def fetch(name)
         roles.fetch(name) { raise "role #{name} is not defined" }
+      end
+
+      def roles_for(names)
+        if names.include?(:all)
+          roles.values
+        else
+          names.map { |name| fetch name }
+        end
       end
 
       def roles

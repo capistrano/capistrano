@@ -46,7 +46,7 @@ module Capistrano
         end
 
         it 'returns all servers' do
-          expect(roles.all).to eq [server1, server2, server3]
+          expect(roles.fetch_roles([:all])).to eq [server1, server2, server3]
         end
       end
     end

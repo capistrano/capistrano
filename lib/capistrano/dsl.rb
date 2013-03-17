@@ -12,24 +12,29 @@ module Capistrano
     include Logger
     include Stages
 
-    def invoke(task)
-      Rake::Task[task].invoke
+    def invoke(task, *args)
+      Rake::Task[task].invoke(*args)
     end
 
-    def t(*args)
-      I18n.t(*args, scope: :capistrano)
+    def t(key, options={})
+      I18n.t(key, options.merge(scope: :capistrano))
     end
 
     def scm
       fetch(:scm)
     end
 
-    def maintenance_page
-      fetch(:maintenance_page, 'public/system/maintenance.html')
+    def revision_log_message
+      t(:revision_log_message, branch: fetch(:branch), user: local_user, release: release_timestamp)
     end
 
-    def revision_log_message
-      %{Branch #{fetch(:branch)} deployed as release #{release_timestamp} by #{`whoami`}}
+    def keep_releases
+      fetch(:keep_releases, 5)
     end
+
+    def local_user
+      `whoami`
+    end
+
   end
 end

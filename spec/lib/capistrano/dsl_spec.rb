@@ -11,7 +11,7 @@ module Capistrano
 
     describe '#t' do
       before do
-        I18n.expects(:t).with(:phrase, {count: 2}, scope: :capistrano)
+        I18n.expects(:t).with(:phrase, {count: 2, scope: :capistrano})
       end
 
       it 'delegates to I18n' do
