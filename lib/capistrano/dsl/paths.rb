@@ -44,19 +44,29 @@ module Capistrano
       end
 
       def linked_dirs(parent)
-        fetch(:linked_dirs, []).map { |dir| parent.join(dir) }
+        paths = fetch(:linked_dirs, [])
+        join_paths(parent, paths)
       end
 
       def linked_files(parent)
-        fetch(:linked_files, []).map { |file| parent.join(file) }
+        paths = fetch(:linked_files, [])
+        join_paths(parent, paths)
       end
 
       def linked_file_dirs(parent)
-        linked_files(parent).map { |file| file.dirname }
+        map_dirnames(linked_files(parent))
       end
 
       def linked_dir_parents(parent)
-        linked_dirs(parent).map { |dir| dir.dirname }
+        map_dirnames(linked_dirs(parent))
+      end
+
+      def join_paths(parent, paths)
+        paths.map { |path| parent.join(path) }
+      end
+
+      def map_dirnames(paths)
+        paths.map { |path| path.dirname }
       end
     end
   end

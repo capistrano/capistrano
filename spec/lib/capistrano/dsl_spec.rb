@@ -2,12 +2,12 @@ require 'spec_helper'
 
 module Capistrano
 
-  class DummyClass
+  class DummyDSL
     include DSL
   end
 
   describe DSL do
-    let(:dsl) { DummyClass.new }
+    let(:dsl) { DummyDSL.new }
 
     describe '#t' do
       before do
