@@ -42,6 +42,22 @@ module Capistrano
       def asset_timestamp
         env.timestamp.strftime("%Y%m%d%H%M.%S")
       end
+
+      def linked_dirs(parent)
+        fetch(:linked_dirs, []).map { |dir| parent.join(dir) }
+      end
+
+      def linked_files(parent)
+        fetch(:linked_files, []).map { |file| parent.join(file) }
+      end
+
+      def linked_file_dirs(parent)
+        linked_files(parent).map { |file| file.dirname }
+      end
+
+      def linked_dir_parents(parent)
+        linked_dirs(parent).map { |dir| dir.dirname }
+      end
     end
   end
 end
