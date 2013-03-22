@@ -33,6 +33,10 @@ module Capistrano
       roles.fetch_roles(names)
     end
 
+    def primary(role)
+      roles.fetch_primary(role)
+    end
+
     def configure_backend
       SSHKit.configure do |sshkit|
         sshkit.format = fetch(:format)
@@ -115,6 +119,10 @@ module Capistrano
 
       def fetch_roles(names)
         roles_for(names).flatten.uniq
+      end
+
+      def fetch_primary(role)
+        fetch(role).first
       end
 
       def each

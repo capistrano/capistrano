@@ -2,6 +2,7 @@ namespace :git do
 
   desc 'Check that the repository exists'
   task :check do
+    fetch(:branch)
     on roles :all do
       unless test "[ -d #{repo_path} ]"
         within deploy_path do

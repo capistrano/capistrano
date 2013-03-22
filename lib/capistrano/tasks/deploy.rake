@@ -108,8 +108,11 @@ namespace :deploy do
 
   desc 'Clean up old releases'
   task :cleanup do
+    releases = on primary :app do
+      capture(:ls, '-xt', releases_path).split.reverse
+    end
+
     on roles :all do
-      releases = capture(:ls, '-xt', releases_path).split.reverse
       if releases.count >= fetch(:keep_releases)
         info t(:keeping_releases, keep_releases: fetch(:keep_releases), releases: releases.count)
         directories = (releases - releases.last(fetch(:keep_releases))).map { |release|
@@ -121,7 +124,7 @@ namespace :deploy do
 
   desc 'Log details of the deploy'
   task :log_revision do
-    on roles :app do
+    on primary :app do
       within releases_path do
         execute %{echo "#{revision_log_message}" >> #{revision_log}}
       end
@@ -130,11 +133,14 @@ namespace :deploy do
 
   desc 'Rollback to the last release'
   task :rollback do
-    on roles :app do
+    on primary :app do
       last_release = capture(:ls, '-xt', releases_path).split[1]
       set(:rollback_release_timestamp, last_release)
       set(:branch, last_release)
       set(:revision_log_message, rollback_log_message)
+    end
+
+    on roles :app do
       %w{check finalize restart finishing finished}.each do |task|
         invoke "deploy:#{task}"
       end

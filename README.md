@@ -29,7 +29,9 @@ TODO:
   - [x] support existing significant configuration variables
   - [x] set configuration defaults, add commented out examples to templates
   - [x] basic rollback
-  - [ ] support primary servers `on primary(:db)`
+  - [x] support primary servers `on primary :db`
+  - [ ] rails specific tasks
+  - [ ] auto load tasks for scm based on variable
   - [ ] better descriptions for tasks
   - [ ] add examples to README
 
@@ -78,9 +80,11 @@ To create different stages:
 
     ask :branch, :master
 
-    role :app, %w{example.com}
+    role :app, %w{example.com example2.com}
     role :web, %w{example.com}
     role :db, %w{example.com}
+
+    # the first server in the array is considered primary
 
 ## Tasks
 

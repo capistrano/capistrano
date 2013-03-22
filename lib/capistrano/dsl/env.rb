@@ -26,6 +26,10 @@ module Capistrano
         env.roles_for(names)
       end
 
+      def primary(role)
+        env.primary(role)
+      end
+
       def env
         Configuration.env
       end
