@@ -8,7 +8,7 @@ set :linked_dirs, []
 set :default_environment, {}
 set :keep_releases, 5
 
-# sshkit
 set :format, :pretty
 set :log_level, :debug
-set :pty, false
+
+set :pty, true
