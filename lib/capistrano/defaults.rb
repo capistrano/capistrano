@@ -1,4 +1,4 @@
-set :scm :git
+set :scm, :git
 set :branch, :master
 set :deploy_to, "/var/www/#{fetch(:application)}"
 
