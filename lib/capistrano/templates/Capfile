@@ -34,5 +34,6 @@ namespace :deploy do
       # clear cache
     end
   end
-end
 
+  after :finishing, 'deploy:cleanup'
+end

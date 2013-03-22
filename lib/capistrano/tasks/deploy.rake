@@ -57,7 +57,7 @@ namespace :deploy do
   namespace :symlink do
     desc 'Symlink release to current'
     task :release do
-      on roles :app do
+      on roles :web, :app do
         execute :rm, '-rf', current_path
         execute :ln, '-s', release_path, current_path
       end
@@ -109,7 +109,7 @@ namespace :deploy do
   desc 'Clean up old releases'
   task :cleanup do
     on roles :all do
-      release = capture(:ls, '-xt', releases_path).split.reverse
+      releases = capture(:ls, '-xt', releases_path).split.reverse
       if releases.count >= fetch(:keep_releases)
         info t(:keeping_releases, keep_releases: fetch(:keep_releases), releases: releases.count)
         directories = (releases - releases.last(fetch(:keep_releases))).map { |release|
@@ -124,6 +124,19 @@ namespace :deploy do
     on roles :app do
       within releases_path do
         execute %{echo "#{revision_log_message}" >> #{revision_log}}
+      end
+    end
+  end
+
+  desc 'Rollback to the last release'
+  task :rollback do
+    on roles :app do
+      last_release = capture(:ls, '-xt', releases_path).split[1]
+      set(:rollback_release_timestamp, last_release)
+      set(:branch, last_release)
+      set(:revision_log_message, rollback_log_message)
+      %w{check finalize restart finishing finished}.each do |task|
+        invoke "deploy:#{task}"
       end
     end
   end

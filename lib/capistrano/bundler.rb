@@ -1,1 +1,1 @@
-import File.expand_path("../tasks/bundler.rake", __FILE__)
+load File.expand_path("../tasks/bundler.rake", __FILE__)

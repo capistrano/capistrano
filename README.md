@@ -26,10 +26,10 @@ TODO:
   - [x] prefer `roles(:all)` over `all_roles`
   - [x] simplify default deploy
   - [x] support setting default environment variables
-  - [ ] basic rollback
+  - [x] support existing significant configuration variables
+  - [x] set configuration defaults, add commented out examples to templates
+  - [x] basic rollback
   - [ ] support primary servers `on primary(:db)`
-  - [ ] support existing significant configuration variables
-  - [ ] set configuration defaults, add commented out examples to templates
   - [ ] better descriptions for tasks
   - [ ] add examples to README
 
