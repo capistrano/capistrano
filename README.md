@@ -24,9 +24,10 @@ TODO:
   - [x] ask
   - [x] add `deploy:check`
   - [x] prefer `roles(:all)` over `all_roles`
-  - [ ] simplify default deploy
-  - [ ] support primary servers `on primary(:db)`
+  - [x] simplify default deploy
+  - [x] support setting default environment variables
   - [ ] basic rollback
+  - [ ] support primary servers `on primary(:db)`
   - [ ] support existing significant configuration variables
   - [ ] set configuration defaults, add commented out examples to templates
   - [ ] better descriptions for tasks
