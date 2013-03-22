@@ -39,7 +39,7 @@ TODO:
 
 Add this line to your application's Gemfile:
 
-    gem 'capistrano' github: 'capistrano/capistrano', branch: :v3
+    gem 'capistrano', github: 'capistrano/capistrano', branch: :v3
 
 And then execute:
 
