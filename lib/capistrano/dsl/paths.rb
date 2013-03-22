@@ -44,12 +44,12 @@ module Capistrano
       end
 
       def linked_dirs(parent)
-        paths = fetch(:linked_dirs, [])
+        paths = fetch(:linked_dirs)
         join_paths(parent, paths)
       end
 
       def linked_files(parent)
-        paths = fetch(:linked_files, [])
+        paths = fetch(:linked_files)
         join_paths(parent, paths)
       end
 

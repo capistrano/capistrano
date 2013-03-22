@@ -28,16 +28,8 @@ module Capistrano
       t(:revision_log_message, branch: fetch(:branch), user: local_user, release: release_timestamp)
     end
 
-    def keep_releases
-      fetch(:keep_releases, 5)
-    end
-
     def local_user
       `whoami`
-    end
-
-    def default_environment
-      fetch(:default_environment, {})
     end
   end
 end

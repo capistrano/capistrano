@@ -35,10 +35,10 @@ module Capistrano
 
     def configure_backend
       SSHKit.configure do |sshkit|
-        sshkit.format = fetch(:format, :pretty)
-        sshkit.output_verbosity = fetch(:log_level, :debug)
+        sshkit.format = fetch(:format)
+        sshkit.output_verbosity = fetch(:log_level)
         sshkit.backend.configure do |backend|
-          backend.pty = fetch(:pty, false)
+          backend.pty = fetch(:pty)
         end
       end
     end

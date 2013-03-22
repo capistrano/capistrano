@@ -19,7 +19,7 @@ module Capistrano
         subject { paths.linked_dirs(parent) }
 
         before do
-          paths.expects(:fetch).with(:linked_dirs, []).returns(linked_dirs)
+          paths.expects(:fetch).with(:linked_dirs).returns(linked_dirs)
         end
 
         it 'returns the full pathnames' do
@@ -32,7 +32,7 @@ module Capistrano
         subject { paths.linked_files(parent) }
 
         before do
-          paths.expects(:fetch).with(:linked_files, []).returns(linked_files)
+          paths.expects(:fetch).with(:linked_files).returns(linked_files)
         end
 
         it 'returns the full pathnames' do
@@ -44,7 +44,7 @@ module Capistrano
         subject { paths.linked_file_dirs(parent) }
 
         before do
-          paths.expects(:fetch).with(:linked_files, []).returns(linked_files)
+          paths.expects(:fetch).with(:linked_files).returns(linked_files)
         end
 
         it 'returns the full paths names of the parent dirs' do
@@ -56,7 +56,7 @@ module Capistrano
         subject { paths.linked_dir_parents(parent) }
 
         before do
-          paths.expects(:fetch).with(:linked_dirs, []).returns(linked_dirs)
+          paths.expects(:fetch).with(:linked_dirs).returns(linked_dirs)
         end
 
         it 'returns the full paths names of the parent dirs' do

@@ -110,9 +110,9 @@ namespace :deploy do
   task :cleanup do
     on roles :all do
       release = capture(:ls, '-xt', releases_path).split.reverse
-      if releases.count >= keep_releases
-        info t(:keeping_releases, keep_releases: keep_releases, releases: releases.count)
-        directories = (releases - releases.last(keep_releases)).map { |release|
+      if releases.count >= fetch(:keep_releases)
+        info t(:keeping_releases, keep_releases: fetch(:keep_releases), releases: releases.count)
+        directories = (releases - releases.last(fetch(:keep_releases))).map { |release|
           releases_path.join(release) }.join(" ")
         execute :rm, '-rf', directories
       end
