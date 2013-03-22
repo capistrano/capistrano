@@ -19,18 +19,18 @@ require 'capistrano/deploy'
 # Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
 
 
-desc "Restart"
-task :restart do
-  on role(:app) do
-    as deploy_user do
-      # restart
+namespace :deploy do
+  desc "Restart"
+  task :restart do
+    on roles :app do
+      with default_environment do
+        # restart
+      end
     end
   end
-end
 
-after :restart, :clear_cache do
-  on role(:app) do
-    as deploy_user do
+  after :restart, :clear_cache do
+    on roles :app do
       # clear cache
     end
   end

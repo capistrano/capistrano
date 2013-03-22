@@ -36,5 +36,8 @@ module Capistrano
       `whoami`
     end
 
+    def default_environment
+      fetch(:default_environment, {})
+    end
   end
 end
