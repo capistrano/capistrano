@@ -6,8 +6,8 @@ require 'capistrano/version'
 Gem::Specification.new do |gem|
   gem.name          = "capistrano"
   gem.version       = Capistrano::VERSION
-  gem.authors       = ["PENDING"]
-  gem.email         = ["PENDING"]
+  gem.authors       = ["Tom Clements"]
+  gem.email         = ["seenmyfate@gmail.com"]
   gem.description   = %q{PENDING: Write a gem description}
   gem.summary       = %q{PENDING: Write a gem summary}
   gem.homepage      = ""
