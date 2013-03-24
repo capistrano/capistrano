@@ -13,7 +13,6 @@ TODO:
 
   - [x] basic configuration object
   - [x] basic 'capistrano/deploy' noop example
-  - [x] don't care too much about testing at this point (rspec included for my reference)
 
   - [x] before/after task hooks
   - [x] handle multi stage
@@ -31,9 +30,11 @@ TODO:
   - [x] basic rollback
   - [x] support primary servers `on primary :db`
   - [x] rails specific tasks (see [here](https://github.com/seenmyfate/capistrano-rails))
-  - [ ] auto load tasks for scm based on variable
+  - [x] auto load tasks for scm based on variable
+  - [ ] run locally
   - [ ] better descriptions for tasks
   - [ ] add examples to README
+  - [ ] add task packaging run through
 
 ## Installation
 
