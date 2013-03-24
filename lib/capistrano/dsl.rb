@@ -1,6 +1,5 @@
 require 'capistrano/dsl/task_enhancements'
 require 'capistrano/dsl/paths'
-require 'capistrano/dsl/logger'
 require 'capistrano/dsl/stages'
 require 'capistrano/dsl/env'
 
@@ -9,7 +8,6 @@ module Capistrano
     include TaskEnhancements
     include Env
     include Paths
-    include Logger
     include Stages
 
     def invoke(task, *args)
