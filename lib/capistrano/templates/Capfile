@@ -22,15 +22,13 @@ require 'capistrano/deploy'
 namespace :deploy do
   desc "Restart"
   task :restart do
-    on roles :app do
-      with default_environment do
-        # restart
-      end
+    on roles(:app), in: :sequence, wait: 5 do
+      # restart
     end
   end
 
   after :restart, :clear_cache do
-    on roles :app do
+    on roles(:app), in: :groups, limit: 3, wait: 10 do
       # clear cache
     end
   end
