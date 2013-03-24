@@ -30,7 +30,7 @@ TODO:
   - [x] set configuration defaults, add commented out examples to templates
   - [x] basic rollback
   - [x] support primary servers `on primary :db`
-  - [ ] rails specific tasks
+  - [x] rails specific tasks (see [here](https://github.com/seenmyfate/capistrano-rails))
   - [ ] auto load tasks for scm based on variable
   - [ ] better descriptions for tasks
   - [ ] add examples to README
