@@ -44,9 +44,9 @@ namespace :deploy do
     DESC
     task :precompile, :roles => assets_role, :except => { :no_release => true } do
       run <<-CMD.compact
-        cd -- #{latest_release} &&
+        cd -- #{latest_release.to_s.shellescape} &&
         #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile &&
-        cp -- #{shared_path.shellescape}/assets/manifest.yml #{current_release.shellescape}/assets_manifest.yml
+        cp -- #{shared_path.to_s.shellescape}/assets/manifest.yml #{current_release.to_s.shellescape}/assets_manifest.yml
       CMD
     end
 
@@ -57,7 +57,7 @@ namespace :deploy do
     task :update_asset_mtimes, :roles => assets_role, :except => { :no_release => true } do
       # Fetch assets/manifest.yml contents.
       manifest_path = "#{shared_path}/assets/manifest.yml"
-      manifest_yml = capture("[ -e #{manifest_path.shellescape} ] && cat #{manifest_path.shellescape} || echo").strip
+      manifest_yml = capture("[ -e #{manifest_path.to_s.shellescape} ] && cat #{manifest_path.to_s.shellescape} || echo").strip
 
       if manifest_yml != ""
         manifest = YAML.load(manifest_yml)
@@ -65,10 +65,10 @@ namespace :deploy do
         logger.info "Updating mtimes for ~#{current_assets.count} assets..."
         put current_assets.map{|a| "#{shared_path}/assets/#{a}" }.join("\n"), "#{deploy_to}/TOUCH_ASSETS"
         run <<-CMD.compact
-          cat #{deploy_to.shellescape}/TOUCH_ASSETS | while read asset; do
+          cat #{deploy_to.to_s.shellescape}/TOUCH_ASSETS | while read asset; do
             touch -cm -- "$asset";
           done &&
-          rm -f -- #{deploy_to.shellescape}/TOUCH_ASSETS
+          rm -f -- #{deploy_to.to_s.shellescape}/TOUCH_ASSETS
         CMD
       end
     end
@@ -97,7 +97,7 @@ namespace :deploy do
     task :clean_expired, :roles => assets_role, :except => { :no_release => true } do
       # Fetch all assets_manifest.yml contents.
       manifests_output = capture <<-CMD.compact
-        for manifest in #{releases_path.shellescape}/*/assets_manifest.yml; do
+        for manifest in #{releases_path.to_s.shellescape}/*/assets_manifest.yml; do
           cat -- "$manifest" 2> /dev/null && printf ':::' || true;
         done
       CMD
@@ -125,15 +125,15 @@ namespace :deploy do
         logger.info "Removing assets that haven't been deployed for #{expire_after_mins} minutes..."
         # LC_COLLATE=C tells the `sort` and `comm` commands to sort files in byte order.
         run <<-CMD.compact
-          cd -- #{shared_path.shellescape}/assets/ &&
+          cd -- #{shared_path.to_s.shellescape}/assets/ &&
           for f in $(
             find * -mmin +#{expire_after_mins.to_s.shellescape} -type f | LC_COLLATE=C sort |
-            LC_COLLATE=C comm -23 -- - #{deploy_to.shellescape}/REQUIRED_ASSETS
+            LC_COLLATE=C comm -23 -- - #{deploy_to.to_s.shellescape}/REQUIRED_ASSETS
           ); do
             echo "Removing unneeded asset: $f";
             rm -f -- "$f";
           done;
-          rm -f -- #{deploy_to.shellescape}/REQUIRED_ASSETS
+          rm -f -- #{deploy_to.to_s.shellescape}/REQUIRED_ASSETS
         CMD
       end
     end
@@ -144,13 +144,13 @@ namespace :deploy do
     DESC
     task :rollback, :roles => assets_role, :except => { :no_release => true } do
       previous_manifest = "#{previous_release}/assets_manifest.yml"
-      if capture("[ -e #{previous_manifest.shellescape} ] && echo true || echo false").strip != 'true'
+      if capture("[ -e #{previous_manifest.to_s.shellescape} ] && echo true || echo false").strip != 'true'
         puts "#{previous_manifest} is missing! Cannot roll back assets. " <<
              "Please run deploy:assets:precompile to update your assets when the rollback is finished."
       else
         run <<-CMD.compact
-          cd -- #{previous_release.shellescape} &&
-          cp -f -- #{previous_manifest.shellescape} #{shared_path.shellescape}/assets/manifest.yml &&
+          cd -- #{previous_release.to_s.shellescape} &&
+          cp -f -- #{previous_manifest.to_s.shellescape} #{shared_path.to_s.shellescape}/assets/manifest.yml &&
           #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile:nondigest
         CMD
       end
