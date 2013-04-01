@@ -4,9 +4,13 @@ namespace :git do
   task :check do
     fetch(:branch)
     on roles :all do
-      unless test "[ -d #{repo_path} ]"
+      unless test "[ -d #{repo_path}/.git ]"
         within deploy_path do
-          execute :git, :clone, fetch(:repo), repo_path
+          upload! StringIO.new("#!/bin/sh -e\nexec /usr/bin/ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no \"$@\"\n"), '/tmp/git-ssh.sh'
+          execute :chmod, "+x", '/tmp/git-ssh.sh'
+          with git_askpass: '/bin/echo', git_ssh: '/tmp/git-ssh.sh' do
+            execute :git, :clone, fetch(:repo), repo_path
+          end
         end
       end
     end
@@ -35,3 +39,4 @@ namespace :git do
     end
   end
 end
+
