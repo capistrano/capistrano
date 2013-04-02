@@ -113,7 +113,7 @@ module Capistrano
           def p4passwd
             variable(:p4passwd) || variable(:scm_password)
           end
-          
+
           def p4charset
             variable(:p4charset)
           end

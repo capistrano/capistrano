@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   ]
 
   s.specification_version = 3 if s.respond_to? :specification_version
-    
+
   if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
     s.add_runtime_dependency(%q<highline>, [">= 0"])
     s.add_runtime_dependency(%q<net-ssh>, [">= 2.0.14"])

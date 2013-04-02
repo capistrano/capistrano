@@ -14,9 +14,9 @@ module Capistrano
       #  * :repository - This should match the depot that code lives in. If your code
       #                  exists in a subdirectory, you can append the path depot.
       #                  eg. foo-depot/bar_dir
-      #  * :stream - The stream in the depot that code should be pulled from. If 
+      #  * :stream - The stream in the depot that code should be pulled from. If
       #              left blank, the depot stream will be used
-      #  * :revision - Should be in the form 'stream/transaction'. 
+      #  * :revision - Should be in the form 'stream/transaction'.
       class Accurev < Base
         include REXML
         default_command 'accurev'
@@ -54,10 +54,10 @@ module Capistrano
           end
         end
 
-        # Pops a copy of the code for the specified Accurev revision identifier. 
+        # Pops a copy of the code for the specified Accurev revision identifier.
         # The revision identifier is represented as a stream & transaction ID combo.
         # Accurev can only pop a particular transaction if a stream is created on the server
-        # with a time basis of that transaction id. Therefore, we will create a stream with 
+        # with a time basis of that transaction id. Therefore, we will create a stream with
         # the required criteria and pop that.
         def export(revision_id, destination)
           revision = InternalRevision.parse(revision_id)
@@ -89,7 +89,7 @@ module Capistrano
           ].join(' | ')
         end
 
-        # Returns the command needed to show the diff between what is deployed and what is 
+        # Returns the command needed to show the diff between what is deployed and what is
         # pending. Because Accurev can not do this task without creating some streams,
         # two time basis streams will be created for the purposes of doing the diff.
         def diff(from, to=head)
@@ -156,7 +156,7 @@ module Capistrano
           end
 
           def to_s
-            "#{stream}/#{transaction_id}" 
+            "#{stream}/#{transaction_id}"
           end
 
           def ==(other)

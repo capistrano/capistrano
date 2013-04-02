@@ -19,7 +19,7 @@ module Capistrano
       #   set :scm, :none
       #   set :deploy_via, :copy
       #
-      #   Dereference symbolic links. Copy files instead. Handy when you 
+      #   Dereference symbolic links. Copy files instead. Handy when you
       #   reference files and directory outside of your deployment root.
       #   set :copy_dereference_symlink, true
 
@@ -41,13 +41,13 @@ module Capistrano
         def query_revision(revision)
           revision
         end
-        
+
         # log: There's no log, so it just echos from and to.
-        
+
         def log(from="", to="")
           "No SCM: #{from} - #{to}"
         end
-        
+
       end
 
     end

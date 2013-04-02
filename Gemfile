@@ -4,7 +4,7 @@ source "http://rubygems.org"
 gemspec
 
 #
-# Development Dependencies from the Gemfile 
+# Development Dependencies from the Gemfile
 # are merged here.
 #
 group :development do

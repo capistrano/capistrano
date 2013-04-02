@@ -21,14 +21,14 @@ class ConfigurationRolesTest < Test::Unit::TestCase
     assert @config.original_initialize_called
     assert @config.roles.empty?
   end
-  
+
   def test_roles_for_host_with_one_role
     @config.role :app, "app1.capistrano.test"
     @config.role :not_app, "not-app.capistrano.test"
     app_server = @config.roles[:app].servers.first
     assert @config.role_names_for_host(app_server)==[ :app ]
   end
-  
+
   def test_roles_for_host_with_multiple_roles
     @config.server "www.capistrano.test", :db, :worker
     db_server = @config.roles[:db].servers.first

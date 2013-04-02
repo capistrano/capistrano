@@ -111,14 +111,14 @@ module Capistrano
       end
 
       def output_columns #:nodoc:
-        if ( @output_columns.nil? ) 
+        if ( @output_columns.nil? )
           if ( self.class.ui.output_cols.nil? )
-            @output_columns = 80 
+            @output_columns = 80
           else
             @output_columns = self.class.ui.output_cols
           end
         end
-        @output_columns 
+        @output_columns
       end
     end
   end

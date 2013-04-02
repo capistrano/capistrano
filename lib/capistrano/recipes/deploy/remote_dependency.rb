@@ -58,31 +58,31 @@ module Capistrano
       def match(command, expect, options={})
         expect = Regexp.new(Regexp.escape(expect.to_s)) unless expect.is_a?(Regexp)
 
-        output_per_server = {} 
-        try("#{command} ", options) do |ch, stream, out| 
-          output_per_server[ch[:server]] ||= '' 
-          output_per_server[ch[:server]] += out 
-        end 
+        output_per_server = {}
+        try("#{command} ", options) do |ch, stream, out|
+          output_per_server[ch[:server]] ||= ''
+          output_per_server[ch[:server]] += out
+        end
 
         # It is possible for some of these commands to return a status != 0
         # (for example, rake --version exits with a 1). For this check we
         # just care if the output matches, so we reset the success flag.
         @success = true
 
-        errored_hosts = [] 
-        output_per_server.each_pair do |server, output| 
+        errored_hosts = []
+        output_per_server.each_pair do |server, output|
           next if output =~ expect
-          errored_hosts << server 
-        end 
+          errored_hosts << server
+        end
 
         if errored_hosts.any?
           @hosts = errored_hosts.join(', ')
           output = output_per_server[errored_hosts.first]
           @message = "the output #{output.inspect} from #{command.inspect} did not match #{expect.inspect}"
           @success = false
-        end 
+        end
 
-        self 
+        self
       end
 
       def or(message)

@@ -163,7 +163,7 @@ class ConfigurationServersTest < Test::Unit::TestCase
     assert_equal %w(app1 app2 app3), @config.find_servers(:roles => lambda { :app }).map { |s| s.host }.sort
     assert_equal %w(app2 file), @config.find_servers(:roles => lambda { [:report, :file] }).map { |s| s.host }.sort
   end
-  
+
   def test_find_servers_with_hosts_nil_or_empty
     assert_equal [], @config.find_servers(:hosts => nil)
     assert_equal [], @config.find_servers(:hosts => [])
@@ -172,12 +172,12 @@ class ConfigurationServersTest < Test::Unit::TestCase
     result = @config.find_servers(:hosts => "app1")
     assert_equal 1, result.size
   end
-  
+
   def test_find_servers_with_rolees_nil_or_empty
     assert_equal [], @config.find_servers(:roles => nil)
     assert_equal [], @config.find_servers(:roles => [])
     result = @config.find_servers(:roles => :report)
     assert_equal 1, result.size
   end
-  
+
 end

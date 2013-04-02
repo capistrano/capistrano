@@ -63,7 +63,7 @@ module Capistrano
           scm cvs_root, :log, range_arg
         end
 
-        # Unfortunately, cvs doesn't support the concept of a revision number like 
+        # Unfortunately, cvs doesn't support the concept of a revision number like
         # subversion and other SCM's do.  For now, we'll rely on getting the timestamp
         # of the latest checkin under the revision that's passed to us.
         def query_revision(revision)
@@ -99,7 +99,7 @@ module Capistrano
             root << "-d #{repository} " if repository
             root
           end
-          
+
           # Constructs the destination dir command-line option
           def cvs_destination(destination)
             dest = ""
@@ -109,7 +109,7 @@ module Capistrano
             end
             dest
           end
-          
+
           # attempts to guess what type of revision we're working with
           def revision_type(rev)
             return :date if rev =~ /^\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} UTC$/ # i.e 2007-05-15 08:13:25 UTC
@@ -117,7 +117,7 @@ module Capistrano
             return :revision if rev =~ /^\d/ # i.e. 1.2.1
             return :tag # i.e. RELEASE_1_2
           end
-          
+
           # constructs the appropriate command-line switch for specifying a
           # "revision" in CVS.  This could be a tag, branch, revision (i.e. 1.3)
           # or a date (to be used with -d)

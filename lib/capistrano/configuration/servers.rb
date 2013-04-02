@@ -13,8 +13,8 @@ module Capistrano
       # The options hash may include a :hosts option (which should specify
       # an array of host names or ServerDefinition instances), a :roles
       # option (specifying an array of roles), an :only option (specifying
-      # a hash of key/value pairs that any matching server must match), 
-      # an :exception option (like :only, but the inverse), and a 
+      # a hash of key/value pairs that any matching server must match),
+      # an :exception option (like :only, but the inverse), and a
       # :skip_hostfilter option to ignore the HOSTFILTER environment variable
       # described below.
       #
@@ -27,7 +27,7 @@ module Capistrano
       # will limit the result to hosts found in that (comma-separated) list.
       #
       # If the HOSTROLEFILTER environment variable is set, it will limit the
-      # result to hosts found in that (comma-separated) list of roles 
+      # result to hosts found in that (comma-separated) list of roles
       #
       # Usage:
       #
@@ -44,9 +44,9 @@ module Capistrano
       def find_servers(options={})
         return [] if options.key?(:hosts) && (options[:hosts].nil? || [] == options[:hosts])
         return [] if options.key?(:roles) && (options[:roles].nil? || [] == options[:roles])
-        
+
         hosts  = server_list_from(ENV['HOSTS'] || options[:hosts])
-        
+
         if hosts.any?
           if options[:skip_hostfilter]
             hosts.uniq
@@ -59,7 +59,7 @@ module Capistrano
 
           only   = options[:only] || {}
           except = options[:except] || {}
-          
+
           # If we don't have a def for a role it means its bogus, skip it so higher level can handle
           servers = roles.inject([]) { |list, role| list.concat(self.roles[role] || []) }
           servers = servers.select { |server| only.all? { |key,value| server.options[key] == value } }
