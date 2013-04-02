@@ -455,16 +455,7 @@ namespace :deploy do
   DESC
   task :cleanup, :except => { :no_release => true } do
     count = fetch(:keep_releases, 5).to_i
-    local_releases = capture("ls -xt #{releases_path}").split.reverse
-    if count >= local_releases.length
-      logger.important "no old releases to clean up"
-    else
-      logger.info "keeping #{count} of #{local_releases.length} deployed releases"
-      directories = (local_releases - local_releases.last(count)).map { |release|
-        File.join(releases_path, release) }.join(" ")
-
-      try_sudo "rm -rf #{directories}"
-    end
+    try_sudo "ls -1dt #{releases_path}/* | tail -n +#{count + 1} | xargs rm -rf"
   end
 
   desc <<-DESC
