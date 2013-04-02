@@ -23,7 +23,7 @@ namespace :deploy do
       for efficiency. If you customize the assets path prefix, override the \
       :assets_prefix variable to match.
     DESC
-    task :symlink, :roles => assets_role, :except => { :no_release => true } do
+    task :symlink, :roles => lambda { assets_role }, :except => { :no_release => true } do
       run <<-CMD.compact
         rm -rf #{latest_release}/public/#{assets_prefix} &&
         mkdir -p #{latest_release}/public &&
@@ -42,7 +42,7 @@ namespace :deploy do
         set :rails_env, "production"
         set :asset_env, "RAILS_GROUPS=assets"
     DESC
-    task :precompile, :roles => assets_role, :except => { :no_release => true } do
+    task :precompile, :roles => lambda { assets_role }, :except => { :no_release => true } do
       run <<-CMD.compact
         cd -- #{latest_release} &&
         #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} assets:precompile &&
@@ -54,7 +54,7 @@ namespace :deploy do
       [internal] Updates the mtimes for assets that are required by the current release.
       This task runs before assets:precompile.
     DESC
-    task :update_asset_mtimes, :roles => assets_role, :except => { :no_release => true } do
+    task :update_asset_mtimes, :roles => lambda { assets_role }, :except => { :no_release => true } do
       # Fetch assets/manifest.yml contents.
       manifest_path = "#{shared_path}/assets/manifest.yml"
       manifest_yml = capture("[ -e #{manifest_path.shellescape} ] && cat #{manifest_path.shellescape} || echo").strip
@@ -84,7 +84,7 @@ namespace :deploy do
         set :rails_env, "production"
         set :asset_env, "RAILS_GROUPS=assets"
     DESC
-    task :clean, :roles => assets_role, :except => { :no_release => true } do
+    task :clean, :roles => lambda { assets_role }, :except => { :no_release => true } do
       run "cd #{latest_release} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:clean"
     end
 
@@ -94,7 +94,7 @@ namespace :deploy do
       to change the assets expiry time. Assets will only be deleted if they are not required by
       an existing release.
     DESC
-    task :clean_expired, :roles => assets_role, :except => { :no_release => true } do
+    task :clean_expired, :roles => lambda { assets_role }, :except => { :no_release => true } do
       # Fetch all assets_manifest.yml contents.
       manifests_output = capture <<-CMD.compact
         for manifest in #{releases_path.shellescape}/*/assets_manifest.yml; do
@@ -142,7 +142,7 @@ namespace :deploy do
       Rolls back assets to the previous release by symlinking the release's manifest
       to shared/assets/manifest.yml, and finally recompiling or regenerating nondigest assets.
     DESC
-    task :rollback, :roles => assets_role, :except => { :no_release => true } do
+    task :rollback, :roles => lambda { assets_role }, :except => { :no_release => true } do
       previous_manifest = "#{previous_release}/assets_manifest.yml"
       if capture("[ -e #{previous_manifest.shellescape} ] && echo true || echo false").strip != 'true'
         puts "#{previous_manifest} is missing! Cannot roll back assets. " <<
