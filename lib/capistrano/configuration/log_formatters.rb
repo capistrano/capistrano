@@ -63,6 +63,10 @@ module Capistrano
         end
       end
 
+      def default_log_formatters(formatters)
+        default_formatters = [*formatters]
+      end
+
       def disable_log_formatters
         @logger.disable_formatters = true
       end
