@@ -66,7 +66,7 @@ namespace :deploy do
         put current_assets.map{|a| "#{shared_path}/assets/#{a}" }.join("\n"), "#{deploy_to}/TOUCH_ASSETS", via: :scp
         run <<-CMD.compact
           cat #{deploy_to.shellescape}/TOUCH_ASSETS | while read asset; do
-            touch -cm -- "$asset";
+            touch -c -- "$asset";
           done &&
           rm -f -- #{deploy_to.shellescape}/TOUCH_ASSETS
         CMD
