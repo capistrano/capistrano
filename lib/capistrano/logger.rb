@@ -31,7 +31,7 @@ module Capistrano
     }
 
     # Set up default formatters
-    @formatters = [
+    @default_formatters = [
       # TRACE
       { :match => /command finished/,          :color => :white,   :style => :dim, :level => 3, :priority => -10 },
       { :match => /executing locally/,         :color => :yellow,  :level => 3, :priority => -20 },
@@ -49,8 +49,21 @@ module Capistrano
       { :match => /^err ::/,                   :color => :red,     :level => 0, :priority => -10 },
       { :match => /.*/,                        :color => :blue,    :level => 0, :priority => -20 }
     ]
+    @formatters = @default_formatters
 
     class << self
+      def default_formatters
+        @default_formatters
+      end
+
+      def default_formatters=(defaults=nil)
+        @default_formatters = [defaults].flatten
+
+        # reset the formatters
+        @formatters = @default_formatters
+        @sorted_formatters = nil
+      end
+
       def add_formatter(options) #:nodoc:
         @formatters.push(options)
         @sorted_formatters = nil
