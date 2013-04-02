@@ -204,7 +204,14 @@ module Capistrano
 
           # Make sure there's nothing else lying around in the repository (for
           # example, a submodule that has subsequently been removed).
-          execute << "#{git} clean #{verbose} -d -x -f"
+          if variable(:git_clean_exclude)
+            clean_exclusions = [variable(:git_clean_exclude)].flatten
+            clean_exclusions = "-e " + clean_exclusions.join(" -e ")
+
+            execute << "#{git} clean #{verbose} -d -x -f #{clean_exclusions}"
+          else
+            execute << "#{git} clean #{verbose} -d -x -f"
+          end
 
           execute.join(" && ")
         end
