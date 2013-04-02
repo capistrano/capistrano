@@ -67,7 +67,19 @@ module Capistrano
                                end
           end
 
-          opts.on("-n", "--dry-run",
+          opts.on("-m", "--mail-to RECIPIENT",
+            "Mail the log output to the specified address.  May be given more than once."
+          ) do |value|
+            # The only goal of this email validation is to block shell injections in popen, used
+            # by the logger to send mail. It will block email addresses with '%' in them, but those are rare."
+            if !(value =~ /\A[\w\.\+-]+@[\w\.-]+\z/)
+              @logger.important("Invalid email address: #{value}.")
+              exit 1
+            end
+            options[:mail_to] << value
+          end
+
+           opts.on("-n", "--dry-run",
             "Prints out commands without running them."
           ) { |value| options[:dry_run] = true }
 
@@ -142,7 +154,7 @@ module Capistrano
       # line and set up any default options.
       def parse_options! #:nodoc:
         @options = { :recipes => [], :actions => [],
-          :vars => {}, :pre_vars => {},
+          :vars => {}, :pre_vars => {}, :mail_to => [],
           :sysconf => default_sysconf, :dotfile => default_dotfile }
 
         if args.empty?

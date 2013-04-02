@@ -1,6 +1,7 @@
 module Capistrano
   class Logger #:nodoc:
     attr_accessor :level, :device, :disable_formatters
+    attr_reader   :mailio
 
     IMPORTANT = 0
     INFO      = 1
@@ -64,6 +65,10 @@ module Capistrano
 
     def initialize(options={})
       output = options[:output] || $stderr
+      if !options[:mail_to].nil? && !options[:mail_to].empty?
+        recipients = options[:mail_to].join(",")
+        @mailio = IO.popen("mail -s 'cap #{options[:actions].join(' ')}' #{recipients}", "w")
+      end
       if output.respond_to?(:puts)
         @device = output
       else
@@ -78,10 +83,13 @@ module Capistrano
 
     def close
       device.close if @needs_close
+      mailio.close if mailio
     end
 
     def log(level, message, line_prefix=nil)
       if level <= self.level
+        mail_message = message
+        mail_line_prefix = line_prefix
         # Only format output if device is a TTY or formatters are not disabled
         if device.tty? && !@disable_formatters
           color = :none
@@ -100,6 +108,9 @@ module Capistrano
               end
             end
           end
+
+          # So far nothing tty-specific, so apply changes to mail_message
+          mail_message = message
 
           if color == :hide
             # Don't do anything if color is set to :hide
@@ -124,6 +135,16 @@ module Capistrano
             device.puts "#{indent} [#{line_prefix}] #{line.strip}\n"
           else
             device.puts "#{indent} #{line.strip}\n"
+          end
+        end
+        if mailio
+          # TODO: this copy paste of the line format is ick
+          (RUBY_VERSION >= "1.9" ? mail_message.lines : mail_message).each do |line|
+            if line_prefix
+              mailio.puts "#{indent} [#{mail_line_prefix}] #{line.strip}\n"
+            else
+              mailio.puts "#{indent} #{line.strip}\n"
+            end
           end
         end
       end
