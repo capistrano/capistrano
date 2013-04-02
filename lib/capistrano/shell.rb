@@ -174,7 +174,7 @@ HELP
 
       # Execute a command on the given list of servers.
       def exec_command(command, servers)
-        command = command.gsub(/\bsudo\b/, "sudo -p '#{configuration.sudo_prompt}'")
+        command = command.gsub(/^(\s*)sudo\b|([|;&])\s*sudo\b/, "\\0 -p '#{configuration.sudo_prompt}'")
         processor = configuration.sudo_behavior_callback(Configuration.default_io_proc)
         sessions = servers.map { |server| configuration.sessions[server] }
         options = configuration.add_default_command_options({})
