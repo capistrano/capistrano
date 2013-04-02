@@ -139,7 +139,8 @@ module Capistrano
       def teardown_connections_to(servers)
         servers.each do |server|
           begin
-            sessions.delete(server).close
+            session = sessions.delete(server)
+            session.close if session
           rescue IOError
             # the TCP connection is already dead
           end
