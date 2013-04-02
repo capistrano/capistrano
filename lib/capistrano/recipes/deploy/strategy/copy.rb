@@ -202,10 +202,6 @@ module Capistrano
             end
           end
 
-          def create_revision_file
-            File.open(File.join(destination, "REVISION"), "w") { |f| f.puts(revision) }
-          end
-
           def compress_repository
             execute "Compressing #{destination} to #{filename}" do
               Dir.chdir(copy_dir) { system(compress(File.basename(destination), File.basename(filename)).join(" ")) }

@@ -81,6 +81,10 @@ module Capistrano
           def revision
             configuration[:real_revision]
           end
+
+          def create_revision_file
+            File.open(File.join(destination, "REVISION"), "w") { |f| f.puts(revision) }
+          end
       end
 
     end
