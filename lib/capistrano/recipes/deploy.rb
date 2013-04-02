@@ -466,6 +466,36 @@ namespace :deploy do
   end
 
   desc <<-DESC
+    Clean up old releases, checking each server individually for releases. \
+    By default, the last 5 releases are kept on each server (though you can \
+    change this with the keep_releases variable). All other deployed revisions \
+    are removed from the servers. By default, this will use sudo to clean up \
+    the old releases, but if sudo is not available for your environment, set \
+    the :use_sudo variable to false instead. \
+    \
+    Differs from cleanup by checking the number of releases on each server \
+    rather than assuming the release count on each server is the same as \
+    the first server checked.
+  DESC
+  task :cleanup_each_host, :except => {:no_release => true} do
+    count = fetch(:keep_releases, 5).to_i
+
+    servers = find_servers_for_task(current_task)
+    servers.each do |server|
+      local_releases = capture("ls -xt #{releases_path}", :hosts => [server.host]).split.reverse
+      if count >= local_releases.length
+        logger.important "no old releases to clean up on #{server.host}"
+      else
+        logger.info "keeping #{count} of #{local_releases.length} deployed releases on #{server.host}"
+
+        (local_releases - local_releases.last(count)).each { |release|
+          run "rm -rf #{File.join(releases_path, release)}", :hosts => [server.host]
+        }
+      end
+    end
+  end
+
+  desc <<-DESC
     Test deployment dependencies. Checks things like directory permissions, \
     necessary utilities, and so forth, reporting on the things that appear to \
     be incorrect or missing. This is good for making sure a deploy has a \
