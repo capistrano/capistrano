@@ -54,7 +54,7 @@ module Capistrano
             end
           end
         end
-        
+
         def connect_to(server)
           @options[:logger].debug "establishing connection to `#{server}' via gateway" if @options[:logger]
           local_host = ServerDefinition.new("127.0.0.1", :user => server.user, :port => gateway_for(server).open(server.host, server.port || 22))
@@ -147,37 +147,43 @@ module Capistrano
         end
       end
 
-      # Determines the set of servers within the current task's scope and
-      # establishes connections to them, and then yields that list of
-      # servers.
-      def execute_on_servers(options={})
-        raise ArgumentError, "expected a block" unless block_given?
-
+      # Determines the set of servers within the current task's scope
+      def filter_servers(options={})
         if task = current_task
           servers = find_servers_for_task(task, options)
 
           if servers.empty?
             if ENV['HOSTFILTER'] || task.options.merge(options)[:on_no_matching_servers] == :continue
               logger.info "skipping `#{task.fully_qualified_name}' because no servers matched"
-              return
             else
-              raise Capistrano::NoMatchingServersError, "`#{task.fully_qualified_name}' is only run for servers matching #{task.options.inspect}, but no servers matched"
+              unless dry_run
+                raise Capistrano::NoMatchingServersError, "`#{task.fully_qualified_name}' is only run for servers matching #{task.options.inspect}, but no servers matched"
+              end
             end
           end
 
           if task.continue_on_error?
             servers.delete_if { |s| has_failed?(s) }
-            return if servers.empty?
           end
         else
           servers = find_servers(options)
-          if servers.empty?
+          if servers.empty? && !dry_run
             raise Capistrano::NoMatchingServersError, "no servers found to match #{options.inspect}" if options[:on_no_matching_servers] != :continue
-            return
           end
         end
 
         servers = [servers.first] if options[:once]
+        [task, servers.compact]
+      end
+
+      # Determines the set of servers within the current task's scope and
+      # establishes connections to them, and then yields that list of
+      # servers.
+      def execute_on_servers(options={})
+        raise ArgumentError, "expected a block" unless block_given?
+
+        task, servers = filter_servers(options)
+        return if servers.empty?
         logger.trace "servers: #{servers.map { |s| s.host }.inspect}"
 
         max_hosts = (options[:max_hosts] || (task && task.max_hosts) || servers.size).to_i

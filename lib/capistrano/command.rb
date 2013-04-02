@@ -17,7 +17,7 @@ module Capistrano
       include Enumerable
 
       class Branch
-        attr_accessor :command, :callback
+        attr_accessor :command, :callback, :condition
         attr_reader :options
 
         def initialize(command, options, callback)
@@ -43,14 +43,17 @@ module Capistrano
           true
         end
 
-        def to_s
-          command.inspect
+        def to_s(parallel=false)
+          if parallel && @condition
+            "#{condition.inspect} :: #{command.inspect}"
+          else
+            command.inspect
+          end
         end
       end
 
       class ConditionBranch < Branch
         attr_accessor :configuration
-        attr_accessor :condition
 
         class Evaluator
           attr_reader :configuration, :condition, :server
@@ -89,9 +92,12 @@ module Capistrano
         def match(server)
           Evaluator.new(configuration, condition, server).result
         end
+      end
 
-        def to_s
-          "#{condition.inspect} :: #{command.inspect}"
+      class ElseBranch < Branch
+        def initialize(command, options, callback)
+          @condition = "else"
+          super(command, options, callback)
         end
       end
 
@@ -106,7 +112,7 @@ module Capistrano
       end
 
       def else(command, &block)
-        @fallback = Branch.new(command, {}, block)
+        @fallback = ElseBranch.new(command, {}, block)
       end
 
       def branches_for(server)

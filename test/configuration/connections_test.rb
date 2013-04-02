@@ -5,6 +5,7 @@ class ConfigurationConnectionsTest < Test::Unit::TestCase
   class MockConfig
     attr_reader :original_initialize_called
     attr_reader :values
+    attr_reader :dry_run
     attr_accessor :current_task
 
     def initialize
