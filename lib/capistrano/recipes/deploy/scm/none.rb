@@ -18,6 +18,11 @@ module Capistrano
       #   set :repository, "."
       #   set :scm, :none
       #   set :deploy_via, :copy
+      #
+      #   Dereference symbolic links. Copy files instead. Handy when you 
+      #   reference files and directory outside of your deployment root.
+      #   set :copy_dereference_symlink, true
+
       class None < Base
         # No versioning, thus, no head. Returns the empty string.
         def head
@@ -27,9 +32,8 @@ module Capistrano
         # Simply does a copy from the :repository directory to the
         # :destination directory.
         def checkout(revision, destination)
-          !Capistrano::Deploy::LocalDependency.on_windows? ? "cp -R #{repository} #{destination}" : "xcopy #{repository} \"#{destination}\" /S/I/Y/Q/E"
+          !Capistrano::Deploy::LocalDependency.on_windows? ? "cp -R#{configuration[:copy_dereference_symlink]?'L':''} #{repository} #{destination}" : "xcopy #{repository} \"#{destination}\" /S/I/Y/Q/E"
         end
-
         alias_method :export, :checkout
 
         # No versioning, so this just returns the argument, with no
