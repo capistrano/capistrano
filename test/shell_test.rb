@@ -44,6 +44,12 @@ class ShellTest < Test::Unit::TestCase
     assert @shell.read_and_execute
   end
 
+  def test_set_with_colon_changes_setting
+    @shell.expects(:read_line).returns("set :random_setting value")
+    @shell.configuration.expects(:set).with(:random_setting, "value")
+    assert @shell.read_and_execute
+  end
+
   def test_text_without_with_or_on_gets_processed_verbatim
     @shell.expects(:read_line).returns("hello world")
     @shell.expects(:process_command).with(nil, nil, "hello world")
