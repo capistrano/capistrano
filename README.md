@@ -39,7 +39,7 @@ assumptions behind these opinions are:
 
 * You are using SSH to access the remote servers.
 * You either have the same password to all target machines, or you have public
-	keys in place to allow passwordless access to them.
+  keys in place to allow passwordless access to them.
 
 Do not expect these assumptions to change.
 

@@ -227,26 +227,26 @@ Git-version requirement for the new implementation is now >= 1.5.6, from
 previously un-documented. (1.5.6 is new-enough that I think this is
 acceptable)
 
-	* Upgrade Net::SSH-gateway dependency to 1.1 (fixes a thread-deadlocking bug on MRI	1.9)
-	* Respect "dry-run" on transfer methods (Florian Frank)
-	* Add support for multiple gateways: (Ryan Duryea)
+  * Upgrade Net::SSH-gateway dependency to 1.1 (fixes a thread-deadlocking bug on MRI  1.9)
+  * Respect "dry-run" on transfer methods (Florian Frank)
+  * Add support for multiple gateways: (Ryan Duryea)
         set :gateway, {
           'gate1.example.com' => 'server1.example.com',
           [ 'gate2.example.com', 'gate3.example.com' ] => [ 'server5.example.com', 'server6.example.com' ]
         }
-	* Properly support nested Git submodules, moves Git requirement to >= 1.5.6 [if	you rely upon submodules] (Ken Miller)
+  * Properly support nested Git submodules, moves Git requirement to >= 1.5.6 [if  you rely upon submodules] (Ken Miller)
   * Fetch tags into the remote cache, allows deploying a tag when using Git, with the remote_cache strategy (Florian Frank)
   * Various fixes to path handling bugs in the copt strategy. (Philippe Rathé)
 
 ## 2.5.21 / April 6 2011
 
-	* Fixed to follow best-practice guidelines from Bundler (Ben Langfeld)
-	* No longer force a gemset for Capistrano development. (Ben Langfeld)
+  * Fixed to follow best-practice guidelines from Bundler (Ben Langfeld)
+  * No longer force a gemset for Capistrano development. (Ben Langfeld)
 
 ## 2.5.20 / March 16 2011
 
   * `deploy:migrations` will now always operate on the latest_release, not
-	current_release (Mike Vincent)
+  current_release (Mike Vincent)
   * Adds a check for the presence of `rsync` when using the copy strategy with `rsync`. (Chris Griego)
   * Do not try to look up the `:release_path` on servers which are defined `:no_release` (Chris Griego)
   * Tiny patch to the `CVS` SCM code to be Ruby 1.9 compatible (Martin Carpenter)
