@@ -598,7 +598,7 @@ namespace :deploy do
         }
         error_page 503 @maintenance;
         location @maintenance {
-          rewrite  ^(.*)$  /system/maintenance.html last;
+          rewrite  ^(.*)$  /system/maintenance.html break;
           break;
         }
       EOHTACCESS
