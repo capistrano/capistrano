@@ -54,7 +54,7 @@ class CLIHelpTest < Test::Unit::TestCase
   end
 
   def test_task_list_should_query_all_tasks_in_all_namespaces
-    expected_max_len = 80 - 3 - MockCLI::LINE_PADDING
+    expected_max_len = 80 - 4 - MockCLI::LINE_PADDING
     task_list = [task("c"), task("g", "c:g"), task("b", "c:b"), task("a")]
     task_list.each { |t| t.expects(:brief_description).with(expected_max_len).returns(t.fully_qualified_name) }
 
@@ -65,7 +65,7 @@ class CLIHelpTest < Test::Unit::TestCase
   end
 
   def test_task_list_should_query_tasks_with_pattern
-    expected_max_len = 80 - 3 - MockCLI::LINE_PADDING
+    expected_max_len = 80 - 4 - MockCLI::LINE_PADDING
     task_list = [task("g", "c:g"), task("b", "c:b")]
     task_list.each { |t| t.expects(:brief_description).with(expected_max_len).returns(t.fully_qualified_name)}
 
@@ -77,7 +77,7 @@ class CLIHelpTest < Test::Unit::TestCase
   end
 
   def test_task_list_should_query_for_all_tasks_when_pattern_doesnt_match
-    expected_max_len = 80 - 3 - MockCLI::LINE_PADDING
+    expected_max_len = 80 - 4 - MockCLI::LINE_PADDING
     task_list = [task("g", "c:g"), task("b", "c:b")]
     task_list.each { |t| t.expects(:brief_description).with(expected_max_len).returns(t.fully_qualified_name) }
 
@@ -159,7 +159,7 @@ class CLIHelpTest < Test::Unit::TestCase
   private
 
   def task(name, fqn=name, desc="a description")
-    stub("task", :name => name, :fully_qualified_name => fqn, :description => desc)
+    stub("task", :name => name, :fully_qualified_name => fqn, :description => desc, :continuation? => false)
   end
 
 end

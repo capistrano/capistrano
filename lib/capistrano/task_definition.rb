@@ -73,5 +73,11 @@ module Capistrano
       @on_error == :continue
     end
 
+    # Gets whether this is a task continuation.
+    def continuation?
+      @body.parameters.any? do |tuple|
+        tuple[0] == :block
+      end
+    end
   end
 end
