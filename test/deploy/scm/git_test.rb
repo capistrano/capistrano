@@ -145,9 +145,19 @@ class DeploySCMGitTest < Test::Unit::TestCase
   def test_shallow_clone
     @config[:repository] = "git@somehost.com:project.git"
     @config[:git_shallow_clone] = 1
+    @config[:branch] = nil
     dest = "/var/www"
     rev = 'c2d9e79'
     assert_equal "git clone -q --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
+  end
+
+  def test_shallow_clone_with_branch
+    @config[:repository] = "git@somehost.com:project.git"
+    @config[:git_shallow_clone] = 1
+    @config[:branch] = 'foobar'
+    dest = "/var/www"
+    rev = 'c2d9e79'
+    assert_equal "git clone -q -b foobar --depth 1 git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy #{rev}", @source.checkout(rev, dest)
   end
 
   def test_remote_clone
