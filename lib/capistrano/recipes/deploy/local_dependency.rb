@@ -1,12 +1,10 @@
+require 'capistrano/recipes/deploy/dependency'
+
 module Capistrano
   module Deploy
-    class LocalDependency
-      attr_reader :configuration
-      attr_reader :message
-
+    class LocalDependency < Dependency
       def initialize(configuration)
-        @configuration = configuration
-        @success = true
+        super(configuration)
       end
 
       def command(command)
@@ -15,16 +13,35 @@ module Capistrano
         self
       end
 
-      def or(message)
-        @message = message
+      def file(path)
+        @message ||= "`#{path}' is not a file"
+        @success = false unless Dir.exists?(path)
         self
       end
 
-      def pass?
-        @success
+      def directory(path)
+        @message ||= "`#{path}' is not a directory"
+        @success = File.directory?(path)
+        self
+      end
+
+      def writeable(path)
+        @message ||= "`#{path}' is not writable"
+        @success = File.writeable?(path)
+        self
+      end
+
+      def file(path)
+        @message ||= "`#{path}' is not a file"
+        @success = File.file?(path)
+        self
       end
 
     private
+
+      def try!(command, options)
+        @success = system(command, options)
+      end
 
       # Searches the path, looking for the given utility. If an executable
       # file is found that matches the parameter, this returns true.
