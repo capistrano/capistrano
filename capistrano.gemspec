@@ -20,23 +20,15 @@ Gem::Specification.new do |s|
     "README.md"
   ]
 
-  if s.respond_to? :specification_version then
-    s.specification_version = 3
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<highline>, [">= 0"])
-      s.add_runtime_dependency(%q<net-ssh>, [">= 2.0.14"])
-      s.add_runtime_dependency(%q<net-sftp>, [">= 2.0.0"])
-      s.add_runtime_dependency(%q<net-scp>, [">= 1.0.0"])
-      s.add_runtime_dependency(%q<net-ssh-gateway>, [">= 1.1.0"])
-      s.add_development_dependency(%q<mocha>, ["0.9.12"])
-    else
-      s.add_dependency(%q<net-ssh>, [">= 2.0.14"])
-      s.add_dependency(%q<net-sftp>, [">= 2.0.0"])
-      s.add_dependency(%q<net-scp>, [">= 1.0.0"])
-      s.add_dependency(%q<net-ssh-gateway>, [">= 1.1.0"])
-      s.add_dependency(%q<highline>, [">= 0"])
-      s.add_dependency(%q<mocha>, ["0.9.12"])
-    end
+  s.specification_version = 3 if s.respond_to? :specification_version
+    
+  if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+    s.add_runtime_dependency(%q<highline>, [">= 0"])
+    s.add_runtime_dependency(%q<net-ssh>, [">= 2.0.14"])
+    s.add_runtime_dependency(%q<net-sftp>, [">= 2.0.0"])
+    s.add_runtime_dependency(%q<net-scp>, [">= 1.0.0"])
+    s.add_runtime_dependency(%q<net-ssh-gateway>, [">= 1.1.0"])
+    s.add_development_dependency(%q<mocha>, ["0.9.12"])
   else
     s.add_dependency(%q<net-ssh>, [">= 2.0.14"])
     s.add_dependency(%q<net-sftp>, [">= 2.0.0"])
