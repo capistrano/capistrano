@@ -26,7 +26,7 @@ namespace :deploy do
     task :symlink, :roles => lambda { assets_role }, :except => { :no_release => true } do
       run <<-CMD.compact
         rm -rf #{latest_release}/public/#{assets_prefix} &&
-        mkdir -p #{latest_release}/public &&
+        mkdir -p #{latest_release}/public/#{File.dirname(assets_prefix)} &&
         mkdir -p #{shared_path}/assets &&
         ln -s #{shared_path}/assets #{latest_release}/public/#{assets_prefix}
       CMD
