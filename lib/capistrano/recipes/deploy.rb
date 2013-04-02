@@ -57,13 +57,13 @@ _cset(:shared_path)       { File.join(deploy_to, shared_dir) }
 _cset(:current_path)      { File.join(deploy_to, current_dir) }
 _cset(:release_path)      { File.join(releases_path, release_name) }
 
-_cset(:releases)          { capture("ls -x #{releases_path}", :except => { :no_release => true }).split.sort }
+_cset(:releases)          { capture("#{try_sudo} ls -x #{releases_path}", :except => { :no_release => true }).split.sort }
 _cset(:current_release)   { releases.length > 0 ? File.join(releases_path, releases.last) : nil }
 _cset(:previous_release)  { releases.length > 1 ? File.join(releases_path, releases[-2]) : nil }
 
-_cset(:current_revision)  { capture("cat #{current_path}/REVISION",     :except => { :no_release => true }).chomp }
-_cset(:latest_revision)   { capture("cat #{current_release}/REVISION",  :except => { :no_release => true }).chomp }
-_cset(:previous_revision) { capture("cat #{previous_release}/REVISION", :except => { :no_release => true }).chomp if previous_release }
+_cset(:current_revision)  { capture("#{try_sudo} cat #{current_path}/REVISION",     :except => { :no_release => true }).chomp }
+_cset(:latest_revision)   { capture("#{try_sudo} cat #{current_release}/REVISION",  :except => { :no_release => true }).chomp }
+_cset(:previous_revision) { capture("#{try_sudo} cat #{previous_release}/REVISION", :except => { :no_release => true }).chomp if previous_release }
 
 _cset(:run_method)        { fetch(:use_sudo, true) ? :sudo : :run }
 
@@ -370,7 +370,7 @@ namespace :deploy do
     DESC
     task :revision, :except => { :no_release => true } do
       if previous_release
-        run "rm #{current_path}; ln -s #{previous_release} #{current_path}"
+        run "#{try_sudo} rm #{current_path}; ln -s #{previous_release} #{current_path}"
       else
         abort "could not rollback the code because there is no prior release"
       end
@@ -382,7 +382,7 @@ namespace :deploy do
       (if ever) need to be called directly.
     DESC
     task :cleanup, :except => { :no_release => true } do
-      run "if [ `readlink #{current_path}` != #{current_release} ]; then rm -rf #{current_release}; fi"
+      run "if [ `readlink #{current_path}` != #{current_release} ]; then #{try_sudo} rm -rf #{current_release}; fi"
     end
 
     desc <<-DESC
