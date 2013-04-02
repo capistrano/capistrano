@@ -306,13 +306,16 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
   private
 
     def prepare_directory_tree!(cache, exclude=false)
-      Dir.expects(:glob).with("*", File::FNM_DOTMATCH).returns([".", "..", "app", "foo.txt"])
+      Dir.expects(:glob).with("*", File::FNM_DOTMATCH).returns([".", "..", "app", "app{1}", "foo.txt"])
       File.expects(:ftype).with("app").returns("directory")
+      File.expects(:ftype).with("app{1}").returns("directory")
       FileUtils.expects(:mkdir).with("/temp/dir/1234567890/app")
+      FileUtils.expects(:mkdir).with("/temp/dir/1234567890/app{1}")
       File.expects(:ftype).with("foo.txt").returns("file")
       FileUtils.expects(:ln).with("foo.txt", "/temp/dir/1234567890/foo.txt")
 
       Dir.expects(:glob).with("app/*", File::FNM_DOTMATCH).returns(["app/.", "app/..", "app/bar.txt"])
+      Dir.expects(:glob).with("app\\{1\\}/*", File::FNM_DOTMATCH).returns(["app{1}/.", "app{1}/.."])
 
       unless exclude
       File.expects(:ftype).with("app/bar.txt").returns("file")
