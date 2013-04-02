@@ -39,6 +39,11 @@ module Capistrano
       # :zip, and which specifies how the source should be compressed for
       # transmission to each host.
       #
+      # By default, files will be transferred across to the remote machines via 'sftp'. If you prefer
+      # to use 'scp' you can set the :copy_via variable to :scp.
+      #
+      #   set :copy_via, :scp
+      #
       # There is a possibility to pass a build command that will get
       # executed if your code needs to be compiled or something needs to be
       # done before the code is ready to run.
@@ -320,7 +325,10 @@ module Capistrano
 
           # Distributes the file to the remote servers
           def distribute!
-            upload(filename, remote_filename)
+            args = [filename, remote_filename]
+            args << { :via => configuration[:copy_via] } if configuration[:copy_via]
+
+            upload(*args)
             decompress_remote_file
           end
       end
