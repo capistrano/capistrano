@@ -106,7 +106,7 @@ module Capistrano
       # establish connections to servers defined via ServerDefinition objects.
       def connection_factory
         @connection_factory ||= begin
-          if exists?(:gateway)
+          if exists?(:gateway) && !fetch(:gateway).nil? && !fetch(:gateway).empty?
             logger.debug "establishing connection to gateway `#{fetch(:gateway).inspect}'"
             GatewayConnectionFactory.new(fetch(:gateway), self)
           else
