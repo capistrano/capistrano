@@ -7,7 +7,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     attr_reader :options
     attr_accessor :debug
     attr_accessor :dry_run
-		attr_accessor :preserve_roles
+    attr_accessor :preserve_roles
     attr_accessor :servers
 
     def initialize
@@ -25,6 +25,10 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
 
     def fetch(*args)
       @options.fetch(*args)
+    end
+
+    def filter_servers(options = {})
+      [nil, @servers]
     end
 
     def execute_on_servers(options = {})
