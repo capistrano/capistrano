@@ -125,6 +125,8 @@ namespace :deploy do
         logger.info "Removing assets that haven't been deployed for #{expire_after_mins} minutes..."
         # LC_COLLATE=C tells the `sort` and `comm` commands to sort files in byte order.
         run <<-CMD.compact
+          cd -- #{deploy_to.shellescape}/ &&
+          LC_COLLATE=C sort REQUIRED_ASSETS -o REQUIRED_ASSETS &&
           cd -- #{shared_path.shellescape}/assets/ &&
           for f in $(
             find * -mmin +#{expire_after_mins.to_s.shellescape} -type f | LC_COLLATE=C sort |
