@@ -74,6 +74,8 @@ _cset(:run_method)        { fetch(:use_sudo, true) ? :sudo : :run }
 # standalone case, or during deployment.
 _cset(:latest_release) { exists?(:deploy_timestamped) ? release_path : current_release }
 
+_cset :maintenance_basename, "maintenance"
+_cset(:maintenance_template_path) { File.join(File.dirname(__FILE__), "templates", "maintenance.rhtml") }
 # =========================================================================
 # These are helper methods that will be available to your recipes.
 # =========================================================================
@@ -566,7 +568,7 @@ namespace :deploy do
               UNTIL="12pm Central Time"
 
       You can use a different template for the maintenance page by setting the \
-      :maintenance_template_path variable in your deploy.rb file. The template file \ 
+      :maintenance_template_path variable in your deploy.rb file. The template file \
       should either be a plaintext or an erb file.
 
       Further customization will require that you write your own task.
