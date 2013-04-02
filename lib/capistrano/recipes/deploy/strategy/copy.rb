@@ -174,7 +174,11 @@ module Capistrano
           end
 
           def pattern_for directory
-            !directory.nil? ? "#{directory}/*" : "*"
+            !directory.nil? ? "#{escape_globs(directory)}/*" : "*"
+          end
+
+          def escape_globs path
+            path.gsub(/[*?{}\[\]]/, '\\\\\\&')
           end
 
           def excluded_files_contain? file
