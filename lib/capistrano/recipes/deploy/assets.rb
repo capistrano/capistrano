@@ -45,7 +45,7 @@ namespace :deploy do
     task :precompile, :roles => lambda { assets_role }, :except => { :no_release => true } do
       run <<-CMD.compact
         cd -- #{latest_release} &&
-        #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} assets:precompile &&
+        #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile &&
         cp -- #{shared_path.shellescape}/assets/manifest.yml #{current_release.shellescape}/assets_manifest.yml
       CMD
     end
