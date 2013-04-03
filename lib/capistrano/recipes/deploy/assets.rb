@@ -46,7 +46,7 @@ namespace :deploy do
       run <<-CMD.compact
         cd -- #{latest_release} &&
         #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile &&
-        cp -- #{shared_path.shellescape}/assets/manifest.yml #{current_release.shellescape}/assets_manifest.yml
+        cp -- #{shared_path.shellescape}/assets/manifest.yml #{current_release.to_s.shellescape}/assets_manifest.yml
       CMD
     end
 
