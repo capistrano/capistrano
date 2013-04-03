@@ -1,5 +1,44 @@
 ## 2.14.1 (tentative) / January 10 2013
 
+* Bring back web:enable and web:disable tasks. Sincerely apologies to all affected
+  removing these was one of the most glaring mistakes we've made on this projec
+  and I feel personally responsible.
+* Makes :git_shallow_clone work with branches (@cannikin)
+* Avoid removing required assets (@bosko)
+* Fix escaping of asset_paths when calling `deploy:finalize_update` (@mcary)
+* Improve parallel command logging (@mpapis)
+* Allow updating variables in the cap shell `cap> set :some_setting new_value`
+  (@jpfuentes2)
+* Add the option to configure `Capistrano::Logger.default_formatters=` this
+  relates to the previous merging of the capistrano-colors gem. (@kellyredding)
+* Don't attempt to connect to a nil `:gateway` (@mattheath)
+* Simplify our .gemspec dependency list (@timoschilling)
+* Make the existece of `config/deploy/{stage}.rb` optional, it'll be loaded if
+  it exists, otherwise we continue without it (@ymainier)
+* Misc spelling/typo fixes. (@mv)
+* Update mtime and atime with touch when fixing asset timestamps (@wildoats)
+* Change call of `rake {env} precompile:all` to drop the errornous `{env}` (@zxiest)
+* Evaluate assets_role at runtime using a lambda (@nlenepveu)
+* Handle when hosts (for example by joining/leaving the no_release meta group)
+  have different old releases for `deploy:cleanup` (@oggy)
+* Check for nil when tearing down connections (@yyuu)
+* Go back to using SCP for uploads as against SFTP (@pjungwir)
+* Added an option to dereference symlinks when using the :copy strategy
+  (`set :copy_dereference_symlink, true`) useful when your working directory
+  contains files symlinked in from outside your project root (@mehmetc)
+* Small typo fix in README (@yule)
+* Add Ruby 2.0.0-p0 to the TravisCI build (@jarrettmeyer)
+* Add the option to set the shared asset prefix for Rails,
+  (`set :shared_assets_prefix, "my_shared_assets"`) corresponds with it's
+  namesake in Rails. By default is set to `assets`. (@spectator)
+* Improved error messages for `cap {stage} deploy:check` (@petems)
+* Make `run_locally` work with the `--dry-run` flag. (@flagthisiskun)
+* Fix a link in the README to writing a good commit message. (@mhutchin)
+* Code style fixes (@mv)
+* Report differently if the command was killed by a signal (for example the
+  oom killer on Ubuntu/Debian). (@tanob)
+
+
 ## 2.14.0 / January 9 2013
 
 * Removed ui.output_cols limit of 80 chars (@aussielunix)
