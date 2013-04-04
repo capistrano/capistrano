@@ -1,41 +1,59 @@
 namespace :git do
 
-  desc 'Check that the repository exists'
-  task :check do
+  git_environmental_variables = {
+    git_askpass: '/bin/echo',
+    git_ssh:     '/tmp/git-ssh.sh'
+  }
+
+  desc 'Upload the git wrapper script, this script guarantees that we can script git without getting an interactive prompt'
+  task :wrapper do
+    upload! StringIO.new("#!/bin/sh -e\nexec /usr/bin/ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no \"$@\"\n"), '/tmp/git-ssh.sh'
+    execute :chmod, "+x", '/tmp/git-ssh.sh'
+  end
+
+  desc 'Check that the repository is reachable'
+  task check: :'git:wrapper' do
     fetch(:branch)
     on roles :all do
-      unless test "[ -d #{repo_path}/.git ]"
-        within deploy_path do
-          upload! StringIO.new("#!/bin/sh -e\nexec /usr/bin/ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no \"$@\"\n"), '/tmp/git-ssh.sh'
-          execute :chmod, "+x", '/tmp/git-ssh.sh'
-          with git_askpass: '/bin/echo', git_ssh: '/tmp/git-ssh.sh' do
-            execute :git, :clone, fetch(:repo), repo_path
-          end
+      with git_environmental_variables do
+        execute :git, :'ls-remote', fetch(:repo)
+      end
+    end
+  end
+
+  desc 'Clone the repo to the cache'
+  task clone: :'git:wrapper' do
+    if test " [ -d #{repo_path}/.git ] "
+      info "The repository mirror is at #{repo_path}"
+    else
+      within deploy_path do
+        with git_environmental_variables do
+          execute :git, :clone, fetch(:repo), repo_path
         end
       end
     end
   end
 
-  desc 'Update the repo and copy to releases'
-  task :update do
-    invoke 'git:reset'
-    invoke 'git:create_release'
-  end
-
-  desc 'Update the repo to branch or reference provided provided'
-  task :reset do
+  desc 'Update the repo mirror to reflect the origin state'
+  task update: :'git:clone' do
     on roles :all do
       within repo_path do
-        execute :git, 'fetch origin'
-        execute :git,  "reset --hard origin/#{fetch(:branch)}"
+        execute :git, :remote, :update
       end
     end
   end
 
   desc 'Copy repo to releases'
-  task :create_release do
+  task create_release: :'git:update' do
     on roles :all do
-      execute :cp, "-RPp", repo_path, release_path
+      with git_environmental_variables do
+        execute :git, :remote, 'set-url', fetch(:repo)
+        execute :git, :clone, '--branch', fetch(:branch),                     \
+                '--single-branch',                                            \
+                '--recurse-submodules',                                       \
+                '--no-hardlinks',                                             \
+                repo_path, release_path
+      end
     end
   end
 end

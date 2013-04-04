@@ -5,7 +5,7 @@ namespace :deploy do
   end
 
   task :update do
-    invoke "#{scm}:update"
+    invoke "#{scm}:create_release"
     invoke 'deploy:symlink:shared'
   end
 
