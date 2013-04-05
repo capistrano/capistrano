@@ -63,7 +63,7 @@ namespace :deploy do
         manifest = YAML.load(manifest_yml)
         current_assets = manifest.to_a.flatten.map {|a| [a, "#{a}.gz"] }.flatten
         logger.info "Updating mtimes for ~#{current_assets.count} assets..."
-        put current_assets.map{|a| "#{shared_path}/assets/#{a}" }.join("\n"), "#{deploy_to}/TOUCH_ASSETS", via: :scp
+        put current_assets.map{|a| "#{shared_path}/assets/#{a}" }.join("\n"), "#{deploy_to}/TOUCH_ASSETS", :via => :scp
         run <<-CMD.compact
           cat #{deploy_to.shellescape}/TOUCH_ASSETS | while read asset; do
             touch -c -- "$asset";
@@ -117,7 +117,7 @@ namespace :deploy do
         # Write the list of required assets to server.
         logger.info "Writing required assets to #{deploy_to}/REQUIRED_ASSETS..."
         escaped_assets = current_assets.sort.join("\n").gsub("\"", "\\\"") << "\n"
-        put escaped_assets, "#{deploy_to}/REQUIRED_ASSETS", via: :scp
+        put escaped_assets, "#{deploy_to}/REQUIRED_ASSETS", :via => :scp
 
         # Finds all files older than X minutes, then removes them if they are not referenced
         # in REQUIRED_ASSETS.
