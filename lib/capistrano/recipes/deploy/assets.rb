@@ -17,7 +17,7 @@ after  'deploy:cleanup',           'deploy:assets:clean_expired'
 after  'deploy:rollback:revision', 'deploy:assets:rollback'
 
 def shared_manifest_path
-  capture("ls #{shared_path.shellescape}/#{shared_assets_prefix}/manifest*").strip
+  @shared_manifest_path ||= capture("ls #{shared_path.shellescape}/#{shared_assets_prefix}/manifest*").strip
 end
 
 # Parses manifest and returns array of uncompressed and compressed asset filenames with and without digests
