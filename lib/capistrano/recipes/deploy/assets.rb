@@ -61,7 +61,18 @@ namespace :deploy do
     task :precompile, :roles => lambda { assets_role }, :except => { :no_release => true } do
       run <<-CMD.compact
         cd -- #{latest_release} &&
-        #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile &&
+        #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile
+      CMD
+
+      # Sync manifest filenames across servers if our manifest has a random filename
+      if shared_manifest_path =~ /manifest-.+\./
+        run <<-CMD.compact
+          [ -e #{shared_manifest_path.shellescape} ] || mv -- #{shared_path.shellescape}/#{shared_assets_prefix}/manifest* #{shared_manifest_path.shellescape}
+        CMD
+      end
+
+      # Copy manifest to release root (for clean_expired task)
+      run <<-CMD.compact
         cp -- #{shared_manifest_path.shellescape} #{current_release.to_s.shellescape}/assets_manifest#{File.extname(shared_manifest_path)}
       CMD
     end
