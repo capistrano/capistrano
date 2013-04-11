@@ -177,7 +177,7 @@ namespace :deploy do
         run <<-CMD.compact
           cd -- #{previous_release.shellescape} &&
           cp -f -- #{previous_manifest.shellescape} #{shared_manifest_path.shellescape} &&
-          #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile:nondigest
+          [ -z "$(#{rake} -P | grep assets:precompile:nondigest)" ] || #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile:nondigest
         CMD
       end
     end
