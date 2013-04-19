@@ -2,6 +2,7 @@ load 'deploy' unless defined?(_cset)
 
 _cset :asset_env, "RAILS_GROUPS=assets"
 _cset :assets_prefix, "assets"
+_cset :shared_assets_prefix, "assets"
 _cset :assets_role, [:web]
 _cset :expire_assets_after, (3600 * 24 * 7)
 
@@ -21,14 +22,15 @@ namespace :deploy do
       mid-deploy mismatches between old application html asking for assets \
       and getting a 404 file not found error. The assets cache is shared \
       for efficiency. If you customize the assets path prefix, override the \
-      :assets_prefix variable to match.
+      :assets_prefix variable to match. If you customize shared assets path \
+      prefix, override :shared_assets_prefix variable to match.
     DESC
     task :symlink, :roles => lambda { assets_role }, :except => { :no_release => true } do
       run <<-CMD.compact
         rm -rf #{latest_release}/public/#{assets_prefix} &&
         mkdir -p #{latest_release}/public &&
-        mkdir -p #{shared_path}/assets &&
-        ln -s #{shared_path}/assets #{latest_release}/public/#{assets_prefix}
+        mkdir -p #{shared_path}/#{shared_assets_prefix} &&
+        ln -s #{shared_path}/#{shared_assets_prefix} #{latest_release}/public/#{assets_prefix}
       CMD
     end
 
@@ -46,7 +48,7 @@ namespace :deploy do
       run <<-CMD.compact
         cd -- #{latest_release} &&
         #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile &&
-        cp -- #{shared_path.shellescape}/assets/manifest.yml #{current_release.to_s.shellescape}/assets_manifest.yml
+        cp -- #{shared_path.shellescape}/#{shared_assets_prefix}/manifest.yml #{current_release.to_s.shellescape}/assets_manifest.yml
       CMD
     end
 
@@ -56,14 +58,14 @@ namespace :deploy do
     DESC
     task :update_asset_mtimes, :roles => lambda { assets_role }, :except => { :no_release => true } do
       # Fetch assets/manifest.yml contents.
-      manifest_path = "#{shared_path}/assets/manifest.yml"
+      manifest_path = "#{shared_path}/#{shared_assets_prefix}/manifest.yml"
       manifest_yml = capture("[ -e #{manifest_path.shellescape} ] && cat #{manifest_path.shellescape} || echo").strip
 
       if manifest_yml != ""
         manifest = YAML.load(manifest_yml)
         current_assets = manifest.to_a.flatten.map {|a| [a, "#{a}.gz"] }.flatten
         logger.info "Updating mtimes for ~#{current_assets.count} assets..."
-        put current_assets.map{|a| "#{shared_path}/assets/#{a}" }.join("\n"), "#{deploy_to}/TOUCH_ASSETS", :via => :scp
+        put current_assets.map{|a| "#{shared_path}/#{shared_assets_prefix}/#{a}" }.join("\n"), "#{deploy_to}/TOUCH_ASSETS", :via => :scp
         run <<-CMD.compact
           cat #{deploy_to.shellescape}/TOUCH_ASSETS | while read asset; do
             touch -c -- "$asset";
@@ -127,7 +129,7 @@ namespace :deploy do
         run <<-CMD.compact
           cd -- #{deploy_to.shellescape}/ &&
           LC_COLLATE=C sort REQUIRED_ASSETS -o REQUIRED_ASSETS &&
-          cd -- #{shared_path.shellescape}/assets/ &&
+          cd -- #{shared_path.shellescape}/#{shared_assets_prefix}/ &&
           for f in $(
             find * -mmin +#{expire_after_mins.to_s.shellescape} -type f | LC_COLLATE=C sort |
             LC_COLLATE=C comm -23 -- - #{deploy_to.shellescape}/REQUIRED_ASSETS
@@ -152,7 +154,7 @@ namespace :deploy do
       else
         run <<-CMD.compact
           cd -- #{previous_release.shellescape} &&
-          cp -f -- #{previous_manifest.shellescape} #{shared_path.shellescape}/assets/manifest.yml &&
+          cp -f -- #{previous_manifest.shellescape} #{shared_path.shellescape}/#{shared_assets_prefix}/manifest.yml &&
           #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile:nondigest
         CMD
       end
