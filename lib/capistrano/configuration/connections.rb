@@ -141,7 +141,7 @@ module Capistrano
           begin
             session = sessions.delete(server)
             session.close if session
-          rescue IOError
+          rescue IOError, Net::SSH::Disconnect
             # the TCP connection is already dead
           end
         end
