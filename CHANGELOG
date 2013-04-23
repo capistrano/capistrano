@@ -1,5 +1,7 @@
-## 2.14.1 (tentative) / January 10 2013
+## 2.15.0 / April 23 2013
 
+* New varaible :shared_assets_prefix to allow people to host somewhere other
+  than `/assets/`. Default is `assets`.
 * Bring back web:enable and web:disable tasks. Sincerely apologies to all affected
   removing these was one of the most glaring mistakes we've made on this projec
   and I feel personally responsible.
