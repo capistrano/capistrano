@@ -1,3 +1,7 @@
+## 2.15.1 / April 23 2013
+
+* Support for Rails 4 (and other) randomised asset manifest names. (@jimryan)
+
 ## 2.15.0 / April 23 2013
 
 * New varaible :shared_assets_prefix to allow people to host somewhere other
