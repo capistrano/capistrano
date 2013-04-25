@@ -5,6 +5,7 @@ require 'test/unit'
 require 'mocha'
 
 require 'capistrano/server_definition'
+require 'pry'
 
 module TestExtensions
   def server(host, options={})
