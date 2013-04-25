@@ -163,7 +163,7 @@ module Capistrano
 
           if tree.branches.any? || tree.fallback
             _, servers = filter_servers(options)
-            branches = branches_for_servers(tree,servers)
+            branches = servers.map{|server| tree.branches_for(server)}.flatten.compact
             case branches.size
             when 0
               branches = tree.branches.dup + [tree.fallback]
