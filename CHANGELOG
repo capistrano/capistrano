@@ -1,3 +1,13 @@
+## 2.15.3 / April 25 2012
+
+* For deploy:cleanup, use try_sudo with rm command. (@joshstaiger)
+* Restore maintenance.rhtml (@chulkilee)
+* Fixes GH-434, If branches is an array of array, iterate them separately. (@gnufied)
+
+A big "thank you" to the people who've pushed really amazing patches to the
+2.15.x branch so soon after it's release. 2.15.0 was just too huge to go out
+bug free.
+
 ## 2.15.2 / April 24 2013
 
 * Fixed a bug with asset_paths (String vs. Array). (@joeycarmello)
