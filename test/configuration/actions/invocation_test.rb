@@ -9,6 +9,7 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
     attr_accessor :dry_run
     attr_accessor :preserve_roles
     attr_accessor :servers
+    attr_accessor :roles
 
     def initialize
       @options = {}
@@ -224,6 +225,37 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
   def test_invoke_command_should_delegate_to_method_identified_by_via
     @config.expects(:foobar).with("ls", :once => true)
     @config.invoke_command("ls", :once => true, :via => :foobar)
+  end
+
+  def test_parallel_command_execution_with_no_match
+    assert_block("should not raise argument error") do
+      begin
+        @config.parallel do |session|
+          session.when("in?(:app)", "ls") {|ch,stream,data| puts "noop"}
+          session.when("in?(:db)", "pwd") {|ch,stream,data| puts "noop"}
+        end
+        true
+      rescue
+        false
+      end
+    end
+  end
+
+  def test_parallel_command_execution_with_matching_servers
+    @config.expects(:execute_on_servers)
+    assert_block("should not raise Argument error") do
+      begin
+        @config.servers = [:app, :db]
+        @config.roles = {:app => [:app], :db => [:db] }
+        @config.parallel do |session|
+          session.when("in?(:app)", "ls") {|ch,stream,data| puts "noop"}
+          session.when("in?(:db)", "pwd") {|ch,stream,data| puts "noop"}
+        end
+        true
+      rescue
+        false
+      end
+    end
   end
 
   private
