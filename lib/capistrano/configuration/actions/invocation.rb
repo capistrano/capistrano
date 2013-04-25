@@ -178,7 +178,13 @@ module Capistrano
               logger.debug "executing #{branches.first}" unless options[:silent]
             else
               logger.debug "executing multiple commands in parallel"
-              branches.each{ |branch| logger.trace "-> #{branch.to_s(true)}" }
+              branches.each {|maybe_branch|
+                if(maybe_branch.is_a?(Array))
+                  maybe_branch.each {|branch| logger.trace "-> #{branch.to_s(true)}"}
+                else
+                  logger.trace "-> #{maybe_branch.to_s(true)}"
+                end
+              }
             end
           else
             raise ArgumentError, "attempt to execute without specifying a command"
