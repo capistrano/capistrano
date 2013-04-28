@@ -64,6 +64,10 @@ namespace :deploy do
         #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile
       CMD
 
+      if capture("ls -1 #{shared_path.shellescape}/#{shared_assets_prefix}/manifest* | wc -l").to_i > 1
+        raise "More than one asset manifest file was found in '#{shared_path.shellescape}/#{shared_assets_prefix}'.  If you are upgrading a Rails 3 application to Rails 4, follow these instructions: http://github.com/capistrano/capistrano/wiki/Upgrading-to-Rails-4#asset-pipeline"
+      end
+
       # Sync manifest filenames across servers if our manifest has a random filename
       if shared_manifest_path =~ /manifest-.+\./
         run <<-CMD.compact
@@ -174,9 +178,21 @@ namespace :deploy do
         puts "#{previous_manifest} is missing! Cannot roll back assets. " <<
              "Please run deploy:assets:precompile to update your assets when the rollback is finished."
       else
+        # If the user is rolling back a Rails 4 app to Rails 3
+        if File.extname(previous_manifest) == '.yml' && File.extname(shared_manifest_path) == '.json'
+          # Remove the existing JSON manifest
+          run "rm -f -- #{shared_manifest_path.shellescape}"
+
+          # Restore the manifest to the Rails 3 path
+          restored_manifest_path = "#{shared_path.shellescape}/#{shared_assets_prefix}/manifest.yml"
+        else
+          # If the user is not rolling back from Rails 4 to 3, we just want to replace the current manifest
+          restored_manifest_path = shared_manifest_path
+        end
+
         run <<-CMD.compact
           cd -- #{previous_release.shellescape} &&
-          cp -f -- #{previous_manifest.shellescape} #{shared_manifest_path.shellescape} &&
+          cp -f -- #{previous_manifest.shellescape} #{restored_manifest_path.shellescape} &&
           [ -z "$(#{rake} -P | grep assets:precompile:nondigest)" ] || #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile:nondigest
         CMD
       end
