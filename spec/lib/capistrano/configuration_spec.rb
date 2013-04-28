@@ -3,7 +3,7 @@ require 'spec_helper'
 module Capistrano
   describe Configuration do
     let(:config) { Configuration.new }
-    let(:roles) { stub }
+    let(:servers) { stub }
 
     describe '.env' do
       it 'is a global accessor to a single instance' do
@@ -17,8 +17,8 @@ module Capistrano
         subject { config.role(:app, %w{server1 server2}) }
 
         before do
-          Configuration::Roles.expects(:new).returns(roles)
-          roles.expects(:add_role).with(:app, %w{server1 server2})
+          Configuration::Servers.expects(:new).returns(servers)
+          servers.expects(:add_role).with(:app, %w{server1 server2})
         end
 
         it 'adds the role' do
