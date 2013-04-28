@@ -1,3 +1,7 @@
+require_relative 'configuration/question'
+require_relative 'configuration/servers'
+require_relative 'configuration/server'
+
 module Capistrano
   class Configuration
 
@@ -26,15 +30,15 @@ module Capistrano
     end
 
     def role(name, servers)
-      roles.add_role(name, servers)
+      servers.add_role(name, servers)
     end
 
     def roles_for(names)
-      roles.fetch_roles(names)
+      servers.fetch_roles(names)
     end
 
     def primary(role)
-      roles.fetch_primary(role)
+      servers.fetch_primary(role)
     end
 
     def configure_backend
@@ -55,8 +59,8 @@ module Capistrano
 
     private
 
-    def roles
-      @roles ||= Roles.new
+    def servers
+      @servers ||= Servers.new
     end
 
     def config
@@ -71,83 +75,6 @@ module Capistrano
       end
     end
 
-    class Question
 
-      def initialize(env, key, default)
-        @env, @key, @default = env, key, default
-      end
-
-      def call
-        ask_question
-        save_response
-      end
-
-      private
-      attr_reader :env, :key, :default
-
-      def ask_question
-        $stdout.puts question
-      end
-
-      def save_response
-        env.set(key, value)
-      end
-
-      def value
-        if response.empty?
-          default
-        else
-          response
-        end
-      end
-
-      def response
-        @response ||= $stdin.gets.chomp
-      end
-
-      def question
-        I18n.t(:question, key: key, default_value: default, scope: :capistrano)
-      end
-    end
-
-    class Roles
-      include Enumerable
-
-      def add_role(name, servers)
-        roles[name] = servers.map { |server| Server.new(server) }
-      end
-
-      def fetch_roles(names)
-        roles_for(names).flatten.uniq
-      end
-
-      def fetch_primary(role)
-        fetch(role).first
-      end
-
-      def each
-        roles.each { |role| yield role }
-      end
-
-      private
-
-      def fetch(name)
-        roles.fetch(name) { raise "role #{name} is not defined" }
-      end
-
-      def roles_for(names)
-        if names.include?(:all)
-          roles.values
-        else
-          names.map { |name| fetch name }
-        end
-      end
-
-      def roles
-        @roles ||= Hash.new
-      end
-    end
-
-    class Server < SSHKit::Host;end;
   end
 end
