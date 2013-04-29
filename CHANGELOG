@@ -1,3 +1,8 @@
+## 2.15.4 / April 29 2013
+
+* Fix parallel command logging (@gnufied)
+* Fix a double-asset manifest problem on Rails upgrades. (@jimryan)
+
 ## 2.15.3 / April 25 2012
 
 * For deploy:cleanup, use try_sudo with rm command. (@joshstaiger)
