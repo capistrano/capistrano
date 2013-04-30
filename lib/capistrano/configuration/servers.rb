@@ -6,8 +6,8 @@ module Capistrano
 
       def add_role(role, hosts)
         hosts.each do |host|
-          server = server_from_host(host)
-          server.roles << role
+          server = find_or_create_server(host)
+          server.add_role(role)
           servers << server
         end
       end
@@ -26,12 +26,12 @@ module Capistrano
 
       private
 
-      def server_from_host(host)
-        servers.find { |server| server.hostname == host } || Server.new(host)
+      def find_or_create_server(host)
+        servers.find { |server| server.matches?(host) } || Server.new(host)
       end
 
       def fetch(name)
-        servers.find_all { |server| server.roles.include? name }
+        servers.find_all { |server| server.has_role? name }
       end
 
       def roles_for(names)
