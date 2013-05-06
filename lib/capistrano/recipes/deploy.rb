@@ -40,7 +40,7 @@ _cset :rake, "rake"
 # =========================================================================
 
 _cset(:source)            { Capistrano::Deploy::SCM.new(scm, self) }
-_cset(:real_revision)     { source.local.query_revision(revision) { |cmd| with_env("LC_ALL", "C") { run_locally(cmd) } } }
+_cset(:real_revision)     { source.local.query_revision(revision) { |cmd| with_env("LC_ALL", "C") { run_locally(cmd, :ignore_dry_run => true) } } }
 
 _cset(:strategy)          { Capistrano::Deploy::Strategy.new(deploy_via, self) }
 
@@ -128,8 +128,9 @@ end
 
 # logs the command then executes it locally.
 # returns the command output as a string
-def run_locally(cmd)
-  if dry_run
+def run_locally(cmd, options = {})
+  options = { :ignore_dry_run => false }.merge(options)
+  if !options[:ignore_dry_run] && dry_run
     return logger.debug "executing locally: #{cmd.inspect}"
   end
   logger.trace "executing locally: #{cmd.inspect}" if logger
