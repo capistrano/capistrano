@@ -21,7 +21,7 @@ module Capistrano
         attr_reader :options
 
         def initialize(command, options, callback)
-          @command = command.strip.gsub(/\r?\n/, "\\\n")
+          @command = command.strip.gsub(/\r\n/, "\n").gsub(/^\s+/, "")
           @callback = callback || Capistrano::Configuration.default_io_proc
           @options = options
           @skip = false
