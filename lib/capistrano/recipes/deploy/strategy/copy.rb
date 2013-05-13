@@ -205,8 +205,8 @@ module Capistrano
 
             copy_exclude.each do |pattern|
               delete_list = Dir.glob(File.join(destination, pattern), File::FNM_DOTMATCH)
-              # avoid the /.. trap that deletes the parent directories
-              delete_list.delete_if { |dir| dir =~ /\/\.\.$/ }
+              # avoid the /.. trap that deletes the parent directories and /. that deletes the current directory
+              delete_list.delete_if { |dir| dir =~ /\/\.{1,2}$/ }
               FileUtils.rm_rf(delete_list.compact)
             end
           end
