@@ -163,6 +163,14 @@ module Capistrano
         end
       end
 
+      def file_in_load_path?(file)
+        begin
+          !!find_file_in_load_path(file)
+        rescue LoadError
+          false
+        end
+      end
+
       private
 
         # Load a recipe from the named file. If +name+ is given, the file will
