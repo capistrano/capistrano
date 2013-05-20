@@ -129,4 +129,20 @@ class ConfigurationLoadingTest < Test::Unit::TestCase
     assert_equal :custom, @config.ping
     assert_equal :custom, config2.ping
   end
+
+  def test_file_in_load_path_returns_true_when_file_is_in_load_path
+    File.stubs(:file?).returns(false)
+    File.stubs(:file?).with("custom/path/for/file.rb").returns(true)
+
+    @config.load_paths << "custom/path/for"
+    assert_equal true, @config.file_in_load_path?("file")
+  end
+
+  def test_file_in_load_path_returns_false_when_file_is_not_in_load_path
+    File.stubs(:file?).returns(false)
+    File.stubs(:file?).with("custom/path/for/file.rb").returns(false)
+
+    @config.load_paths << "custom/path/for"
+    assert_equal false, @config.file_in_load_path?("file")
+  end
 end

@@ -15,7 +15,9 @@ Capistrano::Configuration.instance.load do
     desc "Set the target stage to `#{name}'."
     task(name) do
       set :stage, name.to_sym
-      load "#{location}/#{stage}" if File.exist?(File.join(location, "#{stage}.rb"))
+
+      file = "#{location}/#{stage}"
+      load file if file_in_load_path?(file)
     end
   end
 
