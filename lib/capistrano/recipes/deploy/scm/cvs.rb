@@ -84,7 +84,7 @@ module Capistrano
           case text
           when /\bpassword.*:/i
             # prompting for a password
-            "#{variable(:scm_password) || variable(:password)}\n"
+            %("#{variable(:scm_password) || variable(:password)}"\n)
           when %r{\(yes/no\)}
             # let's be agreeable...
             "yes\n"

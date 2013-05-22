@@ -217,5 +217,43 @@ class DeploySCMGitTest < Test::Unit::TestCase
     assert_equal "git", @source.local.command
     assert_equal "/foo/bar/git", @source.command
   end
+
+  def test_sends_password_if_set
+    require 'capistrano/logger'
+    text = "password:"
+    @config[:scm_password] = "opensesame"
+    assert_equal %("opensesame"\n), @source.handle_data(mock_state, :test_stream, text)
+  end
+
+  def test_prompt_password
+    require 'capistrano/logger'
+    require 'capistrano/cli'
+    Capistrano::CLI.stubs(:password_prompt).returns("opensesame")
+
+    text = 'password:'
+    assert_equal %("opensesame"\n), @source.handle_data(mock_state, :test_stream, text)
+  end
+
+  def test_sends_passphrase_if_set
+    require 'capistrano/logger'
+    text = "passphrase:"
+    @config[:scm_passphrase] = "opensesame"
+    assert_equal %("opensesame"\n), @source.handle_data(mock_state, :test_stream, text)
+  end
+
+  def test_prompt_passphrase
+    require 'capistrano/logger'
+    require 'capistrano/cli'
+    Capistrano::CLI.stubs(:password_prompt).returns("opensesame")
+
+    text = 'passphrase:'
+    assert_equal %("opensesame"\n), @source.handle_data(mock_state, :test_stream, text)
+  end
+
+  private
+
+    def mock_state
+      { :channel => { :host => "abc" } }
+    end
 end
 
