@@ -60,8 +60,8 @@ namespace :deploy do
     DESC
     task :precompile, :roles => lambda { assets_role }, :except => { :no_release => true } do
       run <<-CMD.compact
-        cd -- #{latest_release} &&
-        #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile
+        cd -- #{latest_release} && 
+        RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile
       CMD
 
       if capture("ls -1 #{shared_path.shellescape}/#{shared_assets_prefix}/manifest* | wc -l").to_i > 1
