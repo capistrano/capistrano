@@ -73,7 +73,7 @@ module Capistrano
           when /^user:/mi
             # support :scm_user for backwards compatibility of this module
             if user = variable(:scm_username) || variable(:scm_user)
-              "#{user}\n"
+              %("#{user}"\n)
             else
               raise "No variable :scm_username specified and Mercurial asked!\n" +
                 "Prompt was: #{text}"
@@ -84,7 +84,7 @@ module Capistrano
               raise "No variable :scm_password specified and Mercurial asked!\n" +
                 "Prompt was: #{text}"
             end
-            "#{pass}\n"
+            %("#{pass}"\n)
           when /yes\/no/i
             "yes\n"
           end
