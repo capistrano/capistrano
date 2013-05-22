@@ -48,10 +48,10 @@ class DeploySCMMercurialTest < Test::Unit::TestCase
     require 'capistrano/logger'
     @config[:scm_user] = "fred"
     text = "user:"
-    assert_equal "fred\n", @source.handle_data(mock_state, :test_stream, text)
+    assert_equal %("fred"\n), @source.handle_data(mock_state, :test_stream, text)
     # :scm_username takes priority
     @config[:scm_username] = "wilma"
-    assert_equal "wilma\n", @source.handle_data(mock_state, :test_stream, text)
+    assert_equal %("wilma"\n), @source.handle_data(mock_state, :test_stream, text)
   end
 
   def test_sync
@@ -72,7 +72,7 @@ class DeploySCMMercurialTest < Test::Unit::TestCase
     require 'capistrano/logger'
     text = "password:"
     @config[:scm_password] = "opensesame"
-    assert_equal "opensesame\n", @source.handle_data(mock_state, :test_stream, text)
+    assert_equal %("opensesame"\n), @source.handle_data(mock_state, :test_stream, text)
   end
 
   def test_prompts_for_password_if_preferred
@@ -81,7 +81,7 @@ class DeploySCMMercurialTest < Test::Unit::TestCase
     Capistrano::CLI.stubs(:password_prompt).with("hg password: ").returns("opensesame")
     @config[:scm_prefer_prompt] = true
     text = "password:"
-    assert_equal "opensesame\n", @source.handle_data(mock_state, :test_stream, text)
+    assert_equal %("opensesame"\n), @source.handle_data(mock_state, :test_stream, text)
   end
 
 

@@ -37,4 +37,32 @@ Last Changed Date: 2009-03-11 11:04:25 -0700 (Wed, 11 Mar 2009)
     assert_equal "svn switch -q  -r602 http://svn.github.com/capistrano/capistrano.git /var/www", @source.sync(rev, dest)
   end
 
+  def test_sends_password_if_set
+    require 'capistrano/logger'
+    text = "password:"
+    @config[:scm_password] = "opensesame"
+    assert_equal %("opensesame"\n), @source.handle_data(mock_state, :test_stream, text)
+  end
+
+  def test_prompt_password
+    require 'capistrano/logger'
+    require 'capistrano/cli'
+    Capistrano::CLI.stubs(:password_prompt).returns("opensesame")
+
+    text = 'password:'
+    assert_equal %("opensesame"\n), @source.handle_data(mock_state, :test_stream, text)
+  end
+
+  def test_sends_passphrase
+    require 'capistrano/logger'
+    text = 'passphrase:'
+    @config[:scm_passphrase] = "opensesame"
+    assert_equal %("opensesame"\n), @source.handle_data(mock_state, :test_stream, text)
+  end
+
+  private
+
+    def mock_state
+      { :channel => { :host => "abc" } }
+    end
 end
