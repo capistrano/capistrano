@@ -95,6 +95,13 @@ class ConfigurationVariablesTest < Test::Unit::TestCase
     end
   end
 
+  def test_set_should_evaluate_blocks_only_once
+    counter = 0
+    @config.set(:sample) { counter = counter + 1  }
+    assert_equal @config.sample, @config.sample
+    assert_equal counter, 1
+  end
+
   def test_unset_should_remove_variable_from_hash
     @config.set :sample, :value
     assert @config.variables.key?(:sample)
