@@ -32,6 +32,11 @@ module Capistrano
           it { should be_true }
         end
 
+        context 'with the same hostname and a user' do
+          let(:hostname) { 'user@hostname' }
+          it { should be_true }
+        end
+
         context 'with a different hostname' do
           let(:hostname) { 'otherserver' }
           it { should be_false }

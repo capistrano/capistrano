@@ -12,7 +12,7 @@ module Capistrano
       end
 
       def matches?(host)
-        hostname == host
+        hostname == Server.new(host).hostname
       end
 
       def roles

@@ -8,7 +8,7 @@ module Capistrano
         hosts.each do |host|
           server = find_or_create_server(host)
           server.add_role(role)
-          servers << server
+          servers.add server
         end
       end
 
