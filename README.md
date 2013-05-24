@@ -36,6 +36,7 @@ To create different stages:
 
     $ cap production deploy --dry-run
     $ cap production deploy --prereqs
+    $ cap production deploy --trace
 
 ## Configuration
 
