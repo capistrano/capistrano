@@ -35,6 +35,7 @@ namespace :deploy do
 
     desc 'Check directories to be linked exist in shared'
     task :linked_dirs do
+      next unless any? :linked_dirs
       on roles :app do
         execute :mkdir, '-pv', linked_dirs(shared_path)
       end
@@ -42,6 +43,7 @@ namespace :deploy do
 
     desc 'Check files to be linked exist in shared'
     task :linked_files do
+      next unless any? :linked_files
       on roles :app do |host|
         execute :mkdir, '-pv', linked_file_dirs(shared_path)
         linked_files(shared_path).each do |file|
@@ -71,6 +73,7 @@ namespace :deploy do
 
     desc 'Symlink linked directories'
     task :linked_dirs do
+      next unless any? :linked_dirs
       on roles :app do
         execute :mkdir, '-pv', linked_dir_parents(release_path)
 
@@ -89,6 +92,7 @@ namespace :deploy do
 
     desc 'Symlink linked files'
     task :linked_files do
+      next unless any? :linked_files
       on roles :app do
         execute :mkdir, '-pv', linked_file_dirs(release_path)
 

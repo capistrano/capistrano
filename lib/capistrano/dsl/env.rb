@@ -10,6 +10,15 @@ module Capistrano
         env.fetch(key, default)
       end
 
+      def any?(key)
+        value = fetch(key)
+        if value.respond_to?(:any)
+          value.any?
+        else
+          !fetch(key).nil?
+        end
+      end
+
       def set(key, value)
         env.set(key, value)
       end
