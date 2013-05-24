@@ -26,7 +26,7 @@ namespace :git do
   desc 'Clone the repo to the cache'
   task clone: :'git:wrapper' do
     on roles :all do
-      if test " [ -d #{repo_path}/.git ] "
+      if test " [ -f #{repo_path}/HEAD ] "
         info "The repository mirror is at #{repo_path}"
       else
         within deploy_path do
@@ -51,12 +51,13 @@ namespace :git do
   task create_release: :'git:update' do
     on roles :all do
       with git_environmental_variables do
-        execute :git, :remote, 'set-url', fetch(:repo)
-        execute :git, :clone, '--branch', fetch(:branch),                     \
-                '--single-branch',                                            \
-                '--recurse-submodules',                                       \
-                '--no-hardlinks',                                             \
-                repo_path, release_path
+        within repo_path do
+          execute :git, :clone, '--branch', fetch(:branch),               \
+            '--depth 1',                                                  \
+            '--recursive',                                                \
+            '--no-hardlinks',                                             \
+            repo_path, release_path
+        end
       end
     end
   end
