@@ -7,8 +7,10 @@ namespace :git do
 
   desc 'Upload the git wrapper script, this script guarantees that we can script git without getting an interactive prompt'
   task :wrapper do
-    upload! StringIO.new("#!/bin/sh -e\nexec /usr/bin/ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no \"$@\"\n"), '/tmp/git-ssh.sh'
-    execute :chmod, "+x", '/tmp/git-ssh.sh'
+    on roles :all do
+      upload! StringIO.new("#!/bin/sh -e\nexec /usr/bin/ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no \"$@\"\n"), '/tmp/git-ssh.sh'
+      execute :chmod, "+x", '/tmp/git-ssh.sh'
+    end
   end
 
   desc 'Check that the repository is reachable'
@@ -23,12 +25,14 @@ namespace :git do
 
   desc 'Clone the repo to the cache'
   task clone: :'git:wrapper' do
-    if test " [ -d #{repo_path}/.git ] "
-      info "The repository mirror is at #{repo_path}"
-    else
-      within deploy_path do
-        with git_environmental_variables do
-          execute :git, :clone, '--mirror', fetch(:repo), repo_path
+    on roles :all do
+      if test " [ -d #{repo_path}/.git ] "
+        info "The repository mirror is at #{repo_path}"
+      else
+        within deploy_path do
+          with git_environmental_variables do
+            execute :git, :clone, '--mirror', fetch(:repo), repo_path
+          end
         end
       end
     end
