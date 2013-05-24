@@ -27,7 +27,7 @@ namespace :git do
   task clone: :'git:wrapper' do
     on roles :all do
       if test " [ -f #{repo_path}/HEAD ] "
-        info "The repository mirror is at #{repo_path}"
+        info t(:mirror_exists, at: repo_path)
       else
         within deploy_path do
           with git_environmental_variables do

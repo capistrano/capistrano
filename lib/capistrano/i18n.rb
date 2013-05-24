@@ -14,6 +14,7 @@ en = {
   question: 'Please enter %{key}: |%{default_value}|',
   keeping_releases: 'Keeping %{keep_releases} of %{releases} deployed releases',
   linked_file_does_not_exist: 'linked file %{file} does not exist on %{host}',
+  mirror_exists: "The repository mirror is at %{at}",
   revision_log_message: 'Branch %{branch} deployed as release %{release} by %{user}',
   rollback_log_message: '%{user} rolled back to release %{release}',
   console: {

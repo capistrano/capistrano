@@ -8,8 +8,10 @@ stages.each do |stage|
     load "config/deploy/#{stage}.rb"
     load "capistrano/#{fetch(:scm)}.rb"
     set(:stage, stage.to_sym)
+    I18n.locale = fetch(:locale, :en)
     configure_backend
   end
 end
+
 
 require 'capistrano/dotfile'
