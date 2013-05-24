@@ -11,3 +11,5 @@ stages.each do |stage|
     configure_backend
   end
 end
+
+require 'capistrano/dotfile'
