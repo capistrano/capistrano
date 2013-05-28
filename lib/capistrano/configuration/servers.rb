@@ -31,7 +31,7 @@ module Capistrano
       end
 
       def fetch_primary(role)
-        fetch(role).first
+        fetch(role).select { |h| h.properties.primary }.first || fetch(role).first
       end
 
       def each
