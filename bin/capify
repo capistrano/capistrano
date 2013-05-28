@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+puts "-" * 80
+puts "Capistrano 3.x is incompatible with Capistrano 2.x. "
+puts
+puts "This command has become `cap install` in Capistrano 3.x"
+puts
+puts "For more information see http://www.capistranorb.com/"
+puts "-" * 80
