@@ -39,12 +39,35 @@ module Capistrano
 
       describe '#roles' do
 
-        before do
+        let(:env) { Configuration.env }
 
+        before do
+          env.server('example.com', roles: :app, active: true)
+          env.server('example.org', roles: :app)
         end
 
-        it 'can filter hosts by properties on the host object' do
-          1+1
+        it 'raises if the filter would remove all matching hosts' do
+          pending
+          env.server('example.org', active: true)
+          lambda do
+            env.roles_for(:app, filter: lambda { |s| !s.properties.active })
+          end.should raise_error
+        end
+
+        it 'can filter hosts by properties on the host object using symbol as shorthand' do
+          env.roles_for(:app, filter: :active).length.should == 1
+        end
+
+        it 'can select hosts by properties on the host object using symbol as shorthand' do
+          env.roles_for(:app, select: :active).length.should == 1
+        end
+
+        it 'can filter hosts by properties on the host using a regular proc' do
+          env.roles_for(:app, filter: lambda { |h| h.properties.active } ).length.should == 1
+        end
+
+        it 'can select hosts by properties on the host using a regular proc' do
+          env.roles_for(:app, select: lambda { |h| h.properties.active } ).length.should == 1
         end
 
       end

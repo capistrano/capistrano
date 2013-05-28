@@ -37,8 +37,19 @@ module Capistrano
       servers.add_host(name, properties)
     end
 
-    def roles_for(names)
-      servers.fetch_roles(names)
+    def roles_for(names, options = {})
+      servers.fetch_roles(names).tap do |list|
+        if filter = options.delete(:filter) || options.delete(:select)
+          if filter.respond_to?(:call)
+            list.select!(&filter)
+          else
+            list.select! { |s| s.properties.send(filter) }
+          end
+          if list.empty?
+            raise "Your filter #{filter} would remove all matching servers!"
+          end
+        end
+      end
     end
 
     def primary(role)
