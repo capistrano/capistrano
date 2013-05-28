@@ -1,91 +1,94 @@
 # Capistrano [![Build Status](https://travis-ci.org/capistrano/capistrano.png?branch=v3)](https://travis-ci.org/capistrano/capistrano)
 
-TODO
-
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'capistrano', github: 'capistrano/capistrano', branch: :v3
+``` ruby
+gem 'capistrano', github: 'capistrano/capistrano', branch: :v3
+```
 
 And then execute:
 
-    $ bundle --binstubs
+``` ruby
+$ bundle --binstubs
+```
 
 Capify:
 
-    $ cap install
+``` shell
+$ cap install
+```
 
 This creates the following files:
 
-- `Capfile`
-- `lib/deploy/tasks`
-- `config/deploy/staging.rb`
-- `config/deploy/production.rb`
+```
+├── Capfile
+├── config
+│   ├── deploy
+│   │   ├── production.rb
+│   │   └── staging.rb
+│   └── deploy.rb
+└── lib
+    └── capistrano
+            └── tasks
+```
 
 To create different stages:
 
-    $ cap install STAGES=local,sandbox,qa,production
+``` shell
+$ cap install STAGES=local,sandbox,qa,production
+```
 
 ## Usage
 
-    $ cap -vT
+``` shell
+$ cap -vT
 
-    $ cap staging deploy
-    $ cap production deploy
+$ cap staging deploy
+$ cap production deploy
 
-    $ cap production deploy --dry-run
-    $ cap production deploy --prereqs
-    $ cap production deploy --trace
-
-## Configuration
-
-    # config/deploy.rb
-    set :application, 'example app'
-
-    # config/deploy/production.rb
-    set :stage, :production
-
-    ask :branch, :master
-
-    role :app, %w{example.com example2.com}
-    role :web, %w{example.com}
-    role :db, %w{example.com}
-
-    # the first server in the array is considered primary
+$ cap production deploy --dry-run
+$ cap production deploy --prereqs
+$ cap production deploy --trace
+```
 
 ## Tasks
+
+
 
 ## Before / After
 
 Where calling on the same task name, executed in order of inclusion
 
+``` ruby
+# call an existing task
+before :starting, :ensure_user
 
-    # call an existing task
-    before :starting, :ensure_user
-
-    after :finishing, :notify
+after :finishing, :notify
 
 
-    # or define in block
-    before :starting, :ensure_user do
-      #
-    end
+# or define in block
+before :starting, :ensure_user do
+  #
+end
 
-    after :finishing, :notify do
-      #
-    end
+after :finishing, :notify do
+  #
+end
+```
 
 ## Console
 
-Execute arbitrary remote commands
+Execute arbitrary remote commands, to use this simply add 
+`require 'capistrano/console'` which will add the necessary tasks to your 
+environment:
 
-    $ cap staging console
+``` shell
+$ cap staging console
+```
 
 ## Configuration
 
 
 ## SSHKit
-
-
-
