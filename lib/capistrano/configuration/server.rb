@@ -16,7 +16,7 @@ module Capistrano
       end
 
       def roles
-        @roles ||= Set.new
+        properties.roles ||= Set.new
       end
     end
   end
