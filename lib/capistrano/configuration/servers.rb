@@ -4,8 +4,22 @@ module Capistrano
     class Servers
       include Enumerable
 
+      def add_host(host, properties = {})
+        find_or_create_server(host).tap do |host|
+          Array(properties.delete(:roles) || properties.delete("roles")).each do |role|
+            host.add_role(role)
+          end
+          properties.each do |key, value|
+            unless host.properties.respond_to?(key)
+              host.properties.send(:"#{key}=", value)
+            end
+          end
+          servers.add host
+        end
+      end
+
       def add_role(role, hosts)
-        hosts.each do |host|
+        Array(hosts).each do |host|
           server = find_or_create_server(host)
           server.add_role(role)
           servers.add server
@@ -35,10 +49,10 @@ module Capistrano
       end
 
       def roles_for(names)
-        if names.include?(:all)
+        if Array(names).map(&:to_sym).include?(:all)
           servers
         else
-          names.flat_map { |name| fetch name }.uniq
+          Array(names).flat_map { |name| fetch name }.uniq
         end
       end
 

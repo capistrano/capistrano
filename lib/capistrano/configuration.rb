@@ -33,6 +33,10 @@ module Capistrano
       servers.add_role(name, hosts)
     end
 
+    def server(name, properties = {})
+      servers.add_host(name, properties)
+    end
+
     def roles_for(names)
       servers.fetch_roles(names)
     end

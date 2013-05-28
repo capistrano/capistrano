@@ -4,11 +4,11 @@ module Capistrano
     class Server < SSHKit::Host
 
       def add_role(role)
-        roles << role
+        roles << role.to_sym
       end
 
       def has_role?(role)
-        roles.include? role
+        roles.include? role.to_sym
       end
 
       def matches?(host)
@@ -18,6 +18,7 @@ module Capistrano
       def roles
         properties.roles ||= Set.new
       end
+
     end
   end
 end
