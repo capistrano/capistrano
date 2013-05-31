@@ -41,10 +41,11 @@ module Capistrano
       end
 
       describe 'finding the primary server' do
-        it 'takes the first server for if none have the primary property' do
+        it 'takes the first server if none have the primary property' do
           servers.add_role(:app, %w{1 2})
           servers.fetch_primary(:app).hostname.should == "1"
         end
+
         it 'takes the first server with the primary have the primary flag' do
           servers.add_role(:app, %w{1 2})
           servers.add_host('2', primary: true)
