@@ -18,6 +18,7 @@ en = {
   mirror_exists:               "The repository mirror is at %{at}",
   revision_log_message:        'Branch %{branch} deployed as release %{release} by %{user}',
   rollback_log_message:        '%{user} rolled back to release %{release}',
+  filter_removes_all_servers:  'Your filter %{filter} would remove all matching servers',
   console: {
     welcome:  'capistrano console - enter command to execute on %{stage}',
     bye:      'bye'

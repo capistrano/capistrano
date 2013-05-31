@@ -8,7 +8,7 @@ module Capistrano
       end
 
       def add_role(role)
-        roles << role.to_sym
+        roles.add role.to_sym
       end
 
       def has_role?(role)
@@ -20,25 +20,37 @@ module Capistrano
       end
 
       def roles
-        properties.roles ||= Set.new
+        properties.cap_roles ||= Set.new
       end
 
-      def primary
-        self if properties.primary
+      def primary?
+        self if fetch(:primary?)
       end
 
       def with(properties)
-        properties.each { |property, value| add_property(property, value) }
+        properties.each { |key, value| add_property(key, value) }
         self
+      end
+
+      def fetch(key)
+        properties.send(key)
+      end
+
+      def set(key, value)
+        properties.send(:"#{key}=", value) unless set?(key)
+      end
+
+      def set?(key)
+        properties.respond_to?(key)
       end
 
       private
 
-      def add_property(property, value)
-        if property.to_sym == :role
+      def add_property(key, value)
+        if key.to_sym == :roles
           add_roles(value)
         else
-          properties.send(:"#{property}=", value) unless properties.respond_to?(property)
+          set(key, value)
         end
       end
 

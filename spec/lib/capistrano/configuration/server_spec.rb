@@ -52,10 +52,10 @@ module Capistrano
       end
 
       describe 'identifying as primary' do
-        subject { server.primary }
+        subject { server.primary? }
         context 'server is primary' do
           before do
-            server.properties.primary = true
+            server.set(:primary?, true)
           end
           it 'returns self' do
             expect(subject).to eq server

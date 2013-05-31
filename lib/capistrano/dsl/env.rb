@@ -31,6 +31,10 @@ module Capistrano
         env.role(name, servers)
       end
 
+      def server(name, properties={})
+        env.server(name, properties)
+      end
+
       def roles(*names)
         env.roles_for(names)
       end
@@ -54,4 +58,3 @@ module Capistrano
     end
   end
 end
-
