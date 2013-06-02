@@ -66,7 +66,7 @@ module Capistrano
 
         it 'takes the first server with the primary have the primary flag' do
           servers.add_role(:app, %w{1 2})
-          servers.add_host('2', primary?: true)
+          servers.add_host('2', primary: true)
           servers.fetch_primary(:app).hostname.should == '2'
         end
       end

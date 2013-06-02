@@ -34,5 +34,6 @@ module Capistrano
     def local_user
       `whoami`
     end
+
   end
 end

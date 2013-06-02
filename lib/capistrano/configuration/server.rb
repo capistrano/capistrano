@@ -2,6 +2,8 @@ require 'set'
 module Capistrano
   class Configuration
     class Server < SSHKit::Host
+      extend Forwardable
+      def_delegators :properties, :roles, :fetch, :set
 
       def add_roles(roles)
         Array(roles).each { |role| add_role(role) }
@@ -19,12 +21,8 @@ module Capistrano
         hostname == Server.new(host).hostname
       end
 
-      def roles
-        properties.cap_roles ||= Set.new
-      end
-
-      def primary?
-        self if fetch(:primary?)
+      def primary
+        self if fetch(:primary)
       end
 
       def with(properties)
@@ -32,17 +30,48 @@ module Capistrano
         self
       end
 
-      def fetch(key)
-        properties.send(key)
+      def properties
+        @properties ||= Properties.new
       end
 
-      def set(key, value)
-        properties.send(:"#{key}=", value) unless set?(key)
+      class Properties
+
+        def initialize
+          @properties = {}
+        end
+
+        def set(key, value)
+          @properties[key] = value
+        end
+
+        def fetch(key)
+          @properties[key]
+        end
+
+        def respond_to?(method)
+          @properties.has_key?(method)
+        end
+
+        def roles
+          @roles ||= Set.new
+        end
+
+        def method_missing(key, value=nil)
+          if value
+            set(lvalue(key), value)
+          else
+            fetch(key)
+          end
+        end
+
+        private
+
+        def lvalue(key)
+          key.to_s.chomp('=').to_sym
+        end
+
       end
 
-      def set?(key)
-        properties.respond_to?(key)
-      end
 
       private
 

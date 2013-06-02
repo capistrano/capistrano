@@ -19,7 +19,7 @@ module Capistrano
 
       def fetch_primary(role)
         hosts = fetch(role)
-        hosts.find(&:primary?) || hosts.first
+        hosts.find(&:primary) || hosts.first
       end
 
       def each

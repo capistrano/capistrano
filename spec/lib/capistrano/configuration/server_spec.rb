@@ -52,10 +52,10 @@ module Capistrano
       end
 
       describe 'identifying as primary' do
-        subject { server.primary? }
+        subject { server.primary }
         context 'server is primary' do
           before do
-            server.set(:primary?, true)
+            server.set(:primary, true)
           end
           it 'returns self' do
             expect(subject).to eq server
@@ -94,11 +94,9 @@ module Capistrano
         context 'existing properties' do
           let(:properties) { { webscales: 6 } }
 
-          before do
+          it 'keeps the existing properties' do
+            expect(server.properties.webscales).to eq 6
             server.properties.webscales = 5
-          end
-
-          it 'does keeps the existing properties' do
             expect(server.properties.webscales).to eq 5
           end
         end

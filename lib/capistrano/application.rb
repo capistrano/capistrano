@@ -1,6 +1,5 @@
 module Capistrano
   class Application < Rake::Application
-    include Rake::DSL
 
     def initialize
       super
