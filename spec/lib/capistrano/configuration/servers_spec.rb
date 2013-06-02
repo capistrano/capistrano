@@ -20,12 +20,12 @@ module Capistrano
 
         it 'accepts instances of server objects' do
           servers.add_role(:app, [Capistrano::Configuration::Server.new('example.net'), 'example.com'])
-          expect(servers.roles_for(:app).length).to eq 2
+          expect(servers.roles_for([:app]).length).to eq 2
         end
 
         it 'accepts non-enumerable types' do
           servers.add_role(:app, '1')
-          expect(servers.roles_for(:app).count).to eq 1
+          expect(servers.roles_for([:app]).count).to eq 1
         end
 
       end
@@ -117,28 +117,28 @@ module Capistrano
 
         it 'raises if the filter would remove all matching hosts' do
           I18n.expects(:t).with(:filter_removes_all_servers)
-          expect { servers.roles_for(:app, select: :inactive) }.to raise_error
+          expect { servers.roles_for([:app, select: :inactive]) }.to raise_error
         end
 
         it 'can filter hosts by properties on the host object using symbol as shorthand' do
-          expect(servers.roles_for(:app, filter: :active).length).to eq 1
+          expect(servers.roles_for([:app, filter: :active]).length).to eq 1
         end
 
         it 'can select hosts by properties on the host object using symbol as shorthand' do
-          expect(servers.roles_for(:app, select: :active).length).to eq 1
+          expect(servers.roles_for([:app, select: :active]).length).to eq 1
         end
 
         it 'can filter hosts by properties on the host using a regular proc' do
-          expect(servers.roles_for(:app, filter: lambda { |h| h.properties.active } ).length).to eq 1
+          expect(servers.roles_for([:app, filter: lambda { |h| h.properties.active }]).length).to eq 1
         end
 
         it 'can select hosts by properties on the host using a regular proc' do
-          expect(servers.roles_for(:app, select: lambda { |h| h.properties.active } ).length).to eq 1
+          expect(servers.roles_for([:app, select: lambda { |h| h.properties.active }]).length).to eq 1
         end
 
         it 'raises if the regular proc filter would remove all matching hosts' do
           I18n.expects(:t).with(:filter_removes_all_servers)
-          expect { servers.roles_for(:app, select: lambda { |h| h.properties.inactive }) }.to raise_error
+          expect { servers.roles_for([:app, select: lambda { |h| h.properties.inactive }])}.to raise_error
         end
 
       end

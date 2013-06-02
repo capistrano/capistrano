@@ -12,9 +12,9 @@ module Capistrano
         Array(hosts).each { |host| add_host(host, roles: role) }
       end
 
-      def roles_for(*names)
+      def roles_for(names)
         options = extract_options(names)
-        fetch_roles(*names, options)
+        fetch_roles(names, options)
       end
 
       def fetch_primary(role)
