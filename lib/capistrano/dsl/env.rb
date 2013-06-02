@@ -12,7 +12,7 @@ module Capistrano
 
       def any?(key)
         value = fetch(key)
-        if value.respond_to?(:any)
+        if value.respond_to?(:any?)
           value.any?
         else
           !fetch(key).nil?
@@ -27,8 +27,8 @@ module Capistrano
         env.ask(key, value)
       end
 
-      def role(name, servers)
-        env.role(name, servers)
+      def role(name, servers, options={})
+        env.role(name, servers, options)
       end
 
       def server(name, properties={})

@@ -37,3 +37,4 @@ module Capistrano
 
   end
 end
+self.extend Capistrano::DSL

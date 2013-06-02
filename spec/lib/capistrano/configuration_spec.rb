@@ -18,7 +18,7 @@ module Capistrano
 
         before do
           Configuration::Servers.expects(:new).returns(servers)
-          servers.expects(:add_role).with(:app, %w{server1 server2})
+          servers.expects(:add_role).with(:app, %w{server1 server2}, {})
         end
 
         it 'adds the role' do

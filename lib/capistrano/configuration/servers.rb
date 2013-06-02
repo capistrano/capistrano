@@ -8,8 +8,8 @@ module Capistrano
         servers.add server(host).with(properties)
       end
 
-      def add_role(role, hosts)
-        Array(hosts).each { |host| add_host(host, roles: role) }
+      def add_role(role, hosts, options={})
+        Array(hosts).each { |host| add_host(host, options.merge(roles: role)) }
       end
 
       def roles_for(names)

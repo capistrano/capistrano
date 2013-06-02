@@ -29,8 +29,8 @@ module Capistrano
       end
     end
 
-    def role(name, hosts)
-      servers.add_role(name, hosts)
+    def role(name, hosts, options={})
+      servers.add_role(name, hosts, options)
     end
 
     def server(name, properties={})
