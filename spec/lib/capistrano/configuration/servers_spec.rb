@@ -116,7 +116,7 @@ module Capistrano
         end
 
         it 'raises if the filter would remove all matching hosts' do
-          I18n.expects(:t).with(:filter_removes_all_servers)
+          I18n.expects(:t)
           expect { servers.roles_for([:app, select: :inactive]) }.to raise_error
         end
 
@@ -137,7 +137,7 @@ module Capistrano
         end
 
         it 'raises if the regular proc filter would remove all matching hosts' do
-          I18n.expects(:t).with(:filter_removes_all_servers)
+          I18n.expects(:t)
           expect { servers.roles_for([:app, select: lambda { |h| h.properties.inactive }])}.to raise_error
         end
 

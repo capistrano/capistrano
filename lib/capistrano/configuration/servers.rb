@@ -70,7 +70,7 @@ module Capistrano
           if servers_with_filter.any?
             servers_with_filter
           else
-            fail I18n.t(:filter_removes_all_servers)
+            fail I18n.t(:filter_removes_all_servers, scope: :capistrano, filter: key )
           end
         end
 
@@ -81,8 +81,12 @@ module Capistrano
           @servers_with_filter ||= servers.select(&filter)
         end
 
+        def key
+          options[:filter] || options[:select]
+        end
+
         def filter_option
-          options[:filter] || options[:select] || all
+          key || all
         end
 
         def filter
