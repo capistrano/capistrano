@@ -138,7 +138,7 @@ namespace :deploy do
         logger.info "Fetched #{manifests.count} manifests from #{releases_path}/*/assets_manifest.*"
         current_assets = Set.new
         manifests.each do |content|
-          current_assets += parse_manifest(content)
+          current_assets += parse_manifest(content) unless content == ""
         end
         current_assets += [File.basename(shared_manifest_path), "sources_manifest.yml"]
 
