@@ -1,5 +1,9 @@
 # Capistrano [![Build Status](https://travis-ci.org/capistrano/capistrano.png?branch=v3)](https://travis-ci.org/capistrano/capistrano)
 
+## Requirements
+
+Ruby 2.0
+
 ## Installation
 
 Add this line to your application's Gemfile:
