@@ -17,3 +17,4 @@ test/version_tmp
 tmp
 .rspec-local
 .ruby-version
+_site
