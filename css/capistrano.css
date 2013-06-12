@@ -1,0 +1,66 @@
+a {
+  text-decoration: none;
+  color: #52C1DB;
+}
+
+body, p, a {
+  font-family: 'Open-Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  color: #1C1B39;
+}
+
+.header {
+  height: 195px;
+  background-color: #1C1B39;
+  background-image: url('/images/CapistranoGraphicWireframe.png');
+  background-repeat: no-repeat;
+  background-size: 275px;
+  position: relative;
+}
+
+.header a {
+  color: #52C1DB;
+}
+
+pre {
+  margin: 1.3em 0 1em;
+  padding: 1.3em;
+}
+
+code, kbd, pre, samp {
+  font-family: 'droid-sans-mono', monospace, serif;
+  background-color: rgb(250, 250, 250);
+}
+
+.header a.brand img {
+  margin: 6.5em auto auto 7em;
+  width: 300px;
+}
+
+h1, h2, h3, h4, h5 h6 {
+  font-family: 'Enriqueta', serif;
+}
+
+.post-date {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 36pt;
+}
+
+h2 {
+  font-size: 18pt;
+}
+
+.nav.nav-list {
+  border-top: none;
+}
+
+.content {
+  margin: 1.3em 0 1em;
+  padding: 1.3em;
+}

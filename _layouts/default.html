@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }}</title>
+    <script type="text/javascript" src="//use.typekit.net/itm5ubu.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Enriqueta' rel='stylesheet' type='text/css'>
+    <link href="http://vjs.zencdn.net/4.0.2/video-js.css" rel="stylesheet">
+    <script src="http://vjs.zencdn.net/4.0.2/video.js"></script>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.1.0/pure-min.css">
+    <link rel="stylesheet" href="/css/syntax.css">
+    <link rel="stylesheet" href="/css/capistrano.css">
+  </head>
+  <body>
+
+    {% include header.html %}
+
+    <div class="pure-g-r">
+      <div class="pure-u-1-3">
+        {% include navigation.html %}
+      </div>
+      <div class="pure-u-2-3">
+        <div class="content">
+          <h2>{{ page.title }}</h2>
+          {{ content }}
+        </div>
+      </div>
+    </div>
+
+    <!--<div class="container">                                     -->
+    <!--      <h1 class="title"><a href="/">{{ site.name }}</a></h1>-->
+    <!--      <a class="extra" href="/">home</a>                    -->
+    <!--    </div>                                                  -->
+
+    <!--    {{ content }}                                           -->
+
+    <!--</div> [> /container <]                                     -->
+
+    {% include footer.html %}
+
+  </body>
+</html>
