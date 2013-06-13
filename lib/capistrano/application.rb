@@ -11,6 +11,14 @@ module Capistrano
       super
     end
 
+    def standard_rake_options
+      Rake::Application.new.standard_rake_options.tap do |sra|
+        sra[sra.index { |opt| opt[0] == "--version" }][3] = lambda do |value|
+          puts "Capistrano Version: #{Capistrano::VERSION} (Rake Version: #{RAKEVERSION})"
+        end
+      end
+    end
+
     def load_rakefile
       @name = 'cap'
       super
