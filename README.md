@@ -2,7 +2,7 @@
 
 ## Requirements
 
-Ruby 2.0
+* Ruby >= 1.9 (JRuby and C-Ruby/MRI are supported)
 
 ## Installation
 
@@ -84,8 +84,8 @@ end
 
 ## Console
 
-Execute arbitrary remote commands, to use this simply add 
-`require 'capistrano/console'` which will add the necessary tasks to your 
+Execute arbitrary remote commands, to use this simply add
+`require 'capistrano/console'` which will add the necessary tasks to your
 environment:
 
 ``` shell
