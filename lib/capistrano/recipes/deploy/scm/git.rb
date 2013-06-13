@@ -223,6 +223,11 @@ module Capistrano
         # Getting the actual commit id, in case we were passed a tag
         # or partial sha or something - it will return the sha if you pass a sha, too
         def query_revision(revision)
+          OptionParser.new do |opts|
+            opts.on( "-n", "--dry-run" ) do
+              return "c2d9e79"
+            end
+          end.parse!
           raise ArgumentError, "Deploying remote branches is no longer supported.  Specify the remote branch as a local branch for the git repository you're deploying from (ie: '#{revision.gsub('origin/', '')}' rather than '#{revision}')." if revision =~ /^origin\//
           return revision if revision =~ /^[0-9a-f]{40}$/
           command = scm('ls-remote', repository, revision)
