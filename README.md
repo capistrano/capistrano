@@ -123,6 +123,7 @@ This method is widely used.
 
 ## Getting User Input
 
+``` ruby
 desc "Ask about breakfast"
 task :breakfast do
   breakfast = ask(:breakfast, "What would you like your colleagues to you for breakfast?")
@@ -130,10 +131,15 @@ task :breakfast do
     execute "echo \"$(whoami) wants #{breakfast} for breakfast!\" | wall"
   end
 end
+```
 
 Perfect, who needs telephones.
 
 ## Console
+
+**Note:** Here be dragons. The console is very immature, but it's much more
+cleanly architected than previous incarnations and it'll only get better from
+here on in.
 
 Execute arbitrary remote commands, to use this simply add
 `require 'capistrano/console'` which will add the necessary tasks to your
@@ -182,7 +188,6 @@ sympotamtic of bad design (i.e. you're testing a second version of Ruby in produ
 your company lacks the infrastructure to test this in a staging environment)
 
 ## Configuration
-
 
 
 ## SSHKit
