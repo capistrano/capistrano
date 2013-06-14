@@ -462,7 +462,7 @@ namespace :deploy do
   DESC
   task :cleanup, :except => { :no_release => true } do
     count = fetch(:keep_releases, 5).to_i
-    try_sudo "ls -1dt #{releases_path}/* | tail -n +#{count + 1} | #{try_sudo} xargs rm -rf"
+    run "#{try_sudo} sh -c 'ls -1dt #{releases_path}/* | tail -n +#{count + 1} | xargs rm -rf'"
   end
 
   desc <<-DESC
