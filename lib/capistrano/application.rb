@@ -3,6 +3,7 @@ module Capistrano
 
     def initialize
       super
+      @name = "cap"
       @rakefiles = %w{capfile Capfile capfile.rb Capfile.rb} << capfile
     end
 
