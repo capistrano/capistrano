@@ -60,6 +60,8 @@ describe Capistrano::DSL do
         dsl.role :web, %w{example1.com example2.com example3.com}
         dsl.role :web, %w{example1.com}, active: true
         dsl.role :app, %w{example3.com example4.com}
+        dsl.role :app, %w{example3.com}, active: true
+        dsl.role :app, %w{example4.com}, primary: true
       end
 
       describe 'fetching servers by role' do
