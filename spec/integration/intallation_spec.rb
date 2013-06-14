@@ -1,21 +1,14 @@
 require 'spec_helper'
+require 'support/test_app'
+
+include TestApp
 
 describe 'cap install' do
-  let(:test_app_path) { Pathname.new('/tmp/test_app') }
-  let(:path_to_cap) { File.expand_path('.') }
-  let(:gemfile) { test_app_path.join('Gemfile') }
 
   context 'with defaults' do
     before :all do
-      FileUtils.rm_rf(test_app_path)
-      FileUtils.mkdir(test_app_path)
-
-      File.open(gemfile, 'w+') do |file|
-        file.write "gem 'capistrano', path: '#{path_to_cap}'"
-      end
-
+      create_test_app
       Dir.chdir(test_app_path) do
-        %x[bundle]
         %x[bundle exec cap install]
       end
     end
@@ -49,15 +42,8 @@ describe 'cap install' do
 
   context 'with STAGES' do
     before :all do
-      FileUtils.rm_rf(test_app_path)
-      FileUtils.mkdir(test_app_path)
-
-      File.open(gemfile, 'w+') do |file|
-        file.write "gem 'capistrano', path: '#{path_to_cap}'"
-      end
-
+      create_test_app
       Dir.chdir(test_app_path) do
-        %x[bundle]
         %x[bundle exec cap install STAGES=qa,production]
       end
     end
@@ -90,5 +76,4 @@ describe 'cap install' do
 
     end
   end
-
 end
