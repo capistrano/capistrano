@@ -200,4 +200,39 @@ describe Capistrano::DSL do
     end
   end
 
+  describe 'configuration SSHKit' do
+    let(:config) { SSHKit.config }
+    let(:backend) { SSHKit.config.backend.config }
+    let(:default_env) { { rails_env: :production } }
+
+    before do
+      dsl.set(:format, :dot)
+      dsl.set(:log_level, :debug)
+      dsl.set(:default_env, default_env)
+      dsl.set(:pty, true)
+      dsl.set(:connection_timeout, 10)
+      dsl.configure_backend
+    end
+
+    it 'sets the output' do
+      expect(config.output).to be_a SSHKit::Formatter::Dot
+    end
+
+    it 'sets the output verbosity' do
+      expect(config.output_verbosity).to eq 0
+    end
+
+    it 'sets the default env' do
+      expect(config.default_env).to eq default_env
+    end
+
+    it 'sets the backend pty' do
+      expect(backend.pty).to be_true
+    end
+
+    it 'sets the backend connection timeout' do
+      expect(backend.connection_timeout).to eq 10
+    end
+  end
+
 end
