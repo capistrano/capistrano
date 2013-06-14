@@ -6,6 +6,14 @@ describe Capistrano::Application do
 
   it "provides a --format option which enables the choice of output formatting"
 
+  it "identifies itself as cap and not rake" do
+    pending "Waiting for: https://github.com/jimweirich/rake/pull/204"
+    out, _ = capture_io do
+      flags '--help', '-h'
+    end
+    out.should match(/\bcap [ -f capfile ]\b/)
+  end
+
   it "overrides the rake method, but still prints the rake version" do
     out, _ = capture_io do
       flags '--version', '-V'
