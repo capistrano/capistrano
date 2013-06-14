@@ -8,6 +8,7 @@ module Capistrano
       def add_roles(roles)
         Array(roles).each { |role| add_role(role) }
       end
+      alias roles= add_roles
 
       def add_role(role)
         roles.add role.to_sym
@@ -76,8 +77,8 @@ module Capistrano
       private
 
       def add_property(key, value)
-        if key.to_sym == :roles
-          add_roles(value)
+        if respond_to?("#{key}=")
+          send("#{key}=", value)
         else
           set(key, value)
         end
