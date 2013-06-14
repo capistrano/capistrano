@@ -45,8 +45,14 @@ module Capistrano
       servers.fetch_primary(role)
     end
 
+    def backend
+      @backend ||= SSHKit
+    end
+
+    attr_writer :backend
+
     def configure_backend
-      SSHKit.configure do |sshkit|
+      backend.configure do |sshkit|
         sshkit.format           = fetch(:format)
         sshkit.output_verbosity = fetch(:log_level)
         sshkit.default_env      = fetch(:default_env)

@@ -76,7 +76,15 @@ module Capistrano
       end
     end
 
+    describe 'setting the backend' do
+      it 'by default, is SSHKit' do
+        expect(config.backend).to eq SSHKit
+      end
 
-
+      it 'can be set to another class' do
+        config.backend = :test
+        expect(config.backend).to eq :test
+      end
+    end
   end
 end
