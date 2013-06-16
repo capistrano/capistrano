@@ -1,9 +1,6 @@
-require 'spec_helper'
-require 'support/test_app'
+require 'integration_spec_helper'
 
-include TestApp
-
-describe 'cap install' do
+describe 'cap install', slow: true do
 
   context 'with defaults' do
     before :all do
@@ -65,7 +62,7 @@ describe 'cap install' do
         expect(File.exists?(file)).to be_true
       end
 
-      it 'creates the stage files' do
+      it 'creates the stage files specified, not the defaults' do
         qa = test_app_path.join('config/deploy/qa.rb')
         production = test_app_path.join('config/deploy/production.rb')
         staging = test_app_path.join('config/deploy/staging.rb')

@@ -13,6 +13,14 @@ describe Capistrano::DSL do
         dsl.server 'example4.com', roles: %w{app}, primary: true
       end
 
+      describe 'fetching all servers' do
+        subject { dsl.roles(:all) }
+
+        it 'returns all servers' do
+          expect(subject.map(&:hostname)).to eq %w{example1.com example2.com example3.com example4.com}
+        end
+      end
+
       describe 'fetching servers by role' do
         subject { dsl.roles(:app) }
 
@@ -62,6 +70,14 @@ describe Capistrano::DSL do
         dsl.role :app, %w{example3.com example4.com}
         dsl.role :app, %w{example3.com}, active: true
         dsl.role :app, %w{example4.com}, primary: true
+      end
+
+      describe 'fetching all servers' do
+        subject { dsl.roles(:all) }
+
+        it 'returns all servers' do
+          expect(subject.map(&:hostname)).to eq %w{example1.com example2.com example3.com example4.com}
+        end
       end
 
       describe 'fetching servers by role' do
