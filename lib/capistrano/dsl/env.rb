@@ -12,7 +12,7 @@ module Capistrano
 
       def any?(key)
         value = fetch(key)
-        if value.respond_to?(:any?)
+        if value && value.respond_to?(:any?)
           value.any?
         else
           !fetch(key).nil?
