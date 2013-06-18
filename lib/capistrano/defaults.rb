@@ -2,7 +2,7 @@ set :scm, :git
 set :branch, :master
 set :deploy_to, "/var/www/#{fetch(:application)}"
 
-set :linked_file, []
+set :linked_files, []
 set :linked_dirs, []
 
 set :default_environment, {}
