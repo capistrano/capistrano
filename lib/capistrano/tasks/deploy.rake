@@ -112,13 +112,10 @@ namespace :deploy do
 
   desc 'Clean up old releases'
   task :cleanup do
-    releases = on primary :app do
-      capture(:ls, '-xt', releases_path).split.reverse
-    end
-
-    on roles :all do
+    on roles :all do |host|
+      releases = capture(:ls, '-xt', releases_path).split.reverse
       if releases.count >= fetch(:keep_releases)
-        info t(:keeping_releases, keep_releases: fetch(:keep_releases), releases: releases.count)
+        info t(:keeping_releases, host: host.to_s, keep_releases: fetch(:keep_releases), releases: releases.count)
         directories = (releases - releases.last(fetch(:keep_releases))).map { |release|
           releases_path.join(release) }.join(" ")
         execute :rm, '-rf', directories
