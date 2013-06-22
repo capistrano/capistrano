@@ -91,11 +91,11 @@ features are awesome.
 #### Rake Integration
 
 We have moved away from our own DSL implemenation to implement Capistrano as a
-Rake application.
+*Rake* application.
 
 Rake has always supported being sub-classed, so to speak as a
 *sub-application*; it is however poorly documented. By subclassing
-Rake::Application one can specify what the *Rakefile* should look like, where
+`Rake::Application` one can specify what the *Rakefile* should look like, where
 to search for it, and how to load other *Rakefiles*.
 
 The *Rake* DSL is widely used, well known and very powerful. As Rake is
@@ -105,7 +105,7 @@ for example build a tarball as a dependency of uploading it and deploying it.
 This has allowed us to do away with the *copy* strategy all together, as it
 can now be implemented from scratch in fewer than ten lines of code. You can
 check out the [replicating the copy
-strategy]( /screencasts/replicating_the_copy_strategy ) screencast and
+strategy](/screencasts/replicating_the_copy_strategy) screencast and
 acompanying documentation if you want to explore that any further.
 
 The guiding principle is dependency resolution, and interoperability with
@@ -134,6 +134,23 @@ resolve this dependency at Runtime, mailing the recent changelog to your team,
 assuming everything is setup correctly.
 
 #### Built In Stage Support
+
+In former versions of Capistrano *stage* support was an after thought,
+provided through the `capistrano-ext` Gem, and latterly merged into the main
+codebase, people insisted in still using the `capistrano-ext` version
+regardless.
+
+In Capistrano 3.0.x there's stage support built in, at installation time, two
+stages will be created by default, *staging* and *production*; it's easy to
+add more, just add a file to `config/deploy/______.rb` which follows the
+conventions established in the examples we created for you.
+
+To create different stages at installation time, simply set the `STAGES`
+environmental variable to a comma separated list of stages:
+
+{% prism bash %}
+    $ cap install STAGES=staging,production,ci,qa
+{% endprism %}
 
 #### Parallelism
 
@@ -168,7 +185,8 @@ The equivilent code in under Capistrano v3 would look like this:
         elsif host.roles.include?(:web)
           execute "/u/apps/social/script/restart-web"
         else
-          info "Nothing to do for #{host} with roles #{host.properties.roles}."
+          info sprintf("Nothing to do for %s with roles %s", host,
+          host.properties.roles)
         end
       end
     end
@@ -399,14 +417,26 @@ from preceedings, there is a so-called command map for commands.
 When executing something like:
 
 {% prism ruby %}
-execute "git clone ........ ......."
+    # Capistrano 2.0.x
+    execute "git clone ........ ......."
 {% endprism %}
 
 The command is passed through to the remote server *completely unchanged*.
 This includes the options which might be set, such as user, directory, and
 environmental variables. **This is by design.** This feature is designed to
 allow people to write non-trivial commands in
-[heredocs](https://en.wikipedia.org/wiki/Here_document) when the need arises.
+[heredocs](https://en.wikipedia.org/wiki/Here_document) when the need arises,
+for example:
+
+{% prism ruby %}
+    # Capistrano 3.0.x
+    execute <<-EOBLOCK
+      # All of this block is interpreted as Bash script
+      if ! [ -e /tmp/somefile ]; then
+        touch /tmp/somefile
+      end
+    EOBLOCK
+{% endprism %}
 
 The idiomatic way to write that command in Capistrano v3 is to use the
 separated variadaric method to specify the command:
@@ -414,6 +444,16 @@ separated variadaric method to specify the command:
 {% prism ruby %}
     # Capistrano 3.0.x
     execute :git, :clone, "........", "......."
+{% endprism %}
+
+... or for the larger example
+
+{% prism ruby %}
+    # Capistrano 3.0.x
+    file = '/tmp/somefile'
+    unless test("-e #{file}")
+      execute :touch, file
+    end
 {% endprism %}
 
 In this way the *command map* is consulted, the command map maps all unknown
