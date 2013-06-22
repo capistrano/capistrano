@@ -40,7 +40,8 @@ We had a few goals for this release, in no particular order they were:
   huge factor, since Rails introduced the *Asset Pipeline* it's not uncommon
   for a deploy that formerly took 5 seconds now takes 5 minutes. This really
   is mostly out of our control, but with improved support for parallelism,
-  rolling restarts we feel confident that things are bettwe not.
+  rolling restarts we feel confident that things will be quicker and easier to
+  keep running quickly now.
 * **Applicability.** We've always maintained that Capistrano is a terrible
   tool for system provisioning, and that more often than not servers are
   better being setup with Chef, Puppet or similar, whilst we still agree with
@@ -50,37 +51,29 @@ We had a few goals for this release, in no particular order they were:
 ### What's missing?
 
 Before we get too carried away it's worth shortlisting the things that don't
-exist in version three, *yet*.
+exist in version three, ***yet***.
 
-* *Run Locally.* `run_locally` was always a bit of the poor relation in the
-  family, it didn't quite work the same way as other things, and I never liked
-  the idea that you were binding a tool that in principle should be cross
-  platform (Ruby, and Capistrano) to locally executing shell commands which
-  probably only work on POSIX-like operating systems. I hope that
-  `run_locally` will stay gone, and that as a community we can find better
-  ways of doing things that always relied on locally creating tarballs, or
-  writing configuration files, or similar.
-* *SSH Gateway Support.* SSH Gateway support hasn't been implemented in
+* **SSH Gateway Support** SSH Gateway support hasn't been implemented in
   version three yet, I hope that this will be done soon. As I have no direct
   need for it, I haven't the means to test it with a view to implementing it,
   yet.
-* *Mecurial, Subversion, and CVS Support.* These have been removed as we've
+* **Mecurial, Subversion, and CVS Support** These have been removed as we've
   been able to implement the Git SCM in an incredibly neat way that isn't
   compatible with the others. We wanted to break the cycle of always sticking
   with the lowest common denominator, so we are **actively** looking for
   people who are interested in contributing, or sharing expertise on the
   *best-practice* way of speedily deploying from your respective choice of
   source control.
-* *`HOSTFILTER` ,`ROLEFILTER` and friends.* These have gone away because I
+* **`HOSTFILTER` ,`ROLEFILTER` and friends** These have gone away because we
   always felt they were indemic of a bad design desision about using
   Environmental Variables. These will be coming back as flags passed to `cap`
   on the CLI, and options that can be set on the Capistrano::Application Ruby
   class.
-* *Shell.* The shell has been removed temporarily pending a neater
+* **Shell** The shell has been removed temporarily pending a neater
   implementation, we've got something that we are playing with internally, but
   it needs better readline support, and some more controls around what to do
   when things go badly on some servers, but not others.
-* *Cold Deploy.* The `cap deploy:cold` is a really old legacy component,
+* **Cold Deploy** The `cap deploy:cold` is a really old legacy component,
   orignally from the days of the `script/spinner` where deploying cold
   (starting workers that weren't running), and deploying a *warm* system were
   different (restarting existing worker pools, which wasn't fun!) By and large
@@ -89,9 +82,6 @@ exist in version three, *yet*.
   tasks without things blowing up, and that should be the approach we take.
   Tasks on the server should be idempotent, and if something is called twice,
   let it be.
-* *Coloured Output.*✝ The capistrano-colours Gem was (fairly) recently merged
-  into Capistrano v2, this has gone away in favour of a IO streaming model
-  inspired by MiniTest/Pride. Read more below in new features.
 
 ### What's new?
 
@@ -114,26 +104,28 @@ for example build a tarball as a dependency of uploading it and deploying it.
 
 This has allowed us to do away with the *copy* strategy all together, as it
 can now be implemented from scratch in fewer than ten lines of code. You can
-check out the [replicating the copy strategy][] screencast and acompanying
-documentation if you want to explore that any further.
+check out the [replicating the copy
+strategy]( /screencasts/replicating_the_copy_strategy ) screencast and
+acompanying documentation if you want to explore that any further.
 
 The guiding principle is dependency resolution, and interoperability with
 other tools, for example:
 
 {% prism ruby %}
-task :notify do
-  this_release_tag = sh("git describe --abbrev=0 --tags")
-  last_ten_commits = sh("git log #{this_release_tag}~10..#{this_release_tag}")
-  Mail.deliver do
-    to      "team@example.com"
-    subject "Releasing #{this_release_tag} Now!"
-    body    last_ten_commits
-  end
-end
+    # Capistrano 3.0.x
+    task :notify do
+      this_release_tag = sh("git describe --abbrev=0 --tags")
+      last_ten_commits = sh("git log #{this_release_tag}~10..#{this_release_tag}")
+      Mail.deliver do
+        to      "team@example.com"
+        subject "Releasing #{this_release_tag} Now!"
+        body    last_ten_commits
+      end
+    end
 
-namespace :deploy
-  task default: :notify
-end
+    namespace :deploy
+      task default: :notify
+    end
 {% endprism %}
 
 The last three lines rely on Rake's additive task declaration, by redefining the
@@ -149,15 +141,16 @@ In former versions of Capistrano there was a *parallel* option to run
 different tasks differently on groups of servers, it looked something like
 this:
 
-{% highlight ruby %}
-task :restart do
-  parallel do |session|
-    session.when "in?(:app)", "/u/apps/social/script/restart-mongrel"
-    session.when "in?(:web)", "/u/apps/social/script/restart-apache"
-    session.else "echo nothing to do"
-  end
-end
-{% endhighlight %}
+{% prism ruby %}
+    # Capistrano 2.0.x
+    task :restart do
+      parallel do |session|
+        session.when "in?(:app)", "/u/apps/social/script/restart-mongrel"
+        session.when "in?(:web)", "/u/apps/social/script/restart-apache"
+        session.else "echo nothing to do"
+      end
+    end
+{% endprism %}
 
 This always felt a little unclean, and indeed it's a hack that was originally
 implemeted to facilitate rolling deployments at a large German firm by a
@@ -166,19 +159,20 @@ went on to found Travis-CI!)
 
 The equivilent code in under Capistrano v3 would look like this:
 
-{% highlight ruby %}
-task :restart do
-  on :all, in: :parallel do |host|
-    if host.roles.include?(:app)
-      execute "/u/apps/social/script/restart-mongrel"
-    elsif host.roles.include?(:web)
-      execute "/u/apps/social/script/restart-web"
-    else
-      info "Nothing to do for #{host} with roles #{host.properties.roles}."
+{% prism ruby %}
+    # Capistrano 3.0.x
+    task :restart do
+      on :all, in: :parallel do |host|
+        if host.roles.include?(:app)
+          execute "/u/apps/social/script/restart-mongrel"
+        elsif host.roles.include?(:web)
+          execute "/u/apps/social/script/restart-web"
+        else
+          info "Nothing to do for #{host} with roles #{host.properties.roles}."
+        end
+      end
     end
-  end
-end
-{% endhighlight %}
+{% endprism %}
 
 The second block of code, that representing the new Rake derived DSL and
 demonstrating how to use the parallel execution mode is a little longer, but I
@@ -188,26 +182,27 @@ built-in logging subsystem, keep reading to learn more.
 
 Other modes for parallelism include:
 
-{% highlight ruby %}
-on :all, in: :groups, max: 3, wait: 5 do
-  # Take all servers, in groups of three which execute in parallel
-  # wait five seconds between groups of servers.
-  # This is perfect for rolling restarts
-end
+{% prism ruby %}
+    # Capistrano 3.0.x
+    on :all, in: :groups, max: 3, wait: 5 do
+      # Take all servers, in groups of three which execute in parallel
+      # wait five seconds between groups of servers.
+      # This is perfect for rolling restarts
+    end
 
-on :all, in: :sequence, wait: 15 do
-  # This takes all servers, in sequence and waits 15 seconds between
-  # each server, this might be perfect if you are afraid about
-  # overloading a shared resource, or want to defer the asset compilation
-  # over your cluster owing to worries about load
-end
+    on :all, in: :sequence, wait: 15 do
+      # This takes all servers, in sequence and waits 15 seconds between
+      # each server, this might be perfect if you are afraid about
+      # overloading a shared resource, or want to defer the asset compilation
+      # over your cluster owing to worries about load
+    end
 
-on :all, in: :parallel do
-  # This will simply try and execute the commands contained within
-  # the block in parallel on all servers. This might be perfect for kicking
-  # off something like a Git checkout or similar.
-end
-{% endhighlight %}
+    on :all, in: :parallel do
+      # This will simply try and execute the commands contained within
+      # the block in parallel on all servers. This might be perfect for kicking
+      # off something like a Git checkout or similar.
+    end
+{% endprism %}
 
 The internal tasks, for standard deploy recipes make use of all of these as is
 appropriate for the normal case, no need to be afraid of scary slow deploys
@@ -263,18 +258,19 @@ both connections.
 This cleanup routine can now be better implemented as follows (which is
 actually more or less the actual implenetation in the the new Gem):
 
-{% highlight ruby %}
-desc "Cleanup all old releases (keeps #{fetch(:releases_to_keeo_on_cleanup)}
-old releases"
-task :cleanup do
-  keep_releases     = fetch(:releases_to_keeo_on_cleanup)
-  releases          = capture(:ls, fetch(:releases_directory))
-  release_to_delete = releases.sort_by { |r| rn.to_i }.slice(1..-(keep_releases + 1))
-  releases_to_delete.each do |r|
-    execute :rm, fetch(:releases_directory).join(r)
-  end
-end
-{% endhighlight %}
+{% prism ruby %}
+    # Capistrano 3.0.x
+    desc "Cleanup all old releases (keeps #{fetch(:releases_to_keeo_on_cleanup)}
+    old releases"
+    task :cleanup do
+      keep_releases     = fetch(:releases_to_keep_on_cleanup)
+      releases          = capture(:ls, fetch(:releases_directory))
+      release_to_delete = releases.sort_by { |r| rn.to_i }.slice(1..-(keep_releases + 1))
+      releases_to_delete.each do |r|
+        execute :rm, fetch(:releases_directory).join(r)
+      end
+    end
+{% endprism %}
 
 Some handy things to note here are that both server one and server two in our
 contrived example will both evaluate that independently, and when both servers
@@ -294,42 +290,46 @@ locally.
 As the `host` object is now available to the task blocks, it made sense to make
 it possible to store arbitrarty values against them.
 
-Enter `host.properties`. This is a simple [*OpenStruct*][] which can be used to
-store any additional properties which are important for your application.
+Enter `host.properties`. This is a simple
+[*OpenStruct*](http://www.ruby-doc.org/stdlib-2.0/libdoc/ostruct/rdoc/OpenStruct.html)
+which can be used to store any additional properties which are important for
+your application.
 
 An example of it's usage might be:
 
-{% highlight ruby %}
-h = SSHKit::Host.new 'example.com'
-h.properties.roles ||= %i{wep app}
-{% endhighlight %}
+{% prism ruby %}
+    h = SSHKit::Host.new 'example.com'
+    h.properties.roles ||= %i{wep app}
+{% endprism %}
 
 #### More Expressive Command Language
 
 In Capistrano v2, it wasn't uncommon to find commands such as:
 
-{% highlight ruby %}
-task :precompile, :roles => lambda { assets_role }, :except => { :no_release => true } do
-  run <<-CMD.compact
-    cd -- #{latest_release} &&
-    RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile
-  CMD
-end
-{% endhighlight %}
+{% prism ruby %}
+    # Capistrano 2.0.x
+    task :precompile, :roles => lambda { assets_role }, :except => { :no_release => true } do
+      run <<-CMD.compact
+        cd -- #{latest_release} &&
+        RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile
+      CMD
+    end
+{% endprism %}
 
 In Capistrano v3 this looks more like this:
 
-{% highlight ruby %}
-task :precompile do
-  on :sprockets_asset_host, reject: lambda { |h| h.properties.no_release } do
-    within fetch(:latest_release_directory)
-      with rails_env: fetch(:rails_env) do
-        execute :rake, 'assets:precompile'
+{% prism ruby %}
+    # Capistrano 3.0.x
+    task :precompile do
+      on :sprockets_asset_host, reject: lambda { |h| h.properties.no_release } do
+        within fetch(:latest_release_directory)
+          with rails_env: fetch(:rails_env) do
+            execute :rake, 'assets:precompile'
+          end
+        end
       end
     end
-  end
-end
-{% endhighlight %}
+{% endprism %}
 
 Again, with other examples this format is a little longer, but much more
 expressive, and all the nightmare of shell escaping is handled interally for
@@ -375,19 +375,21 @@ from Capistrano.
 SSHkit is ideal for use if you need to just connect to a machine and run some
 arbitrary command, for example:
 
-{% highlight ruby %}
-# Rakefile
-require 'sshkit'
-desc "Check the uptime of example.com"
-task :uptime do |h|
-  execute :uptime
-end
-{% endhighlight %}
+{% prism ruby %}
+    # Rakefile (even without Capistrano loaded)
+    require 'sshkit'
+    desc "Check the uptime of example.com"
+    task :uptime do |h|
+      execute :uptime
+    end
+{% endprism %}
 
 There is much more than can be done with SSHKit, and we have quite an
-extensive [list of examples][]. For the most part with Capistrano v3, anything
-that happens inside of an `on()` block is happening in SSHkit, and the
-documentation from that library is the place to go to find more information.
+extensive [list of
+examples](https://github.com/leehambley/sshkit/blob/master/EXAMPLES.md). For
+the most part with Capistrano v3, anything that happens inside of an `on()`
+block is happening in SSHkit, and the documentation from that library is the
+place to go to find more information.
 
 #### Command Mapping
 
@@ -396,22 +398,23 @@ from preceedings, there is a so-called command map for commands.
 
 When executing something like:
 
-{% highlight ruby %}
+{% prism ruby %}
 execute "git clone ........ ......."
-{% endhighlight %}
+{% endprism %}
 
 The command is passed through to the remote server *completely unchanged*.
 This includes the options which might be set, such as user, directory, and
 environmental variables. **This is by design.** This feature is designed to
-allow people to write non-trivial commands in [heredocs][] when the need
-arises.
+allow people to write non-trivial commands in
+[heredocs](https://en.wikipedia.org/wiki/Here_document) when the need arises.
 
 The idiomatic way to write that command in Capistrano v3 is to use the
 separated variadaric method to specify the command:
 
-{% highlight ruby %}
-execute :git, :clone, "........", "......."
-{% endhighlight %}
+{% prism ruby %}
+    # Capistrano 3.0.x
+    execute :git, :clone, "........", "......."
+{% endprism %}
 
 In this way the *command map* is consulted, the command map maps all unknown
 commands (which in this case is `git`, the rest of the line are *arguments* to
@@ -423,22 +426,22 @@ indirectly) to determine which `git` to run.
 Commands such as `rake` and `rails` are often better prefixed by `bundle
 exec`, and in this case could be mapped to:
 
-{% highlight ruby %}
-SSHKit.config.command_map[:rake]  = "bundle exec rake"
-SSHKit.config.command_map[:rails] = "bundle exec rails"
-{% endhighlight %}
+{% prism ruby %}
+    SSHKit.config.command_map[:rake]  = "bundle exec rake"
+    SSHKit.config.command_map[:rails] = "bundle exec rails"
+{% endprism %}
 
 There can also be a lamda or Proc applied in place of the mapping like so:
 
-{% highlight ruby %}
-SSHKit.config.command_map = Hash.new do |hash, key|
-  if %i{rails rake bundle clockwork heroku}.include?(key.to_sym)
-    hash[key] = "/usr/bin/env bundle exec #{key}"
-  else
-    hash[key] = "/usr/bin/env #{key}"
-  end
-end
-{% endhighlight %}
+{% prism ruby %}
+    SSHKit.config.command_map = Hash.new do |hash, key|
+      if %i{rails rake bundle clockwork heroku}.include?(key.to_sym)
+        hash[key] = "/usr/bin/env bundle exec #{key}"
+      else
+        hash[key] = "/usr/bin/env #{key}"
+      end
+    end
+{% endprism %}
 
 Between these two options there should be quite powerful options to map
 commands in your environment without having to override internal tasks from
@@ -447,15 +450,15 @@ Capistrano just because a path is different, or a binary has a different name.
 This can also be *slightly* abused in environments where *shim* executables
 are used, for example `rbenv` *wrappers*:
 
-{% highlight ruby %}
-SSHKit.config.command_map = Hash.new do |hash, key|
-  if %i{rails rake bundle clockwork heroku}.include?(key.to_sym)
-    hash[key] = "/usr/bin/env myproject_bundle exec myproject_#{key}"
-  else
-    hash[key] = "/usr/bin/env #{key}"
-  end
-end
-{% endhighlight %}
+{% prism ruby %}
+    SSHKit.config.command_map = Hash.new do |hash, key|
+      if %i{rails rake bundle clockwork heroku}.include?(key.to_sym)
+        hash[key] = "/usr/bin/env myproject_bundle exec myproject_#{key}"
+      else
+        hash[key] = "/usr/bin/env #{key}"
+      end
+    end
+{% endprism %}
 
 The above assumes that you have done something like `rbenv wrapper default
 myproject` which creates wrapper binaries which correctly set up the Ruby
@@ -488,16 +491,17 @@ Capistrano exposes the methods `debug()`, `info()`, `warn()`, `error()` and
 `fatal()` inside of `on()` blocks which can be used to log using the existing
 logging infrastructure and streaming IO formatters:
 
-{% highlight ruby %}
-on hosts do |host|
-  f = '/some/file'
-  if test("[ -d #{f} ]")
-    execute :touch, f
-  else
-    info "#{f} already exists on #{host}!"
-  end
-end
-{% endhighlight %}
+{% prism ruby %}
+    # Capistrano 3.0.x
+    on hosts do |host|
+      f = '/some/file'
+      if test("[ -d #{f} ]")
+        execute :touch, f
+      else
+        info "#{f} already exists on #{host}!"
+      end
+    end
+{% endprism %}
 
 ### Upgrading
 
