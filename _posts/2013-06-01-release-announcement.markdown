@@ -120,8 +120,7 @@ documentation if you want to explore that any further.
 The guiding principle is dependency resolution, and interoperability with
 other tools, for example:
 
-{% highlight ruby %}
-# No description, this is an internal method
+{% prism ruby %}
 task :notify do
   this_release_tag = sh("git describe --abbrev=0 --tags")
   last_ten_commits = sh("git log #{this_release_tag}~10..#{this_release_tag}")
@@ -135,7 +134,7 @@ end
 namespace :deploy
   task default: :notify
 end
-{% endhighlight %}
+{% endprism %}
 
 The last three lines rely on Rake's additive task declaration, by redefining the
 `deploy:default` task by adding another dependency. Rake will automatically
