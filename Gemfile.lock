@@ -38,6 +38,7 @@ GEM
     redcarpet (2.2.2)
     safe_yaml (0.7.1)
     syntax (1.0.0)
+    unindent (1.0)
     yajl-ruby (1.1.0)
 
 PLATFORMS
@@ -48,3 +49,4 @@ DEPENDENCIES
   git
   jekyll
   redcarpet
+  unindent

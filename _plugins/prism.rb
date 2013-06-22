@@ -1,3 +1,5 @@
+require 'unindent'
+
 module Jekyll
 
   class PrismBlock < Liquid::Block
@@ -28,7 +30,7 @@ module Jekyll
     end
 
     def render(context)
-      code = h(super).strip
+      code = h(super.unindent!).strip
 
       if @options["linenos"] == true
         @options["linenos"] = "1-#{code.lines.count}"
