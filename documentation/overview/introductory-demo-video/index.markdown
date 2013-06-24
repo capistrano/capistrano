@@ -10,9 +10,7 @@ It covers using Capistrano to install an example Rails project on a previously
 unprepared server, covering all aspects of Github access, as well as
 privisioning the server using *Chef Solo* and Capistrano with *Rake*.
 
-
-
-#### Show Notes
+#### Show Notes
 
 The *Chef Solo* recipes can be reached at [this repository at
 Github][capistrano-chef-solo-example-recipes], they rely on a fairly new
