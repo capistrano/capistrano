@@ -322,7 +322,7 @@ access that you may or may not need depending how well your servers are setup:
     root@remote $ deploy_to=/var/www/rails3-bootstrap-devise-cancan-demo
     root@remote $ mkdir ${deploy_to}
     root@remote $ chown deploy:deploy ${deploy_to}
-    root@remote £ umask 0002
+    root@remote $ umask 0002
     root@remote $ chmod g+s ${deploy_to}
     root@remote $ mkdir ${deploy_to}/{releases,shared}
 {% endprism %}
