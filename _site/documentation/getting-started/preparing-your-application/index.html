@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preparing Your Application</title>
+    <link href='http://fonts.googleapis.com/css?family=Enriqueta' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="//use.typekit.net/itm5ubu.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <link rel="stylesheet" href="/css/foundation.css" />
+    <link rel="stylesheet" href="/css/capistrano.css">
+    <link rel="stylesheet" href="/css/social_foundicons.css" />
+    <link rel="stylesheet" href="/css/okaidia.css">
+    <script src="/js/vendor/custom.modernizr.js"></script>
+  </head>
+  <body>
+
+    <div class="top-bar">
+  <a href="/" class="brand">
+    <img src="/images/CapistranoLogo.png" />
+  </a>
+</div>
+
+
+    <div class="row">
+      <div class="large-4 columns">
+        <ul class="side-nav">
+  <li><a href="http://www.harrow.io/" class="advertisment"><span class="label label-important">New</span> Hosted Capistrano for Teams</a></li>
+  <li class="divider"></li>
+  <h5>Overview</h5>
+  <li><a href="/documentation/overview/what-is-capistrano/">What is Capistrano?</a></li>
+  <li><a href="/documentation/overview/introductory-demo-video/">Introductory Demo Video</a></li>
+  <li class="divider"></li>
+  <h5>Getting Started</h5>
+  <li><a href="/documentation/getting-started/installation/index.html">Installation</a></li>
+  <li><a href="/documentation/getting-started/preparing-your-application/index.html">Preparing Your Application</a></li>
+  <li><aj href="/documentation/getting-started/authentication-and-authorisation/index.html">Authentication & Authorisation</a></li>
+  <li><a href="/documentation/getting-started/cold-start/index.html">Cold Start</a></li>
+  <li><a href="/documentation/getting-started/rollbacks/index.html">Rollbacks</a></li>
+  <li class="divider"></li>
+  <h5>Troubleshooting</h5>
+  <li><a href="/documentation/troubleshooting/authentication/index.html">SCM (Git) Authentication</a></li>
+  <li><a href="/documentation/troubleshooting/connectivity/index.html">Connectivity</a></li>
+  <!--<li><a href="/documentation/troubleshooting/gateway-servers/index.html">Gateway Servers</a></li>-->
+  <li><a href="/documentation/troubleshooting/agent-forwarding/index.html">Agent Forwarding</a></li>
+  <li><a href="/documentation/troubleshooting/sudo-password/index.html">`sudo` Password</a></li>
+  <li><a href="/documentation/troubleshooting/rvm-rbenv-nvm/index.html">RVM, `rbenv` And `nvm`</a></li>
+  <li class="divider"></li>
+  <h5>FAQ</h5>
+  <li><a
+    href="/documentation/faq/why-does-something-work-in-my-ssh-session-but-not-in-capistrano/index.html">Why Does Something Work In An SSH Session, But Not In Capistrano?</a></li>
+  <li><a href="/documentation/faq/should-i-use-capistrano-to-provision-my-servers/index.html">Should I Use Capistrano To Provision My Servers?</a></li>
+  <li class="divider"></li>
+  <h5>Power Use-Cases</h5>
+  <li><a href="/documentation/power-use-cases/integration-with-rake/index.html">Integration With Rake</a></li>
+  <li><a href="/documentation/power-use-cases/driving-tools-such-as-chef-solo/index.html">Driving Tools Such As <em>Chef Solo</em></a></li>
+  <li class="divider"></li>
+  <h5>Recent Announcements</h5>
+  
+    <li><a href="/2013/06/01/release-announcement.html"><span class="post-date">01 Jun 2013</span> Capistrano Version 3 Release Announcement</a></li>
+  
+</ul>
+
+      </div>
+      <div class="large-8 column">
+        <div class="content">
+          <h2>Preparing Your Application</h2>
+          <div class="alert-box radius">
+  This will focus on preparing a Rails application, but most ideas expressed
+  here have parallels in Python, or PHP applications
+</div>
+
+<h2 id="toc_0">1. Commit your application to some externally available source control hosting provider.</h2>
+
+<p>If you are not doing already, you should host your code somewhere with a
+provuder such as Github, BitBucket, Codeplane, or repositoryhosting.com.</p>
+
+<div class="alert-box radius">
+At present Capistrano v3.0.x only supports Git. It's just a matter of time
+until we support Subversion, Mecurial, Darcs and friends again. Please
+contribute if you know these tools well, we don't and don't want to force our
+miscomprehended notions upon anyone.
+</div>
+
+<h2 id="toc_1">2. Move secrets out of the repository.</h2>
+
+<div class="alert-box alert">
+If you've accidentally committed state secrets to the repository, you might
+want to take <a
+href="https://help.github.com/articles/remove-sensitive-data">special
+steps</a> to erase them from the repository history for all time.
+</div>
+
+<p>Ideally one should remove <code>config/database.yml</code> to something like
+<code>config/database.yml.example</code>, you and your team should copy the example file
+into place on their development machines, under Capistrano this leaves the
+<code>database.yml</code> filename unused so that we can symlink the production database
+configuration into place at deploy time.</p>
+
+<p>The original <code>database.yml</code> should be added to the <code>.gitignore</code> (or your SCM&#39;s
+parallel concept of ignored files)</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>$ cp config/database.yml{,.example}
+$ echo config/database.yml &gt;&gt; .gitignore</code></pre>
+</div>
+
+<p>This should be done for any other secret files, we&#39;ll create the production
+version of the file when we deploy, and symlink it into place.</p>
+
+<h2 id="toc_2">3. Initialize Capistrano in your application.</h2>
+
+<div>
+  <pre data-line=''><code class='language-bash'>$ cd my-project
+$ cap install</code></pre>
+</div>
+
+<p>This will create a bunch of files, the important ones are:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>├── Capfile
+├── config
+│   ├── deploy
+│   │   ├── production.rb
+│   │   └── staging.rb
+│   └── deploy.rb
+└── lib
+    └── capistrano
+            └── tasks</code></pre>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    <!--<div class="container">                                     -->
+      <!--      <h1 class="title"><a href="/">Capistrano</a></h1>-->
+      <!--      <a class="extra" href="/">home</a>                    -->
+      <!--    </div>                                                  -->
+
+    <!--    <div class="alert-box radius">
+  This will focus on preparing a Rails application, but most ideas expressed
+  here have parallels in Python, or PHP applications
+</div>
+
+<h2 id="toc_0">1. Commit your application to some externally available source control hosting provider.</h2>
+
+<p>If you are not doing already, you should host your code somewhere with a
+provuder such as Github, BitBucket, Codeplane, or repositoryhosting.com.</p>
+
+<div class="alert-box radius">
+At present Capistrano v3.0.x only supports Git. It's just a matter of time
+until we support Subversion, Mecurial, Darcs and friends again. Please
+contribute if you know these tools well, we don't and don't want to force our
+miscomprehended notions upon anyone.
+</div>
+
+<h2 id="toc_1">2. Move secrets out of the repository.</h2>
+
+<div class="alert-box alert">
+If you've accidentally committed state secrets to the repository, you might
+want to take <a
+href="https://help.github.com/articles/remove-sensitive-data">special
+steps</a> to erase them from the repository history for all time.
+</div>
+
+<p>Ideally one should remove <code>config/database.yml</code> to something like
+<code>config/database.yml.example</code>, you and your team should copy the example file
+into place on their development machines, under Capistrano this leaves the
+<code>database.yml</code> filename unused so that we can symlink the production database
+configuration into place at deploy time.</p>
+
+<p>The original <code>database.yml</code> should be added to the <code>.gitignore</code> (or your SCM&#39;s
+parallel concept of ignored files)</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>$ cp config/database.yml{,.example}
+$ echo config/database.yml &gt;&gt; .gitignore</code></pre>
+</div>
+
+<p>This should be done for any other secret files, we&#39;ll create the production
+version of the file when we deploy, and symlink it into place.</p>
+
+<h2 id="toc_2">3. Initialize Capistrano in your application.</h2>
+
+<div>
+  <pre data-line=''><code class='language-bash'>$ cd my-project
+$ cap install</code></pre>
+</div>
+
+<p>This will create a bunch of files, the important ones are:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>├── Capfile
+├── config
+│   ├── deploy
+│   │   ├── production.rb
+│   │   └── staging.rb
+│   └── deploy.rb
+└── lib
+    └── capistrano
+            └── tasks</code></pre>
+</div>
+                                           -->
+
+    <!--</div> [> /container <]                                     -->
+
+  <div class="row">
+  <div class="large-4 columns">
+    <ul>
+    <li><a href="/about">About Capistrano</a></li>
+    <li><a href="https://github.com/capistrano/capistrano/blob/master/CONTRIBUTING">Contributing</a></li>
+    <li><a href="https://rubygems.org/gems/capistrano/versions">Releases</a></li>
+    <li><a href="/upgrading">Upgrading</a></li>
+    <li><a href="/security">Security</a></li>
+    </ul>
+  </div>
+
+  <div class="large-4 columns">
+    <ul>
+      <li><a href="http://stackoverflow.com/questions/tagged/capistrano">StackOverflow</a></li>
+      <li><a href="https://groups.google.com/forum/#!forum/capistrano">Mailing List</a></li>
+      <li><a href=".... ">Commercial Support</a></li>
+    </ul>
+  </div>
+
+  <div class="large-4 columns">
+    <ul>
+      <li><a href="//twitter.com/capistranorb"><i class="foundicon-twitter"></i></a></li>
+      <li><a href="//github.com/capistrano"><i class="foundicon-github"></i></a></li>
+    </ul>
+  </div>
+</div>
+
+
+  <script src="/js/prism.js"></script>
+  <script src="/js/prism.ruby.js"></script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation</title>
+    <link href='http://fonts.googleapis.com/css?family=Enriqueta' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="//use.typekit.net/itm5ubu.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <link rel="stylesheet" href="/css/foundation.css" />
+    <link rel="stylesheet" href="/css/capistrano.css">
+    <link rel="stylesheet" href="/css/social_foundicons.css" />
+    <link rel="stylesheet" href="/css/okaidia.css">
+    <script src="/js/vendor/custom.modernizr.js"></script>
+  </head>
+  <body>
+
+    <div class="top-bar">
+  <a href="/" class="brand">
+    <img src="/images/CapistranoLogo.png" />
+  </a>
+</div>
+
+
+    <div class="row">
+      <div class="large-4 columns">
+        <ul class="side-nav">
+  <li><a href="http://www.harrow.io/" class="advertisment"><span class="label label-important">New</span> Hosted Capistrano for Teams</a></li>
+  <li class="divider"></li>
+  <h5>Overview</h5>
+  <li><a href="/documentation/overview/what-is-capistrano/">What is Capistrano?</a></li>
+  <li><a href="/documentation/overview/introductory-demo-video/">Introductory Demo Video</a></li>
+  <li class="divider"></li>
+  <h5>Getting Started</h5>
+  <li><a href="/documentation/getting-started/installation/index.html">Installation</a></li>
+  <li><a href="/documentation/getting-started/preparing-your-application/index.html">Preparing Your Application</a></li>
+  <li><aj href="/documentation/getting-started/authentication-and-authorisation/index.html">Authentication & Authorisation</a></li>
+  <li><a href="/documentation/getting-started/cold-start/index.html">Cold Start</a></li>
+  <li><a href="/documentation/getting-started/rollbacks/index.html">Rollbacks</a></li>
+  <li class="divider"></li>
+  <h5>Troubleshooting</h5>
+  <li><a href="/documentation/troubleshooting/authentication/index.html">SCM (Git) Authentication</a></li>
+  <li><a href="/documentation/troubleshooting/connectivity/index.html">Connectivity</a></li>
+  <!--<li><a href="/documentation/troubleshooting/gateway-servers/index.html">Gateway Servers</a></li>-->
+  <li><a href="/documentation/troubleshooting/agent-forwarding/index.html">Agent Forwarding</a></li>
+  <li><a href="/documentation/troubleshooting/sudo-password/index.html">`sudo` Password</a></li>
+  <li><a href="/documentation/troubleshooting/rvm-rbenv-nvm/index.html">RVM, `rbenv` And `nvm`</a></li>
+  <li class="divider"></li>
+  <h5>FAQ</h5>
+  <li><a
+    href="/documentation/faq/why-does-something-work-in-my-ssh-session-but-not-in-capistrano/index.html">Why Does Something Work In An SSH Session, But Not In Capistrano?</a></li>
+  <li><a href="/documentation/faq/should-i-use-capistrano-to-provision-my-servers/index.html">Should I Use Capistrano To Provision My Servers?</a></li>
+  <li class="divider"></li>
+  <h5>Power Use-Cases</h5>
+  <li><a href="/documentation/power-use-cases/integration-with-rake/index.html">Integration With Rake</a></li>
+  <li><a href="/documentation/power-use-cases/driving-tools-such-as-chef-solo/index.html">Driving Tools Such As <em>Chef Solo</em></a></li>
+  <li class="divider"></li>
+  <h5>Recent Announcements</h5>
+  
+    <li><a href="/2013/06/01/release-announcement.html"><span class="post-date">01 Jun 2013</span> Capistrano Version 3 Release Announcement</a></li>
+  
+</ul>
+
+      </div>
+      <div class="large-8 column">
+        <div class="content">
+          <h2>Installation</h2>
+          <p>Capistrano is bundled as a Ruby Gem. <strong>It requires Ruby 1.9 or newer.</strong></p>
+
+<p>Capistrano can be installed as a standalone Gem, or bundled into your
+application.</p>
+
+<div class="alert">
+It is recommended to fix the version number when using Capistrano, and is
+therefore recommended to use an appropriate bundler.
+</div>
+
+<h3 id="toc_0">General Usage</h3>
+
+<p>The following commands will clone Capistrano at the latest <code>v3</code> revision, and
+will build the gem and install it locally. <strong>The Gem is not yet availalble via
+Rubygems.org.</strong></p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>$ gem install capistrano --pre --trust-policy HighSecurity</code></pre>
+</div>
+
+<p>Or grab the bleeding edge head from:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>$ git clone -b v3 https://github.com/capistrano/capistrano.git
+$ cd capistrano
+$ gem build *.gemspec
+$ gem install *.gem</code></pre>
+</div>
+
+<h3 id="toc_1">Signed Rubygems</h3>
+
+<p>As Capistrano is a signed gem, you should always be careful to use the
+<code>--trust-policy</code> flag when installing Gems, or since Bundler 1.3 you should
+use the same flag:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>$ gem install capistrano --pre --trust-policy HighSecurity
+$ bundle install --trust-policy HighSecurity</code></pre>
+</div>
+
+<p>If you get a message that looks like:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>ERROR:  While executing gem ... (Gem::Security::Exception)
+unsigned gems are not allowed by the High Security policy</code></pre>
+</div>
+
+<p>Then <strong><em>please</em></strong> complain to your Gem author, and have them start signing
+their Gems.</p>
+
+<p>(<a href="http://blog.meldium.com/home/2013/3/3/signed-rubygems-part">More information about using Bundler with signed
+gems</a>)</p>
+
+<h3 id="toc_2">Usage in a Rails project</h3>
+
+<p>Add the following lines to the Gemfile, to the group <code>:development</code> ideally.</p>
+
+<div>
+  <pre data-line=''><code class='language-ruby'>group :development do
+  gem &#39;capistrano-rails&#39;, github: &#39;capistrano/capistrano-rails&#39;, branch: &#39;v3&#39;
+end</code></pre>
+</div>
+
+<p>There will be a Gem released via <a href="http://rubygems.org/">rubygems.org</a>, but as most people
+are still using Capistrano v2.x, the v3 release will not be pushed to
+<a href="http://rubygems.org/">rubygems.org</a> just yet give people a chance to lock their version
+in their <code>Gemfile</code>.</p>
+
+<p>The <em>Capistrano-Rails</em> Gem includes extras specifically designed for Ruby on
+Rails, specifically:</p>
+
+<ul>
+<li>Asset Pipeline Support</li>
+<li>Gem Bundler Support</li>
+<li>Database Migration Support</li>
+</ul>
+
+<p>The documentation for these components can be found in
+<a href="https://www.github.com/capistrano/asset-pipeline/bundler/README.md">their</a>,
+<a href="https://www.github.com/capistrano/capistrano-rails/bundler/README.md">respective</a>,
+<a href="https://www.github.com/capistrano/migrations/bundler/README.md">READMEs</a>. However for the most
+part, to get the best, and most sensible results, simply <code>require</code> these
+files:</p>
+
+<div>
+  <pre data-line=''><code class='language-ruby'>require &#39;capistrano/rails/assets&#39;
+require &#39;capistrano/rails/gem-bundler&#39;
+require &#39;capistrano/rails/database-migrations&#39;</code></pre>
+</div>
+
+<div class="alert alert-info">
+<h5>Help! I was using Capistrano `v2.x` and I didn't want to upgrade!</h5>
+
+If you are using Capistrano `v2.x.x` and have also installed Capistrano `v3`
+by mistake, then you can lock your Gem version for Capistrano at something
+like:
+
+<div>
+  <pre data-line=''><code class='language-ruby'>gem &#39;capistrano&#39;, &#39;~&gt; 2.15&#39; # Or whatever patch release you are using</code></pre>
+</div>
+
+<p>This is the <a href="http://docs.rubygems.org/read/chapter/16#page74">pessimistic operator</a> which
+installs the closest matching version, at the time of writing this would
+install <code>2.15.4</code>, and any other point-release in the <code>2.15.x</code> family without
+the risk of accidentally upgrading to <code>v3</code>.
+</div></p>
+
+<h2 id="toc_3"></h2>
+
+        </div>
+      </div>
+    </div>
+
+    <!--<div class="container">                                     -->
+      <!--      <h1 class="title"><a href="/">Capistrano</a></h1>-->
+      <!--      <a class="extra" href="/">home</a>                    -->
+      <!--    </div>                                                  -->
+
+    <!--    <p>Capistrano is bundled as a Ruby Gem. <strong>It requires Ruby 1.9 or newer.</strong></p>
+
+<p>Capistrano can be installed as a standalone Gem, or bundled into your
+application.</p>
+
+<div class="alert">
+It is recommended to fix the version number when using Capistrano, and is
+therefore recommended to use an appropriate bundler.
+</div>
+
+<h3 id="toc_0">General Usage</h3>
+
+<p>The following commands will clone Capistrano at the latest <code>v3</code> revision, and
+will build the gem and install it locally. <strong>The Gem is not yet availalble via
+Rubygems.org.</strong></p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>$ gem install capistrano --pre --trust-policy HighSecurity</code></pre>
+</div>
+
+<p>Or grab the bleeding edge head from:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>$ git clone -b v3 https://github.com/capistrano/capistrano.git
+$ cd capistrano
+$ gem build *.gemspec
+$ gem install *.gem</code></pre>
+</div>
+
+<h3 id="toc_1">Signed Rubygems</h3>
+
+<p>As Capistrano is a signed gem, you should always be careful to use the
+<code>--trust-policy</code> flag when installing Gems, or since Bundler 1.3 you should
+use the same flag:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>$ gem install capistrano --pre --trust-policy HighSecurity
+$ bundle install --trust-policy HighSecurity</code></pre>
+</div>
+
+<p>If you get a message that looks like:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>ERROR:  While executing gem ... (Gem::Security::Exception)
+unsigned gems are not allowed by the High Security policy</code></pre>
+</div>
+
+<p>Then <strong><em>please</em></strong> complain to your Gem author, and have them start signing
+their Gems.</p>
+
+<p>(<a href="http://blog.meldium.com/home/2013/3/3/signed-rubygems-part">More information about using Bundler with signed
+gems</a>)</p>
+
+<h3 id="toc_2">Usage in a Rails project</h3>
+
+<p>Add the following lines to the Gemfile, to the group <code>:development</code> ideally.</p>
+
+<div>
+  <pre data-line=''><code class='language-ruby'>group :development do
+  gem &#39;capistrano-rails&#39;, github: &#39;capistrano/capistrano-rails&#39;, branch: &#39;v3&#39;
+end</code></pre>
+</div>
+
+<p>There will be a Gem released via <a href="http://rubygems.org/">rubygems.org</a>, but as most people
+are still using Capistrano v2.x, the v3 release will not be pushed to
+<a href="http://rubygems.org/">rubygems.org</a> just yet give people a chance to lock their version
+in their <code>Gemfile</code>.</p>
+
+<p>The <em>Capistrano-Rails</em> Gem includes extras specifically designed for Ruby on
+Rails, specifically:</p>
+
+<ul>
+<li>Asset Pipeline Support</li>
+<li>Gem Bundler Support</li>
+<li>Database Migration Support</li>
+</ul>
+
+<p>The documentation for these components can be found in
+<a href="https://www.github.com/capistrano/asset-pipeline/bundler/README.md">their</a>,
+<a href="https://www.github.com/capistrano/capistrano-rails/bundler/README.md">respective</a>,
+<a href="https://www.github.com/capistrano/migrations/bundler/README.md">READMEs</a>. However for the most
+part, to get the best, and most sensible results, simply <code>require</code> these
+files:</p>
+
+<div>
+  <pre data-line=''><code class='language-ruby'>require &#39;capistrano/rails/assets&#39;
+require &#39;capistrano/rails/gem-bundler&#39;
+require &#39;capistrano/rails/database-migrations&#39;</code></pre>
+</div>
+
+<div class="alert alert-info">
+<h5>Help! I was using Capistrano `v2.x` and I didn't want to upgrade!</h5>
+
+If you are using Capistrano `v2.x.x` and have also installed Capistrano `v3`
+by mistake, then you can lock your Gem version for Capistrano at something
+like:
+
+<div>
+  <pre data-line=''><code class='language-ruby'>gem &#39;capistrano&#39;, &#39;~&gt; 2.15&#39; # Or whatever patch release you are using</code></pre>
+</div>
+
+<p>This is the <a href="http://docs.rubygems.org/read/chapter/16#page74">pessimistic operator</a> which
+installs the closest matching version, at the time of writing this would
+install <code>2.15.4</code>, and any other point-release in the <code>2.15.x</code> family without
+the risk of accidentally upgrading to <code>v3</code>.
+</div></p>
+
+<h2 id="toc_3"></h2>
+                                           -->
+
+    <!--</div> [> /container <]                                     -->
+
+  <div class="row">
+  <div class="large-4 columns">
+    <ul>
+    <li><a href="/about">About Capistrano</a></li>
+    <li><a href="https://github.com/capistrano/capistrano/blob/master/CONTRIBUTING">Contributing</a></li>
+    <li><a href="https://rubygems.org/gems/capistrano/versions">Releases</a></li>
+    <li><a href="/upgrading">Upgrading</a></li>
+    <li><a href="/security">Security</a></li>
+    </ul>
+  </div>
+
+  <div class="large-4 columns">
+    <ul>
+      <li><a href="http://stackoverflow.com/questions/tagged/capistrano">StackOverflow</a></li>
+      <li><a href="https://groups.google.com/forum/#!forum/capistrano">Mailing List</a></li>
+      <li><a href=".... ">Commercial Support</a></li>
+    </ul>
+  </div>
+
+  <div class="large-4 columns">
+    <ul>
+      <li><a href="//twitter.com/capistranorb"><i class="foundicon-twitter"></i></a></li>
+      <li><a href="//github.com/capistrano"><i class="foundicon-github"></i></a></li>
+    </ul>
+  </div>
+</div>
+
+
+  <script src="/js/prism.js"></script>
+  <script src="/js/prism.ruby.js"></script>
+</body>
+</html>

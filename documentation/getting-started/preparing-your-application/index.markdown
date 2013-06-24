@@ -29,11 +29,22 @@ href="https://help.github.com/articles/remove-sensitive-data">special
 steps</a> to erase them from the repository history for all time.
 </div>
 
-Otherwise, ideally one should remove `config/database.yml` to something like
+Ideally one should remove `config/database.yml` to something like
 `config/database.yml.example`, you and your team should copy the example file
 into place on their development machines, under Capistrano this leaves the
 `database.yml` filename unused so that we can symlink the production database
 configuration into place at deploy time.
+
+The original `database.yml` should be added to the `.gitignore` (or your SCM's
+parallel concept of ignored files)
+
+{% prism bash %}
+    $ cp config/database.yml{,.example}
+    $ echo config/database.yml >> .gitignore
+{% endprism %}
+
+This should be done for any other secret files, we'll create the production
+version of the file when we deploy, and symlink it into place.
 
 ## 3. Initialize Capistrano in your application.
 

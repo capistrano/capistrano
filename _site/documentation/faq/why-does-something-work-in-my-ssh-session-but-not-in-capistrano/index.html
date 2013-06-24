@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why does something work in my SSH session, but not in Capistrano?</title>
+    <link href='http://fonts.googleapis.com/css?family=Enriqueta' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="//use.typekit.net/itm5ubu.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+    <link rel="stylesheet" href="/css/foundation.css" />
+    <link rel="stylesheet" href="/css/capistrano.css">
+    <link rel="stylesheet" href="/css/social_foundicons.css" />
+    <link rel="stylesheet" href="/css/okaidia.css">
+    <script src="/js/vendor/custom.modernizr.js"></script>
+  </head>
+  <body>
+
+    <div class="top-bar">
+  <a href="/" class="brand">
+    <img src="/images/CapistranoLogo.png" />
+  </a>
+</div>
+
+
+    <div class="row">
+      <div class="large-4 columns">
+        <ul class="side-nav">
+  <li><a href="http://www.harrow.io/" class="advertisment"><span class="label label-important">New</span> Hosted Capistrano for Teams</a></li>
+  <li class="divider"></li>
+  <h5>Overview</h5>
+  <li><a href="/documentation/overview/what-is-capistrano/">What is Capistrano?</a></li>
+  <li><a href="/documentation/overview/introductory-demo-video/">Introductory Demo Video</a></li>
+  <li class="divider"></li>
+  <h5>Getting Started</h5>
+  <li><a href="/documentation/getting-started/installation/index.html">Installation</a></li>
+  <li><a href="/documentation/getting-started/preparing-your-application/index.html">Preparing Your Application</a></li>
+  <li><aj href="/documentation/getting-started/authentication-and-authorisation/index.html">Authentication & Authorisation</a></li>
+  <li><a href="/documentation/getting-started/cold-start/index.html">Cold Start</a></li>
+  <li><a href="/documentation/getting-started/rollbacks/index.html">Rollbacks</a></li>
+  <li class="divider"></li>
+  <h5>Troubleshooting</h5>
+  <li><a href="/documentation/troubleshooting/authentication/index.html">SCM (Git) Authentication</a></li>
+  <li><a href="/documentation/troubleshooting/connectivity/index.html">Connectivity</a></li>
+  <!--<li><a href="/documentation/troubleshooting/gateway-servers/index.html">Gateway Servers</a></li>-->
+  <li><a href="/documentation/troubleshooting/agent-forwarding/index.html">Agent Forwarding</a></li>
+  <li><a href="/documentation/troubleshooting/sudo-password/index.html">`sudo` Password</a></li>
+  <li><a href="/documentation/troubleshooting/rvm-rbenv-nvm/index.html">RVM, `rbenv` And `nvm`</a></li>
+  <li class="divider"></li>
+  <h5>FAQ</h5>
+  <li><a
+    href="/documentation/faq/why-does-something-work-in-my-ssh-session-but-not-in-capistrano/index.html">Why Does Something Work In An SSH Session, But Not In Capistrano?</a></li>
+  <li><a href="/documentation/faq/should-i-use-capistrano-to-provision-my-servers/index.html">Should I Use Capistrano To Provision My Servers?</a></li>
+  <li class="divider"></li>
+  <h5>Power Use-Cases</h5>
+  <li><a href="/documentation/power-use-cases/integration-with-rake/index.html">Integration With Rake</a></li>
+  <li><a href="/documentation/power-use-cases/driving-tools-such-as-chef-solo/index.html">Driving Tools Such As <em>Chef Solo</em></a></li>
+  <li class="divider"></li>
+  <h5>Recent Announcements</h5>
+  
+    <li><a href="/2013/06/01/release-announcement.html"><span class="post-date">01 Jun 2013</span> Capistrano Version 3 Release Announcement</a></li>
+  
+</ul>
+
+      </div>
+      <div class="large-8 column">
+        <div class="content">
+          <h2>Why does something work in my SSH session, but not in Capistrano?</h2>
+          <p>This is possibly one of the most complicated support questions that can be
+asked, the only real answer is <strong><em>it depends</em></strong>.</p>
+
+<p>It&#39;s really a question of which <em>kind</em> of shell Capistrano is using, it&#39;s a
+matrix of possibilities concerning <code>login</code>, <code>non-login</code>, <code>interactive</code>, or
+<code>non-interactive</code>.</p>
+
+<p><strong>By default Capistrano always assigns a <code>non-login</code>, <code>non-interactive</code> shell.</strong></p>
+
+<h2 id="toc_0">Shell Modes</h2>
+
+<p>Unix shells can be started in one of three modes, an unnamed <em>basic</em> mode,
+which almost never happens, as a <code>login</code> shell, or as an <code>inteactive</code> shell.</p>
+
+<p>Depending which mode a shell starts in (and which shell you are using) this
+will affect which startup (more commonly known as <em>dot</em>-files) files, if any
+are loaded, here&#39;s more or less the matrix of what is loaded when:</p>
+
+<h2 id="toc_1">What about the Capistrano option to assign a <code>pty</code>?</h2>
+
+<p>This option has been hugely misleadingly used, if you ask SSH to provide a
+<code>pty</code> you are effectively telling SSH that <em>&quot;I&#39;ll connect this session to a
+user terminal&quot;</em>, thus programs on the receiving end expect that they can prompt
+for input, and provide coloured output, etc. In short they think they&#39;re
+talking to you over an interactive session, because by assigning a <code>pty</code>, Bash
+has been started in <code>non-login</code>, <code>interactive</code> mode.</p>
+
+<p>Read more about this:</p>
+
+<ul>
+<li><a href="https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html">In the &quot;Bash Startup Files&quot; section of the Bash
+manual</a></li>
+<li><a href="https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html">At Sam Stephenson&#39;s excellent <em>Unix shell initialization</em> wiki
+page</a></li>
+<li><a href="http://www.tldp.org/LDP/abs/html/intandnonint.html">Interactive and non-interactive shells and scripts
+documentation</a></li>
+</ul>
+
+<h2 id="toc_2">How does what Capistrano does differ from an SSH session</h2>
+
+<p>By default Capistrano prefers to start a <em>non-login, non-interactive
+shell</em>, to try and isolate the environment and make sure that things work as
+expected, regardless of any changes that might happen on the server side.</p>
+
+<p>In contrast when you log into a machine with your terminal, into a regular
+Bash session, the <code>--login</code> option to Bash is implied granting you a <code>login</code>
+shell, and because you are in a terminal, ssh asks the ssh server to provide a
+pty so that you may start an interactive session. Thus you get an <code>interactive
+login</code> shell, the exact opposite of what we need for Capistrano!</p>
+
+<h2 id="toc_3">How can I check?</h2>
+
+<p>I actually had to look this up, most of the time it&#39;s common sense, but
+<a href="http://unix.stackexchange.com/a/26782">stackoverflow to the rescue</a>, let&#39;s
+figure this out!</p>
+
+<p>First, we&#39;ll try a <em>real</em> SSH session, logging in via our terminal, and seeing
+what happens:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote
+me@remote $ [[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;
+Interactive
+me@remote $ shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;
+Login shell</code></pre>
+</div>
+
+<p>Contrast that with what happens when we hand the command to run to the SSH
+command line without logging in first...</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote &quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;
+Interactive
+me@localhost $ ssh me@remote &quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;
+Not login shell</code></pre>
+</div>
+
+<p>Here we can see that Bash is still starting in <strong>interactive</strong> mode when we&#39;re
+just running a single command, that&#39;s because the terminal we are using is
+interactive, and SSH inherits that and passes that on to the remote server.</p>
+
+<p>When we try the same with Capistrano we&#39;ll see yet another set of results; we
+can have a very simple, Capfile, we don&#39;t even need to load the default
+recipes to test this:</p>
+
+<div>
+  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
+task :query_interactive do
+  on &#39;me@remote&#39; do
+    info capture(&quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;)
+  end
+end
+task :query_login do
+  on &#39;me@remote&#39; do
+    info capture(&quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;)
+  end
+end</code></pre>
+</div>
+
+<p>Gives us the following:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>me@localhost $ cap query_login
+INFO Not login shell
+me@localhost $ cap query_interactive
+INFO Not interactive</code></pre>
+</div>
+
+<h2 id="toc_4"><a id="which_startup_files_loaded"></a>Which shell startup files do get loaded?</h2>
+
+<p>Best explained with this diagram, yes it&#39;s that complicated:</p>
+
+<figure class="panel">
+  <img src="/images/BashStartupFiles1.png" title="Bash Startup Files" alt="Bash Startup Files" />
+  <figcaption>
+    <p>Source: <a href="http://www.solipsys.co.uk/new/BashInitialisationFiles.html">http://www.solipsys.co.uk/new/BashInitialisationFiles.html</a></p>
+  </figcaption>
+</figure>
+
+        </div>
+      </div>
+    </div>
+
+    <!--<div class="container">                                     -->
+      <!--      <h1 class="title"><a href="/">Capistrano</a></h1>-->
+      <!--      <a class="extra" href="/">home</a>                    -->
+      <!--    </div>                                                  -->
+
+    <!--    <p>This is possibly one of the most complicated support questions that can be
+asked, the only real answer is <strong><em>it depends</em></strong>.</p>
+
+<p>It&#39;s really a question of which <em>kind</em> of shell Capistrano is using, it&#39;s a
+matrix of possibilities concerning <code>login</code>, <code>non-login</code>, <code>interactive</code>, or
+<code>non-interactive</code>.</p>
+
+<p><strong>By default Capistrano always assigns a <code>non-login</code>, <code>non-interactive</code> shell.</strong></p>
+
+<h2 id="toc_0">Shell Modes</h2>
+
+<p>Unix shells can be started in one of three modes, an unnamed <em>basic</em> mode,
+which almost never happens, as a <code>login</code> shell, or as an <code>inteactive</code> shell.</p>
+
+<p>Depending which mode a shell starts in (and which shell you are using) this
+will affect which startup (more commonly known as <em>dot</em>-files) files, if any
+are loaded, here&#39;s more or less the matrix of what is loaded when:</p>
+
+<h2 id="toc_1">What about the Capistrano option to assign a <code>pty</code>?</h2>
+
+<p>This option has been hugely misleadingly used, if you ask SSH to provide a
+<code>pty</code> you are effectively telling SSH that <em>&quot;I&#39;ll connect this session to a
+user terminal&quot;</em>, thus programs on the receiving end expect that they can prompt
+for input, and provide coloured output, etc. In short they think they&#39;re
+talking to you over an interactive session, because by assigning a <code>pty</code>, Bash
+has been started in <code>non-login</code>, <code>interactive</code> mode.</p>
+
+<p>Read more about this:</p>
+
+<ul>
+<li><a href="https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html">In the &quot;Bash Startup Files&quot; section of the Bash
+manual</a></li>
+<li><a href="https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html">At Sam Stephenson&#39;s excellent <em>Unix shell initialization</em> wiki
+page</a></li>
+<li><a href="http://www.tldp.org/LDP/abs/html/intandnonint.html">Interactive and non-interactive shells and scripts
+documentation</a></li>
+</ul>
+
+<h2 id="toc_2">How does what Capistrano does differ from an SSH session</h2>
+
+<p>By default Capistrano prefers to start a <em>non-login, non-interactive
+shell</em>, to try and isolate the environment and make sure that things work as
+expected, regardless of any changes that might happen on the server side.</p>
+
+<p>In contrast when you log into a machine with your terminal, into a regular
+Bash session, the <code>--login</code> option to Bash is implied granting you a <code>login</code>
+shell, and because you are in a terminal, ssh asks the ssh server to provide a
+pty so that you may start an interactive session. Thus you get an <code>interactive
+login</code> shell, the exact opposite of what we need for Capistrano!</p>
+
+<h2 id="toc_3">How can I check?</h2>
+
+<p>I actually had to look this up, most of the time it&#39;s common sense, but
+<a href="http://unix.stackexchange.com/a/26782">stackoverflow to the rescue</a>, let&#39;s
+figure this out!</p>
+
+<p>First, we&#39;ll try a <em>real</em> SSH session, logging in via our terminal, and seeing
+what happens:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote
+me@remote $ [[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;
+Interactive
+me@remote $ shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;
+Login shell</code></pre>
+</div>
+
+<p>Contrast that with what happens when we hand the command to run to the SSH
+command line without logging in first...</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote &quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;
+Interactive
+me@localhost $ ssh me@remote &quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;
+Not login shell</code></pre>
+</div>
+
+<p>Here we can see that Bash is still starting in <strong>interactive</strong> mode when we&#39;re
+just running a single command, that&#39;s because the terminal we are using is
+interactive, and SSH inherits that and passes that on to the remote server.</p>
+
+<p>When we try the same with Capistrano we&#39;ll see yet another set of results; we
+can have a very simple, Capfile, we don&#39;t even need to load the default
+recipes to test this:</p>
+
+<div>
+  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
+task :query_interactive do
+  on &#39;me@remote&#39; do
+    info capture(&quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;)
+  end
+end
+task :query_login do
+  on &#39;me@remote&#39; do
+    info capture(&quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;)
+  end
+end</code></pre>
+</div>
+
+<p>Gives us the following:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>me@localhost $ cap query_login
+INFO Not login shell
+me@localhost $ cap query_interactive
+INFO Not interactive</code></pre>
+</div>
+
+<h2 id="toc_4"><a id="which_startup_files_loaded"></a>Which shell startup files do get loaded?</h2>
+
+<p>Best explained with this diagram, yes it&#39;s that complicated:</p>
+
+<figure class="panel">
+  <img src="/images/BashStartupFiles1.png" title="Bash Startup Files" alt="Bash Startup Files" />
+  <figcaption>
+    <p>Source: <a href="http://www.solipsys.co.uk/new/BashInitialisationFiles.html">http://www.solipsys.co.uk/new/BashInitialisationFiles.html</a></p>
+  </figcaption>
+</figure>
+                                           -->
+
+    <!--</div> [> /container <]                                     -->
+
+  <div class="row">
+  <div class="large-4 columns">
+    <ul>
+    <li><a href="/about">About Capistrano</a></li>
+    <li><a href="https://github.com/capistrano/capistrano/blob/master/CONTRIBUTING">Contributing</a></li>
+    <li><a href="https://rubygems.org/gems/capistrano/versions">Releases</a></li>
+    <li><a href="/upgrading">Upgrading</a></li>
+    <li><a href="/security">Security</a></li>
+    </ul>
+  </div>
+
+  <div class="large-4 columns">
+    <ul>
+      <li><a href="http://stackoverflow.com/questions/tagged/capistrano">StackOverflow</a></li>
+      <li><a href="https://groups.google.com/forum/#!forum/capistrano">Mailing List</a></li>
+      <li><a href=".... ">Commercial Support</a></li>
+    </ul>
+  </div>
+
+  <div class="large-4 columns">
+    <ul>
+      <li><a href="//twitter.com/capistranorb"><i class="foundicon-twitter"></i></a></li>
+      <li><a href="//github.com/capistrano"><i class="foundicon-github"></i></a></li>
+    </ul>
+  </div>
+</div>
+
+
+  <script src="/js/prism.js"></script>
+  <script src="/js/prism.ruby.js"></script>
+</body>
+</html>
