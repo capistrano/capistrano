@@ -312,3 +312,38 @@ this carefully, and ideally architect your systems so that non-privlidged
 users can restart services, or that services restart *themselves* when they
 notice change.
 
+To configure this heirarchy, ignoring for the moment the passwordless `sudo`
+access that you may or may not need depending how well your servers are setup:
+
+{% prism bash %}
+    me@localhost $ ssh root@remote
+    # Capistrano will use /var/www/....... where ... is the value set in
+    # :application, you can override this by setting the ':deploy_to' variable
+    root@remote $ deploy_to=/var/www/rails3-bootstrap-devise-cancan-demo
+    root@remote $ mkdir ${deploy_to}
+    root@remote $ chown deploy:deploy ${deploy_to}
+    root@remote £ umask 0002
+    root@remote $ chmod g+s ${deploy_to}
+    root@remote $ mkdir ${deploy_to}/{releases,shared}
+{% endprism %}
+
+**Note:** The `chmod g+s` is a really handy, and little known Unix feature, it
+means that at the operating system level, without having to pay much attention
+to the permissions at runtime, all files an directories created inside the
+`${deploy_to}` directoy will inherit the group ownership, that means in this
+case even though we are root, the files will be created being owned by `root`
+with the group `deploy`, the `umask 0002` ensures that the files created
+*during this session* are created with the permissions *owner read/write,
+group: read/write, other: none*. This means that we'll be able to read these
+files from Apache, or our web server by running the web server in the `deploy`
+group namespace.
+
+{% prism bash %}
+    root@remote # stat -c "%A (%a) %n" ${deploy_to}/
+    drwx--S--- (2700)  /var/www/rails3-bootstrap-devise-cancan-demo
+
+    root@remote # stat -c "%A (%a) %n" ${deploy_to}/*
+    drwxrwsr-x (2775)  /var/www/rails3-bootstrap-devise-cancan-demo/releases
+    drwxrwsr-x (2775)  /var/www/rails3-bootstrap-devise-cancan-demo/shared
+{% endprism %}
+

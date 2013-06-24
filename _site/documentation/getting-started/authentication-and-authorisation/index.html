@@ -412,6 +412,41 @@ this carefully, and ideally architect your systems so that non-privlidged
 users can restart services, or that services restart <em>themselves</em> when they
 notice change.</p>
 
+<p>To configure this heirarchy, ignoring for the moment the passwordless <code>sudo</code>
+access that you may or may not need depending how well your servers are setup:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh root@remote
+# Capistrano will use /var/www/....... where ... is the value set in
+# :application, you can override this by setting the &#39;:deploy_to&#39; variable
+root@remote $ deploy_to=/var/www/rails3-bootstrap-devise-cancan-demo
+root@remote $ mkdir ${deploy_to}
+root@remote $ chown deploy:deploy ${deploy_to}
+root@remote £ umask 0002
+root@remote $ chmod g+s ${deploy_to}
+root@remote $ mkdir ${deploy_to}/{releases,shared}</code></pre>
+</div>
+
+<p><strong>Note:</strong> The <code>chmod g+s</code> is a really handy, and little known Unix feature, it
+means that at the operating system level, without having to pay much attention
+to the permissions at runtime, all files an directories created inside the
+<code>${deploy_to}</code> directoy will inherit the group ownership, that means in this
+case even though we are root, the files will be created being owned by <code>root</code>
+with the group <code>deploy</code>, the <code>umask 0002</code> ensures that the files created
+<em>during this session</em> are created with the permissions <em>owner read/write,
+group: read/write, other: none</em>. This means that we&#39;ll be able to read these
+files from Apache, or our web server by running the web server in the <code>deploy</code>
+group namespace.</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>root@remote # stat -c &quot;%A (%a) %n&quot; ${deploy_to}/
+drwx--S--- (2700)  /var/www/rails3-bootstrap-devise-cancan-demo
+
+root@remote # stat -c &quot;%A (%a) %n&quot; ${deploy_to}/*
+drwxrwsr-x (2775)  /var/www/rails3-bootstrap-devise-cancan-demo/releases
+drwxrwsr-x (2775)  /var/www/rails3-bootstrap-devise-cancan-demo/shared</code></pre>
+</div>
+
         </div>
       </div>
     </div>
@@ -736,6 +771,41 @@ as root, they can easily edit it to do anything they want that is evil. Use
 this carefully, and ideally architect your systems so that non-privlidged
 users can restart services, or that services restart <em>themselves</em> when they
 notice change.</p>
+
+<p>To configure this heirarchy, ignoring for the moment the passwordless <code>sudo</code>
+access that you may or may not need depending how well your servers are setup:</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh root@remote
+# Capistrano will use /var/www/....... where ... is the value set in
+# :application, you can override this by setting the &#39;:deploy_to&#39; variable
+root@remote $ deploy_to=/var/www/rails3-bootstrap-devise-cancan-demo
+root@remote $ mkdir ${deploy_to}
+root@remote $ chown deploy:deploy ${deploy_to}
+root@remote £ umask 0002
+root@remote $ chmod g+s ${deploy_to}
+root@remote $ mkdir ${deploy_to}/{releases,shared}</code></pre>
+</div>
+
+<p><strong>Note:</strong> The <code>chmod g+s</code> is a really handy, and little known Unix feature, it
+means that at the operating system level, without having to pay much attention
+to the permissions at runtime, all files an directories created inside the
+<code>${deploy_to}</code> directoy will inherit the group ownership, that means in this
+case even though we are root, the files will be created being owned by <code>root</code>
+with the group <code>deploy</code>, the <code>umask 0002</code> ensures that the files created
+<em>during this session</em> are created with the permissions <em>owner read/write,
+group: read/write, other: none</em>. This means that we&#39;ll be able to read these
+files from Apache, or our web server by running the web server in the <code>deploy</code>
+group namespace.</p>
+
+<div>
+  <pre data-line=''><code class='language-bash'>root@remote # stat -c &quot;%A (%a) %n&quot; ${deploy_to}/
+drwx--S--- (2700)  /var/www/rails3-bootstrap-devise-cancan-demo
+
+root@remote # stat -c &quot;%A (%a) %n&quot; ${deploy_to}/*
+drwxrwsr-x (2775)  /var/www/rails3-bootstrap-devise-cancan-demo/releases
+drwxrwsr-x (2775)  /var/www/rails3-bootstrap-devise-cancan-demo/shared</code></pre>
+</div>
                                            -->
 
     <!--</div> [> /container <]                                     -->
