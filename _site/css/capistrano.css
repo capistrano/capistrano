@@ -21,6 +21,23 @@ p code, li code {
   border-radius: 3px;
 }
 
-pre > code {
-  color: #FFF;
+footer {
+  padding: 1em;
+  background-color: #222;
+  color: #fff;
+}
+
+footer a {
+  color: #fff;
+}
+
+
+footer ul.social.icons {
+  list-style-type: none;
+}
+
+footer ul.social.icons li {
+  float: left;
+  margin-left: 10px;
+  font-size: 5em;
 }
