@@ -20,3 +20,7 @@ p code, li code {
   color: #222;
   border-radius: 3px;
 }
+
+pre > code {
+  color: #FFF;
+}
