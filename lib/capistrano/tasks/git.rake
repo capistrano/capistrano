@@ -18,7 +18,7 @@ namespace :git do
     fetch(:branch)
     on roles :all do
       with git_environmental_variables do
-        execute :git, :'ls-remote', fetch(:repo)
+        execute :git, :'ls-remote', repo_url
       end
     end
   end
@@ -31,7 +31,7 @@ namespace :git do
       else
         within deploy_path do
           with git_environmental_variables do
-            execute :git, :clone, '--mirror', fetch(:repo), repo_path
+            execute :git, :clone, '--mirror', repo_url, repo_path
           end
         end
       end

@@ -23,6 +23,23 @@ module Capistrano
         releases_path.join(release_timestamp)
       end
 
+      def repo_url
+        require 'cgi'
+        require 'uri'
+        if fetch(:git_http_username) and not fetch(:git_http_password)
+          URI.parse(fetch(:repo_url)).tap do |repo_uri|
+            repo_uri.user     = fetch(:git_http_username)
+            repo_uri.password = CGI.escape(fetch(:git_http_password))
+          end.to_s
+        elsif fetch(:git_http_username)
+          URI.parse(fetch(:repo_url)).tap do |repo_uri|
+            repo_uri.user = fetch(:git_http_username)
+          end.to_s
+        else
+          fetch(:repo_url)
+        end
+      end
+
       def repo_path
         deploy_path.join('repo')
       end
