@@ -60,7 +60,7 @@
   <li class="divider"></li>
   <h5>Overview</h5>
   <li><a href="/documentation/overview/what-is-capistrano/">What is Capistrano?</a></li>
-  <li><a href="/documentation/overview/introductory-demo-video/">Introductory Demo Video</a></li>
+  <!--<li><a href="/documentation/overview/introductory-demo-video/">Introductory Demo Video</a></li>-->
   <li class="divider"></li>
   <h5>Getting Started</h5>
   <li><a href="/documentation/getting-started/installation/">Installation</a></li>
@@ -71,14 +71,14 @@
   <li class="divider"></li>
   <h5>Framework Extensions</h5>
   <li><a href="/documentation/frameworks/ruby-on-rails/">Ruby on Rails</a></li>
-  <li class="divider"></li>
-  <h5>Troubleshooting</h5>
-  <li><a href="/documentation/troubleshooting/authentication/">SCM (Git) Authentication</a></li>
-  <li><a href="/documentation/troubleshooting/connectivity/">Connectivity</a></li>
-  <!--<li><a href="/documentation/troubleshooting/gateway-servers/">Gateway Servers</a></li>-->
-  <li><a href="/documentation/troubleshooting/agent-forwarding/">Agent Forwarding</a></li>
-  <li><a href="/documentation/troubleshooting/sudo-password/">`sudo` Password</a></li>
-  <li><a href="/documentation/troubleshooting/rvm-rbenv-nvm/">RVM, `rbenv` And `nvm`</a></li>
+  <!--<li class="divider"></li>                                                                     -->
+  <!--<h5>Troubleshooting</h5>                                                                      -->
+  <!--<li><a href="/documentation/troubleshooting/authentication/">SCM (Git) Authentication</a></li>-->
+  <!--<li><a href="/documentation/troubleshooting/connectivity/">Connectivity</a></li>              -->
+  <!--[><li><a href="/documentation/troubleshooting/gateway-servers/">Gateway Servers</a></li><]    -->
+  <!--<li><a href="/documentation/troubleshooting/agent-forwarding/">Agent Forwarding</a></li>      -->
+  <!--<li><a href="/documentation/troubleshooting/sudo-password/">`sudo` Password</a></li>          -->
+  <!--<li><a href="/documentation/troubleshooting/rvm-rbenv-nvm/">RVM, `rbenv` And `nvm`</a></li>   -->
   <li class="divider"></li>
   <h5>FAQ</h5>
   <li><a
@@ -104,7 +104,7 @@
 <div>
   <pre data-line=''><code class='language-ruby'>role :demo, %w{example.com example.org, example.net}
 task :uptime do |host|
-  on :demo, in: :parallel do
+  on roles(:demo), in: :parallel do
     uptime = capture(:uptime)
     puts &quot;#{host.hostname} reports: #{uptime}&quot;
   end
@@ -117,19 +117,20 @@ end</code></pre>
 <h3 id="toc_1">For Any Language</h3>
 
 <p>Capistrano is written in Ruby, but it can easily be used to deploy any
-language. Popular extensions add support for <em>Wordpress</em> blogs as well as
-<em>Symfony</em> and <em>Node.js</em> applications.</p>
+language.</p>
 
-<p>If your language has special deployment requirements, Capistrano can easily be
+<p>If your language or framework has special deployment requirements, Capistrano can easily be
 extended to support them.</p>
 
-<h3 id="toc_2">Demo Video</h3>
+<!--### Demo Video                                                                                                        -->
 
-<p><video id="demo" class="video-js vjs-default-skin" controls preload="auto" width="640" height="400" data-setup="{}">
-  <source src="http://capistrano-screencasts.s3.amazonaws.com/Capistrano%20Introduction%20Video.mp4" type='video/mp4'>
-</video></p>
+<!--<video id="demo" class="video-js vjs-default-skin" controls preload="auto" width="640" height="400" data-setup="{}">  -->
 
-<h3 id="toc_3"> Source Code</h3>
+<!--  <source src="http://capistrano-screencasts.s3.amazonaws.com/Capistrano%20Introduction%20Video.mp4" type='video/mp4'>-->
+
+<!--</video>                                                                                                              -->
+
+<h3 id="toc_2"> Source Code</h3>
 
 <div class="github-widget" data-repo="capistrano/capistrano"></div>
 
@@ -151,7 +152,7 @@ extended to support them.</p>
 <div>
   <pre data-line=''><code class='language-ruby'>role :demo, %w{example.com example.org, example.net}
 task :uptime do |host|
-  on :demo, in: :parallel do
+  on roles(:demo), in: :parallel do
     uptime = capture(:uptime)
     puts &quot;#{host.hostname} reports: #{uptime}&quot;
   end
@@ -164,19 +165,20 @@ end</code></pre>
 <h3 id="toc_1">For Any Language</h3>
 
 <p>Capistrano is written in Ruby, but it can easily be used to deploy any
-language. Popular extensions add support for <em>Wordpress</em> blogs as well as
-<em>Symfony</em> and <em>Node.js</em> applications.</p>
+language.</p>
 
-<p>If your language has special deployment requirements, Capistrano can easily be
+<p>If your language or framework has special deployment requirements, Capistrano can easily be
 extended to support them.</p>
 
-<h3 id="toc_2">Demo Video</h3>
+<!--### Demo Video                                                                                                        -->
 
-<p><video id="demo" class="video-js vjs-default-skin" controls preload="auto" width="640" height="400" data-setup="{}">
-  <source src="http://capistrano-screencasts.s3.amazonaws.com/Capistrano%20Introduction%20Video.mp4" type='video/mp4'>
-</video></p>
+<!--<video id="demo" class="video-js vjs-default-skin" controls preload="auto" width="640" height="400" data-setup="{}">  -->
 
-<h3 id="toc_3"> Source Code</h3>
+<!--  <source src="http://capistrano-screencasts.s3.amazonaws.com/Capistrano%20Introduction%20Video.mp4" type='video/mp4'>-->
+
+<!--</video>                                                                                                              -->
+
+<h3 id="toc_2"> Source Code</h3>
 
 <div class="github-widget" data-repo="capistrano/capistrano"></div>
 
@@ -218,6 +220,11 @@ extended to support them.</p>
 
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+  <script>
+    if (!window.jQuery) {
+      document.write('<script src="/js/jquery-1.7.min"><\/script>');
+    }
+  </script>
   <script src="/js/jquery.githubRepoWidget.min.js"></script>
   <script src="/js/prism.js"></script>
   <script src="/js/prism.ruby.js"></script>

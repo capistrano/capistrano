@@ -60,7 +60,7 @@
   <li class="divider"></li>
   <h5>Overview</h5>
   <li><a href="/documentation/overview/what-is-capistrano/">What is Capistrano?</a></li>
-  <li><a href="/documentation/overview/introductory-demo-video/">Introductory Demo Video</a></li>
+  <!--<li><a href="/documentation/overview/introductory-demo-video/">Introductory Demo Video</a></li>-->
   <li class="divider"></li>
   <h5>Getting Started</h5>
   <li><a href="/documentation/getting-started/installation/">Installation</a></li>
@@ -71,14 +71,14 @@
   <li class="divider"></li>
   <h5>Framework Extensions</h5>
   <li><a href="/documentation/frameworks/ruby-on-rails/">Ruby on Rails</a></li>
-  <li class="divider"></li>
-  <h5>Troubleshooting</h5>
-  <li><a href="/documentation/troubleshooting/authentication/">SCM (Git) Authentication</a></li>
-  <li><a href="/documentation/troubleshooting/connectivity/">Connectivity</a></li>
-  <!--<li><a href="/documentation/troubleshooting/gateway-servers/">Gateway Servers</a></li>-->
-  <li><a href="/documentation/troubleshooting/agent-forwarding/">Agent Forwarding</a></li>
-  <li><a href="/documentation/troubleshooting/sudo-password/">`sudo` Password</a></li>
-  <li><a href="/documentation/troubleshooting/rvm-rbenv-nvm/">RVM, `rbenv` And `nvm`</a></li>
+  <!--<li class="divider"></li>                                                                     -->
+  <!--<h5>Troubleshooting</h5>                                                                      -->
+  <!--<li><a href="/documentation/troubleshooting/authentication/">SCM (Git) Authentication</a></li>-->
+  <!--<li><a href="/documentation/troubleshooting/connectivity/">Connectivity</a></li>              -->
+  <!--[><li><a href="/documentation/troubleshooting/gateway-servers/">Gateway Servers</a></li><]    -->
+  <!--<li><a href="/documentation/troubleshooting/agent-forwarding/">Agent Forwarding</a></li>      -->
+  <!--<li><a href="/documentation/troubleshooting/sudo-password/">`sudo` Password</a></li>          -->
+  <!--<li><a href="/documentation/troubleshooting/rvm-rbenv-nvm/">RVM, `rbenv` And `nvm`</a></li>   -->
   <li class="divider"></li>
   <h5>FAQ</h5>
   <li><a
@@ -202,6 +202,11 @@ sitting and watching Ruby compile, for example!)</p>
 
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+  <script>
+    if (!window.jQuery) {
+      document.write('<script src="/js/jquery-1.7.min"><\/script>');
+    }
+  </script>
   <script src="/js/jquery.githubRepoWidget.min.js"></script>
   <script src="/js/prism.js"></script>
   <script src="/js/prism.ruby.js"></script>

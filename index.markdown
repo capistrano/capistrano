@@ -8,7 +8,7 @@ title: A remote server automation and deployment tool written in Ruby.
 {% prism ruby %}
 role :demo, %w{example.com example.org, example.net}
 task :uptime do |host|
-  on :demo, in: :parallel do
+  on roles(:demo), in: :parallel do
     uptime = capture(:uptime)
     puts "#{host.hostname} reports: #{uptime}"
   end
@@ -21,17 +21,16 @@ Capistrano extends the *Rake* DSL with methods specific to running commands
 ### For Any Language
 
 Capistrano is written in Ruby, but it can easily be used to deploy any
-language. Popular extensions add support for *Wordpress* blogs as well as
-*Symfony* and *Node.js* applications.
+language.
 
-If your language has special deployment requirements, Capistrano can easily be
+If your language or framework has special deployment requirements, Capistrano can easily be
 extended to support them.
 
-### Demo Video
+<!--### Demo Video                                                                                                        -->
 
-<video id="demo" class="video-js vjs-default-skin" controls preload="auto" width="640" height="400" data-setup="{}">
-  <source src="http://capistrano-screencasts.s3.amazonaws.com/Capistrano%20Introduction%20Video.mp4" type='video/mp4'>
-</video>
+<!--<video id="demo" class="video-js vjs-default-skin" controls preload="auto" width="640" height="400" data-setup="{}">  -->
+<!--  <source src="http://capistrano-screencasts.s3.amazonaws.com/Capistrano%20Introduction%20Video.mp4" type='video/mp4'>-->
+<!--</video>                                                                                                              -->
 
 ### Source Code
 
