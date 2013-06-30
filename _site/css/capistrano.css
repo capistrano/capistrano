@@ -41,3 +41,11 @@ footer ul.social.icons li {
   margin-left: 10px;
   font-size: 5em;
 }
+
+.github-widget {
+  margin-bottom: 1em;
+}
+
+.github-box .github-box-download {
+  height: 44px !important;
+}

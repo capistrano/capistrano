@@ -33,3 +33,8 @@ extended to support them.
   <source src="http://capistrano-screencasts.s3.amazonaws.com/Capistrano%20Introduction%20Video.mp4" type='video/mp4'>
 </video>
 
+### Source Code
+
+<div class="github-widget" data-repo="capistrano/capistrano"></div>
+<div class="github-widget" data-repo="capistrano/rails"></div>
+<div class="github-widget" data-repo="capistrano/documentation"></div>

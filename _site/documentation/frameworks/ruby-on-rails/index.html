@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A remote server automation and deployment tool written in Ruby.</title>
+    <title>Ruby on Rails</title>
     <link href='http://fonts.googleapis.com/css?family=Enriqueta' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="//use.typekit.net/itm5ubu.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
@@ -98,44 +98,24 @@
       </div>
       <div class="large-8 column">
         <div class="content">
-          <h2>A remote server automation and deployment tool written in Ruby.</h2>
-          <h3 id="toc_0">A Simple Task</h3>
+          <h2>Ruby on Rails</h2>
+          <p><strong>Note:</strong> The Ruby on Rails tasks target the most recent Ruby on Rails
+version, and as such might be unsuitable for you, please test these recipes in
+your staging environment before deploying them to production!</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>role :demo, %w{example.com example.org, example.net}
-task :uptime do |host|
-  on :demo, in: :parallel do
-    uptime = capture(:uptime)
-    puts &quot;#{host.hostname} reports: #{uptime}&quot;
-  end
-end</code></pre>
-</div>
+<h3 id="toc_0">Capistrano::Rails</h3>
 
-<p>Capistrano extends the <em>Rake</em> DSL with methods specific to running commands
-<code>on()</code> servers.</p>
+<p>The official Gem for Capistrano-Rails is named <code>capistrano-rails</code>, and one can
+simply define this in one&#39;s Rails project&#39;s <code>Gemfile</code>, it will depend on a
+suitably new version of Capistrano.</p>
 
-<h3 id="toc_1">For Any Language</h3>
-
-<p>Capistrano is written in Ruby, but it can easily be used to deploy any
-language. Popular extensions add support for <em>Wordpress</em> blogs as well as
-<em>Symfony</em> and <em>Node.js</em> applications.</p>
-
-<p>If your language has special deployment requirements, Capistrano can easily be
-extended to support them.</p>
-
-<h3 id="toc_2">Demo Video</h3>
-
-<p><video id="demo" class="video-js vjs-default-skin" controls preload="auto" width="640" height="400" data-setup="{}">
-  <source src="http://capistrano-screencasts.s3.amazonaws.com/Capistrano%20Introduction%20Video.mp4" type='video/mp4'>
-</video></p>
-
-<h3 id="toc_3"> Source Code</h3>
-
-<div class="github-widget" data-repo="capistrano/capistrano"></div>
+<p>The
+<a href="https://github.com/capistrano/rails/blob/master/README.md"><code>README</code></a>
+for the Capistrano::Rails explains more than enough, sufficed to say that it
+adds appropriate hooks for database migrations and asset compilation at the
+appropriate times.</p>
 
 <div class="github-widget" data-repo="capistrano/rails"></div>
-
-<div class="github-widget" data-repo="capistrano/documentation"></div>
 
         </div>
       </div>
@@ -146,43 +126,23 @@ extended to support them.</p>
       <!--      <a class="extra" href="/">home</a>                    -->
       <!--    </div>                                                  -->
 
-    <!--    <h3 id="toc_0">A Simple Task</h3>
+    <!--    <p><strong>Note:</strong> The Ruby on Rails tasks target the most recent Ruby on Rails
+version, and as such might be unsuitable for you, please test these recipes in
+your staging environment before deploying them to production!</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>role :demo, %w{example.com example.org, example.net}
-task :uptime do |host|
-  on :demo, in: :parallel do
-    uptime = capture(:uptime)
-    puts &quot;#{host.hostname} reports: #{uptime}&quot;
-  end
-end</code></pre>
-</div>
+<h3 id="toc_0">Capistrano::Rails</h3>
 
-<p>Capistrano extends the <em>Rake</em> DSL with methods specific to running commands
-<code>on()</code> servers.</p>
+<p>The official Gem for Capistrano-Rails is named <code>capistrano-rails</code>, and one can
+simply define this in one&#39;s Rails project&#39;s <code>Gemfile</code>, it will depend on a
+suitably new version of Capistrano.</p>
 
-<h3 id="toc_1">For Any Language</h3>
-
-<p>Capistrano is written in Ruby, but it can easily be used to deploy any
-language. Popular extensions add support for <em>Wordpress</em> blogs as well as
-<em>Symfony</em> and <em>Node.js</em> applications.</p>
-
-<p>If your language has special deployment requirements, Capistrano can easily be
-extended to support them.</p>
-
-<h3 id="toc_2">Demo Video</h3>
-
-<p><video id="demo" class="video-js vjs-default-skin" controls preload="auto" width="640" height="400" data-setup="{}">
-  <source src="http://capistrano-screencasts.s3.amazonaws.com/Capistrano%20Introduction%20Video.mp4" type='video/mp4'>
-</video></p>
-
-<h3 id="toc_3"> Source Code</h3>
-
-<div class="github-widget" data-repo="capistrano/capistrano"></div>
+<p>The
+<a href="https://github.com/capistrano/rails/blob/master/README.md"><code>README</code></a>
+for the Capistrano::Rails explains more than enough, sufficed to say that it
+adds appropriate hooks for database migrations and asset compilation at the
+appropriate times.</p>
 
 <div class="github-widget" data-repo="capistrano/rails"></div>
-
-<div class="github-widget" data-repo="capistrano/documentation"></div>
                                            -->
 
     <!--</div> [> /container <]                                     -->
