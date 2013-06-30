@@ -49,3 +49,7 @@ footer ul.social.icons li {
 .github-box .github-box-download {
   height: 44px !important;
 }
+
+pre code {
+  color: #fff;
+}

@@ -26,13 +26,7 @@ language.
 If your language or framework has special deployment requirements, Capistrano can easily be
 extended to support them.
 
-<!--### Demo Video                                                                                                        -->
-
-<!--<video id="demo" class="video-js vjs-default-skin" controls preload="auto" width="640" height="400" data-setup="{}">  -->
-<!--  <source src="http://capistrano-screencasts.s3.amazonaws.com/Capistrano%20Introduction%20Video.mp4" type='video/mp4'>-->
-<!--</video>                                                                                                              -->
-
-### Source Code
+### Source Code
 
 <div class="github-widget" data-repo="capistrano/capistrano"></div>
 <div class="github-widget" data-repo="capistrano/rails"></div>
