@@ -147,7 +147,7 @@ them a little:
 
 {% prism ruby %}
     set :application, 'my app name'
-    set :repo, 'git@example.com:me/my_repo.git'
+    set :repo_url, 'git@example.com:me/my_repo.git'
     ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 {% endprism %}
 
@@ -170,7 +170,7 @@ forked to the Capistrano repository, but you can find the (unchanged) original
 
 {% prism ruby %}
     set :application, 'rails3-bootstrap-devise-cancan-demo'
-    set :repo, 'https://github.com/capistrano/rails3-bootstrap-devise-cancan'
+    set :repo_url, 'https://github.com/capistrano/rails3-bootstrap-devise-cancan'
     set :branch, 'master'
 {% endprism %}
 

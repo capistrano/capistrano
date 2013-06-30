@@ -243,7 +243,7 @@ them a little:</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'>set :application, &#39;my app name&#39;
-set :repo, &#39;git@example.com:me/my_repo.git&#39;
+set :repo_url, &#39;git@example.com:me/my_repo.git&#39;
 ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }</code></pre>
 </div>
 
@@ -266,7 +266,7 @@ forked to the Capistrano repository, but you can find the (unchanged) original
 
 <div>
   <pre data-line=''><code class='language-ruby'>set :application, &#39;rails3-bootstrap-devise-cancan-demo&#39;
-set :repo, &#39;https://github.com/capistrano/rails3-bootstrap-devise-cancan&#39;
+set :repo_url, &#39;https://github.com/capistrano/rails3-bootstrap-devise-cancan&#39;
 set :branch, &#39;master&#39;</code></pre>
 </div>
 
@@ -435,7 +435,7 @@ them a little:</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'>set :application, &#39;my app name&#39;
-set :repo, &#39;git@example.com:me/my_repo.git&#39;
+set :repo_url, &#39;git@example.com:me/my_repo.git&#39;
 ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }</code></pre>
 </div>
 
@@ -458,7 +458,7 @@ forked to the Capistrano repository, but you can find the (unchanged) original
 
 <div>
   <pre data-line=''><code class='language-ruby'>set :application, &#39;rails3-bootstrap-devise-cancan-demo&#39;
-set :repo, &#39;https://github.com/capistrano/rails3-bootstrap-devise-cancan&#39;
+set :repo_url, &#39;https://github.com/capistrano/rails3-bootstrap-devise-cancan&#39;
 set :branch, &#39;master&#39;</code></pre>
 </div>
 
