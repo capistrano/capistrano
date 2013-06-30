@@ -9,7 +9,7 @@
 Add this line to your application's Gemfile:
 
 ``` ruby
-gem 'capistrano', github: 'capistrano/capistrano', branch: :v3
+gem 'capistrano', '~> 3.0.0'
 ```
 
 And then execute:
@@ -189,6 +189,13 @@ your company lacks the infrastructure to test this in a staging environment)
 
 ## Configuration
 
+The following variables are settable:
+
+| Variable Name         | Description                                                         | Notes                                                           |
+|:---------------------:|---------------------------------------------------------------------|-----------------------------------------------------------------|
+| `:repo_url`           | The URL of your Git repository                                      | file://, https://, or ssh:// are all supported                  |
+| `:git_https_username` | The (optional) username for accessing your Git repostory over HTTPS | if this is an SSH connection, this setting will have no effect. |
+| `:git_https_password` | The (optional) password for accessing your Git repostory over HTTPS | if this is an SSH connection, this setting will have no effect. |
 
 ## SSHKit
 
