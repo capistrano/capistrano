@@ -6,7 +6,7 @@ title: A remote server automation and deployment tool written in Ruby.
 ### A Simple Task
 
 {% prism ruby %}
-role :demo, %w{example.com example.org, example.net}
+role :demo, %w{example.com example.org example.net}
 task :uptime do |host|
   on roles(:demo), in: :parallel do
     uptime = capture(:uptime)
