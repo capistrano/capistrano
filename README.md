@@ -199,7 +199,7 @@ The following variables are settable:
 
 ## SSHKit
 
-[SSHKit][https://github.com/capistrano/sshkit] is the driver for SSH
+[SSHKit](https://github.com/capistrano/sshkit) is the driver for SSH
 connections behind the scenes in Capistrano, depending how deep you dig, you
 might run into interfaces that come directly from SSHKit (the configuration is
 a good example).
