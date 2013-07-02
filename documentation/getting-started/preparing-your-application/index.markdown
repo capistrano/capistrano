@@ -104,7 +104,7 @@ The example file generated will look something like this:
     # ======================
     # This can be used to drop a more detailed server
     # definition into the server list. The second argument
-    # something that quacks like a has can be used to set
+    # something that quacks like a hash can be used to set
     # extended properties on the server.
     server 'example.com', roles: %w{web app}, my_property: :my_value
 
