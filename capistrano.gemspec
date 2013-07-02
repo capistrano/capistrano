@@ -6,8 +6,8 @@ require 'capistrano/version'
 Gem::Specification.new do |gem|
   gem.name          = "capistrano"
   gem.version       = Capistrano::VERSION
-  gem.authors       = ["Tom Clements"]
-  gem.email         = ["seenmyfate@gmail.com"]
+  gem.authors       = ["Tom Clements", "Lee Hambley"]
+  gem.email         = ["seenmyfate@gmail.com", "lee.hambley@gmail.com"]
   gem.description   = %q{PENDING: Write a gem description}
   gem.summary       = %q{PENDING: Write a gem summary}
   gem.homepage      = ""
@@ -17,8 +17,8 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.signing_key = '/Volumes/SD Card/leehambley-private_key.pem'
-  gem.cert_chain  = ['capistrano-public_cert.pem', 'leehambley-public_cert.pem']
+  #gem.signing_key = '/Volumes/SD Card/leehambley-private_key.pem'
+  #gem.cert_chain  = ['capistrano-public_cert.pem', 'leehambley-public_cert.pem']
 
   gem.add_dependency 'sshkit', '>= 0.0.23'
   gem.add_dependency 'rake', '>= 10.0.0'
