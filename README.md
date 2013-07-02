@@ -19,7 +19,7 @@ $ bundle --binstubs
 ```
 
 Capify:
-
+*make sure there's no "Capfile" or "capfile" present* 
 ``` shell
 $ cap install
 ```
