@@ -184,8 +184,8 @@ or at least they are being used incorrectly.
 Whilst, especially in the case of language runtimes (Ruby, Node, Python and friends in
 particular) there is a temptation to run multiple versions in parallel on a single server
 and to switch between them using environmental variables, this is an anti-pattern, and
-sympotamtic of bad design (i.e. you're testing a second version of Ruby in production because
-your company lacks the infrastructure to test this in a staging environment)
+symptomatic of bad design (i.e. you're testing a second version of Ruby in production because
+your company lacks the infrastructure to test this in a staging environment).
 
 ## Configuration
 
