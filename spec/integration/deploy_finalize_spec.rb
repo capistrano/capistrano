@@ -10,7 +10,7 @@ describe 'cap deploy:finished', slow: true do
       %{
         set :stage, :#{stage}
         set :deploy_to, '#{deploy_to}'
-        set :repo, 'git://github.com/capistrano/capistrano.git'
+        set :repo_url, 'git://github.com/capistrano/capistrano.git'
         set :branch, 'v3'
         server 'localhost', roles: %w{web app}, user: '#{current_user}'
         set :linked_files, %w{config/database.yml}
