@@ -9,5 +9,5 @@ namespace :deploy do
     end
   end
 
-  after :update, :bundle
+  after 'deploy:update', 'deploy:bundle'
 end
