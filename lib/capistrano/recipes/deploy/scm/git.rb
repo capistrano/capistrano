@@ -136,7 +136,7 @@ module Capistrano
           args = []
 
           # Add an option for the branch name so :git_shallow_clone works with branches
-          args << "-b #{variable(:branch)}" unless variable(:branch).nil?
+          args << "-b #{variable(:branch)}" unless variable(:branch).nil? || variable(:branch) == revision
           args << "-o #{remote}" unless remote == 'origin'
           if depth = variable(:git_shallow_clone)
             args << "--depth #{depth}"

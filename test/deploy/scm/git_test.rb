@@ -43,6 +43,21 @@ class DeploySCMGitTest < Test::Unit::TestCase
     assert_equal "#{git} clone -q git@somehost.com:project.git /var/www && cd /var/www && #{git} checkout -q -b deploy #{rev} && #{git} submodule -q init && #{git} submodule -q sync && export GIT_RECURSIVE=$([ ! \"`#{git} --version`\" \\< \"git version 1.6.5\" ] && echo --recursive) && #{git} submodule -q update --init $GIT_RECURSIVE", @source.checkout(rev, dest).gsub(/\s+/, ' ')
   end
 
+  def test_checkout_branching
+    @config[:repository] = "git@somehost.com:project.git"
+    dest = "/var/www"
+    rev = 'c2d9e79'
+    assert_equal "git clone -q git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy c2d9e79", @source.checkout(rev, dest)
+
+    # with :branch
+    @config[:branch] = "master"
+    assert_equal "git clone -q -b master git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy c2d9e79", @source.checkout(rev, dest)
+
+    # with :branch with hash code
+    @config[:branch] = "c2d9e79"
+    assert_equal "git clone -q git@somehost.com:project.git /var/www && cd /var/www && git checkout -q -b deploy c2d9e79", @source.checkout(rev, dest)
+  end
+
   def test_checkout_submodules_without_recursive
     @config[:repository] = "git@somehost.com:project.git"
     dest = "/var/www"
