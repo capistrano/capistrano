@@ -22,9 +22,12 @@ Capistrano::Configuration.instance.load do
   end
 
   on :load do
-    if stages.include?(ARGV.first)
+    # The first non option argument
+    env = ARGV.detect { |a| a.to_s !~ /\A-/ && a.to_s !~ /=/ }
+
+    if stages.include?(env)
       # Execute the specified stage so that recipes required in stage can contribute to task list
-      find_and_execute_task(ARGV.first) if ARGV.any?{ |option| option =~ /-T|--tasks|-e|--explain/ }
+      find_and_execute_task(env) if ARGV.any?{ |option| option =~ /-T|--tasks|-e|--explain/ }
     else
       # Execute the default stage so that recipes required in stage can contribute tasks
       find_and_execute_task(default_stage) if exists?(:default_stage)
