@@ -1,3 +1,10 @@
+## 2.15.5 / July 4 2013
+
+* Fix multistage argument parsing when using the `-s` option. (@jmazzi)
+* Tweaks to the asset recipes. (@curtislinden)
+* Use quotes around SCM usernames and passwords (@carloslopes)
+* Avoid git warning when cloning Git repository using sha1 (@bpaquet)
+
 ## 2.15.4 / April 29 2013
 
 * Fix parallel command logging (@gnufied)
