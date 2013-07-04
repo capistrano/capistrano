@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Capistrano::VERSION
   gem.authors       = ["Tom Clements", "Lee Hambley"]
   gem.email         = ["seenmyfate@gmail.com", "lee.hambley@gmail.com"]
-  gem.description   = %q{PENDING: Write a gem description}
-  gem.summary       = %q{PENDING: Write a gem summary}
+  gem.description   = %q{Capistrano is a utility and framework for executing commands in parallel on multiple remote machines, via SSH.}
+  gem.summary       = %q{Capistrano - Welcome to easy deployment with Ruby over SSH}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
