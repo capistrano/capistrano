@@ -41,7 +41,7 @@ module Capistrano
       end
 
       def fetch_roles(names, options)
-        if Array(names).map(&:to_sym).include?(:all)
+        if Array(names).flatten.map(&:to_sym).include?(:all)
           filter(servers, options)
         else
           role_servers = Array(names).flat_map { |name| fetch name }.uniq
@@ -70,7 +70,7 @@ module Capistrano
           if servers_with_filter.any?
             servers_with_filter
           else
-            fail I18n.t(:filter_removes_all_servers, scope: :capistrano, filter: key )
+            fail I18n.t(:filter_removes_all_servers, scope: :capistrano, filter: key || '(no filter)' )
           end
         end
 

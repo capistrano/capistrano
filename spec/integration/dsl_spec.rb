@@ -21,6 +21,13 @@ describe Capistrano::DSL do
         end
       end
 
+      describe 'fetching servers by multiple roles' do
+        it "does not confuse the last role with options" do
+          expect(dsl.roles(:app, :web).count).to eq 4
+          expect(dsl.roles(:app, :web, filter: :active).count).to eq 2
+        end
+      end
+
       describe 'fetching servers by role' do
         subject { dsl.roles(:app) }
 
