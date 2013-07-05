@@ -2,6 +2,10 @@
 
 Reverse Chronological Order:
 
+## `3.0.0.pre10`
+
+ * Fixes pre9.
+
 ## `3.0.0.pre9`
 
  * Fixes a syntax error introduced with filtering (with tests) introduced in

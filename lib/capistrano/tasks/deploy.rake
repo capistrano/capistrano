@@ -59,7 +59,7 @@ namespace :deploy do
   namespace :symlink do
     desc 'Symlink release to current'
     task :release do
-      on roles(:web, :app) do
+      on roles :all do
         execute :rm, '-rf', current_path
         execute :ln, '-s', release_path, current_path
       end
