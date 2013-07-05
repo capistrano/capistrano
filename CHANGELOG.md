@@ -2,6 +2,11 @@
 
 Reverse Chronological Order:
 
+## `3.0.0.pre9`
+
+ * Fixes a syntax error introduced with filtering (with tests) introduced in
+   `pre8`. (@leehambley)
+
 ## `3.0.0.pre8`
 
  * Fixed a syntax where `roles(:foo, :bar)` was being mistaken as a filter
