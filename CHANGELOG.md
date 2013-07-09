@@ -2,6 +2,11 @@
 
 Reverse Chronological Order:
 
+## `3.0.0.pre12`
+
+ * `capistrano/bundler` now runs bundle on all roles, this addresses the same
+   issue as the related changes in `pre11`. (@leehambley)
+
 ## `3.0.0.pre11`
 
  * Some deploy.rake tasks now apply to all servers, not expecting a
