@@ -274,7 +274,7 @@ leaving an undefined state on server one, as Capistrano would simply hang up
 both connections.
 
 This cleanup routine can now be better implemented as follows (which is
-actually more or less the actual implenetation in the the new Gem):
+actually more or less the actual implementation in the the new Gem):
 
 {% prism ruby %}
     # Capistrano 3.0.x
