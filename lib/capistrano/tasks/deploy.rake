@@ -125,7 +125,7 @@ namespace :deploy do
 
   desc 'Log details of the deploy'
   task :log_revision do
-    on primary :app do
+    on roles(:all) do
       within releases_path do
         execute %{echo "#{revision_log_message}" >> #{revision_log}}
       end
@@ -134,7 +134,7 @@ namespace :deploy do
 
   desc 'Rollback to the last release'
   task :rollback do
-    on primary :app do
+    on roles(:all) do
       last_release = capture(:ls, '-xt', releases_path).split[1]
       set(:rollback_release_timestamp, last_release)
       set(:branch, last_release)
