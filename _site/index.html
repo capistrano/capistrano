@@ -107,7 +107,7 @@
           <h3 id="toc_0">A Simple Task</h3>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>role :demo, %w{example.com example.org, example.net}
+  <pre data-line=''><code class='language-ruby'>role :demo, %w{example.com example.org example.net}
 task :uptime do |host|
   on roles(:demo), in: :parallel do
     uptime = capture(:uptime)
@@ -147,7 +147,7 @@ extended to support them.</p>
     <!--    <h3 id="toc_0">A Simple Task</h3>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>role :demo, %w{example.com example.org, example.net}
+  <pre data-line=''><code class='language-ruby'>role :demo, %w{example.com example.org example.net}
 task :uptime do |host|
   on roles(:demo), in: :parallel do
     uptime = capture(:uptime)
