@@ -2,6 +2,12 @@
 
 Reverse Chronological Order:
 
+## `3.0.0.pre11`
+
+ * Some deploy.rake tasks now apply to all servers, not expecting a
+   primary(:app) server which may not exist in all deploy environments.
+   (@leehambley).
+
 ## `3.0.0.pre10`
 
  * Fixes pre9.
