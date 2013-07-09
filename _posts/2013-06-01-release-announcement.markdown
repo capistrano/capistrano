@@ -36,7 +36,7 @@ We had a few goals for this release, in no particular order they were:
   surrounding environmental issues around PTY vs non-TTY environments, login
   and non-login shells not to mention *environment managers* such as rvm,
   rbenv and nvm.
-* **Speed.** We know that in a lot of environments speed of deploment is a
+* **Speed.** We know that in a lot of environments speed of deployment is a
   huge factor, since Rails introduced the *Asset Pipeline* it's not uncommon
   for a deploy that formerly took 5 seconds now takes 5 minutes. This really
   is mostly out of our control, but with improved support for parallelism,
