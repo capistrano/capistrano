@@ -132,6 +132,25 @@ namespace :deploy do
     end
   end
 
+  task :cleanup_rollback do
+    on roles(:all) do
+      last_release = capture(:ls, '-xr', releases_path).split.first
+      last_release_path = releases_path.join(last_release)
+      if test "[ `readlink #{current_path}` != #{last_release_path} ]"
+        execute :tar, '-czf',
+                deploy_path.join("rolled-back-release-#{last_release}.tar.gz"),
+                last_release_path
+        execute :rm, '-rf', last_release_path
+      else
+        debug 'Last release is the current release, skip cleanup_rollback.'
+      end
+    end
+  end
+
+  desc 'Rollback hook'
+  task :finalize_rollback do
+  end
+
   desc 'Rollback to the last release'
   task :rollback do
     on roles(:all) do
@@ -142,7 +161,8 @@ namespace :deploy do
     end
 
     on roles :app do
-      %w{check finalize restart finishing finished}.each do |task|
+      %w{starting started finalize_rollback
+         finalize restart cleanup_rollback finished}.each do |task|
         invoke "deploy:#{task}"
       end
     end
