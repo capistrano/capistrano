@@ -113,7 +113,7 @@ namespace :deploy do
   desc 'Clean up old releases'
   task :cleanup do
     on roles :all do |host|
-      releases = capture(:ls, '-xt', releases_path).split.reverse
+      releases = capture(:ls, '-x', releases_path).split
       if releases.count >= fetch(:keep_releases)
         info t(:keeping_releases, host: host.to_s, keep_releases: fetch(:keep_releases), releases: releases.count)
         directories = (releases - releases.last(fetch(:keep_releases))).map { |release|
@@ -135,7 +135,7 @@ namespace :deploy do
   desc 'Rollback to the last release'
   task :rollback do
     on roles(:all) do
-      last_release = capture(:ls, '-xt', releases_path).split[1]
+      last_release = capture(:ls, '-xr', releases_path).split[1]
       set(:rollback_release_timestamp, last_release)
       set(:branch, last_release)
       set(:revision_log_message, rollback_log_message)
