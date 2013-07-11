@@ -137,10 +137,6 @@ module Capistrano
       describe 'assign ssh_options' do
         let(:server) { Server.new('user_name@hostname') }
 
-        # before do
-        #   server
-        # end
-
         context 'defaults' do
           it 'forward agent' do
             expect(server.netssh_options[:forward_agent]).to eq true

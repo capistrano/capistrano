@@ -59,6 +59,7 @@ module Capistrano
         sshkit.backend.configure do |backend|
           backend.pty                = fetch(:pty)
           backend.connection_timeout = fetch(:connection_timeout)
+          backend.ssh_options        = fetch(:ssh_options) if fetch(:ssh_options)
         end
       end
     end
