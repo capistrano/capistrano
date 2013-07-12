@@ -263,7 +263,7 @@ module Capistrano
             unless pass = variable(:scm_password)
               pass = Capistrano::CLI.password_prompt
             end
-            %("#{pass}"\n)
+            "#{pass}\n"
           when %r{\(yes/no\)}
             # git is asking whether or not to connect
             "yes\n"
@@ -272,7 +272,7 @@ module Capistrano
             unless pass = variable(:scm_passphrase)
               pass = Capistrano::CLI.password_prompt
             end
-            %("#{pass}"\n)
+            "#{pass}\n"
           when /accept \(t\)emporarily/
             # git is asking whether to accept the certificate
             "t\n"
