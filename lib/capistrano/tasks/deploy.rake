@@ -22,6 +22,10 @@ namespace :deploy do
     invoke 'deploy:cleanup'
   end
 
+  task :finishing_rollback do
+    invoke 'deploy:cleanup_rollback'
+  end
+
   task :finished do
     invoke 'deploy:log_revision'
   end
@@ -128,6 +132,22 @@ namespace :deploy do
         directories = (releases - releases.last(fetch(:keep_releases))).map { |release|
           releases_path.join(release) }.join(" ")
         execute :rm, '-rf', directories
+      end
+    end
+  end
+
+  desc 'Remove and archive rolled-back release.'
+  task :cleanup_rollback do
+    on roles(:all) do
+      last_release = capture(:ls, '-xr', releases_path).split.first
+      last_release_path = releases_path.join(last_release)
+      if test "[ `readlink #{current_path}` != #{last_release_path} ]"
+        execute :tar, '-czf',
+          deploy_path.join("rolled-back-release-#{last_release}.tar.gz"),
+        last_release_path
+        execute :rm, '-rf', last_release_path
+      else
+        debug 'Last release is the current release, skip cleanup_rollback.'
       end
     end
   end
