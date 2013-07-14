@@ -2,6 +2,13 @@
 
 Reverse Chronological Order:
 
+## `3.0.0.pre13`
+
+ * Fixed typos in the Capfile. (@teohm)
+ * Allow setting SSH options globally. (@korin)
+ * Change the flow (and hooks) see http://www.capistranorb.com/documentation/getting-started/flow/ for more information. Requires min SSHKit 0.0.34 (@teohm)
+ * Fix sorting releases in lexicographical order (@teohm)
+
 ## `3.0.0.pre12`
 
  * `capistrano/bundler` now runs bundle on all roles, this addresses the same
