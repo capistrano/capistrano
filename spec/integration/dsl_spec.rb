@@ -234,6 +234,11 @@ describe Capistrano::DSL do
       dsl.set(:default_env, default_env)
       dsl.set(:pty, true)
       dsl.set(:connection_timeout, 10)
+      dsl.set(:ssh_options, {
+        keys: %w(/home/user/.ssh/id_rsa),
+        forward_agent: false,
+        auth_methods: %w(publickey password)
+      })
       dsl.configure_backend
     end
 
@@ -256,6 +261,13 @@ describe Capistrano::DSL do
     it 'sets the backend connection timeout' do
       expect(backend.connection_timeout).to eq 10
     end
+
+    it 'sets the backend ssh_options' do
+      expect(backend.ssh_options[:keys]).to eq %w(/home/user/.ssh/id_rsa)
+      expect(backend.ssh_options[:forward_agent]).to eq false
+      expect(backend.ssh_options[:auth_methods]).to eq %w(publickey password)
+    end
+
   end
 
 end

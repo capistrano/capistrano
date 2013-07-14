@@ -134,6 +134,47 @@ module Capistrano
         end
       end
 
+      describe 'assign ssh_options' do
+        let(:server) { Server.new('user_name@hostname') }
+
+        context 'defaults' do
+          it 'forward agent' do
+            expect(server.netssh_options[:forward_agent]).to eq true
+          end
+          it 'contains user' do
+            expect(server.netssh_options[:user]).to eq 'user_name'
+          end
+        end
+
+        context 'custom' do
+          let(:properties) do
+            { ssh_options: {
+              user: 'another_user',
+              keys: %w(/home/another_user/.ssh/id_rsa),
+              forward_agent: false,
+              auth_methods: %w(publickey password) } }
+          end
+
+          before do
+            server.with(properties)
+          end
+
+          it 'not forward agent' do
+            expect(server.netssh_options[:forward_agent]).to eq false
+          end
+          it 'contains correct user' do
+            expect(server.netssh_options[:user]).to eq 'another_user'
+          end
+          it 'contains keys' do
+            expect(server.netssh_options[:keys]).to eq %w(/home/another_user/.ssh/id_rsa)
+          end
+          it 'contains auth_methods' do
+            expect(server.netssh_options[:auth_methods]).to eq %w(publickey password)
+          end
+        end
+
+      end
+
     end
   end
 end
