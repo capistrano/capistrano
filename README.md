@@ -166,6 +166,69 @@ DEBUG [9ce34809]  leehambley pts/0        2013-06-13 17:11 (port-11262.pppoe.wtn
  INFO [9ce34809] Finished in 0.420 seconds command successful.
 ```
 
+## Capistrano Task Runlist
+
+Let's assume you require the following tasks in `Capfile`.
+
+```
+# Capfile
+require 'capistrano/setup'
+require 'capistrano/deploy'
+require 'capistrano/bundler'
+require 'capistrano/rails'
+```
+
+This is the runlist that will be executed, when you run `rake production deploy`.
+
+```
+deploy
+  deploy:starting
+  deploy:started
+    deploy:check
+      deploy:git:check
+      deploy:check:directories
+      deploy:check:linked_dirs
+      deploy:check:linked_files
+  deploy:update
+    git:create_release
+    deploy:symlink:shared
+      deploy:symlink:linked_files
+      deploy:symlink:linked_dirs
+    [after]
+      deploy:bundle
+      deploy:migrate
+  deploy:finalize
+    deploy:symlink:release
+    [after]
+      deploy:normalise_assets
+  deploy:restart
+  deploy:finishing
+    deploy:cleanup
+  deploy:finished
+    deploy:log_revision
+```
+
+This is the runlist for `rake production deploy:rollback`.
+
+```
+deploy:rollback
+  deploy:check
+    deploy:git:check
+    deploy:check:directories
+    deploy:check:linked_dirs
+    deploy:check:linked_files
+  deploy:finalize
+    deploy:symlink:release
+    [after]
+      deploy:normalise_assets
+  deploy:restart
+  deploy:finishing
+    deploy:cleanup
+  deploy:finished
+    deploy:log_revision
+```
+
+
 ## A word about PTYs
 
 There is a configuration option which asks the backend driver to as the remote host
