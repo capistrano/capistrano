@@ -132,6 +132,10 @@ namespace :deploy do
     end
   end
 
+  desc 'Rollback hook'
+  task :finalize_rollback do
+  end
+
   desc 'Rollback to the last release'
   task :rollback do
     on roles(:all) do
@@ -142,7 +146,8 @@ namespace :deploy do
     end
 
     on roles :app do
-      %w{check finalize restart finishing finished}.each do |task|
+      %w{finalize_rollback
+         check finalize restart finishing finished}.each do |task|
         invoke "deploy:#{task}"
       end
     end
