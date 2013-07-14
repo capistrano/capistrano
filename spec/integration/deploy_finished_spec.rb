@@ -21,8 +21,8 @@ describe 'cap deploy:finished', slow: true do
     describe 'symlink' do
       before do
         cap 'deploy:started'
-        cap 'deploy:update'
-        cap 'deploy:finalize'
+        cap 'deploy:updating'
+        cap 'deploy:publishing'
       end
 
       describe 'release' do
