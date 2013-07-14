@@ -1,16 +1,25 @@
 namespace :deploy do
 
-  task :started do
+  task :starting do
     invoke 'deploy:check'
   end
 
-  task :update do
+  task :updating do
     invoke "#{scm}:create_release"
     invoke 'deploy:symlink:shared'
   end
 
-  task :finalize do
+  task :reverting do
+    invoke 'deploy:revert_release'
+  end
+
+  task :publishing do
     invoke 'deploy:symlink:release'
+    invoke 'deploy:restart'
+  end
+
+  task :finishing do
+    invoke 'deploy:cleanup'
   end
 
   task :finished do
@@ -132,19 +141,14 @@ namespace :deploy do
     end
   end
 
-  desc 'Rollback to the last release'
-  task :rollback do
+  desc 'Revert to previous release timestamp'
+  task :revert_release do
     on roles(:all) do
       last_release = capture(:ls, '-xr', releases_path).split[1]
       set(:rollback_release_timestamp, last_release)
       set(:branch, last_release)
       set(:revision_log_message, rollback_log_message)
     end
-
-    on roles :app do
-      %w{check finalize restart finishing finished}.each do |task|
-        invoke "deploy:#{task}"
-      end
-    end
   end
+
 end

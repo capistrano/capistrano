@@ -1,6 +1,6 @@
 require 'integration_spec_helper'
 
-describe 'cap deploy:update', slow: true do
+describe 'cap deploy:updating', slow: true do
   before do
     install_test_app_with(config)
   end
