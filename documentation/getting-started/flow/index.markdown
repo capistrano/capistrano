@@ -63,6 +63,7 @@ deploy
   deploy:starting
     [before]
       deploy:ensure_stage
+      deploy:set_shared_assets
     deploy:check
   deploy:started
   deploy:updating
