@@ -10,7 +10,7 @@ Capistrano v3 provides a default **deploy flow** and a **rollback flow**:
 When you run `cap production deploy`, it invokes the following tasks in
 sequence:
 
-```
+{% prism ruby %}
 deploy:starting    - start a deployment, make sure everything is ready
 deploy:started     - started hook (for custom tasks)
 deploy:updating    - update server(s) with a new release
@@ -19,7 +19,7 @@ deploy:publishing  - publish the new release
 deploy:published   - published hook
 deploy:finishing   - finish the deployment, clean up everything
 deploy:finished    - finished hook
-```
+{% endprism %}
 
 Notice there are several hook tasks e.g. `:started`, `:updated` for
 you to hook up custom tasks into the flow using `after()` and `before()`.
@@ -29,7 +29,7 @@ you to hook up custom tasks into the flow using `after()` and `before()`.
 When you run `cap production deploy:rollback`, it invokes the following
 tasks in sequence:
 
-```
+{% prism ruby %}
 deploy:starting
 deploy:started
 deploy:reverting           - revert server(s) to previous release
@@ -38,7 +38,7 @@ deploy:publishing
 deploy:published
 deploy:finishing_rollback  - finish the rollback, clean up everything
 deploy:finished
-```
+{% endprism %}
 
 As you can see, rollback flow shares many tasks with deploy flow. But note that, rollback flow runs its own `:finishing_rollback` task because its
 cleanup process is usually different from deploy flow.
@@ -47,18 +47,18 @@ cleanup process is usually different from deploy flow.
 
 Assume you require the following files in `Capfile`,
 
-```
+{% prism ruby %}
 # Capfile
 require 'capistrano/setup'
 require 'capistrano/deploy'
 require 'capistrano/bundler'
 require 'capistrano/rails/migrations'
 require 'capistrano/rails/assets'
-```
+{% endprism %}
 
 When you run `cap production deploy`, it runs this following tasks:
 
-```
+{% prism ruby %}
 deploy
   deploy:starting
     [before]
@@ -84,11 +84,11 @@ deploy
     deploy:cleanup
   deploy:finished
     deploy:log_revision
-```
+{% endprism %}
 
 For `cap production deploy:rollback`, it runs these tasks:
 
-```
+{% prism ruby %}
 deploy
   deploy:starting
     [before]
@@ -108,4 +108,5 @@ deploy
     deploy:cleanup_rollback
   deploy:finished
     deploy:log_revision
-```
+{% endprism %}
+
