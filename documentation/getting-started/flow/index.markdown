@@ -56,7 +56,7 @@ require 'capistrano/rails/migrations'
 require 'capistrano/rails/assets'
 {% endprism %}
 
-When you run `cap production deploy`, it runs this following tasks:
+When you run `cap production deploy`, it runs these tasks:
 
 {% prism ruby %}
 deploy
