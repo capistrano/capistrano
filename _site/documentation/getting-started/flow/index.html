@@ -111,15 +111,18 @@
 
 <p>When you run <code>cap production deploy</code>, it invokes the following tasks in
 sequence:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">deploy:starting    - start a deployment, make sure everything is ready
+
+<div>
+  <pre data-line=''><code class='language-ruby'>deploy:starting    - start a deployment, make sure everything is ready
 deploy:started     - started hook (for custom tasks)
 deploy:updating    - update server(s) with a new release
 deploy:updated     - updated hook
 deploy:publishing  - publish the new release
 deploy:published   - published hook
 deploy:finishing   - finish the deployment, clean up everything
-deploy:finished    - finished hook
-</code></pre></div>
+deploy:finished    - finished hook</code></pre>
+</div>
+
 <p>Notice there are several hook tasks e.g. <code>:started</code>, <code>:updated</code> for
 you to hook up custom tasks into the flow using <code>after()</code> and <code>before()</code>.</p>
 
@@ -127,30 +130,38 @@ you to hook up custom tasks into the flow using <code>after()</code> and <code>b
 
 <p>When you run <code>cap production deploy:rollback</code>, it invokes the following
 tasks in sequence:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">deploy:starting
+
+<div>
+  <pre data-line=''><code class='language-ruby'>deploy:starting
 deploy:started
 deploy:reverting           - revert server(s) to previous release
 deploy:reverted            - reverted hook
 deploy:publishing
 deploy:published
 deploy:finishing_rollback  - finish the rollback, clean up everything
-deploy:finished
-</code></pre></div>
+deploy:finished</code></pre>
+</div>
+
 <p>As you can see, rollback flow shares many tasks with deploy flow. But note that, rollback flow runs its own <code>:finishing_rollback</code> task because its
 cleanup process is usually different from deploy flow.</p>
 
 <h3 id="toc_2">Flow examples</h3>
 
 <p>Assume you require the following files in <code>Capfile</code>,</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text"># Capfile
+
+<div>
+  <pre data-line=''><code class='language-ruby'># Capfile
 require &#39;capistrano/setup&#39;
 require &#39;capistrano/deploy&#39;
 require &#39;capistrano/bundler&#39;
 require &#39;capistrano/rails/migrations&#39;
-require &#39;capistrano/rails/assets&#39;
-</code></pre></div>
+require &#39;capistrano/rails/assets&#39;</code></pre>
+</div>
+
 <p>When you run <code>cap production deploy</code>, it runs this following tasks:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">deploy
+
+<div>
+  <pre data-line=''><code class='language-ruby'>deploy
   deploy:starting
     [before]
       deploy:ensure_stage
@@ -174,10 +185,13 @@ require &#39;capistrano/rails/assets&#39;
   deploy:finishing
     deploy:cleanup
   deploy:finished
-    deploy:log_revision
-</code></pre></div>
+    deploy:log_revision</code></pre>
+</div>
+
 <p>For <code>cap production deploy:rollback</code>, it runs these tasks:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">deploy
+
+<div>
+  <pre data-line=''><code class='language-ruby'>deploy
   deploy:starting
     [before]
       deploy:ensure_stage
@@ -195,8 +209,9 @@ require &#39;capistrano/rails/assets&#39;
   deploy:finishing_rollback
     deploy:cleanup_rollback
   deploy:finished
-    deploy:log_revision
-</code></pre></div>
+    deploy:log_revision</code></pre>
+</div>
+
         </div>
       </div>
     </div>
@@ -212,15 +227,18 @@ require &#39;capistrano/rails/assets&#39;
 
 <p>When you run <code>cap production deploy</code>, it invokes the following tasks in
 sequence:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">deploy:starting    - start a deployment, make sure everything is ready
+
+<div>
+  <pre data-line=''><code class='language-ruby'>deploy:starting    - start a deployment, make sure everything is ready
 deploy:started     - started hook (for custom tasks)
 deploy:updating    - update server(s) with a new release
 deploy:updated     - updated hook
 deploy:publishing  - publish the new release
 deploy:published   - published hook
 deploy:finishing   - finish the deployment, clean up everything
-deploy:finished    - finished hook
-</code></pre></div>
+deploy:finished    - finished hook</code></pre>
+</div>
+
 <p>Notice there are several hook tasks e.g. <code>:started</code>, <code>:updated</code> for
 you to hook up custom tasks into the flow using <code>after()</code> and <code>before()</code>.</p>
 
@@ -228,30 +246,38 @@ you to hook up custom tasks into the flow using <code>after()</code> and <code>b
 
 <p>When you run <code>cap production deploy:rollback</code>, it invokes the following
 tasks in sequence:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">deploy:starting
+
+<div>
+  <pre data-line=''><code class='language-ruby'>deploy:starting
 deploy:started
 deploy:reverting           - revert server(s) to previous release
 deploy:reverted            - reverted hook
 deploy:publishing
 deploy:published
 deploy:finishing_rollback  - finish the rollback, clean up everything
-deploy:finished
-</code></pre></div>
+deploy:finished</code></pre>
+</div>
+
 <p>As you can see, rollback flow shares many tasks with deploy flow. But note that, rollback flow runs its own <code>:finishing_rollback</code> task because its
 cleanup process is usually different from deploy flow.</p>
 
 <h3 id="toc_2">Flow examples</h3>
 
 <p>Assume you require the following files in <code>Capfile</code>,</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text"># Capfile
+
+<div>
+  <pre data-line=''><code class='language-ruby'># Capfile
 require &#39;capistrano/setup&#39;
 require &#39;capistrano/deploy&#39;
 require &#39;capistrano/bundler&#39;
 require &#39;capistrano/rails/migrations&#39;
-require &#39;capistrano/rails/assets&#39;
-</code></pre></div>
+require &#39;capistrano/rails/assets&#39;</code></pre>
+</div>
+
 <p>When you run <code>cap production deploy</code>, it runs this following tasks:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">deploy
+
+<div>
+  <pre data-line=''><code class='language-ruby'>deploy
   deploy:starting
     [before]
       deploy:ensure_stage
@@ -275,10 +301,13 @@ require &#39;capistrano/rails/assets&#39;
   deploy:finishing
     deploy:cleanup
   deploy:finished
-    deploy:log_revision
-</code></pre></div>
+    deploy:log_revision</code></pre>
+</div>
+
 <p>For <code>cap production deploy:rollback</code>, it runs these tasks:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">deploy
+
+<div>
+  <pre data-line=''><code class='language-ruby'>deploy
   deploy:starting
     [before]
       deploy:ensure_stage
@@ -296,8 +325,9 @@ require &#39;capistrano/rails/assets&#39;
   deploy:finishing_rollback
     deploy:cleanup_rollback
   deploy:finished
-    deploy:log_revision
-</code></pre></div>                                           -->
+    deploy:log_revision</code></pre>
+</div>
+                                           -->
 
     <!--</div> [> /container <]                                     -->
 
