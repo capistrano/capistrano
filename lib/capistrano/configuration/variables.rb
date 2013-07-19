@@ -37,6 +37,15 @@ module Capistrano
 
       alias :[]= :set
 
+      # Conditionally set a variable if it is not already set.
+      def cset(name, *args, &block)
+        unless exists?(name)
+          set(name, *args, &block)
+        end
+      end
+      
+      alias :_cset :cset
+
       # Removes any trace of the given variable.
       def unset(variable)
         sym = variable.to_sym
