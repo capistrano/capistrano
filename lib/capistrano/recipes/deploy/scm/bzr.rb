@@ -63,6 +63,8 @@ module Capistrano
 
           command = scm('revno', repository)
           result = yield(command)
+          revdata = result.split(/[\t\n]/)
+          revdata[0]
         end
 
         # Increments the given revision number and returns it.
