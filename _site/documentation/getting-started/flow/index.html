@@ -158,13 +158,14 @@ require &#39;capistrano/rails/migrations&#39;
 require &#39;capistrano/rails/assets&#39;</code></pre>
 </div>
 
-<p>When you run <code>cap production deploy</code>, it runs this following tasks:</p>
+<p>When you run <code>cap production deploy</code>, it runs these tasks:</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'>deploy
   deploy:starting
     [before]
       deploy:ensure_stage
+      deploy:set_shared_assets
     deploy:check
   deploy:started
   deploy:updating
@@ -195,6 +196,7 @@ require &#39;capistrano/rails/assets&#39;</code></pre>
   deploy:starting
     [before]
       deploy:ensure_stage
+      deploy:set_shared_assets
     deploy:check
   deploy:started
   deploy:reverting
@@ -274,13 +276,14 @@ require &#39;capistrano/rails/migrations&#39;
 require &#39;capistrano/rails/assets&#39;</code></pre>
 </div>
 
-<p>When you run <code>cap production deploy</code>, it runs this following tasks:</p>
+<p>When you run <code>cap production deploy</code>, it runs these tasks:</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'>deploy
   deploy:starting
     [before]
       deploy:ensure_stage
+      deploy:set_shared_assets
     deploy:check
   deploy:started
   deploy:updating
@@ -311,6 +314,7 @@ require &#39;capistrano/rails/assets&#39;</code></pre>
   deploy:starting
     [before]
       deploy:ensure_stage
+      deploy:set_shared_assets
     deploy:check
   deploy:started
   deploy:reverting
