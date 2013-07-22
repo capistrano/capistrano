@@ -174,7 +174,7 @@ forked to the Capistrano repository, but you can find the (unchanged) original
     set :branch, 'master'
 {% endprism %}
 
-I've simplified the `:branch` varaible to simply be a `set` varaible, not a
+I've simplified the `:branch` variable to simply be a `set` variable, not a
 question prompt, as this repository only has a master branch.
 
 ## Roundup
