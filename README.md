@@ -196,6 +196,7 @@ The following variables are settable:
 | `:repo_url`           | The URL of your Git repository                                      | file://, https://, or ssh:// are all supported                  |
 | `:git_https_username` | The (optional) username for accessing your Git repostory over HTTPS | if this is an SSH connection, this setting will have no effect. |
 | `:git_https_password` | The (optional) password for accessing your Git repostory over HTTPS | if this is an SSH connection, this setting will have no effect. |
+| `:tmp_dir` | The (optional) temp directory that will be used (default: /tmp) | if you have a shared web host, this setting may need to be set (i.e. /home/user/tmp/capistrano). |
 
 ## SSHKit
 
