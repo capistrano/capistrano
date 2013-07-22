@@ -70,7 +70,7 @@ This will create a bunch of files, the important ones are:
 ### 4. Configure your server addresses in the generated files.
 
 We'll just work with the staging environment here, so you can pretend that
-`config/deploy/production.rb` doesn't exist, for the most part that's yoru
+`config/deploy/production.rb` doesn't exist, for the most part that's your
 business.
 
 Capistrano breaks down common tasks into a notion of *roles*, that is, taking
