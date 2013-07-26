@@ -44,12 +44,7 @@ namespace :deploy do
   task :finished do
   end
 
-  before :starting, :ensure_stage do
-    unless stage_set?
-      puts t(:stage_not_set)
-      exit 1
-    end
-  end
+  before :starting, :ensure_stage
 
   desc 'Rollback to previous release.'
   task :rollback do
