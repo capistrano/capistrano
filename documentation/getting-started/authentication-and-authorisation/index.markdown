@@ -38,7 +38,7 @@ There are two places that we need automated, promptless authentication:
 
 #### 1.1 SSH keys from workstation to servers
 
-**Note:** If you are on Windows, all bets are off, I'd love it if someone
+**Note:** If you are on Windows, all bets are off. I'd love it if someone
 could contribute a Windows guide to this, so we can include it here.
 
 An SSH key is a mechanism that allows a *public* half one key to be placed on
@@ -111,7 +111,7 @@ none, other none), in the `~/.ssh` directory which needs the permissions
 
 If you are on linux there often exists a command
 [`ssh-copy-id`](http://linux.die.net/man/1/ssh-copy-id) which streamlines this
-process, otherwise the worlflow is something like:
+process, otherwise the workflow is something like:
 
 {% prism bash %}
     me@localhost $ ssh root@remote
@@ -136,7 +136,7 @@ If we did all that correctly, we should now be able to do something like this:
 {% endprism %}
 
 That should happen without having to enter a passphrase for your SSH key, or
-promoting you for an SSH password (which the deploy user doesn't have anyway).
+prompting you for an SSH password (which the deploy user doesn't have anyway).
 
 Verify that this works for all of your servers, and put your private key
 somewhere safe. If you're working with multiple team members, it often pays to
@@ -168,7 +168,7 @@ repository automatically. The options in order of preference:
 
 As we've already set up an SSH agent, we can use the *agent forwarding*
 feature of SSH to make this key agent available to further *hops*. In short,
-we can use **our own ssh key** to authenticate ourselves from the server, to
+we can use **our own ssh key** to authenticate ourselves from the server to
 Github.
 
 Here's how we can check if that works, first get the URL of the repository:
@@ -192,7 +192,7 @@ We can try to access the repository via our server by doing the following:
     me@localhost $ ssh -A deploy@one-of-my-servers.com 'git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git
 {% endprism %}
 
-We first check that the agent has the keys loaded, if not we simply load it,
+We first check that the agent has the keys loaded. If not we simply load it
 and enter the passphrase when prompted.
 
 Finally we use `ls-remote` from Git to list the remote objects, this is the
@@ -224,7 +224,7 @@ servers!
 
 In the case of HTTP authentication **be sure to use HTTPS**, otherwise your
 password will be sent in cleartext over the network, depending what your hosts
-network infratructure looks like that might be *very* bad news.
+network infrastructure looks like that might be *very* bad news.
 
 Typically when we try and list our remote objects, using the https method from
 Github, we'll be prompted for a username and password:
@@ -306,11 +306,11 @@ This example would give the user named `deploy` access to call `sudo
 /etc/init.d/mysql _________` and the same for the `apache2` control script.
 
 **Granting passwordless sudo should not be done lightly.** It can be dangerous.
-For example if an unprivilidged user can *edit* the script that they can run
+For example if an unprivileged user can *edit* the script that they can run
 as root, they can easily edit it to do anything they want that is evil. Use
-this carefully, and ideally architect your systems so that non-privlidged
+this carefully, and ideally architect your systems so that non-privileged
 users can restart services, or that services restart *themselves* when they
-notice change.
+notice a change.
 
 To configure this heirarchy, ignoring for the moment the passwordless `sudo`
 access that you may or may not need depending how well your servers are setup:

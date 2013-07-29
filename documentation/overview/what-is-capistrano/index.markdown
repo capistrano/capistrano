@@ -9,7 +9,7 @@ It supports the scripting and execution of arbitrary tasks, and includes a set o
 
 Capistrano can be used to:
 
-* Reliably deploy web application to any number of machines simultaniously,
+* Reliably deploy web application to any number of machines simultaneously,
    in sequence or as a rolling set
 * To automate audits of any number of machines (checking login logs,
   enumerating uptimes, and/or applying security patches)
@@ -114,7 +114,7 @@ There's lots of cool stuff in the Capistrano toy box:
     end
 
     on roles(:app) do
-      # We can set environmental varaibles for the duration of a block
+      # We can set environmental variables for the duration of a block
       # and move the process into a directoy, executing arbitrary tasks
       # such as letting Rails do some heavy lifting.
       with({:rails_env => :production}) do
