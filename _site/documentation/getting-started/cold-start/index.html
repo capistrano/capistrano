@@ -123,7 +123,7 @@ technologies.</p>
 <h3 id="toc_0">1. Checking the directory structure on the remote machine:</h3>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@remote 'ls -lR /var/www/my-application'
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@remote &#39;ls -lR /var/www/my-application&#39;
 my-application:
 total 8
 drwxrwsr-x 2 deploy deploy 4096 Jun 24 20:55 releases
@@ -190,7 +190,7 @@ INFO /var/www/my-application is writable on myserver.com</code></pre>
 </div>
 
 <p>If we&#39;ve done something wrong, that won&#39;t happen and we&#39;ll know that we need
-to jump on the mailing list to get help, or into IRC or ask a friend.</p>
+to jump on the mailing list to get help, into IRC or ask a friend.</p>
 
 <p>Depending how you have set your Git authentication credentials up, checking
 Git can be a bit complicated, so we&#39;ve shipped a task in the core library that
@@ -225,7 +225,7 @@ DEBUG [118bd3e4] Command: /usr/bin/env chmod +x /tmp/git-ssh.sh
  INFO [118bd3e4] Finished in 0.049 seconds command successful.
  INFO [a996463f] Running /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git on harrow
 DEBUG [a996463f] Command: ( GIT_ASKPASS=/bin/echo GIT_SSH=/tmp/git-ssh.sh /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git )
-DEBUG [a996463f]  Warning: Permanently added 'github.com,204.232.175.90' (RSA) to the list of known hosts.
+DEBUG [a996463f]  Warning: Permanently added &#39;github.com,204.232.175.90&#39; (RSA) to the list of known hosts.
 DEBUG [a996463f]  Permission denied (publickey).
 DEBUG [a996463f]  fatal: The remote end hung up unexpectedly
 cap aborted!
@@ -245,9 +245,9 @@ colour support, you may well see something like this:</p>
 
 <ol>
 <li>We asked Capistrano to run the command <code>git:check</code>.</li>
-<li>Capistrano recognised that in order to fulfil this request, it had first
-to execute the task <code>git:wrapper</code>, a <em>prerequisite</em>.</li>
-<li>Capistrano exexuted the <code>git:wrapper</code> task, and uploaded the
+<li>Capistrano recognised that in order to fulfil this request, it had to first
+execute the task <code>git:wrapper</code>, a <em>prerequisite</em>.</li>
+<li>Capistrano executed the <code>git:wrapper</code> task, and uploaded the
 <code>/tmp/git-ssh.sh</code> file, and made it executable. This satisfies the
 <code>git:wrapper</code> task defined
 <a href="https://github.com/capistrano/capistrano/blob/v3/lib/capistrano/tasks/git.rake#L9">here</a>
@@ -256,7 +256,7 @@ in the source code. This script is actually processed as a template.</li>
 prompting us for input, so we ask git to <code>ls-remote</code> on the repository we
 defined. As this exited with an <a href="https://en.wikipedia.org/wiki/Exit_status">unclean
 status</a>, Capistrano aborted, and
-printed out the erorr messages for us to try and figure out what broke.</li>
+printed out the error messages for us to try and figure out what broke.</li>
 </ol>
 
 <p>In this case, we&#39;ll be using SSH agent forwarding, we can check if that&#39;s
@@ -291,7 +291,7 @@ DEBUG [f1269276] Finished in 0.453 seconds command successful.
 <p>If you don&#39;t feel like writing a Capistrano task, one could simply do:</p>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh -A example.com 'env | grep SSH_AUTH_SOCK'
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh -A example.com &#39;env | grep SSH_AUTH_SOCK&#39;
 SSH_AUTH_SOCK=/tmp/ssh-Tb6X8V53tm/agent.2934</code></pre>
 </div>
 
@@ -343,7 +343,7 @@ technologies.</p>
 <h3 id="toc_0">1. Checking the directory structure on the remote machine:</h3>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@remote 'ls -lR /var/www/my-application'
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@remote &#39;ls -lR /var/www/my-application&#39;
 my-application:
 total 8
 drwxrwsr-x 2 deploy deploy 4096 Jun 24 20:55 releases
@@ -410,7 +410,7 @@ INFO /var/www/my-application is writable on myserver.com</code></pre>
 </div>
 
 <p>If we&#39;ve done something wrong, that won&#39;t happen and we&#39;ll know that we need
-to jump on the mailing list to get help, or into IRC or ask a friend.</p>
+to jump on the mailing list to get help, into IRC or ask a friend.</p>
 
 <p>Depending how you have set your Git authentication credentials up, checking
 Git can be a bit complicated, so we&#39;ve shipped a task in the core library that
@@ -445,7 +445,7 @@ DEBUG [118bd3e4] Command: /usr/bin/env chmod +x /tmp/git-ssh.sh
  INFO [118bd3e4] Finished in 0.049 seconds command successful.
  INFO [a996463f] Running /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git on harrow
 DEBUG [a996463f] Command: ( GIT_ASKPASS=/bin/echo GIT_SSH=/tmp/git-ssh.sh /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git )
-DEBUG [a996463f]  Warning: Permanently added 'github.com,204.232.175.90' (RSA) to the list of known hosts.
+DEBUG [a996463f]  Warning: Permanently added &#39;github.com,204.232.175.90&#39; (RSA) to the list of known hosts.
 DEBUG [a996463f]  Permission denied (publickey).
 DEBUG [a996463f]  fatal: The remote end hung up unexpectedly
 cap aborted!
@@ -465,9 +465,9 @@ colour support, you may well see something like this:</p>
 
 <ol>
 <li>We asked Capistrano to run the command <code>git:check</code>.</li>
-<li>Capistrano recognised that in order to fulfil this request, it had first
-to execute the task <code>git:wrapper</code>, a <em>prerequisite</em>.</li>
-<li>Capistrano exexuted the <code>git:wrapper</code> task, and uploaded the
+<li>Capistrano recognised that in order to fulfil this request, it had to first
+execute the task <code>git:wrapper</code>, a <em>prerequisite</em>.</li>
+<li>Capistrano executed the <code>git:wrapper</code> task, and uploaded the
 <code>/tmp/git-ssh.sh</code> file, and made it executable. This satisfies the
 <code>git:wrapper</code> task defined
 <a href="https://github.com/capistrano/capistrano/blob/v3/lib/capistrano/tasks/git.rake#L9">here</a>
@@ -476,7 +476,7 @@ in the source code. This script is actually processed as a template.</li>
 prompting us for input, so we ask git to <code>ls-remote</code> on the repository we
 defined. As this exited with an <a href="https://en.wikipedia.org/wiki/Exit_status">unclean
 status</a>, Capistrano aborted, and
-printed out the erorr messages for us to try and figure out what broke.</li>
+printed out the error messages for us to try and figure out what broke.</li>
 </ol>
 
 <p>In this case, we&#39;ll be using SSH agent forwarding, we can check if that&#39;s
@@ -511,7 +511,7 @@ DEBUG [f1269276] Finished in 0.453 seconds command successful.
 <p>If you don&#39;t feel like writing a Capistrano task, one could simply do:</p>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh -A example.com 'env | grep SSH_AUTH_SOCK'
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh -A example.com &#39;env | grep SSH_AUTH_SOCK&#39;
 SSH_AUTH_SOCK=/tmp/ssh-Tb6X8V53tm/agent.2934</code></pre>
 </div>
 

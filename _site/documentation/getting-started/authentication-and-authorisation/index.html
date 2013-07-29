@@ -142,7 +142,7 @@ to log in.</p>
 
 <h4 id="toc_1">1.1 SSH keys from workstation to servers</h4>
 
-<p><strong>Note:</strong> If you are on Windows, all bets are off, I&#39;d love it if someone
+<p><strong>Note:</strong> If you are on Windows, all bets are off. I&#39;d love it if someone
 could contribute a Windows guide to this, so we can include it here.</p>
 
 <p>An SSH key is a mechanism that allows a <em>public</em> half one key to be placed on
@@ -156,7 +156,7 @@ quits or gets fired, you can remove their key from that file, and the rest of
 you can keep on shipping!</p>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-keygen -t rsa -C 'me@my_email_address.com'</code></pre>
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-keygen -t rsa -C &#39;me@my_email_address.com&#39;</code></pre>
 </div>
 
 <p>You&#39;ll be prompted for a passphrase, that&#39;s fine. Type one and keep it safe.
@@ -215,7 +215,7 @@ none, other none), in the <code>~/.ssh</code> directory which needs the permissi
 
 <p>If you are on linux there often exists a command
 <a href="http://linux.die.net/man/1/ssh-copy-id"><code>ssh-copy-id</code></a> which streamlines this
-process, otherwise the worlflow is something like:</p>
+process, otherwise the workflow is something like:</p>
 
 <div>
   <pre data-line=''><code class='language-bash'>me@localhost $ ssh root@remote
@@ -234,13 +234,13 @@ use the same key for each one, but only one key per developer is recommended.
 <p>If we did all that correctly, we should now be able to do something like this:</p>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@one-of-my-servers.com 'hostname; uptime'
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@one-of-my-servers.com &#39;hostname; uptime&#39;
 one-of-my-servers.com
 19:23:32 up 62 days, 44 min, 1 user, load average: 0.00, 0.01, 0.05</code></pre>
 </div>
 
 <p>That should happen without having to enter a passphrase for your SSH key, or
-promoting you for an SSH password (which the deploy user doesn&#39;t have anyway).</p>
+prompting you for an SSH password (which the deploy user doesn&#39;t have anyway).</p>
 
 <p>Verify that this works for all of your servers, and put your private key
 somewhere safe. If you&#39;re working with multiple team members, it often pays to
@@ -275,7 +275,7 @@ repository automatically. The options in order of preference:</p>
 
 <p>As we&#39;ve already set up an SSH agent, we can use the <em>agent forwarding</em>
 feature of SSH to make this key agent available to further <em>hops</em>. In short,
-we can use <strong>our own ssh key</strong> to authenticate ourselves from the server, to
+we can use <strong>our own ssh key</strong> to authenticate ourselves from the server to
 Github.</p>
 
 <p>Here&#39;s how we can check if that works, first get the URL of the repository:</p>
@@ -294,12 +294,12 @@ Tutorials project.</p>
 <div>
   <pre data-line=''><code class='language-bash'># List SSH keys that are loaded into the agent
 me@localhost $ ssh-add -l
-# Make sure they key is loaded if 'ssh-add -l' didn't show anything
+# Make sure they key is loaded if &#39;ssh-add -l&#39; didn&#39;t show anything
 me@localhost $ ssh-add
-me@localhost $ ssh -A deploy@one-of-my-servers.com 'git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git</code></pre>
+me@localhost $ ssh -A deploy@one-of-my-servers.com &#39;git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git</code></pre>
 </div>
 
-<p>We first check that the agent has the keys loaded, if not we simply load it,
+<p>We first check that the agent has the keys loaded. If not we simply load it
 and enter the passphrase when prompted.</p>
 
 <p>Finally we use <code>ls-remote</code> from Git to list the remote objects, this is the
@@ -314,7 +314,7 @@ it both ways just to know how your system treats agent forwarding by default.</p
     specified on a per-host basis in a configuration file.
 
     Agent forwarding should be enabled with caution.  Users with the ability to
-    bypass file permissions on the remote host (for the agent's UNIX-domain
+    bypass file permissions on the remote host (for the agent&#39;s UNIX-domain
     socket) can access the local agent through the forwarded connection.  An
     attacker cannot obtain key material from the agent, however they can perform
     operations on the keys that enable them to authenticate using the identities
@@ -331,7 +331,7 @@ servers!</p>
 
 <p>In the case of HTTP authentication <strong>be sure to use HTTPS</strong>, otherwise your
 password will be sent in cleartext over the network, depending what your hosts
-network infratructure looks like that might be <em>very</em> bad news.</p>
+network infrastructure looks like that might be <em>very</em> bad news.</p>
 
 <p>Typically when we try and list our remote objects, using the https method from
 Github, we&#39;ll be prompted for a username and password:</p>
@@ -340,8 +340,8 @@ Github, we&#39;ll be prompted for a username and password:</p>
 
 <div>
   <pre data-line=''><code class='language-bash'>me@localhost $ git ls-remote https://github.com/capistrano/rails3-bootstrap-devise-cancan.git
-Username for 'https://github.com': myownusername
-Password for 'https://capistrano@github.com':</code></pre>
+Username for &#39;https://github.com&#39;: myownusername
+Password for &#39;https://capistrano@github.com&#39;:</code></pre>
 </div>
 
 <p>This challenge response prompt doesn&#39;t work well for automating things, so
@@ -415,11 +415,11 @@ documentation, but sufficed to say something like:</p>
 /etc/init.d/mysql _________</code> and the same for the <code>apache2</code> control script.</p>
 
 <p><strong>Granting passwordless sudo should not be done lightly.</strong> It can be dangerous.
-For example if an unprivilidged user can <em>edit</em> the script that they can run
+For example if an unprivileged user can <em>edit</em> the script that they can run
 as root, they can easily edit it to do anything they want that is evil. Use
-this carefully, and ideally architect your systems so that non-privlidged
+this carefully, and ideally architect your systems so that non-privileged
 users can restart services, or that services restart <em>themselves</em> when they
-notice change.</p>
+notice a change.</p>
 
 <p>To configure this heirarchy, ignoring for the moment the passwordless <code>sudo</code>
 access that you may or may not need depending how well your servers are setup:</p>
@@ -427,7 +427,7 @@ access that you may or may not need depending how well your servers are setup:</
 <div>
   <pre data-line=''><code class='language-bash'>me@localhost $ ssh root@remote
 # Capistrano will use /var/www/....... where ... is the value set in
-# :application, you can override this by setting the ':deploy_to' variable
+# :application, you can override this by setting the &#39;:deploy_to&#39; variable
 root@remote $ deploy_to=/var/www/rails3-bootstrap-devise-cancan-demo
 root@remote $ mkdir ${deploy_to}
 root@remote $ chown deploy:deploy ${deploy_to}
@@ -502,7 +502,7 @@ to log in.</p>
 
 <h4 id="toc_1">1.1 SSH keys from workstation to servers</h4>
 
-<p><strong>Note:</strong> If you are on Windows, all bets are off, I&#39;d love it if someone
+<p><strong>Note:</strong> If you are on Windows, all bets are off. I&#39;d love it if someone
 could contribute a Windows guide to this, so we can include it here.</p>
 
 <p>An SSH key is a mechanism that allows a <em>public</em> half one key to be placed on
@@ -516,7 +516,7 @@ quits or gets fired, you can remove their key from that file, and the rest of
 you can keep on shipping!</p>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-keygen -t rsa -C 'me@my_email_address.com'</code></pre>
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-keygen -t rsa -C &#39;me@my_email_address.com&#39;</code></pre>
 </div>
 
 <p>You&#39;ll be prompted for a passphrase, that&#39;s fine. Type one and keep it safe.
@@ -575,7 +575,7 @@ none, other none), in the <code>~/.ssh</code> directory which needs the permissi
 
 <p>If you are on linux there often exists a command
 <a href="http://linux.die.net/man/1/ssh-copy-id"><code>ssh-copy-id</code></a> which streamlines this
-process, otherwise the worlflow is something like:</p>
+process, otherwise the workflow is something like:</p>
 
 <div>
   <pre data-line=''><code class='language-bash'>me@localhost $ ssh root@remote
@@ -594,13 +594,13 @@ use the same key for each one, but only one key per developer is recommended.
 <p>If we did all that correctly, we should now be able to do something like this:</p>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@one-of-my-servers.com 'hostname; uptime'
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@one-of-my-servers.com &#39;hostname; uptime&#39;
 one-of-my-servers.com
 19:23:32 up 62 days, 44 min, 1 user, load average: 0.00, 0.01, 0.05</code></pre>
 </div>
 
 <p>That should happen without having to enter a passphrase for your SSH key, or
-promoting you for an SSH password (which the deploy user doesn&#39;t have anyway).</p>
+prompting you for an SSH password (which the deploy user doesn&#39;t have anyway).</p>
 
 <p>Verify that this works for all of your servers, and put your private key
 somewhere safe. If you&#39;re working with multiple team members, it often pays to
@@ -635,7 +635,7 @@ repository automatically. The options in order of preference:</p>
 
 <p>As we&#39;ve already set up an SSH agent, we can use the <em>agent forwarding</em>
 feature of SSH to make this key agent available to further <em>hops</em>. In short,
-we can use <strong>our own ssh key</strong> to authenticate ourselves from the server, to
+we can use <strong>our own ssh key</strong> to authenticate ourselves from the server to
 Github.</p>
 
 <p>Here&#39;s how we can check if that works, first get the URL of the repository:</p>
@@ -654,12 +654,12 @@ Tutorials project.</p>
 <div>
   <pre data-line=''><code class='language-bash'># List SSH keys that are loaded into the agent
 me@localhost $ ssh-add -l
-# Make sure they key is loaded if 'ssh-add -l' didn't show anything
+# Make sure they key is loaded if &#39;ssh-add -l&#39; didn&#39;t show anything
 me@localhost $ ssh-add
-me@localhost $ ssh -A deploy@one-of-my-servers.com 'git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git</code></pre>
+me@localhost $ ssh -A deploy@one-of-my-servers.com &#39;git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git</code></pre>
 </div>
 
-<p>We first check that the agent has the keys loaded, if not we simply load it,
+<p>We first check that the agent has the keys loaded. If not we simply load it
 and enter the passphrase when prompted.</p>
 
 <p>Finally we use <code>ls-remote</code> from Git to list the remote objects, this is the
@@ -674,7 +674,7 @@ it both ways just to know how your system treats agent forwarding by default.</p
     specified on a per-host basis in a configuration file.
 
     Agent forwarding should be enabled with caution.  Users with the ability to
-    bypass file permissions on the remote host (for the agent's UNIX-domain
+    bypass file permissions on the remote host (for the agent&#39;s UNIX-domain
     socket) can access the local agent through the forwarded connection.  An
     attacker cannot obtain key material from the agent, however they can perform
     operations on the keys that enable them to authenticate using the identities
@@ -691,7 +691,7 @@ servers!</p>
 
 <p>In the case of HTTP authentication <strong>be sure to use HTTPS</strong>, otherwise your
 password will be sent in cleartext over the network, depending what your hosts
-network infratructure looks like that might be <em>very</em> bad news.</p>
+network infrastructure looks like that might be <em>very</em> bad news.</p>
 
 <p>Typically when we try and list our remote objects, using the https method from
 Github, we&#39;ll be prompted for a username and password:</p>
@@ -700,8 +700,8 @@ Github, we&#39;ll be prompted for a username and password:</p>
 
 <div>
   <pre data-line=''><code class='language-bash'>me@localhost $ git ls-remote https://github.com/capistrano/rails3-bootstrap-devise-cancan.git
-Username for 'https://github.com': myownusername
-Password for 'https://capistrano@github.com':</code></pre>
+Username for &#39;https://github.com&#39;: myownusername
+Password for &#39;https://capistrano@github.com&#39;:</code></pre>
 </div>
 
 <p>This challenge response prompt doesn&#39;t work well for automating things, so
@@ -775,11 +775,11 @@ documentation, but sufficed to say something like:</p>
 /etc/init.d/mysql _________</code> and the same for the <code>apache2</code> control script.</p>
 
 <p><strong>Granting passwordless sudo should not be done lightly.</strong> It can be dangerous.
-For example if an unprivilidged user can <em>edit</em> the script that they can run
+For example if an unprivileged user can <em>edit</em> the script that they can run
 as root, they can easily edit it to do anything they want that is evil. Use
-this carefully, and ideally architect your systems so that non-privlidged
+this carefully, and ideally architect your systems so that non-privileged
 users can restart services, or that services restart <em>themselves</em> when they
-notice change.</p>
+notice a change.</p>
 
 <p>To configure this heirarchy, ignoring for the moment the passwordless <code>sudo</code>
 access that you may or may not need depending how well your servers are setup:</p>
@@ -787,7 +787,7 @@ access that you may or may not need depending how well your servers are setup:</
 <div>
   <pre data-line=''><code class='language-bash'>me@localhost $ ssh root@remote
 # Capistrano will use /var/www/....... where ... is the value set in
-# :application, you can override this by setting the ':deploy_to' variable
+# :application, you can override this by setting the &#39;:deploy_to&#39; variable
 root@remote $ deploy_to=/var/www/rails3-bootstrap-devise-cancan-demo
 root@remote $ mkdir ${deploy_to}
 root@remote $ chown deploy:deploy ${deploy_to}

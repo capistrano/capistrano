@@ -426,7 +426,7 @@ your application.</p>
 <p>An example of it&#39;s usage might be:</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>h = SSHKit::Host.new 'example.com'
+  <pre data-line=''><code class='language-ruby'>h = SSHKit::Host.new &#39;example.com&#39;
 h.properties.roles ||= %i{wep app}</code></pre>
 </div>
 
@@ -452,7 +452,7 @@ task :precompile do
   on :sprockets_asset_host, reject: lambda { |h| h.properties.no_release } do
     within fetch(:latest_release_directory)
       with rails_env: fetch(:rails_env) do
-        execute :rake, 'assets:precompile'
+        execute :rake, &#39;assets:precompile&#39;
       end
     end
   end
@@ -505,7 +505,7 @@ arbitrary command, for example:</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'># Rakefile (even without Capistrano loaded)
-require 'sshkit'
+require &#39;sshkit&#39;
 desc &quot;Check the uptime of example.com&quot;
 task :uptime do |h|
   execute :uptime
@@ -560,7 +560,7 @@ execute :git, :clone, &quot;........&quot;, &quot;.......&quot;</code></pre>
 
 <div>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-file = '/tmp/somefile'
+file = &#39;/tmp/somefile&#39;
 unless test(&quot;-e #{file}&quot;)
   execute :touch, file
 end</code></pre>
@@ -644,7 +644,7 @@ logging infrastructure and streaming IO formatters:</p>
 <div>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
 on hosts do |host|
-  f = '/some/file'
+  f = &#39;/some/file&#39;
   if test(&quot;[ -d #{f} ]&quot;)
     execute :touch, f
   else
@@ -1013,7 +1013,7 @@ your application.</p>
 <p>An example of it&#39;s usage might be:</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>h = SSHKit::Host.new 'example.com'
+  <pre data-line=''><code class='language-ruby'>h = SSHKit::Host.new &#39;example.com&#39;
 h.properties.roles ||= %i{wep app}</code></pre>
 </div>
 
@@ -1039,7 +1039,7 @@ task :precompile do
   on :sprockets_asset_host, reject: lambda { |h| h.properties.no_release } do
     within fetch(:latest_release_directory)
       with rails_env: fetch(:rails_env) do
-        execute :rake, 'assets:precompile'
+        execute :rake, &#39;assets:precompile&#39;
       end
     end
   end
@@ -1092,7 +1092,7 @@ arbitrary command, for example:</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'># Rakefile (even without Capistrano loaded)
-require 'sshkit'
+require &#39;sshkit&#39;
 desc &quot;Check the uptime of example.com&quot;
 task :uptime do |h|
   execute :uptime
@@ -1147,7 +1147,7 @@ execute :git, :clone, &quot;........&quot;, &quot;.......&quot;</code></pre>
 
 <div>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-file = '/tmp/somefile'
+file = &#39;/tmp/somefile&#39;
 unless test(&quot;-e #{file}&quot;)
   execute :touch, file
 end</code></pre>
@@ -1231,7 +1231,7 @@ logging infrastructure and streaming IO formatters:</p>
 <div>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
 on hosts do |host|
-  f = '/some/file'
+  f = &#39;/some/file&#39;
   if test(&quot;[ -d #{f} ]&quot;)
     execute :touch, f
   else

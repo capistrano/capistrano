@@ -175,9 +175,25 @@ CMD</code></pre>
 <div>
   <pre data-line=''><code class='language-ruby'>within fetch(:latest_release_directory)
   with rails_env: fetch(:rails_env) do
-    execute :rake, 'assets:precompile'
+    execute :rake, &#39;assets:precompile&#39;
   end
 end</code></pre>
+</div>
+
+<h4 id="toc_2">Refactor roles</h4>
+
+<p>Instead of:</p>
+
+<div>
+  <pre data-line=''><code class='language-ruby'>role :app, %w{example.com}
+role :web, %w{example.com}
+role :db,  %w{example.com}</code></pre>
+</div>
+
+<p>It&#39;s better to use:</p>
+
+<div>
+  <pre data-line=''><code class='language-ruby'>role :all, %w{example.com}</code></pre>
 </div>
 
         </div>
@@ -259,9 +275,25 @@ CMD</code></pre>
 <div>
   <pre data-line=''><code class='language-ruby'>within fetch(:latest_release_directory)
   with rails_env: fetch(:rails_env) do
-    execute :rake, 'assets:precompile'
+    execute :rake, &#39;assets:precompile&#39;
   end
 end</code></pre>
+</div>
+
+<h4 id="toc_2">Refactor roles</h4>
+
+<p>Instead of:</p>
+
+<div>
+  <pre data-line=''><code class='language-ruby'>role :app, %w{example.com}
+role :web, %w{example.com}
+role :db,  %w{example.com}</code></pre>
+</div>
+
+<p>It&#39;s better to use:</p>
+
+<div>
+  <pre data-line=''><code class='language-ruby'>role :all, %w{example.com}</code></pre>
 </div>
                                            -->
 
