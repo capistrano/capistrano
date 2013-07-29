@@ -10,13 +10,13 @@ layout: default
 
 ### 1. Commit your application to some externally available source control hosting provider.
 
-If you are not doing already, you should host your code somewhere with a
-provuder such as Github, BitBucket, Codeplane, or repositoryhosting.com.
+If you are not doing so already, you should host your code somewhere with a
+provider such as Github, BitBucket, Codeplane, or repositoryhosting.com.
 
 <div class="alert-box radius">
 At present Capistrano v3.0.x only supports Git. It's just a matter of time
 until we support Subversion, Mecurial, Darcs and friends again. Please
-contribute if you know these tools well, we don't and don't want to force our
+contribute if you know these tools well, we do not and don't want to force our
 miscomprehended notions upon anyone.
 </div>
 
@@ -104,8 +104,8 @@ The example file generated will look something like this:
     # ======================
     # This can be used to drop a more detailed server
     # definition into the server list. The second argument
-    # something that quacks like a hash can be used to set
-    # extended properties on the server.
+    # is something that quacks like a hash and can be used
+    # to set extended properties on the server.
     server 'example.com', roles: %w{web app}, my_property: :my_value
 
     # set :rails_env, :staging
@@ -164,7 +164,7 @@ Tutorials](http://railsapps.github.io/) site; there we'll find maintained a
 handful of typical Rails apps with typical dependencies.
 
 The Rails application they host, which uses Devise (for authentication) and
-Cancan (for authorization) along side Twitter Bootstrap for assets has been
+Cancan (for authorisation) along side Twitter Bootstrap for assets has been
 forked to the Capistrano repository, but you can find the (unchanged) original
 [here](https://github.com/RailsApps/rails3-bootstrap-devise-cancan).
 

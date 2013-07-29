@@ -58,7 +58,7 @@ gems](http://blog.meldium.com/home/2013/3/3/signed-rubygems-part))
 
 ### Usage in a Rails project
 
-Add the following lines to the Gemfile, to the group `:development` ideally.
+Add the following lines to the Gemfile to the `:development` group ideally.
 
 {% prism ruby %}
     group :development do

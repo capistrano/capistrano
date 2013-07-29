@@ -88,7 +88,7 @@ Then we simply call it:
 {% endprism %}
 
 If we've done something wrong, that won't happen and we'll know that we need
-to jump on the mailing list to get help, or into IRC or ask a friend.
+to jump on the mailing list to get help, into IRC or ask a friend.
 
 Depending how you have set your Git authentication credentials up, checking
 Git can be a bit complicated, so we've shipped a task in the core library that
@@ -142,9 +142,9 @@ colour support, you may well see something like this:
 To run through that shortly, what did we do:
 
 1. We asked Capistrano to run the command `git:check`.
-2. Capistrano recognised that in order to fulfil this request, it had first
-to execute the task `git:wrapper`, a *prerequisite*.
-3. Capistrano exexuted the `git:wrapper` task, and uploaded the
+2. Capistrano recognised that in order to fulfil this request, it had to first
+execute the task `git:wrapper`, a *prerequisite*.
+3. Capistrano executed the `git:wrapper` task, and uploaded the
    `/tmp/git-ssh.sh` file, and made it executable. This satisfies the
    `git:wrapper` task defined
    [here](https://github.com/capistrano/capistrano/blob/v3/lib/capistrano/tasks/git.rake#L9)
@@ -153,7 +153,7 @@ to execute the task `git:wrapper`, a *prerequisite*.
    prompting us for input, so we ask git to `ls-remote` on the repository we
    defined. As this exited with an [unclean
    status](https://en.wikipedia.org/wiki/Exit_status), Capistrano aborted, and
-   printed out the erorr messages for us to try and figure out what broke.
+   printed out the error messages for us to try and figure out what broke.
 
 In this case, we'll be using SSH agent forwarding, we can check if that's
 working by writing a tiny Cap task, or simply using SSH to do it for us, the
