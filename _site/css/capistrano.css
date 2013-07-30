@@ -2,7 +2,9 @@ body {
   font-family: "proxima-nova",sans-serif;
 }
 
-.top-bar {
+.header {
+  margin-bottom: 30px;
+  padding-top: 20px;
   background-color: #1C1B39;
   height: 170px;
 }
