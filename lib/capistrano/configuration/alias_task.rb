@@ -3,7 +3,7 @@ module Capistrano
     module AliasTask
       # Attempts to find the task at the given fully-qualified path, and
       # alias it. If arguments don't have correct task names, an ArgumentError
-      # wil be raised. If no such task exists, a Capistrano::NoSuchTaskError
+      # will be raised. If no such task exists, a Capistrano::NoSuchTaskError
       # will be raised.
       #
       # Usage:
@@ -16,7 +16,7 @@ module Capistrano
         end
 
         original_task = find_task(old_name) or raise NoSuchTaskError, "the task `#{old_name}' does not exist"
-        task = original_task.dup # Dup. task to avoid modify original task
+        task = original_task.dup # Duplicate task to avoid modify original task
         task.name = new_name
 
         define_task(task)
