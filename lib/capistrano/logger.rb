@@ -95,7 +95,7 @@ module Capistrano
 
     def log(level, message, line_prefix=nil)
       if level <= self.level
-        # Only format output if device is a TTY or formatters are not disabled
+        # Only format output if device is a TTY and formatters are not disabled
         if device.tty? && !@disable_formatters
           color = :none
           style = nil
