@@ -4,7 +4,7 @@ layout: default
 ---
 
 1.
-  Update your Gemfile: `gem 'capistrano', '~> 3.0'`
+  Update your Gemfile: `gem 'capistrano', '~> 3.0', require: false`
 
 
   If you deploy Rails, you wil also need `capistrano-rails` gem (Rails integration was moved out from Capistrano 3.x).
