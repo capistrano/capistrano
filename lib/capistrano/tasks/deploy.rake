@@ -94,7 +94,7 @@ namespace :deploy do
           target = release_path.join(dir)
           source = shared_path.join(dir)
           unless test "[ -L #{target} ]"
-            if test "[ -f #{target} ]"
+            if test "[ -d #{target} ]"
               execute :rm, '-rf', target
             end
             execute :ln, '-s', source, target
