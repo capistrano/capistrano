@@ -39,6 +39,10 @@ module Capistrano
       `whoami`
     end
 
+    def lock(locked_version)
+      VersionValidator.new(locked_version).verify
+    end
+
   end
 end
 self.extend Capistrano::DSL
