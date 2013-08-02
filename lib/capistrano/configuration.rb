@@ -56,6 +56,7 @@ module Capistrano
         sshkit.format           = fetch(:format)
         sshkit.output_verbosity = fetch(:log_level)
         sshkit.default_env      = fetch(:default_env)
+        sshkit.backend          = fetch(:sshkit_backend, SSHKit::Backend::Netssh)
         sshkit.backend.configure do |backend|
           backend.pty                = fetch(:pty)
           backend.connection_timeout = fetch(:connection_timeout)

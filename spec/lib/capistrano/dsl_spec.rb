@@ -6,6 +6,7 @@ module Capistrano
     include DSL
   end
 
+  # see also - spec/integration/dsl_spec.rb
   describe DSL do
     let(:dsl) { DummyDSL.new }
 
@@ -45,6 +46,17 @@ module Capistrano
           dsl.set(:stage, nil)
         end
         it { should be_false }
+      end
+    end
+
+    describe '#sudo' do
+
+      before do
+        dsl.expects(:execute).with(:sudo, :my, :command)
+      end
+
+      it 'prepends sudo, delegates to execute' do
+        dsl.sudo(:my, :command)
       end
     end
   end

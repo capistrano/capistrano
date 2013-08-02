@@ -135,6 +135,22 @@ end
 
 Perfect, who needs telephones.
 
+
+## Running local tasks
+
+Local tasks can be run by replacing `on` with `run_locally`
+
+``` ruby
+desc "Notify service of deployment"
+task :notify do
+  run_locally do
+    with rails_env: :development do
+      rake 'service:notify'
+    end
+  end
+end
+```
+
 ## Console
 
 **Note:** Here be dragons. The console is very immature, but it's much more

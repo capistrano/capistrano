@@ -22,6 +22,10 @@ module Capistrano
       fetch(:scm)
     end
 
+    def sudo(*args)
+      execute :sudo, *args
+    end
+
     def revision_log_message
       fetch(:revision_log_message,
             t(:revision_log_message, branch: fetch(:branch), user: local_user, release: release_timestamp))
@@ -33,6 +37,10 @@ module Capistrano
 
     def local_user
       `whoami`
+    end
+
+    def lock(locked_version)
+      VersionValidator.new(locked_version).verify
     end
 
   end
