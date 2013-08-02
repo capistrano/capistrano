@@ -1,6 +1,6 @@
 require 'integration_spec_helper'
 
-describe 'cap install', slow: true do
+describe 'cap install' do
 
   context 'with defaults' do
     before :all do
