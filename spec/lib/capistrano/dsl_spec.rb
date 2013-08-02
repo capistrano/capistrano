@@ -59,5 +59,25 @@ module Capistrano
         dsl.sudo(:my, :command)
       end
     end
+
+    describe '#user' do
+      subject { dsl.user }
+
+      context 'user does not exist' do
+        it 'fails' do
+          expect { subject }. to raise_error
+        end
+      end
+    end
+
+    describe '#group' do
+      subject { dsl.group }
+
+      context 'group does not exist' do
+        it 'fails' do
+          expect { subject }. to raise_error
+        end
+      end
+    end
   end
 end

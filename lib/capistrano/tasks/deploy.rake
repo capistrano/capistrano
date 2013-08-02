@@ -42,7 +42,8 @@ namespace :deploy do
     desc 'Check shared and release directories exist'
     task :directories do
       on roles :all do
-        execute :mkdir, '-pv', shared_path, releases_path
+        sudo :mkdir, '-pv', shared_path, releases_path
+        sudo :chown, user_group, shared_path, releases_path
       end
     end
 

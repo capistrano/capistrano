@@ -43,6 +43,18 @@ module Capistrano
       VersionValidator.new(locked_version).verify
     end
 
+    def user
+      fetch(:user) { fail t(:user_not_set) }
+    end
+
+    def group
+      fetch(:group) { fail t(:group_not_set) }
+    end
+
+    def user_group
+      [user, group].join(':')
+    end
+
   end
 end
 self.extend Capistrano::DSL
