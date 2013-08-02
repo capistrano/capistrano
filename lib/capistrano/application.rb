@@ -13,7 +13,7 @@ module Capistrano
     end
 
     def sort_options(options)
-      options.push(version)
+      options.push(version,dry_run)
       super
     end
 
@@ -52,6 +52,15 @@ module Capistrano
        lambda { |value|
          puts "Capistrano Version: #{Capistrano::VERSION} (Rake Version: #{RAKEVERSION})"
          exit
+       }
+      ]
+    end
+
+    def dry_run
+      ['--dry-run', '-n',
+       "Do a dry run without executing actions",
+       lambda { |value|
+         Configuration.env.set(:sshkit_backend, SSHKit::Backend::Printer)
        }
       ]
     end
