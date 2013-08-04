@@ -2,6 +2,10 @@
 
 Reverse Chronological Order:
 
+## `3.0.0.pre14`
+
+ * Thanks to numerous contributors, in particular (@teohm) for a series of improvements.
+
 ## `3.0.0.pre13`
 
  * Fixed typos in the Capfile. (@teohm)
