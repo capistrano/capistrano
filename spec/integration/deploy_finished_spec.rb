@@ -14,7 +14,7 @@ describe 'cap deploy:finished', slow: true do
         set :branch, 'v3'
         server 'localhost', roles: %w{web app}, user: '#{current_user}'
         set :linked_files, %w{config/database.yml}
-        set :linked_dirs, %w{bin log public/system vendor/bundle}
+        set :linked_dirs, %w{log public/system vendor/bundle}
         }
     }
 
