@@ -6,6 +6,8 @@ namespace :deploy do
       within release_path do
         if fetch(:bundle_binstubs) then
           set :binstub_cmd, "--binstubs #{shared_path}/bin"
+        else
+          set :binstub_cmd, ''
         end
         execute :bundle, "--gemfile #{release_path}/Gemfile --deployment #{binstub_cmd} --path #{shared_path}/bundle --without development test cucumber"
       end
