@@ -14,7 +14,7 @@ describe 'cap deploy:started', slow: true do
         set :branch, 'v3'
         server 'localhost', roles: %w{web app}, user: '#{current_user}'
         set :linked_files, %w{config/database.yml}
-        set :linked_dirs, %w{bin log public/system vendor/bundle}
+        set :linked_dirs, %w{log public/system vendor/bundle}
       }
     }
 
@@ -36,7 +36,6 @@ describe 'cap deploy:started', slow: true do
 
       it 'ensure directories to be linked in `shared`' do
         [
-          shared_path.join('bin'),
           shared_path.join('log'),
           shared_path.join('public/system'),
           shared_path.join('vendor/bundle'),
