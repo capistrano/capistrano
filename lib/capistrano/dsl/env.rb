@@ -6,8 +6,8 @@ module Capistrano
         env.configure_backend
       end
 
-      def fetch(key, default=nil)
-        env.fetch(key, default)
+      def fetch(key, default=nil, &block)
+        env.fetch(key, default, &block)
       end
 
       def any?(key)

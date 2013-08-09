@@ -165,6 +165,20 @@ describe Capistrano::DSL do
       end
     end
 
+    context 'with a block' do
+      context 'when the variables is defined' do
+        it 'returns the variable' do
+          expect(dsl.fetch(:scm) { :svn }).to eq :git
+        end
+      end
+
+      context 'when the variables is undefined' do
+        it 'calls the block' do
+          expect(dsl.fetch(:source_control) { :svn }).to eq :svn
+        end
+      end
+    end
+
   end
 
   describe 'asking for a variable' do
