@@ -23,6 +23,10 @@ module Capistrano
         env.set(key, value)
       end
 
+      def delete(key)
+        env.delete(key)
+      end
+
       def ask(key, value)
         env.ask(key, value)
       end

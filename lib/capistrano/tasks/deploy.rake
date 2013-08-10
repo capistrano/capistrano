@@ -4,7 +4,7 @@ namespace :deploy do
     invoke 'deploy:check'
   end
 
-  task :updating do
+  task :updating => :new_release_path do
     invoke "#{scm}:create_release"
     invoke 'deploy:symlink:shared'
   end
@@ -162,12 +162,28 @@ namespace :deploy do
   end
 
   desc 'Revert to previous release timestamp'
-  task :revert_release do
+  task :revert_release => :rollback_release_path do
+    on roles(:all) do
+      set(:revision_log_message, rollback_log_message)
+    end
+  end
+
+  task :new_release_path do
+    set_release_path
+  end
+
+  task :last_release_path do
     on roles(:all) do
       last_release = capture(:ls, '-xr', releases_path).split[1]
-      set(:rollback_release_timestamp, last_release)
-      set(:branch, last_release)
-      set(:revision_log_message, rollback_log_message)
+      set_release_path(last_release)
+    end
+  end
+
+  task :rollback_release_path do
+    on roles(:all) do
+      last_release = capture(:ls, '-xr', releases_path).split[1]
+      set_release_path(last_release)
+      set(:rollback_timestamp, last_release)
     end
   end
 

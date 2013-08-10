@@ -20,7 +20,11 @@ module Capistrano
       end
 
       def release_path
-        releases_path.join(release_timestamp)
+        fetch(:release_path, current_path)
+      end
+
+      def set_release_path(timestamp=now)
+        set(:release_path, releases_path.join(timestamp))
       end
 
       def repo_url
@@ -52,9 +56,8 @@ module Capistrano
         deploy_path.join('revisions.log')
       end
 
-      def release_timestamp
-        fetch(:rollback_release_timestamp,
-              env.timestamp.strftime("%Y%m%d%H%M%S"))
+      def now
+        env.timestamp.strftime("%Y%m%d%H%M%S")
       end
 
       def asset_timestamp

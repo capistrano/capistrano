@@ -284,4 +284,61 @@ describe Capistrano::DSL do
 
   end
 
+  describe 'release path' do
+
+    before do
+      dsl.set(:deploy_to, '/var/www')
+    end
+
+    describe 'fetching release path' do
+      subject { dsl.release_path }
+
+      context 'where no release path has been set' do
+        before do
+          dsl.delete(:release_path)
+        end
+
+        it 'returns the `current_path` value' do
+          expect(subject.to_s).to eq '/var/www/current'
+        end
+      end
+
+      context 'where the release path has been set' do
+        before do
+          dsl.set(:release_path, '/var/www/release_path')
+        end
+
+        it 'returns the set `release_path` value' do
+          expect(subject.to_s).to eq '/var/www/release_path'
+        end
+      end
+    end
+
+    describe 'setting release path' do
+      let(:now) { Time.parse("Oct 21 16:29:00 2015") }
+      subject { dsl.release_path }
+
+      context 'without a timestamp' do
+        before do
+          dsl.env.expects(:timestamp).returns(now)
+          dsl.set_release_path
+        end
+
+        it 'returns the release path with the current env timestamp' do
+          expect(subject.to_s).to eq '/var/www/releases/20151021162900'
+        end
+      end
+
+      context 'with a timestamp' do
+        before do
+          dsl.set_release_path('timestamp')
+        end
+
+        it 'returns the release path with the timestamp' do
+          expect(subject.to_s).to eq '/var/www/releases/timestamp'
+        end
+      end
+    end
+
+  end
 end
