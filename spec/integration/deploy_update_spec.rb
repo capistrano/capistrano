@@ -20,16 +20,15 @@ describe 'cap deploy:updating', slow: true do
 
     describe 'symlink' do
       before do
-        cap 'deploy:started'
         create_shared_directory('config')
         create_shared_file('config/database.yml')
-        cap 'deploy:symlink:shared'
+        cap 'deploy'
       end
 
       describe 'linked_dirs' do
         it 'symlinks the directories in shared to `current`' do
           %w{bin log public/system vendor/bundle}.each do |dir|
-            expect(release_path.join(dir)).to be_a_symlink_to shared_path.join(dir)
+            expect(current_path.join(dir)).to be_a_symlink_to shared_path.join(dir)
           end
         end
       end
@@ -37,7 +36,7 @@ describe 'cap deploy:updating', slow: true do
       describe 'linked_files' do
         it 'symlinks the files in shared to `current`' do
           file = 'config/database.yml'
-          expect(release_path.join(file)).to be_a_symlink_to shared_path.join(file)
+          expect(current_path.join(file)).to be_a_symlink_to shared_path.join(file)
         end
       end
     end

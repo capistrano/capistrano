@@ -15,6 +15,7 @@ describe 'cap deploy:finished', slow: true do
         server 'localhost', roles: %w{web app}, user: '#{current_user}'
         set :linked_files, %w{config/database.yml}
         set :linked_dirs, %w{bin log public/system vendor/bundle}
+        set :release_path, '#{deploy_to}/releases/1234'
         }
     }
 
@@ -23,12 +24,13 @@ describe 'cap deploy:finished', slow: true do
         cap 'deploy:started'
         cap 'deploy:updating'
         cap 'deploy:publishing'
+        cap 'deploy:finished'
       end
 
       describe 'release' do
         it 'symlinks the release to `current`' do
           expect(File.symlink?(current_path)).to be_true
-          expect(File.readlink(current_path)).to match /\/tmp\/test_app\/deploy_to\/releases\/\d{14}/
+          expect(File.readlink(current_path)).to eq '/tmp/test_app/deploy_to/releases/1234'
         end
       end
     end

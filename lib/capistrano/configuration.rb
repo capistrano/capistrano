@@ -20,6 +20,10 @@ module Capistrano
       config[key] = value
     end
 
+    def delete(key)
+      config.delete(key)
+    end
+
     def fetch(key, default=nil, &block)
       value = fetch_for(key, default, &block)
       if value.respond_to?(:call)

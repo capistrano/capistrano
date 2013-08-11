@@ -32,7 +32,7 @@ module Capistrano
     end
 
     def rollback_log_message
-      t(:rollback_log_message, user: local_user, release: release_timestamp)
+      t(:rollback_log_message, user: local_user, release: fetch(:rollback_timestamp))
     end
 
     def local_user

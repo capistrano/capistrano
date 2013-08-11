@@ -62,6 +62,17 @@ module Capistrano
       end
     end
 
+    describe 'deleting' do
+      before do
+        config.set(:key, :value)
+      end
+
+      it 'deletes the value' do
+        config.delete(:key)
+        expect(config.fetch(:key)).to be_nil
+      end
+    end
+
     describe 'asking' do
       let(:question) { stub }
 
