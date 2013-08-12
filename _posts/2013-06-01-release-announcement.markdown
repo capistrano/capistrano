@@ -545,7 +545,7 @@ logging infrastructure and streaming IO formatters:
 
 ### Upgrading
 
-The best place to go here is the [upgrading documentation][] to get deeper
+The best place to go here is the [upgrading documentation](/documentation/upgrading/) to get deeper
 into the specifics.
 
 The simple version is to say that there is *no **direct** upgrade path*,

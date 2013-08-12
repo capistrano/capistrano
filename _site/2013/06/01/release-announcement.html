@@ -430,7 +430,7 @@ your application.</p>
 <p>An example of it&#39;s usage might be:</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>h = SSHKit::Host.new &#39;example.com&#39;
+  <pre data-line=''><code class='language-ruby'>h = SSHKit::Host.new 'example.com'
 h.properties.roles ||= %i{wep app}</code></pre>
 </div>
 
@@ -456,7 +456,7 @@ task :precompile do
   on :sprockets_asset_host, reject: lambda { |h| h.properties.no_release } do
     within fetch(:latest_release_directory)
       with rails_env: fetch(:rails_env) do
-        execute :rake, &#39;assets:precompile&#39;
+        execute :rake, 'assets:precompile'
       end
     end
   end
@@ -509,7 +509,7 @@ arbitrary command, for example:</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'># Rakefile (even without Capistrano loaded)
-require &#39;sshkit&#39;
+require 'sshkit'
 desc &quot;Check the uptime of example.com&quot;
 task :uptime do |h|
   execute :uptime
@@ -564,7 +564,7 @@ execute :git, :clone, &quot;........&quot;, &quot;.......&quot;</code></pre>
 
 <div>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-file = &#39;/tmp/somefile&#39;
+file = '/tmp/somefile'
 unless test(&quot;-e #{file}&quot;)
   execute :touch, file
 end</code></pre>
@@ -648,7 +648,7 @@ logging infrastructure and streaming IO formatters:</p>
 <div>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
 on hosts do |host|
-  f = &#39;/some/file&#39;
+  f = '/some/file'
   if test(&quot;[ -d #{f} ]&quot;)
     execute :touch, f
   else
@@ -659,7 +659,7 @@ end</code></pre>
 
 <h3 id="toc_15"> Upgrading</h3>
 
-<p>The best place to go here is the [upgrading documentation][] to get deeper
+<p>The best place to go here is the <a href="/documentation/upgrading/">upgrading documentation</a> to get deeper
 into the specifics.</p>
 
 <p>The simple version is to say that there is <em>no **direct</em>* upgrade path*,
@@ -1017,7 +1017,7 @@ your application.</p>
 <p>An example of it&#39;s usage might be:</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>h = SSHKit::Host.new &#39;example.com&#39;
+  <pre data-line=''><code class='language-ruby'>h = SSHKit::Host.new 'example.com'
 h.properties.roles ||= %i{wep app}</code></pre>
 </div>
 
@@ -1043,7 +1043,7 @@ task :precompile do
   on :sprockets_asset_host, reject: lambda { |h| h.properties.no_release } do
     within fetch(:latest_release_directory)
       with rails_env: fetch(:rails_env) do
-        execute :rake, &#39;assets:precompile&#39;
+        execute :rake, 'assets:precompile'
       end
     end
   end
@@ -1096,7 +1096,7 @@ arbitrary command, for example:</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'># Rakefile (even without Capistrano loaded)
-require &#39;sshkit&#39;
+require 'sshkit'
 desc &quot;Check the uptime of example.com&quot;
 task :uptime do |h|
   execute :uptime
@@ -1151,7 +1151,7 @@ execute :git, :clone, &quot;........&quot;, &quot;.......&quot;</code></pre>
 
 <div>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-file = &#39;/tmp/somefile&#39;
+file = '/tmp/somefile'
 unless test(&quot;-e #{file}&quot;)
   execute :touch, file
 end</code></pre>
@@ -1235,7 +1235,7 @@ logging infrastructure and streaming IO formatters:</p>
 <div>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
 on hosts do |host|
-  f = &#39;/some/file&#39;
+  f = '/some/file'
   if test(&quot;[ -d #{f} ]&quot;)
     execute :touch, f
   else
@@ -1246,7 +1246,7 @@ end</code></pre>
 
 <h3 id="toc_15"> Upgrading</h3>
 
-<p>The best place to go here is the [upgrading documentation][] to get deeper
+<p>The best place to go here is the <a href="/documentation/upgrading/">upgrading documentation</a> to get deeper
 into the specifics.</p>
 
 <p>The simple version is to say that there is <em>no **direct</em>* upgrade path*,
