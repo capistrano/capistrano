@@ -83,7 +83,19 @@ module TestApp
     test_app_path.join('Gemfile')
   end
 
+  def capfile
+    test_app_path.join('Capfile')
+  end
+
   def current_user
     `whoami`.chomp
+  end
+
+  def task_dir
+    test_app_path.join('lib/capistrano/tasks')
+  end
+
+  def copy_task_to_test_app(source)
+    FileUtils.cp(source, task_dir)
   end
 end
