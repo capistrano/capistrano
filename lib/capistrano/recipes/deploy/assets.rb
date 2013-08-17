@@ -41,10 +41,10 @@ namespace :deploy do
     DESC
     task :symlink, :roles => lambda { assets_role }, :except => { :no_release => true } do
       run <<-CMD.compact
-        rm -rf #{latest_release}/public/#{assets_prefix} &&
-        mkdir -p #{latest_release}/public &&
+        rm -rf #{latest_release}#{app_subdir}/public/#{assets_prefix} &&
+        mkdir -p #{latest_release}#{app_subdir}/public &&
         mkdir -p #{shared_path}/#{shared_assets_prefix} &&
-        ln -s #{shared_path}/#{shared_assets_prefix} #{latest_release}/public/#{assets_prefix}
+        ln -s #{shared_path}/#{shared_assets_prefix} #{latest_release}#{app_subdir}/public/#{assets_prefix}
       CMD
     end
 
@@ -60,7 +60,7 @@ namespace :deploy do
     DESC
     task :precompile, :roles => lambda { assets_role }, :except => { :no_release => true } do
       run <<-CMD.compact
-        cd -- #{latest_release} && 
+        cd -- #{latest_release}#{app_subdir} && 
         RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile
       CMD
 
@@ -114,7 +114,7 @@ namespace :deploy do
         set :asset_env, "RAILS_GROUPS=assets"
     DESC
     task :clean, :roles => lambda { assets_role }, :except => { :no_release => true } do
-      run "cd #{latest_release} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:clean"
+      run "cd #{latest_release}#{app_subdir} && #{rake} RAILS_ENV=#{rails_env} #{asset_env} assets:clean"
     end
 
     desc <<-DESC
@@ -173,7 +173,7 @@ namespace :deploy do
       to shared/assets/manifest, and finally recompiling or regenerating nondigest assets.
     DESC
     task :rollback, :roles => lambda { assets_role }, :except => { :no_release => true } do
-      previous_manifest = capture("ls #{previous_release.shellescape}/assets_manifest.*").strip
+      previous_manifest = capture("ls #{(previous_release + app_subdir).shellescape}/latestassets_manifest.*").strip
       if capture("[ -e #{previous_manifest.shellescape} ] && echo true || echo false").strip != 'true'
         puts "#{previous_manifest} is missing! Cannot roll back assets. " <<
              "Please run deploy:assets:precompile to update your assets when the rollback is finished."
@@ -191,7 +191,7 @@ namespace :deploy do
         end
 
         run <<-CMD.compact
-          cd -- #{previous_release.shellescape} &&
+          cd -- #{(previous_release + app_subdir).shellescape} &&
           cp -f -- #{previous_manifest.shellescape} #{restored_manifest_path.shellescape} &&
           [ -z "$(#{rake} -P | grep assets:precompile:nondigest)" ] || #{rake} RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} assets:precompile:nondigest
         CMD

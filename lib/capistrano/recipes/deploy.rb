@@ -73,6 +73,7 @@ _cset(:run_method)        { fetch(:use_sudo, true) ? :sudo : :run }
 # actually exist. This variable lets tasks like symlink work either in the
 # standalone case, or during deployment.
 _cset(:latest_release) { exists?(:deploy_timestamped) ? release_path : current_release }
+_cset :app_subdir, ''
 
 _cset :maintenance_basename, "maintenance"
 _cset(:maintenance_template_path) { File.join(File.dirname(__FILE__), "templates", "maintenance.rhtml") }
@@ -271,7 +272,7 @@ namespace :deploy do
     using the :public_children variable.
   DESC
   task :finalize_update, :except => { :no_release => true } do
-    escaped_release = latest_release.to_s.shellescape
+    escaped_release = (latest_release + app_subdir).to_s.shellescape
     commands = []
     commands << "chmod -R -- g+w #{escaped_release}" if fetch(:group_writable, true)
 
@@ -293,7 +294,7 @@ namespace :deploy do
     if fetch(:normalize_asset_timestamps, true)
       stamp = Time.now.utc.strftime("%Y%m%d%H%M.%S")
       asset_paths = fetch(:public_children, %w(images stylesheets javascripts)).
-        map { |p| "#{latest_release}/public/#{p}" }.
+        map { |p| "#{latest_release}#{app_subdir}/public/#{p}" }.
         map { |p| p.shellescape }
       run("find #{asset_paths.join(" ")} -exec touch -t #{stamp} -- {} ';'; true",
           :env => { "TZ" => "UTC" }) if asset_paths.any?
@@ -433,7 +434,7 @@ namespace :deploy do
       when :current then current_path
       when :latest  then latest_release
       else raise ArgumentError, "unknown migration target #{migrate_target.inspect}"
-      end
+      end + app_subdir
 
     run "cd #{directory} && #{rake} RAILS_ENV=#{rails_env} #{migrate_env} db:migrate"
   end
