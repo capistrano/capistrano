@@ -160,7 +160,7 @@ quits or gets fired, you can remove their key from that file, and the rest of
 you can keep on shipping!</p>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-keygen -t rsa -C &#39;me@my_email_address.com&#39;</code></pre>
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-keygen -t rsa -C 'me@my_email_address.com'</code></pre>
 </div>
 
 <p>You&#39;ll be prompted for a passphrase, that&#39;s fine. Type one and keep it safe.
@@ -238,7 +238,7 @@ use the same key for each one, but only one key per developer is recommended.
 <p>If we did all that correctly, we should now be able to do something like this:</p>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@one-of-my-servers.com &#39;hostname; uptime&#39;
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@one-of-my-servers.com 'hostname; uptime'
 one-of-my-servers.com
 19:23:32 up 62 days, 44 min, 1 user, load average: 0.00, 0.01, 0.05</code></pre>
 </div>
@@ -298,9 +298,9 @@ Tutorials project.</p>
 <div>
   <pre data-line=''><code class='language-bash'># List SSH keys that are loaded into the agent
 me@localhost $ ssh-add -l
-# Make sure they key is loaded if &#39;ssh-add -l&#39; didn&#39;t show anything
+# Make sure they key is loaded if 'ssh-add -l' didn't show anything
 me@localhost $ ssh-add
-me@localhost $ ssh -A deploy@one-of-my-servers.com &#39;git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git</code></pre>
+me@localhost $ ssh -A deploy@one-of-my-servers.com 'git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git</code></pre>
 </div>
 
 <p>We first check that the agent has the keys loaded. If not we simply load it
@@ -318,7 +318,7 @@ it both ways just to know how your system treats agent forwarding by default.</p
     specified on a per-host basis in a configuration file.
 
     Agent forwarding should be enabled with caution.  Users with the ability to
-    bypass file permissions on the remote host (for the agent&#39;s UNIX-domain
+    bypass file permissions on the remote host (for the agent's UNIX-domain
     socket) can access the local agent through the forwarded connection.  An
     attacker cannot obtain key material from the agent, however they can perform
     operations on the keys that enable them to authenticate using the identities
@@ -344,8 +344,8 @@ Github, we&#39;ll be prompted for a username and password:</p>
 
 <div>
   <pre data-line=''><code class='language-bash'>me@localhost $ git ls-remote https://github.com/capistrano/rails3-bootstrap-devise-cancan.git
-Username for &#39;https://github.com&#39;: myownusername
-Password for &#39;https://capistrano@github.com&#39;:</code></pre>
+Username for 'https://github.com': myownusername
+Password for 'https://capistrano@github.com':</code></pre>
 </div>
 
 <p>This challenge response prompt doesn&#39;t work well for automating things, so
@@ -431,7 +431,7 @@ access that you may or may not need depending how well your servers are setup:</
 <div>
   <pre data-line=''><code class='language-bash'>me@localhost $ ssh root@remote
 # Capistrano will use /var/www/....... where ... is the value set in
-# :application, you can override this by setting the &#39;:deploy_to&#39; variable
+# :application, you can override this by setting the ':deploy_to' variable
 root@remote $ deploy_to=/var/www/rails3-bootstrap-devise-cancan-demo
 root@remote $ mkdir ${deploy_to}
 root@remote $ chown deploy:deploy ${deploy_to}
@@ -520,7 +520,7 @@ quits or gets fired, you can remove their key from that file, and the rest of
 you can keep on shipping!</p>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-keygen -t rsa -C &#39;me@my_email_address.com&#39;</code></pre>
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-keygen -t rsa -C 'me@my_email_address.com'</code></pre>
 </div>
 
 <p>You&#39;ll be prompted for a passphrase, that&#39;s fine. Type one and keep it safe.
@@ -598,7 +598,7 @@ use the same key for each one, but only one key per developer is recommended.
 <p>If we did all that correctly, we should now be able to do something like this:</p>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@one-of-my-servers.com &#39;hostname; uptime&#39;
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@one-of-my-servers.com 'hostname; uptime'
 one-of-my-servers.com
 19:23:32 up 62 days, 44 min, 1 user, load average: 0.00, 0.01, 0.05</code></pre>
 </div>
@@ -658,9 +658,9 @@ Tutorials project.</p>
 <div>
   <pre data-line=''><code class='language-bash'># List SSH keys that are loaded into the agent
 me@localhost $ ssh-add -l
-# Make sure they key is loaded if &#39;ssh-add -l&#39; didn&#39;t show anything
+# Make sure they key is loaded if 'ssh-add -l' didn't show anything
 me@localhost $ ssh-add
-me@localhost $ ssh -A deploy@one-of-my-servers.com &#39;git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git</code></pre>
+me@localhost $ ssh -A deploy@one-of-my-servers.com 'git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git</code></pre>
 </div>
 
 <p>We first check that the agent has the keys loaded. If not we simply load it
@@ -678,7 +678,7 @@ it both ways just to know how your system treats agent forwarding by default.</p
     specified on a per-host basis in a configuration file.
 
     Agent forwarding should be enabled with caution.  Users with the ability to
-    bypass file permissions on the remote host (for the agent&#39;s UNIX-domain
+    bypass file permissions on the remote host (for the agent's UNIX-domain
     socket) can access the local agent through the forwarded connection.  An
     attacker cannot obtain key material from the agent, however they can perform
     operations on the keys that enable them to authenticate using the identities
@@ -704,8 +704,8 @@ Github, we&#39;ll be prompted for a username and password:</p>
 
 <div>
   <pre data-line=''><code class='language-bash'>me@localhost $ git ls-remote https://github.com/capistrano/rails3-bootstrap-devise-cancan.git
-Username for &#39;https://github.com&#39;: myownusername
-Password for &#39;https://capistrano@github.com&#39;:</code></pre>
+Username for 'https://github.com': myownusername
+Password for 'https://capistrano@github.com':</code></pre>
 </div>
 
 <p>This challenge response prompt doesn&#39;t work well for automating things, so
@@ -791,7 +791,7 @@ access that you may or may not need depending how well your servers are setup:</
 <div>
   <pre data-line=''><code class='language-bash'>me@localhost $ ssh root@remote
 # Capistrano will use /var/www/....... where ... is the value set in
-# :application, you can override this by setting the &#39;:deploy_to&#39; variable
+# :application, you can override this by setting the ':deploy_to' variable
 root@remote $ deploy_to=/var/www/rails3-bootstrap-devise-cancan-demo
 root@remote $ mkdir ${deploy_to}
 root@remote $ chown deploy:deploy ${deploy_to}
