@@ -7,7 +7,7 @@ layout: default
   Update your Gemfile: `gem 'capistrano', '~> 3.0', require: false, group: :development`
 
 
-  If you deploy Rails, you wil also need `capistrano-rails` gem (Rails integration was moved out from Capistrano 3.x).
+  If you deploy Rails, you wil also need `capistrano-rails` and `capistrano-bundler` gems (Rails and Bundler integrations were moved out from Capistrano 3.x).
 
 2.
   We recommend to capify the project from scratch and move definitions from old to new configs then.
@@ -33,7 +33,6 @@ layout: default
   Update `config/deploy/production.rb` and `config/deploy/staging.rb` to have relevant data there. You may also want to add more stages from old configs (`old_cap/deploy/`).
 
 5.
-  Capistrano 3.x has changed structure of recepies. Before that you put stage-specific code to `config/deploy/stage_name.rb`, but now `config/deploy.rb` should contain only global options for all stages. Tasks like restarting Unicorns and preparing configs should now be placed in `Capfile`.
 
   Now you need to refactor your old `deploy.rb` (also `Capfile`, but in most of cases developers didn't change it in Capistrano 2.x). Move parameters (like `set :deploy_to, "/home/deploy/#{application}"` or `set :keep_releases, 4`) to `config/deploy.rb` and tasks to `Capfile`.
 
