@@ -100,9 +100,9 @@
     v2</a></li>
   <li class="divider"></li>
   <h5>Recent Announcements</h5>
-
+  
     <li><a href="/2013/06/01/release-announcement.html"><span class="post-date">01 Jun 2013</span> Capistrano Version 3 Release Announcement</a></li>
-
+  
 </ul>
 
       </div>
@@ -112,7 +112,7 @@
           <p>1.
   Update your Gemfile: <code>gem &#39;capistrano&#39;, &#39;~&gt; 3.0&#39;, require: false, group: :development</code></p>
 
-<p>If you deploy Rails, you wil also need <code>capistrano-rails</code> gem (Rails integration was moved out from Capistrano 3.x).</p>
+<p>If you deploy Rails, you wil also need <code>capistrano-rails</code> and <code>capistrano-bundler</code> gems (Rails and Bundler integrations were moved out from Capistrano 3.x).</p>
 
 <p>2.
   We recommend to capify the project from scratch and move definitions from old to new configs then.</p>
@@ -137,8 +137,7 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 <p>4.
   Update <code>config/deploy/production.rb</code> and <code>config/deploy/staging.rb</code> to have relevant data there. You may also want to add more stages from old configs (<code>old_cap/deploy/</code>).</p>
 
-<p>5.
-  Capistrano 3.x has changed structure of recepies. Before that you put stage-specific code to <code>config/deploy/stage_name.rb</code>, but now <code>config/deploy.rb</code> should contain only global options for all stages. Tasks like restarting Unicorns and preparing configs should now be placed in <code>Capfile</code>.</p>
+<p>5.</p>
 
 <p>Now you need to refactor your old <code>deploy.rb</code> (also <code>Capfile</code>, but in most of cases developers didn&#39;t change it in Capistrano 2.x). Move parameters (like <code>set :deploy_to, &quot;/home/deploy/#{application}&quot;</code> or <code>set :keep_releases, 4</code>) to <code>config/deploy.rb</code> and tasks to <code>Capfile</code>.</p>
 
@@ -179,7 +178,7 @@ CMD</code></pre>
 <div>
   <pre data-line=''><code class='language-ruby'>within fetch(:latest_release_directory)
   with rails_env: fetch(:rails_env) do
-    execute :rake, &#39;assets:precompile&#39;
+    execute :rake, 'assets:precompile'
   end
 end</code></pre>
 </div>
@@ -212,7 +211,7 @@ role :db,  %w{example.com}</code></pre>
     <!--    <p>1.
   Update your Gemfile: <code>gem &#39;capistrano&#39;, &#39;~&gt; 3.0&#39;, require: false, group: :development</code></p>
 
-<p>If you deploy Rails, you wil also need <code>capistrano-rails</code> gem (Rails integration was moved out from Capistrano 3.x).</p>
+<p>If you deploy Rails, you wil also need <code>capistrano-rails</code> and <code>capistrano-bundler</code> gems (Rails and Bundler integrations were moved out from Capistrano 3.x).</p>
 
 <p>2.
   We recommend to capify the project from scratch and move definitions from old to new configs then.</p>
@@ -237,8 +236,7 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 <p>4.
   Update <code>config/deploy/production.rb</code> and <code>config/deploy/staging.rb</code> to have relevant data there. You may also want to add more stages from old configs (<code>old_cap/deploy/</code>).</p>
 
-<p>5.
-  Capistrano 3.x has changed structure of recepies. Before that you put stage-specific code to <code>config/deploy/stage_name.rb</code>, but now <code>config/deploy.rb</code> should contain only global options for all stages. Tasks like restarting Unicorns and preparing configs should now be placed in <code>Capfile</code>.</p>
+<p>5.</p>
 
 <p>Now you need to refactor your old <code>deploy.rb</code> (also <code>Capfile</code>, but in most of cases developers didn&#39;t change it in Capistrano 2.x). Move parameters (like <code>set :deploy_to, &quot;/home/deploy/#{application}&quot;</code> or <code>set :keep_releases, 4</code>) to <code>config/deploy.rb</code> and tasks to <code>Capfile</code>.</p>
 
@@ -279,7 +277,7 @@ CMD</code></pre>
 <div>
   <pre data-line=''><code class='language-ruby'>within fetch(:latest_release_directory)
   with rails_env: fetch(:rails_env) do
-    execute :rake, &#39;assets:precompile&#39;
+    execute :rake, 'assets:precompile'
   end
 end</code></pre>
 </div>
