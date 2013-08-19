@@ -170,9 +170,9 @@ what happens:</p>
 
 <div>
   <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote
-me@remote $ [[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;
+me@remote $ [[ $- == *i* ]] &amp;&amp; echo 'Interactive' || echo 'Not interactive'
 Interactive
-me@remote $ shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;
+me@remote $ shopt -q login_shell &amp;&amp; echo 'Login shell' || echo 'Not login shell'
 Login shell</code></pre>
 </div>
 
@@ -180,9 +180,9 @@ Login shell</code></pre>
 command line without logging in first...</p>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote &quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote &quot;[[ $- == *i* ]] &amp;&amp; echo 'Interactive' || echo 'Not interactive'&quot;
 Interactive
-me@localhost $ ssh me@remote &quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;
+me@localhost $ ssh me@remote &quot;shopt -q login_shell &amp;&amp; echo 'Login shell' || echo 'Not login shell'&quot;
 Not login shell</code></pre>
 </div>
 
@@ -197,13 +197,13 @@ recipes to test this:</p>
 <div>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
 task :query_interactive do
-  on &#39;me@remote&#39; do
-    info capture(&quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;)
+  on 'me@remote' do
+    info capture(&quot;[[ $- == *i* ]] &amp;&amp; echo 'Interactive' || echo 'Not interactive'&quot;)
   end
 end
 task :query_login do
-  on &#39;me@remote&#39; do
-    info capture(&quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;)
+  on 'me@remote' do
+    info capture(&quot;shopt -q login_shell &amp;&amp; echo 'Login shell' || echo 'Not login shell'&quot;)
   end
 end</code></pre>
 </div>
@@ -298,9 +298,9 @@ what happens:</p>
 
 <div>
   <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote
-me@remote $ [[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;
+me@remote $ [[ $- == *i* ]] &amp;&amp; echo 'Interactive' || echo 'Not interactive'
 Interactive
-me@remote $ shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;
+me@remote $ shopt -q login_shell &amp;&amp; echo 'Login shell' || echo 'Not login shell'
 Login shell</code></pre>
 </div>
 
@@ -308,9 +308,9 @@ Login shell</code></pre>
 command line without logging in first...</p>
 
 <div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote &quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;
+  <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote &quot;[[ $- == *i* ]] &amp;&amp; echo 'Interactive' || echo 'Not interactive'&quot;
 Interactive
-me@localhost $ ssh me@remote &quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;
+me@localhost $ ssh me@remote &quot;shopt -q login_shell &amp;&amp; echo 'Login shell' || echo 'Not login shell'&quot;
 Not login shell</code></pre>
 </div>
 
@@ -325,13 +325,13 @@ recipes to test this:</p>
 <div>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
 task :query_interactive do
-  on &#39;me@remote&#39; do
-    info capture(&quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;)
+  on 'me@remote' do
+    info capture(&quot;[[ $- == *i* ]] &amp;&amp; echo 'Interactive' || echo 'Not interactive'&quot;)
   end
 end
 task :query_login do
-  on &#39;me@remote&#39; do
-    info capture(&quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;)
+  on 'me@remote' do
+    info capture(&quot;shopt -q login_shell &amp;&amp; echo 'Login shell' || echo 'Not login shell'&quot;)
   end
 end</code></pre>
 </div>
