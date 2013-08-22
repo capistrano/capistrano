@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A remote server automation and deployment tool written in Ruby.</title>
+    <title>Remote file task</title>
     <link href='http://fonts.googleapis.com/css?family=Enriqueta' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="//use.typekit.net/itm5ubu.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
@@ -111,37 +111,25 @@
       </div>
       <div class="large-8 column">
         <div class="content">
-          <h2>A remote server automation and deployment tool written in Ruby.</h2>
-          <h3 id="toc_0">A Simple Task</h3>
+          <h2>Remote file task</h2>
+          <p>The <code>remote_file</code> task is allowing the existence of a remote file to be set as a prerequisite. These tasks can in turn depend on local files if required. In this implementation, the fact that we&#39;re dealing with a file in the shared path is assumed.</p>
+
+<p>As as example, this task can be used to ensure that files to be linked exist
+before running the check:linked_files task:</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>role :demo, %w{example.com example.org example.net}
-task :uptime do |host|
-  on roles(:demo), in: :parallel do
-    uptime = capture(:uptime)
-    puts &quot;#{host.hostname} reports: #{uptime}&quot;
+  <pre data-line=''><code class='language-ruby'>namespace :deploy do
+  namespace :check do
+    task :linked_files =&gt; 'config/newrelic.yml'
   end
+end
+
+remote_file 'config/newrelic.yml' =&gt; '/tmp/newrelic.yml', roles: :app
+
+file '/tmp/newrelic.yml' do |t|
+  sh &quot;curl -o #{t.name} https://rpm.newrelic.com/accounts/xx/newrelic.yml&quot;
 end</code></pre>
 </div>
-
-<p>Capistrano extends the <em>Rake</em> DSL with methods specific to running commands
-<code>on()</code> servers.</p>
-
-<h3 id="toc_1">For Any Language</h3>
-
-<p>Capistrano is written in Ruby, but it can easily be used to deploy any
-language.</p>
-
-<p>If your language or framework has special deployment requirements, Capistrano can easily be
-extended to support them.</p>
-
-<h3 id="toc_2">Source Code</h3>
-
-<div class="github-widget" data-repo="capistrano/capistrano"></div>
-
-<div class="github-widget" data-repo="capistrano/rails"></div>
-
-<div class="github-widget" data-repo="capistrano/documentation"></div>
 
         </div>
       </div>
@@ -152,36 +140,24 @@ extended to support them.</p>
       <!--      <a class="extra" href="/">home</a>                    -->
       <!--    </div>                                                  -->
 
-    <!--    <h3 id="toc_0">A Simple Task</h3>
+    <!--    <p>The <code>remote_file</code> task is allowing the existence of a remote file to be set as a prerequisite. These tasks can in turn depend on local files if required. In this implementation, the fact that we&#39;re dealing with a file in the shared path is assumed.</p>
+
+<p>As as example, this task can be used to ensure that files to be linked exist
+before running the check:linked_files task:</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>role :demo, %w{example.com example.org example.net}
-task :uptime do |host|
-  on roles(:demo), in: :parallel do
-    uptime = capture(:uptime)
-    puts &quot;#{host.hostname} reports: #{uptime}&quot;
+  <pre data-line=''><code class='language-ruby'>namespace :deploy do
+  namespace :check do
+    task :linked_files =&gt; 'config/newrelic.yml'
   end
+end
+
+remote_file 'config/newrelic.yml' =&gt; '/tmp/newrelic.yml', roles: :app
+
+file '/tmp/newrelic.yml' do |t|
+  sh &quot;curl -o #{t.name} https://rpm.newrelic.com/accounts/xx/newrelic.yml&quot;
 end</code></pre>
 </div>
-
-<p>Capistrano extends the <em>Rake</em> DSL with methods specific to running commands
-<code>on()</code> servers.</p>
-
-<h3 id="toc_1">For Any Language</h3>
-
-<p>Capistrano is written in Ruby, but it can easily be used to deploy any
-language.</p>
-
-<p>If your language or framework has special deployment requirements, Capistrano can easily be
-extended to support them.</p>
-
-<h3 id="toc_2">Source Code</h3>
-
-<div class="github-widget" data-repo="capistrano/capistrano"></div>
-
-<div class="github-widget" data-repo="capistrano/rails"></div>
-
-<div class="github-widget" data-repo="capistrano/documentation"></div>
                                            -->
 
     <!--</div> [> /container <]                                     -->
