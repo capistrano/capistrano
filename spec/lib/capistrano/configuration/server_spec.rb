@@ -134,6 +134,75 @@ module Capistrano
         end
       end
 
+      describe '#include?' do
+        let(:options) { {} }
+
+        subject { server.select?(options) }
+
+        before do
+          server.properties.active = true
+        end
+
+        context 'options are empty' do
+          it { should be_true }
+        end
+
+        context 'value is a symbol' do
+          context 'value matches server property' do
+
+            context 'with :filter' do
+              let(:options) { { filter: :active }}
+              it { should be_true }
+            end
+
+            context 'with :select' do
+              let(:options) { { select: :active }}
+              it { should be_true }
+            end
+          end
+
+          context 'value does not match server properly' do
+            context 'with :filter' do
+              let(:options) { { filter: :inactive }}
+              it { should be_false }
+            end
+
+            context 'with :select' do
+              let(:options) { { select: :inactive }}
+              it { should be_false }
+            end
+          end
+        end
+
+        context 'value is a proc' do
+          context 'value matches server property' do
+
+            context 'with :filter' do
+              let(:options) { { filter: ->(s) { s.properties.active } } }
+              it { should be_true }
+            end
+
+            context 'with :select' do
+              let(:options) { { select: ->(s) { s.properties.active } } }
+              it { should be_true }
+            end
+          end
+
+          context 'value does not match server properly' do
+            context 'with :filter' do
+              let(:options) { { filter: ->(s) { s.properties.inactive } } }
+              it { should be_false }
+            end
+
+            context 'with :select' do
+              let(:options) { { select: ->(s) { s.properties.inactive } } }
+              it { should be_false }
+            end
+          end
+        end
+
+      end
+
       describe 'assign ssh_options' do
         let(:server) { Server.new('user_name@hostname') }
 
