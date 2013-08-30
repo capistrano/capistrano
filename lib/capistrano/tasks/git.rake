@@ -52,11 +52,8 @@ namespace :git do
     on roles :all do
       with git_environmental_variables do
         within repo_path do
-          execute :git, :clone, '--branch', fetch(:branch),               \
-            '--depth 1',                                                  \
-            '--recursive',                                                \
-            '--no-hardlinks',                                             \
-            repo_path, release_path
+          execute :mkdir, '-p', release_path
+          execute :git, :archive, fetch(:branch), '| tar -x -C', release_path
         end
       end
     end
