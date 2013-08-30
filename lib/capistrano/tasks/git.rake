@@ -18,7 +18,7 @@ namespace :git do
     fetch(:branch)
     on roles :all do
       with git_environmental_variables do
-        execute :git, :'ls-remote', repo_url
+        exit 1 unless test :git, :'ls-remote', repo_url
       end
     end
   end
