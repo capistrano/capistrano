@@ -108,16 +108,15 @@ module Capistrano
 
       end
 
-      describe '#roles' do
+      describe 'selecting roles' do
 
         before do
           servers.add_host('1', roles: :app, active: true)
           servers.add_host('2', roles: :app)
         end
 
-        it 'raises if the filter would remove all matching hosts' do
-          I18n.expects(:t)
-          expect { servers.roles_for([:app, select: :inactive]) }.to raise_error
+        it 'is empty if the filter would remove all matching hosts' do
+          expect(servers.roles_for([:app, select: :inactive])).to be_empty
         end
 
         it 'can filter hosts by properties on the host object using symbol as shorthand' do
@@ -129,19 +128,57 @@ module Capistrano
         end
 
         it 'can filter hosts by properties on the host using a regular proc' do
-          expect(servers.roles_for([:app, filter: lambda { |h| h.properties.active }]).length).to eq 1
+          expect(servers.roles_for([:app, filter: ->(h) { h.properties.active }]).length).to eq 1
         end
 
         it 'can select hosts by properties on the host using a regular proc' do
-          expect(servers.roles_for([:app, select: lambda { |h| h.properties.active }]).length).to eq 1
+          expect(servers.roles_for([:app, select: ->(h) { h.properties.active }]).length).to eq 1
         end
 
-        it 'raises if the regular proc filter would remove all matching hosts' do
-          I18n.expects(:t)
-          expect { servers.roles_for([:app, select: lambda { |h| h.properties.inactive }])}.to raise_error
+        it 'is empty if the regular proc filter would remove all matching hosts' do
+          expect(servers.roles_for([:app, select: ->(h) { h.properties.inactive }])).to be_empty
         end
 
       end
+
+      describe 'filtering roles' do
+
+        before do
+          ENV.stubs(:[]).with('ROLES').returns('web,db')
+          servers.add_host('1', roles: :app, active: true)
+          servers.add_host('2', roles: :app)
+          servers.add_host('3', roles: :web)
+          servers.add_host('4', roles: :web)
+          servers.add_host('5', roles: :db)
+        end
+
+        subject { servers.roles_for(roles).map(&:hostname) }
+
+        context 'when selecting all roles' do
+          let(:roles) { [:all] }
+
+          it 'returns the roles specified by ROLE' do
+            expect(subject).to eq %w{3 4 5}
+          end
+        end
+
+        context 'when selecting roles included in ROLE' do
+          let(:roles) { [:app, :web] }
+
+          it 'returns only roles that match ROLE' do
+            expect(subject).to eq %w{3 4}
+          end
+        end
+
+        context 'when selecting roles not included in ROLE' do
+          let(:roles) { [:app] }
+
+          it 'is empty' do
+            expect(subject).to be_empty
+          end
+        end
+      end
+
     end
   end
 end

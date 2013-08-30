@@ -22,6 +22,11 @@ module Capistrano
         hostname == Server.new(host).hostname
       end
 
+      def select?(options)
+        selector = Selector.new(options)
+        selector.call(self)
+      end
+
       def primary
         self if fetch(:primary)
       end
@@ -40,6 +45,20 @@ module Capistrano
       end
       alias_method :netssh_options_without_options, :netssh_options
       alias_method :netssh_options, :netssh_options_with_options
+
+      def roles_array
+        roles.to_a
+      end
+
+      private
+
+      def add_property(key, value)
+        if respond_to?("#{key}=")
+          send("#{key}=", value)
+        else
+          set(key, value)
+        end
+      end
 
       class Properties
 
@@ -79,15 +98,34 @@ module Capistrano
 
       end
 
-
-      private
-
-      def add_property(key, value)
-        if respond_to?("#{key}=")
-          send("#{key}=", value)
-        else
-          set(key, value)
+      class Selector
+        def initialize(options)
+          @options = options
         end
+
+        def callable
+          if key.respond_to?(:call)
+            key
+          else
+            ->(server) { server.fetch(key) }
+          end
+        end
+
+        def call(server)
+          callable.call(server)
+        end
+
+        private
+        attr_reader :options
+
+        def key
+          options[:filter] || options[:select] || all
+        end
+
+        def all
+          ->(server) { :all }
+        end
+
       end
 
     end

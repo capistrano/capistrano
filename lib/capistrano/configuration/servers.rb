@@ -1,4 +1,5 @@
 require 'set'
+require_relative 'servers/role_filter'
 module Capistrano
   class Configuration
     class Servers
@@ -40,17 +41,21 @@ module Capistrano
         servers.find_all { |server| server.has_role? role}
       end
 
-      def fetch_roles(names, options)
-        if Array(names).flatten.map(&:to_sym).include?(:all)
-          filter(servers, options)
-        else
-          role_servers = Array(names).flat_map { |name| fetch name }.uniq
-          filter(role_servers, options)
-        end
+      def fetch_roles(required, options)
+        filter_roles = RoleFilter.for(required, available_roles)
+        select(servers_with_roles(filter_roles), options)
       end
 
-      def filter(servers, options)
-        Filter.new(servers, options).filtered_servers
+      def servers_with_roles(roles)
+        roles.flat_map { |role| fetch role }.uniq
+      end
+
+      def select(servers, options)
+        servers.select { |server| server.select?(options) }
+      end
+
+      def available_roles
+        servers.flat_map { |server| server.roles_array }.uniq
       end
 
       def servers
@@ -59,48 +64,6 @@ module Capistrano
 
       def extract_options(array)
         array.last.is_a?(::Hash) ? array.pop : {}
-      end
-
-      class Filter
-        def initialize(servers, options)
-          @servers, @options = servers, options
-        end
-
-        def filtered_servers
-          if servers_with_filter.any?
-            servers_with_filter
-          else
-            fail I18n.t(:filter_removes_all_servers, scope: :capistrano, filter: key || '(no filter)' )
-          end
-        end
-
-        private
-        attr_reader :options, :servers
-
-        def servers_with_filter
-          @servers_with_filter ||= servers.select(&filter)
-        end
-
-        def key
-          options[:filter] || options[:select]
-        end
-
-        def filter_option
-          key || all
-        end
-
-        def filter
-          if filter_option.respond_to?(:call)
-            filter_option
-          else
-            lambda { |server| server.fetch(filter_option) }
-          end
-        end
-
-        def all
-          lambda { |server| :all }
-        end
-
       end
     end
   end
