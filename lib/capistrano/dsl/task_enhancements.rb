@@ -32,5 +32,22 @@ module Capistrano
       end
     end
 
+    def ensure_stage
+      Rake::Task.define_task(:ensure_stage) do
+        unless stage_set?
+          puts t(:stage_not_set)
+          exit 1
+        end
+      end
+    end
+
+    def tasks_without_stage_dependency
+      stages + default_tasks
+    end
+
+    def default_tasks
+      %w{install}
+    end
+
   end
 end
