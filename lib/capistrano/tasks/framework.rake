@@ -44,8 +44,6 @@ namespace :deploy do
   task :finished do
   end
 
-  before :starting, :ensure_stage
-
   desc 'Rollback to previous release.'
   task :rollback do
     %w{ starting started
