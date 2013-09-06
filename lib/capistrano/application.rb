@@ -26,7 +26,7 @@ module Capistrano
       if tasks_without_stage_dependency.include?(@top_level_tasks.first)
         @top_level_tasks
       else
-        @top_level_tasks.unshift('deploy:ensure_stage')
+        @top_level_tasks.unshift(ensure_stage)
       end
     end
 
@@ -35,15 +35,6 @@ module Capistrano
     # allows the `cap install` task to load without a capfile
     def capfile
       File.expand_path(File.join(File.dirname(__FILE__),'..','Capfile'))
-    end
-
-    def tasks_without_stage_dependency
-      defined_stages = Dir['config/deploy/*.rb'].map { |f| File.basename(f, '.rb') }
-      defined_stages + default_tasks
-    end
-
-    def default_tasks
-      %w{install}
     end
 
     def version
