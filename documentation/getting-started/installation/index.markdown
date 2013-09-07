@@ -75,7 +75,6 @@ The *Capistrano-Rails* Gem includes extras specifically designed for Ruby on
 Rails, specifically:
 
  * Asset Pipeline Support
- * Gem Bundler Support
  * Database Migration Support
 
 The documentation for these components can be found in
@@ -87,8 +86,7 @@ files:
 
 {% prism ruby %}
     require 'capistrano/rails/assets'
-    require 'capistrano/rails/gem-bundler'
-    require 'capistrano/rails/database-migrations'
+    require 'capistrano/rails/migrations'
 {% endprism %}
 
 <div class="alert alert-info">
@@ -111,6 +109,6 @@ the risk of accidentally upgrading to `v3`.
 --
 [rubygems]:                                    http://rubygems.org/
 [rubygems-pessimistic-operator]:               http://docs.rubygems.org/read/chapter/16#page74
-[capistrano-rails-asset-pipeline-readme]:      https://www.github.com/capistrano/asset-pipeline/bundler/README.md
-[capistrano-rails-database-migrations-readme]: https://www.github.com/capistrano/migrations/bundler/README.md
-[capistrano-rails-gem-bundler-readme]:         https://www.github.com/capistrano/capistrano-rails/bundler/README.md
+[capistrano-rails-asset-pipeline-readme]:      https://github.com/capistrano/rails/blob/master/README.md
+[capistrano-rails-database-migrations-readme]: https://github.com/capistrano/rails/blob/master/README.md
+[capistrano-rails-gem-bundler-readme]:         https://github.com/capistrano/bundler/blob/master/README.md
