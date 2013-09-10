@@ -550,7 +550,7 @@ namespace :deploy do
     DESC
     task :default, :except => { :no_release => true } do
       from = source.next_revision(current_revision)
-      system(source.local.log(from))
+      system(source.local.log(from, source.head))
     end
   end
 
