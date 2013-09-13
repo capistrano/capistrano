@@ -11,6 +11,8 @@ en = {
   finishing:                   'Finishing',
   finished:                    'Finished',
   stage_not_set:               'Stage not set, please call something such as `cap production deploy`, where production is a stage you have defined.',
+  user_not_set:                'User not set, please add `set :user, "username" to your configuration',
+  group_not_set:               'Group not set, please add `set :group, "group_name" to your configuration',
   written_file:                'create %{file}',
   question:                    'Please enter %{key}: |%{default_value}|',
   keeping_releases:            'Keeping %{keep_releases} of %{releases} deployed releases on %{host}',
