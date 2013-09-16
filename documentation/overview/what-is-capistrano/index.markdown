@@ -5,7 +5,7 @@ layout: default
 
 ### Capistrano is a remote server automation tool.
 
-It supports the scripting and execution of arbitrary tasks, and includes a set of sane-default deployment workdflows.
+It supports the scripting and execution of arbitrary tasks, and includes a set of sane-default deployment workflows.
 
 Capistrano can be used to:
 
