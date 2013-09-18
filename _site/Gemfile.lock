@@ -32,13 +32,23 @@ GEM
     liquid (2.5.1)
     maruku (0.6.1)
       syntax (>= 1.0.0)
+    net-scp (1.1.2)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.6.8)
     posix-spawn (0.3.6)
     pygments.rb (0.5.0)
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.1.0)
     redcarpet (2.2.2)
     safe_yaml (0.7.1)
+    sshkit (0.0.34)
+      net-scp
+      net-ssh
+      term-ansicolor
     syntax (1.0.0)
+    term-ansicolor (1.2.2)
+      tins (~> 0.8)
+    tins (0.9.0)
     unindent (1.0)
     yajl-ruby (1.1.0)
 
@@ -50,4 +60,5 @@ DEPENDENCIES
   git
   jekyll (~> 1.1.2)
   redcarpet
+  sshkit
   unindent
