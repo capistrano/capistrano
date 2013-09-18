@@ -120,13 +120,13 @@ before running the check:linked_files task:</p>
 <div>
   <pre data-line=''><code class='language-ruby'>namespace :deploy do
   namespace :check do
-    task :linked_files =&gt; 'config/newrelic.yml'
+    task :linked_files =&gt; &#39;config/newrelic.yml&#39;
   end
 end
 
-remote_file 'config/newrelic.yml' =&gt; '/tmp/newrelic.yml', roles: :app
+remote_file &#39;config/newrelic.yml&#39; =&gt; &#39;/tmp/newrelic.yml&#39;, roles: :app
 
-file '/tmp/newrelic.yml' do |t|
+file &#39;/tmp/newrelic.yml&#39; do |t|
   sh &quot;curl -o #{t.name} https://rpm.newrelic.com/accounts/xx/newrelic.yml&quot;
 end</code></pre>
 </div>
@@ -148,13 +148,13 @@ before running the check:linked_files task:</p>
 <div>
   <pre data-line=''><code class='language-ruby'>namespace :deploy do
   namespace :check do
-    task :linked_files =&gt; 'config/newrelic.yml'
+    task :linked_files =&gt; &#39;config/newrelic.yml&#39;
   end
 end
 
-remote_file 'config/newrelic.yml' =&gt; '/tmp/newrelic.yml', roles: :app
+remote_file &#39;config/newrelic.yml&#39; =&gt; &#39;/tmp/newrelic.yml&#39;, roles: :app
 
-file '/tmp/newrelic.yml' do |t|
+file &#39;/tmp/newrelic.yml&#39; do |t|
   sh &quot;curl -o #{t.name} https://rpm.newrelic.com/accounts/xx/newrelic.yml&quot;
 end</code></pre>
 </div>
@@ -201,5 +201,6 @@ end</code></pre>
   <script src="/js/jquery.githubRepoWidget.min.js"></script>
   <script src="/js/prism.js"></script>
   <script src="/js/prism.ruby.js"></script>
+  <a href="https://github.com/capistrano/documentation"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png" alt="Fork me on GitHub"></a>
 </body>
 </html>

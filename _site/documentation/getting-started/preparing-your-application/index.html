@@ -215,7 +215,7 @@ role :db,  %w{example.com}
 # definition into the server list. The second argument
 # is something that quacks like a hash and can be used
 # to set extended properties on the server.
-server 'example.com', roles: %w{web app}, my_property: :my_value
+server &#39;example.com&#39;, roles: %w{web app}, my_property: :my_value
 
 # set :rails_env, :staging</code></pre>
 </div>
@@ -240,8 +240,8 @@ server line after the comment:</p>
 <div>
   <pre data-line=''><code class='language-ruby'>role :all, %w{hello@world.com example.com:1234}
 # ...is the same as doing...
-server 'world.com' roles: [:web], user: 'hello'
-server 'example.com', roles: [:web], port: 1234</code></pre>
+server &#39;world.com&#39; roles: [:web], user: &#39;hello&#39;
+server &#39;example.com&#39;, roles: [:web], port: 1234</code></pre>
 </div>
 
 <h3 id="toc_4">5. Set the shared information in <code>deploy.rb</code>.</h3>
@@ -255,8 +255,8 @@ self-documenting, commented-out configuration options, feel free to play with
 them a little:</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>set :application, 'my app name'
-set :repo_url, 'git@example.com:me/my_repo.git'
+  <pre data-line=''><code class='language-ruby'>set :application, &#39;my app name&#39;
+set :repo_url, &#39;git@example.com:me/my_repo.git&#39;
 ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }</code></pre>
 </div>
 
@@ -278,9 +278,9 @@ forked to the Capistrano repository, but you can find the (unchanged) original
 <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">here</a>.</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>set :application, 'rails3-bootstrap-devise-cancan-demo'
-set :repo_url, 'https://github.com/capistrano/rails3-bootstrap-devise-cancan'
-set :branch, 'master'</code></pre>
+  <pre data-line=''><code class='language-ruby'>set :application, &#39;rails3-bootstrap-devise-cancan-demo&#39;
+set :repo_url, &#39;https://github.com/capistrano/rails3-bootstrap-devise-cancan&#39;
+set :branch, &#39;master&#39;</code></pre>
 </div>
 
 <p>I&#39;ve simplified the <code>:branch</code> variable to simply be a <code>set</code> variable, not a
@@ -407,7 +407,7 @@ role :db,  %w{example.com}
 # definition into the server list. The second argument
 # is something that quacks like a hash and can be used
 # to set extended properties on the server.
-server 'example.com', roles: %w{web app}, my_property: :my_value
+server &#39;example.com&#39;, roles: %w{web app}, my_property: :my_value
 
 # set :rails_env, :staging</code></pre>
 </div>
@@ -432,8 +432,8 @@ server line after the comment:</p>
 <div>
   <pre data-line=''><code class='language-ruby'>role :all, %w{hello@world.com example.com:1234}
 # ...is the same as doing...
-server 'world.com' roles: [:web], user: 'hello'
-server 'example.com', roles: [:web], port: 1234</code></pre>
+server &#39;world.com&#39; roles: [:web], user: &#39;hello&#39;
+server &#39;example.com&#39;, roles: [:web], port: 1234</code></pre>
 </div>
 
 <h3 id="toc_4">5. Set the shared information in <code>deploy.rb</code>.</h3>
@@ -447,8 +447,8 @@ self-documenting, commented-out configuration options, feel free to play with
 them a little:</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>set :application, 'my app name'
-set :repo_url, 'git@example.com:me/my_repo.git'
+  <pre data-line=''><code class='language-ruby'>set :application, &#39;my app name&#39;
+set :repo_url, &#39;git@example.com:me/my_repo.git&#39;
 ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }</code></pre>
 </div>
 
@@ -470,9 +470,9 @@ forked to the Capistrano repository, but you can find the (unchanged) original
 <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">here</a>.</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>set :application, 'rails3-bootstrap-devise-cancan-demo'
-set :repo_url, 'https://github.com/capistrano/rails3-bootstrap-devise-cancan'
-set :branch, 'master'</code></pre>
+  <pre data-line=''><code class='language-ruby'>set :application, &#39;rails3-bootstrap-devise-cancan-demo&#39;
+set :repo_url, &#39;https://github.com/capistrano/rails3-bootstrap-devise-cancan&#39;
+set :branch, &#39;master&#39;</code></pre>
 </div>
 
 <p>I&#39;ve simplified the <code>:branch</code> variable to simply be a <code>set</code> variable, not a

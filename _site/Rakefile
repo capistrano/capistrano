@@ -1,6 +1,5 @@
 require 'time'
-
-set(:log_level, Logger::DEBUG)
+require 'sshkit'
 
 deploy_to = '/opt/sites/capistranorb_com'
 release_timestamp = Time.now.utc.strftime("%Y%m%d%H%m%S")
@@ -16,3 +15,5 @@ task :deploy do
     end
   end
 end
+
+task :default => :deploy
