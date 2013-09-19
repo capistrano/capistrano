@@ -1,0 +1,5 @@
+namespace :deploy do
+  task :print_stage do
+    puts fetch(:stage)
+  end
+end
