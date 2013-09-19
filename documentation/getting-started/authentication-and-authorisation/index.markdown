@@ -44,7 +44,9 @@ could contribute a Windows guide to this, so we can include it here.
 An SSH key is a mechanism that allows a *public* half one key to be placed on
 a server, when we want to authenticate with that server, our SSH client uses
 the **private** part of that key to negotiate with the server, if the keys are
-correct, then we need to create the key.
+correct, we are allowed to login.
+
+Then we need to create the key.
 
 **Hint:** If you have more than one developer in your team, they should all add their
 public key to the `deploy` user's `authorized_keys` file, that way if someone
