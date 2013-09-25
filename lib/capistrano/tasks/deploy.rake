@@ -35,6 +35,7 @@ namespace :deploy do
     invoke "#{scm}:check"
     invoke 'deploy:check:directories'
     invoke 'deploy:check:linked_dirs'
+    invoke 'deploy:check:make_linked_dirs'
     invoke 'deploy:check:linked_files'
   end
 
@@ -53,12 +54,19 @@ namespace :deploy do
         execute :mkdir, '-pv', linked_dirs(shared_path)
       end
     end
+    
+    desc 'Check directories of files to be linked exist in shared'
+    task :make_linked_dirs do
+      next unless any? :linked_files
+      on roles :app do |host|
+        execute :mkdir, '-pv', linked_file_dirs(shared_path)
+      end
+    end
 
     desc 'Check files to be linked exist in shared'
     task :linked_files do
       next unless any? :linked_files
       on roles :app do |host|
-        execute :mkdir, '-pv', linked_file_dirs(shared_path)
         linked_files(shared_path).each do |file|
           unless test "[ -f #{file} ]"
             error t(:linked_file_does_not_exist, file: file, host: host)
