@@ -10,6 +10,7 @@ Add this line to your application's Gemfile:
 
 ``` ruby
 gem 'capistrano', github: 'capistrano/capistrano', branch: 'v3'
+gem 'sshkit', github: 'leehambley/sshkit'
 ```
 
 And then execute:
