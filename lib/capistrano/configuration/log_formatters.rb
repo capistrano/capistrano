@@ -13,9 +13,9 @@
 #     { :match => /git/,                    :color => :white,     :priority => 20, :style => :reverse }
 #   ]
 #
-#   format_logs capistrano_log_formatters
+#   log_formatter capistrano_log_formatters
 #
-# You can call format_logs multiple times, with either a hash or an array of hashes.
+# You can call log_formatter multiple times, with either a hash or an array of hashes.
 #
 # == Colors:
 #
