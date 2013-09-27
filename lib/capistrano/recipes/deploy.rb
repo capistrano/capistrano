@@ -5,12 +5,6 @@ require "yaml"
 require "capistrano/recipes/deploy/scm"
 require "capistrano/recipes/deploy/strategy"
 
-def _cset(name, *args, &block)
-  unless exists?(name)
-    set(name, *args, &block)
-  end
-end
-
 # =========================================================================
 # These variables MUST be set in the client capfiles. If they are not set,
 # the deploy will fail with an error.
