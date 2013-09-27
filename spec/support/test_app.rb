@@ -1,10 +1,39 @@
 require 'fileutils'
 module TestApp
+  extend self
+
+  def install
+    install_test_app_with(default_config)
+  end
+
+  def default_config
+    %{
+      set :stage, :#{stage}
+      set :deploy_to, '#{deploy_to}'
+      set :repo_url, 'git://github.com/capistrano/capistrano.git'
+      set :branch, 'v3'
+      set :ssh_options, { keys: "\#{ENV['HOME']}/.vagrant.d/insecure_private_key" }
+      server 'vagrant@localhost:2220', roles: %w{web app}
+      set :linked_files, #{linked_files}
+      set :linked_dirs, #{linked_dirs}
+    }
+  end
+
+  def linked_files
+    %w{config/database.yml}
+  end
+
+  def linked_file
+    shared_path.join(linked_files.first)
+  end
+
+  def linked_dirs
+    %w{bin log public/system vendor/bundle}
+  end
+
   def create_test_app
-    [test_app_path, deploy_to].each do |path|
-      FileUtils.rm_rf(path)
-      FileUtils.mkdir(path)
-    end
+    FileUtils.rm_rf(test_app_path)
+    FileUtils.mkdir(test_app_path)
 
     File.open(gemfile, 'w+') do |file|
       file.write "gem 'capistrano', path: '#{path_to_cap}'"
@@ -56,7 +85,7 @@ module TestApp
   end
 
   def deploy_to
-    Pathname.new('/tmp/test_app/deploy_to')
+    Pathname.new('/home/vagrant/var/www/deploy')
   end
 
   def shared_path
@@ -72,7 +101,15 @@ module TestApp
   end
 
   def release_path
-    releases_path.join(Dir.entries(releases_path).last)
+    releases_path.join(timestamp)
+  end
+
+  def timestamp
+    Time.now.utc.strftime("%Y%m%d%H%M%S")
+  end
+
+  def repo_path
+    deploy_to.join('repo')
   end
 
   def path_to_cap
