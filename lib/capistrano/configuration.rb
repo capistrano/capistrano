@@ -11,13 +11,17 @@ module Capistrano
       end
     end
 
+    def initialize
+      ENV.each_pair{ |key, value| set(key, value) }
+    end
+
     def ask(key, default=nil)
       question = Question.new(self, key, default)
       set(key, question)
     end
 
     def set(key, value)
-      config[key] = value
+      config[key] = ENV[key.to_s] || value
     end
 
     def delete(key)
