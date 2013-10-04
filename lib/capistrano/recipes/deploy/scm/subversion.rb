@@ -97,9 +97,10 @@ module Capistrano
           def authentication
             username = variable(:scm_username)
             return "" unless username
-            result = %(--username "#{variable(:scm_username)}")
-            result << %(--password "#{variable(:scm_password)}") unless variable(:scm_auth_cache) || variable(:scm_prefer_prompt)
+            result = %(--username '#{variable(:scm_username)}' )
+            result << %(--password '#{variable(:scm_password)}' ) unless variable(:scm_auth_cache) || variable(:scm_prefer_prompt)
             result << "--no-auth-cache " unless variable(:scm_auth_cache)
+            result << " --trust-server-cert --non-interactive "
             result
           end
 
