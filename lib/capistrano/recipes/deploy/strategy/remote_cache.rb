@@ -31,19 +31,19 @@ module Capistrano
 
           def update_repository_cache
             logger.trace "updating the cached checkout on all servers"
-            command = "if [ -d #{repository_cache} ]; then " +
+            command = "#{try_sudo} sh -c 'if [ -d #{repository_cache} ]; then " +
               "#{source.sync(revision, repository_cache)}; " +
-              "else #{source.checkout(revision, repository_cache)}; fi"
+              "else #{source.checkout(revision, repository_cache)}; fi'"
             scm_run(command)
           end
 
           def copy_repository_cache
             logger.trace "copying the cached version to #{configuration[:release_path]}"
             if copy_exclude.empty?
-              run "cp -RPp #{repository_cache} #{configuration[:release_path]} && #{mark}"
+              run "#{try_sudo} sh -c 'cp -RPp #{repository_cache} #{configuration[:release_path]} && #{mark}'"
             else
               exclusions = copy_exclude.map { |e| "--exclude=\"#{e}\"" }.join(' ')
-              run "rsync -lrpt #{exclusions} #{repository_cache}/ #{configuration[:release_path]} && #{mark}"
+              run "#{try_sudo} sh -c 'rsync -lrpt #{exclusions} #{repository_cache}/ #{configuration[:release_path]} && #{mark}'"
             end
           end
 

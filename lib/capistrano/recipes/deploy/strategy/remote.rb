@@ -12,7 +12,7 @@ module Capistrano
         # Executes the SCM command for this strategy and writes the REVISION
         # mark file to each host.
         def deploy!
-          scm_run "#{command} && #{mark}"
+          scm_run "#{try_sudo} sh -c '#{command} && #{mark}'"
         end
 
         def check!
