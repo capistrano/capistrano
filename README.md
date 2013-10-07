@@ -9,7 +9,7 @@
 Add this line to your application's Gemfile:
 
 ``` ruby
-gem 'capistrano', github: 'capistrano/capistrano', branch: 'v3'
+gem 'capistrano', :github => 'capistrano/capistrano', :branch => 'v3'
 ```
 
 And then execute:
