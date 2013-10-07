@@ -73,6 +73,9 @@ _cset(:run_method)        { fetch(:use_sudo, true) ? :sudo : :run }
 # actually exist. This variable lets tasks like symlink work either in the
 # standalone case, or during deployment.
 _cset(:latest_release) { exists?(:deploy_timestamped) ? release_path : current_release }
+# Similar situation with rollback, if deploying, the current_release should be
+# the target of a rollback, but if standalone, the previous release should be the target
+_cset(:rollback_release) { exists?(:deploy_timestamped) ? current_release : previous_release }
 
 _cset :maintenance_basename, "maintenance"
 _cset(:maintenance_template_path) { File.join(File.dirname(__FILE__), "templates", "maintenance.rhtml") }
@@ -319,8 +322,8 @@ namespace :deploy do
   DESC
   task :create_symlink, :except => { :no_release => true } do
     on_rollback do
-      if previous_release
-        run "#{try_sudo} rm -f #{current_path}; #{try_sudo} ln -s #{previous_release} #{current_path}; true"
+      if rollback_release
+        run "#{try_sudo} rm -f #{current_path}; #{try_sudo} ln -s #{rollback_release} #{current_path}; true"
       else
         logger.important "no previous release to rollback to, rollback of symlink skipped"
       end
@@ -369,8 +372,8 @@ namespace :deploy do
       ever) need to be called directly.
     DESC
     task :revision, :except => { :no_release => true } do
-      if previous_release
-        run "#{try_sudo} rm #{current_path}; #{try_sudo} ln -s #{previous_release} #{current_path}"
+      if rollback_release
+        run "#{try_sudo} rm #{current_path}; #{try_sudo} ln -s #{rollback_release} #{current_path}"
       else
         abort "could not rollback the code because there is no prior release"
       end
