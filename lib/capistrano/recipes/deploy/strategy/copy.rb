@@ -299,7 +299,7 @@ module Capistrano
 
             type = configuration[:copy_compression] || :gzip
             case type
-            when :gzip, :gz   then Compression.new("tar.gz",  [local_tar, 'czf'], [remote_tar, 'xzf'])
+            when :gzip, :gz   then Compression.new("tar.gz",  [local_tar, 'czfh'], [remote_tar, 'xzf'])
             when :bzip2, :bz2 then Compression.new("tar.bz2", [local_tar, 'cjf'], [remote_tar, 'xjf'])
             when :zip         then Compression.new("zip",     %w(zip -qyr), %w(unzip -q))
             else raise ArgumentError, "invalid compression type #{type.inspect}"
