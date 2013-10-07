@@ -44,6 +44,21 @@ Last Changed Date: 2009-03-11 11:04:25 -0700 (Wed, 11 Mar 2009)
     assert_equal %("opensesame"\n), @source.handle_data(mock_state, :test_stream, text)
   end
 
+  def test_authentication
+    require 'capistrano/logger'
+    @config[:scm_username] = 'user_name'
+    @config[:scm_password] = 'opensesame'
+    assert_equal '--username "user_name" --password "opensesame" --no-auth-cache ', @source.send(:authentication)
+  end
+
+  def test_authentication_cache_if_set
+    require 'capistrano/logger'
+    @config[:scm_username] = 'user_name'
+    @config[:scm_password] = 'opensesame'
+    @config[:scm_auth_cache] = 'yes'
+    assert_equal '--username "user_name" ', @source.send(:authentication)
+  end
+
   def test_prompt_password
     require 'capistrano/logger'
     require 'capistrano/cli'
