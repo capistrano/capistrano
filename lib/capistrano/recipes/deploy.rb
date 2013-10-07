@@ -84,7 +84,7 @@ _cset(:maintenance_template_path) { File.join(File.dirname(__FILE__), "templates
 # control in-use. For example, if a .svn directory exists in the project,
 # it will set the :scm variable to :subversion, if a .git directory exists
 # in the project, it will set the :scm variable to :git and so on. If no
-# directory is found, it will default to :git.
+# directory is found, it will default to :none.
 def scm_default
   if File.exist? '.git'
     :git
