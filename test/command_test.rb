@@ -10,12 +10,12 @@ class CommandTest < Test::Unit::TestCase
 
   def test_command_with_newlines_should_be_properly_escaped
     cmd = Capistrano::Command.new("ls\necho", [mock_session])
-    assert_equal "ls\\\necho", cmd.tree.fallback.command
+    assert_equal "ls\necho", cmd.tree.fallback.command
   end
 
   def test_command_with_windows_newlines_should_be_properly_escaped
     cmd = Capistrano::Command.new("ls\r\necho", [mock_session])
-    assert_equal "ls\\\necho", cmd.tree.fallback.command
+    assert_equal "ls\necho", cmd.tree.fallback.command
   end
 
   def test_command_with_pty_should_request_pty_and_register_success_callback
