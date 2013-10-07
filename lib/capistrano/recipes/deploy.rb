@@ -44,6 +44,8 @@ _cset(:real_revision)     { source.local.query_revision(revision) { |cmd| with_e
 
 _cset(:strategy)          { Capistrano::Deploy::Strategy.new(deploy_via, self) }
 
+_cset :copy_via, :sftp
+
 # If overriding release name, please also select an appropriate setting for :releases below.
 _cset(:release_name)      { set :deploy_timestamped, true; Time.now.utc.strftime("%Y%m%d%H%M%S") }
 
@@ -573,6 +575,10 @@ namespace :deploy do
       :maintenance_template_path variable in your deploy.rb file. The template file \
       should either be a plaintext or an erb file.
 
+      By default, files will be transferred across to the remote machines via 'sftp'. \
+      If you prefer to use 'scp' you can set the :copy_via variable to :scp in your \
+      deploy.rb file.
+
       Further customization will require that you write your own task.
     DESC
     task :disable, :roles => :web, :except => { :no_release => true } do
@@ -609,7 +615,7 @@ namespace :deploy do
       template = File.read(maintenance_template_path)
       result = ERB.new(template).result(binding)
 
-      put result, "#{shared_path}/system/#{maintenance_basename}.html", :mode => 0644
+      put result, "#{shared_path}/system/#{maintenance_basename}.html", :mode => 0644, :via => copy_via
     end
 
     desc <<-DESC
