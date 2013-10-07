@@ -195,9 +195,11 @@ module Capistrano
             execute << "#{git} submodule #{verbose} init"
             execute << "#{git} submodule #{verbose} sync"
             if false == variable(:git_submodules_recursive)
+              execute << "#{git} submodule #{verbose} foreach 'git fetch --tags'"
               execute << "#{git} submodule #{verbose} update --init"
             else
               execute << %Q(export GIT_RECURSIVE=$([ ! "`#{git} --version`" \\< "git version 1.6.5" ] && echo --recursive))
+              execute << "#{git} submodule #{verbose} foreach $GIT_RECURSIVE 'git fetch --tags'"
               execute << "#{git} submodule #{verbose} update --init $GIT_RECURSIVE"
             end
           end
