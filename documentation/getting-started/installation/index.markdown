@@ -62,7 +62,7 @@ Add the following lines to the Gemfile to the `:development` group ideally.
 
 {% prism ruby %}
     group :development do
-      gem 'capistrano-rails', '~> 0.0.7'
+      gem 'capistrano-rails', '~> 1.0.0'
     end
 {% endprism %}
 
