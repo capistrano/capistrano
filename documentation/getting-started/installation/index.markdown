@@ -20,26 +20,26 @@ will build the gem and install it locally. **The Gem is not yet availalble via
 Rubygems.org.**
 
 {% prism bash %}
-    $ gem install capistrano --pre --trust-policy HighSecurity
+    $ gem install capistrano
 {% endprism %}
 
 Or grab the bleeding edge head from:
 
 {% prism bash %}
-    $ git clone -b v3 https://github.com/capistrano/capistrano.git
+    $ git clone https://github.com/capistrano/capistrano.git
     $ cd capistrano
     $ gem build *.gemspec
     $ gem install *.gem
 {% endprism %}
 
-### Signed Rubygems
+### Signed Rubygems (currently not signed)
 
 As Capistrano is a signed gem, you should always be careful to use the
 `--trust-policy` flag when installing Gems, or since Bundler 1.3 you should
 use the same flag:
 
 {% prism bash %}
-    $ gem install capistrano --pre --trust-policy HighSecurity
+    $ gem install capistrano --trust-policy HighSecurity
     $ bundle install --trust-policy HighSecurity
 {% endprism %}
 
@@ -62,7 +62,7 @@ Add the following lines to the Gemfile to the `:development` group ideally.
 
 {% prism ruby %}
     group :development do
-      gem 'capistrano-rails', '~> 0.0.7'
+      gem 'capistrano-rails', '~> 1.0.0'
     end
 {% endprism %}
 
