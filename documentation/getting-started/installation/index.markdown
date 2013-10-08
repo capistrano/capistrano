@@ -20,7 +20,7 @@ will build the gem and install it locally. **The Gem is not yet availalble via
 Rubygems.org.**
 
 {% prism bash %}
-    $ gem install capistrano --trust-policy HighSecurity
+    $ gem install capistrano
 {% endprism %}
 
 Or grab the bleeding edge head from:
@@ -32,7 +32,7 @@ Or grab the bleeding edge head from:
     $ gem install *.gem
 {% endprism %}
 
-### Signed Rubygems
+### Signed Rubygems (currently not signed)
 
 As Capistrano is a signed gem, you should always be careful to use the
 `--trust-policy` flag when installing Gems, or since Bundler 1.3 you should
