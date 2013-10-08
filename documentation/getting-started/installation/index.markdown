@@ -20,13 +20,13 @@ will build the gem and install it locally. **The Gem is not yet availalble via
 Rubygems.org.**
 
 {% prism bash %}
-    $ gem install capistrano --pre --trust-policy HighSecurity
+    $ gem install capistrano --trust-policy HighSecurity
 {% endprism %}
 
 Or grab the bleeding edge head from:
 
 {% prism bash %}
-    $ git clone -b v3 https://github.com/capistrano/capistrano.git
+    $ git clone https://github.com/capistrano/capistrano.git
     $ cd capistrano
     $ gem build *.gemspec
     $ gem install *.gem
@@ -39,7 +39,7 @@ As Capistrano is a signed gem, you should always be careful to use the
 use the same flag:
 
 {% prism bash %}
-    $ gem install capistrano --pre --trust-policy HighSecurity
+    $ gem install capistrano --trust-policy HighSecurity
     $ bundle install --trust-policy HighSecurity
 {% endprism %}
 
