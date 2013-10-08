@@ -9,7 +9,7 @@
 Add this line to your application's Gemfile:
 
 ``` ruby
-gem 'capistrano', github: 'capistrano/capistrano', branch: 'v3'
+gem 'capistrano', '~> 3.0.0'
 ```
 
 And then execute:
@@ -19,7 +19,7 @@ $ bundle --binstubs
 ```
 
 Capify:
-*make sure there's no "Capfile" or "capfile" present* 
+*make sure there's no "Capfile" or "capfile" present*
 ``` shell
 $ cap install
 ```
