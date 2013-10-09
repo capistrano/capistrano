@@ -18,7 +18,7 @@ Capistrano can be used to:
 * To drive infrastructure provisioning tools such as *chef-solo*, *Ansible* or similar.
 
 Capistrano is also *very* scriptable, and can be integrated with any other
-Ruby software to form part of a larger too.
+Ruby software to form part of a larger tool.
 
 #### What does it look like?
 
