@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Capistrano Version 3 Release Announcement"
-date:   2013-06-01 00:00:00
+date:   2013-06-01
 ---
 
 After what seems like years of work, the Capistrano team (that's Tom and I)
