@@ -88,3 +88,7 @@ end
 Then(/^it will not recreate the file$/) do
   #
 end
+
+Then(/^the task is successful$/) do
+  expect(@success).to be_true
+end
