@@ -14,13 +14,13 @@ gem 'capistrano', '~> 3.0.0'
 
 And then execute:
 
-``` ruby
+``` sh
 $ bundle --binstubs
 ```
 
 Capify:
 *make sure there's no "Capfile" or "capfile" present*
-``` shell
+``` sh
 $ cap install
 ```
 
@@ -40,13 +40,13 @@ This creates the following files:
 
 To create different stages:
 
-``` shell
+``` sh
 $ cap install STAGES=local,sandbox,qa,production
 ```
 
 ## Usage
 
-``` shell
+``` sh
 $ cap -vT
 
 $ cap staging deploy
@@ -161,13 +161,13 @@ Execute arbitrary remote commands, to use this simply add
 `require 'capistrano/console'` which will add the necessary tasks to your
 environment:
 
-``` shell
+``` sh
 $ cap staging console
 ```
 
 Then, after setting up the server connections, this is how that might look:
 
-```
+``` sh
 $ cap production console
 capistrano console - enter command to execute on production
 production> uptime
