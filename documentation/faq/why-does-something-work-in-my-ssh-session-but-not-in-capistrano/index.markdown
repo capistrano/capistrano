@@ -15,7 +15,7 @@ matrix of possibilities concerning `login`, `non-login`, `interactive`, or
 ## Shell Modes
 
 Unix shells can be started in one of three modes, an unnamed *basic* mode,
-which almost never happens, as a `login` shell, or as an `inteactive` shell.
+which almost never happens, as a `login` shell, or as an `interactive` shell.
 
 Depending which mode a shell starts in (and which shell you are using) this
 will affect which startup (more commonly known as *dot*-files) files, if any
