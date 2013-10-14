@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["seenmyfate@gmail.com", "lee.hambley@gmail.com"]
   gem.description   = %q{Capistrano is a utility and framework for executing commands in parallel on multiple remote machines, via SSH.}
   gem.summary       = %q{Capistrano - Welcome to easy deployment with Ruby over SSH}
-  gem.homepage      = ""
+  gem.homepage      = "http://capistranorb.com/"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = 'cap'
