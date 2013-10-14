@@ -33,7 +33,6 @@ layout: default
   Update `config/deploy/production.rb` and `config/deploy/staging.rb` to have relevant data there. You may also want to add more stages from old configs (`old_cap/deploy/`).
 
 5.
-
   Now you need to refactor your old `deploy.rb` (also `Capfile`, but in most of cases developers didn't change it in Capistrano 2.x). Move parameters (like `set :deploy_to, "/home/deploy/#{application}"` or `set :keep_releases, 4`) to `config/deploy.rb` and tasks to `Capfile`.
 
   *Important: `repository` option was renamed to `repo_url`.*
@@ -56,7 +55,7 @@ layout: default
 8.
   Yay! Try to deploy with your new config set. If you discover any missing info in this upgrade guide, you're welcome to contribute to it.
 
-# General recommentations
+# General recommendations
 
 #### Use DSL instead of writing ENV variables
 
