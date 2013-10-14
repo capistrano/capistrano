@@ -140,9 +140,8 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 <p>4.
   Update <code>config/deploy/production.rb</code> and <code>config/deploy/staging.rb</code> to have relevant data there. You may also want to add more stages from old configs (<code>old_cap/deploy/</code>).</p>
 
-<p>5.</p>
-
-<p>Now you need to refactor your old <code>deploy.rb</code> (also <code>Capfile</code>, but in most of cases developers didn&#39;t change it in Capistrano 2.x). Move parameters (like <code>set :deploy_to, &quot;/home/deploy/#{application}&quot;</code> or <code>set :keep_releases, 4</code>) to <code>config/deploy.rb</code> and tasks to <code>Capfile</code>.</p>
+<p>5.
+  Now you need to refactor your old <code>deploy.rb</code> (also <code>Capfile</code>, but in most of cases developers didn&#39;t change it in Capistrano 2.x). Move parameters (like <code>set :deploy_to, &quot;/home/deploy/#{application}&quot;</code> or <code>set :keep_releases, 4</code>) to <code>config/deploy.rb</code> and tasks to <code>Capfile</code>.</p>
 
 <p><em>Important: <code>repository</code> option was renamed to <code>repo_url</code>.</em></p>
 
@@ -163,7 +162,7 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 <p>8.
   Yay! Try to deploy with your new config set. If you discover any missing info in this upgrade guide, you&#39;re welcome to contribute to it.</p>
 
-<h1 id="toc_0">General recommentations</h1>
+<h1 id="toc_0">General recommendations</h1>
 
 <h4 id="toc_1">Use DSL instead of writing ENV variables</h4>
 
@@ -239,9 +238,8 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 <p>4.
   Update <code>config/deploy/production.rb</code> and <code>config/deploy/staging.rb</code> to have relevant data there. You may also want to add more stages from old configs (<code>old_cap/deploy/</code>).</p>
 
-<p>5.</p>
-
-<p>Now you need to refactor your old <code>deploy.rb</code> (also <code>Capfile</code>, but in most of cases developers didn&#39;t change it in Capistrano 2.x). Move parameters (like <code>set :deploy_to, &quot;/home/deploy/#{application}&quot;</code> or <code>set :keep_releases, 4</code>) to <code>config/deploy.rb</code> and tasks to <code>Capfile</code>.</p>
+<p>5.
+  Now you need to refactor your old <code>deploy.rb</code> (also <code>Capfile</code>, but in most of cases developers didn&#39;t change it in Capistrano 2.x). Move parameters (like <code>set :deploy_to, &quot;/home/deploy/#{application}&quot;</code> or <code>set :keep_releases, 4</code>) to <code>config/deploy.rb</code> and tasks to <code>Capfile</code>.</p>
 
 <p><em>Important: <code>repository</code> option was renamed to <code>repo_url</code>.</em></p>
 
@@ -262,7 +260,7 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 <p>8.
   Yay! Try to deploy with your new config set. If you discover any missing info in this upgrade guide, you&#39;re welcome to contribute to it.</p>
 
-<h1 id="toc_0">General recommentations</h1>
+<h1 id="toc_0">General recommendations</h1>
 
 <h4 id="toc_1">Use DSL instead of writing ENV variables</h4>
 
