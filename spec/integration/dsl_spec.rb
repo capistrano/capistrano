@@ -340,5 +340,53 @@ describe Capistrano::DSL do
       end
     end
 
+    describe 'setting deploy configuration path' do
+      subject { dsl.deploy_config_path.to_s }
+
+      context 'where no config path is set' do
+        before do
+          dsl.delete(:deploy_config_path)
+        end
+
+        it 'returns "config/deploy.rb"' do
+          expect(subject).to eq 'config/deploy.rb'
+        end
+      end
+
+      context 'where a custom path is set' do
+        before do
+          dsl.set(:deploy_config_path, 'my/custom/path.rb')
+        end
+
+        it 'returns the custom path' do
+          expect(subject).to eq 'my/custom/path.rb'
+        end
+      end
+    end
+
+    describe 'setting stage configuration path' do
+      subject { dsl.stage_config_path.to_s }
+
+      context 'where no config path is set' do
+
+        before do
+          dsl.delete(:stage_config_path)
+        end
+
+        it 'returns "config/deploy"' do
+          expect(subject).to eq 'config/deploy'
+        end
+      end
+
+      context 'where a custom path is set' do
+        before do
+          dsl.set(:stage_config_path, 'my/custom/path')
+        end
+
+        it 'returns the custom path' do
+          expect(subject).to eq 'my/custom/path'
+        end
+      end
+    end
   end
 end
