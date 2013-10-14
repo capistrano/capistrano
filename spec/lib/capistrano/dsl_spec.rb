@@ -20,17 +20,6 @@ module Capistrano
       end
     end
 
-    describe '#stages' do
-      before do
-        Dir.expects(:[]).with('config/deploy/*.rb').
-          returns(['config/deploy/staging.rb', 'config/deploy/production.rb'])
-      end
-
-      it 'returns a list of defined stages' do
-        expect(dsl.stages).to eq %w{staging production}
-      end
-    end
-
     describe '#stage_set?' do
       subject { dsl.stage_set? }
 

@@ -27,6 +27,14 @@ module Capistrano
         set(:release_path, releases_path.join(timestamp))
       end
 
+      def stage_config_path
+        Pathname.new fetch(:stage_config_path, 'config/deploy')
+      end
+
+      def deploy_config_path
+        Pathname.new fetch(:deploy_config_path, 'config/deploy.rb')
+      end
+
       def repo_url
         require 'cgi'
         require 'uri'

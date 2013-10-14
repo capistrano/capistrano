@@ -23,3 +23,6 @@ Given(/^a custom task to generate a file$/) do
   TestApp.copy_task_to_test_app('spec/support/tasks/database.cap')
 end
 
+Given(/^the configuration is in a custom location$/) do
+  TestApp.move_configuration_to_custom_location('app')
+end
