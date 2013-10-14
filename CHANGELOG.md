@@ -5,7 +5,7 @@ Reverse Chronological Order:
 ## `3.0.0`
 
 If you are coming here to wonder why your Capfile doesn't work anymore, please
-vendor lock your Capistrano at 2.5.x, whichever version was working for you
+vendor lock your Capistrano at 2.x, whichever version was working for you
 until today.
 
 Capistrano 3 is a ground-up rewrite with modularity, stability, speed and
