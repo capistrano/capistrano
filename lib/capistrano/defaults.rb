@@ -9,5 +9,4 @@ set :keep_releases, 5
 set :format, :pretty
 set :log_level, :debug
 
-set :pty, true
-
+set :pty, false
