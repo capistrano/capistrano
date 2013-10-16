@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = "http://capistranorb.com/"
 
   gem.files         = `git ls-files`.split($/)
-  gem.executables   = 'cap'
+  gem.executables   = ['cap', 'capify']
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
