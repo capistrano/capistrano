@@ -34,6 +34,10 @@ module Capistrano
     end
 
     def role(name, hosts, options={})
+      if name == :all
+        raise ArgumentError.new("#{name} reserved name for role. Please choose another name")
+      end
+
       servers.add_role(name, hosts, options)
     end
 
