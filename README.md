@@ -221,6 +221,13 @@ connections behind the scenes in Capistrano, depending how deep you dig, you
 might run into interfaces that come directly from SSHKit (the configuration is
 a good example).
 
+## Help
+
+Need help with getting Capastrino up and running? Got a tedious code problem you want to get solved quickly? Get <a href="http://codersclan.net/?repo_id=325">Capastrino support on CodersClan.</a>
+
+<a href="http://codersclan.net/?repo_id=325"><img src="http://www.codersclan.net/gs_button/?repo_id=325" width="200"></a>
+
+
 ## Licence
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Capistrano</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.capistranorb.com." property="cc:attributionName" rel="cc:attributionURL">Lee Hambley and Tom Clements</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/deed.en_US">Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://www.github.com/capistrano" rel="dct:source">https://www.github.com/capistrano</a>.
