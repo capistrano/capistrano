@@ -44,24 +44,38 @@ namespace :deploy do
   task :finished do
   end
 
+  desc 'Deploy failed'
+  task :failed do
+  end
+
   desc 'Rollback to previous release.'
   task :rollback do
-    %w{ starting started
-        reverting reverted
-        publishing published
-        finishing_rollback finished }.each do |task|
-      invoke "deploy:#{task}"
+    begin
+      %w{ starting started
+          reverting reverted
+          publishing published
+          finishing_rollback finished }.each do |task|
+        invoke "deploy:#{task}"
+      end
+    rescue
+      invoke 'deploy:failed'
+      raise
     end
   end
 end
 
 desc 'Deploy a new release.'
 task :deploy do
-  %w{ starting started
-      updating updated
-      publishing published
-      finishing finished }.each do |task|
-    invoke "deploy:#{task}"
+  begin
+    %w{ starting started
+        updating updated
+        publishing published
+        finishing finished }.each do |task|
+      invoke "deploy:#{task}"
+    end
+  rescue
+    invoke 'deploy:failed'
+    raise
   end
 end
 task default: :deploy
