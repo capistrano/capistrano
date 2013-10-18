@@ -3,7 +3,7 @@ module Capistrano
     module Stages
 
       def stages_root
-        File.expand_path(fetch(:stages_root, 'config/deploy'))
+        fetch(:stages_root, 'config/deploy')
       end
 
       # Build stages with nested configurations
