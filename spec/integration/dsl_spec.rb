@@ -70,6 +70,14 @@ describe Capistrano::DSL do
 
     end
 
+    describe 'when defining role with reserved name' do
+      it 'fails with ArgumentError' do
+        expect {
+          dsl.role :all, %w{example1.com}
+        }.to raise_error(ArgumentError, "all reserved name for role. Please choose another name")
+      end
+    end
+
     describe 'when defining hosts using the `role` syntax' do
       before do
         dsl.role :web, %w{example1.com example2.com example3.com}

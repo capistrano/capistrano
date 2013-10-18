@@ -8,7 +8,6 @@ module TestApp
 
   def default_config
     %{
-      set :stage, :#{stage}
       set :deploy_to, '#{deploy_to}'
       set :repo_url, 'git://github.com/capistrano/capistrano.git'
       set :branch, 'v3'

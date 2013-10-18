@@ -8,11 +8,12 @@ end
 
 stages.each do |stage|
   Rake::Task.define_task(stage) do
+    set(:stage, stage.to_sym)
+    
     invoke 'load:defaults'
     load deploy_config_path
     load stage_config_path.join("#{stage}.rb")
     load "capistrano/#{fetch(:scm)}.rb"
-    set(:stage, stage.to_sym)
     I18n.locale = fetch(:locale, :en)
     configure_backend
   end
