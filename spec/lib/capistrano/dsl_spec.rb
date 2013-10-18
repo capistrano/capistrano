@@ -21,13 +21,147 @@ module Capistrano
     end
 
     describe '#stages' do
+      let(:glob) { [] }
+
+      subject { dsl.stages }
+
       before do
-        Dir.expects(:[]).with('config/deploy/**/*.rb').
-          returns(['config/deploy/staging.rb', 'config/deploy/production.rb'])
+        Dir.expects(:[]).with('config/deploy/**/*.rb').returns(glob)
       end
 
-      it 'returns a list of defined stages' do
-        expect(dsl.stages).to eq %w{production staging}
+      context 'no files given' do
+        it { should == [] }
+      end
+
+      context 'two files given' do
+        let(:glob) do
+          [
+            'config/deploy/staging.rb',
+            'config/deploy/production.rb'
+          ]
+        end
+        it 'returns two simple stages' do
+          subject.should == [
+            'production',
+            'staging'
+          ]
+        end
+      end
+
+      context 'two files and one root shared file given' do
+        let(:glob) do
+          [
+            'config/deploy/staging.rb',
+            'config/deploy/production.rb',
+            'config/deploy.rb'
+          ]
+        end
+
+        it 'returns two simple stages' do
+          subject.should == [
+            'production',
+            'staging'
+          ]
+        end
+      end
+
+      context 'one directory with two files given' do
+        let(:glob) do
+          [
+            'config/deploy/apps/staging.rb',
+            'config/deploy/apps/production.rb'
+          ]
+        end
+        it 'returns two namespaced stages' do
+          subject.should == [
+            'apps:production',
+            'apps:staging'
+          ]
+        end
+      end
+
+      context 'one directory with two files and one shared file given' do
+        let(:glob) do
+          [
+            'config/deploy/apps/staging.rb',
+            'config/deploy/apps/production.rb',
+            'config/deploy/apps.rb'
+          ]
+        end
+        it 'returns two namespaced stages' do
+          subject.should == [
+            'apps:production',
+            'apps:staging'
+          ]
+        end
+      end
+
+      context 'one directory with two files and one another file given' do
+        let(:glob) do
+          [
+            'config/deploy/apps/staging.rb',
+            'config/deploy/apps/production.rb',
+            'config/deploy/stage.rb'
+          ]
+        end
+        it 'returns two namespaced stages' do
+          subject.should == [
+            'apps:production',
+            'apps:staging',
+            'stage'
+          ]
+        end
+      end
+
+      context 'two directory with two files given' do
+        let(:glob) do
+          [
+            'config/deploy/ns1/stage11.rb',
+            'config/deploy/ns2/stage21.rb',
+            'config/deploy/ns1/stage12.rb',
+            'config/deploy/ns2/stage22.rb'
+          ]
+        end
+        it 'returns four namespaced stages' do
+          subject.should == [
+            'ns1:stage11',
+            'ns1:stage12',
+            'ns2:stage21',
+            'ns2:stage22'
+          ]
+        end
+      end
+
+      context 'two nested directory with two files and two shared given' do
+        let(:glob) do
+          [
+            'config/deploy/ns1/ns2/stage1.rb',
+            'config/deploy/ns1/ns2/stage2.rb'
+          ]
+        end
+        it 'returns four namespaced stages' do
+          subject.should == [
+            'ns1:ns2:stage1',
+            'ns1:ns2:stage2'
+          ]
+        end
+      end
+
+      context 'two nested directory with one file inside given' do
+        let(:glob) do
+          [
+            'config/deploy/ns1/ns2/stage3.rb',
+            'config/deploy/ns1/stage2.rb',
+            'config/deploy/stage1.rb'
+          ]
+        end
+        it 'returns three namespaced stages' do
+          subject.should == [
+            'ns1:ns2:stage3',
+            'ns1:stage2',
+            'stage1',
+          ]
+        end
       end
     end
 
