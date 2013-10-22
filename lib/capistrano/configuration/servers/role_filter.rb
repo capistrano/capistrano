@@ -22,6 +22,7 @@ module Capistrano
         private
 
         def required
+          return [] unless (@required.select { |req| req.nil? }).empty?
           Array(@required).flat_map(&:to_sym)
         end
 
