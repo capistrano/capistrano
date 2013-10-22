@@ -15,13 +15,13 @@ gem 'capistrano', '~> 3.0.0'
 And then execute:
 
 ``` sh
-$ bundle --binstubs
+$ bundle install
 ```
 
 Capify:
 *make sure there's no "Capfile" or "capfile" present*
 ``` sh
-$ cap install
+$ bundle exec cap install
 ```
 
 This creates the following files:
@@ -41,20 +41,20 @@ This creates the following files:
 To create different stages:
 
 ``` sh
-$ cap install STAGES=local,sandbox,qa,production
+$ bundle exec cap install STAGES=local,sandbox,qa,production
 ```
 
 ## Usage
 
 ``` sh
-$ cap -vT
+$ bundle exec cap -vT
 
-$ cap staging deploy
-$ cap production deploy
+$ bundle exec cap staging deploy
+$ bundle exec cap production deploy
 
-$ cap production deploy --dry-run
-$ cap production deploy --prereqs
-$ cap production deploy --trace
+$ bundle exec cap production deploy --dry-run
+$ bundle exec cap production deploy --prereqs
+$ bundle exec cap production deploy --trace
 ```
 
 ## Tasks
@@ -162,13 +162,13 @@ Execute arbitrary remote commands, to use this simply add
 environment:
 
 ``` sh
-$ cap staging console
+$ bundle exec cap staging console
 ```
 
 Then, after setting up the server connections, this is how that might look:
 
 ``` sh
-$ cap production console
+$ bundle exec cap production console
 capistrano console - enter command to execute on production
 production> uptime
  INFO [94db8027] Running /usr/bin/env uptime on leehambley@example.com:22
