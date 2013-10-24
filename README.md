@@ -216,7 +216,7 @@ The following variables are settable:
 
 ## Help
 
-Need help with getting Capistrano up and running? Got a tedious code problem you want to get solved quickly? 
+Need help with getting Capistrano up and running? Got a code problem you want to get solved quickly? 
 
 Get <a href="http://codersclan.net/?repo_id=325">Capistrano support on CodersClan.</a>
 
