@@ -214,18 +214,21 @@ The following variables are settable:
 | `:git_https_password` | The (optional) password for accessing your Git repostory over HTTPS | if this is an SSH connection, this setting will have no effect. |
 | `:tmp_dir` | The (optional) temp directory that will be used (default: /tmp) | if you have a shared web host, this setting may need to be set (i.e. /home/user/tmp/capistrano). |
 
+## Help
+
+Need help with getting Capistrano up and running? Got a tedious code problem you want to get solved quickly? 
+
+Get <a href="http://codersclan.net/?repo_id=325">Capistrano support on CodersClan.</a>
+
+<a href="http://codersclan.net/?repo_id=325"><img src="http://www.codersclan.net/gs_button/?repo_id=325" width="200"></a>
+
+
 ## SSHKit
 
 [SSHKit](https://github.com/capistrano/sshkit) is the driver for SSH
 connections behind the scenes in Capistrano, depending how deep you dig, you
 might run into interfaces that come directly from SSHKit (the configuration is
 a good example).
-
-## Help
-
-Need help with getting Capastrino up and running? Got a tedious code problem you want to get solved quickly? Get <a href="http://codersclan.net/?repo_id=325">Capastrino support on CodersClan.</a>
-
-<a href="http://codersclan.net/?repo_id=325"><img src="http://www.codersclan.net/gs_button/?repo_id=325" width="200"></a>
 
 
 ## Licence
