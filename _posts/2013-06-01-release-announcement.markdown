@@ -278,7 +278,7 @@ actually more or less the actual implementation in the the new Gem):
 
 {% prism ruby %}
     # Capistrano 3.0.x
-    desc "Cleanup all old releases (keeps #{fetch(:releases_to_keeo_on_cleanup)}
+    desc "Cleanup all old releases (keeps #{fetch(:releases_to_keep_on_cleanup)}
     old releases"
     task :cleanup do
       keep_releases     = fetch(:releases_to_keep_on_cleanup)
