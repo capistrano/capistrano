@@ -214,6 +214,12 @@ The following variables are settable:
 | `:git_https_password` | The (optional) password for accessing your Git repostory over HTTPS | if this is an SSH connection, this setting will have no effect. |
 | `:tmp_dir` | The (optional) temp directory that will be used (default: /tmp) | if you have a shared web host, this setting may need to be set (i.e. /home/user/tmp/capistrano). |
 
+__Support removed__ for following variables:
+
+| Variable Name         | Description                                                         | Notes                                                           |
+|:---------------------:|---------------------------------------------------------------------|-----------------------------------------------------------------|
+| `:copy_exclude`       | The (optional) array of files and/or folders excluded from deploy | Replaced by Git's native `.gitattributes`, see [#515](https://github.com/capistrano/capistrano/issues/515) for more info. |
+
 ## SSHKit
 
 [SSHKit](https://github.com/leehambley/sshkit) is the driver for SSH
