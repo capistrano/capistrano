@@ -2,14 +2,15 @@ namespace :git do
 
   git_environmental_variables = {
     git_askpass: "/bin/echo",
-    git_ssh:     "#{fetch(:tmp_dir)}/git-ssh.sh"
+    git_ssh:     "#{fetch(:tmp_dir)}/#{fetch(:application)}/git-ssh.sh"
   }
 
   desc 'Upload the git wrapper script, this script guarantees that we can script git without getting an interactive prompt'
   task :wrapper do
     on roles :all do
-      upload! StringIO.new("#!/bin/sh -e\nexec /usr/bin/ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no \"$@\"\n"), "#{fetch(:tmp_dir)}/git-ssh.sh"
-      execute :chmod, "+x", "#{fetch(:tmp_dir)}/git-ssh.sh"
+      execute :mkdir, "-p", "#{fetch(:tmp_dir)}/#{fetch(:application)}/"
+      upload! StringIO.new("#!/bin/sh -e\nexec /usr/bin/ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no \"$@\"\n"), "#{fetch(:tmp_dir)}/#{fetch(:application)}/git-ssh.sh"
+      execute :chmod, "+x", "#{fetch(:tmp_dir)}/#{fetch(:application)}/git-ssh.sh"
     end
   end
 
