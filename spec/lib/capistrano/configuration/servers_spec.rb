@@ -141,6 +141,35 @@ module Capistrano
 
       end
 
+      describe 'excluding by property' do
+
+        before do
+          servers.add_host('1', roles: :app, active: true)
+          servers.add_host('2', roles: :app, active: true, no_release: true)
+        end
+
+        it 'is empty if the filter would remove all matching hosts' do
+          hosts = servers.roles_for([:app, exclude: :active])
+          expect(hosts.map(&:hostname)).to be_empty
+        end
+
+        it 'returns the servers without the attributes specified' do
+          hosts = servers.roles_for([:app, exclude: :no_release])
+          expect(hosts.map(&:hostname)).to eq %w{1}
+        end
+
+        it 'can exclude hosts by properties on the host using a regular proc' do
+          hosts = servers.roles_for([:app, exclude: ->(h) { h.properties.no_release }])
+          expect(hosts.map(&:hostname)).to eq %w{1}
+        end
+
+        it 'is empty if the regular proc filter would remove all matching hosts' do
+          hosts = servers.roles_for([:app, exclude: ->(h) { h.properties.active }])
+          expect(hosts.map(&:hostname)).to be_empty
+        end
+
+      end
+
       describe 'filtering roles' do
 
         before do
