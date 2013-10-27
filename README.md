@@ -1,4 +1,4 @@
-# Capistrano [![Build Status](https://travis-ci.org/capistrano/capistrano.png?branch=v3)](https://travis-ci.org/capistrano/capistrano)
+# Capistrano [![Build Status](https://travis-ci.org/capistrano/capistrano.png?branch=v3)](https://travis-ci.org/capistrano/capistrano) [![Code Climate](https://codeclimate.com/github/capistrano/capistrano.png)](https://codeclimate.com/github/capistrano/capistrano)
 
 ## Requirements
 
