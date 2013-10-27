@@ -7,7 +7,6 @@ en = {
   start:                       'Start',
   update:                      'Update',
   finalize:                    'Finalise',
-  restart:                     'Restart',
   finishing:                   'Finishing',
   finished:                    'Finished',
   stage_not_set:               'Stage not set, please call something such as `cap production deploy`, where production is a stage you have defined.',

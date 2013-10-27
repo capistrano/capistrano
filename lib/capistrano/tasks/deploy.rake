@@ -15,7 +15,6 @@ namespace :deploy do
 
   task :publishing do
     invoke 'deploy:symlink:release'
-    invoke 'deploy:restart'
   end
 
   task :finishing do
