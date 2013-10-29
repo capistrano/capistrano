@@ -188,7 +188,7 @@ namespace :deploy do
 
   task :last_release_path do
     on roles(:all) do
-      last_release = capture(:ls, '-xr', releases_path).split[1]
+      last_release = capture(:ls, '-xr', releases_path).split[0]
       set_release_path(last_release)
     end
   end
