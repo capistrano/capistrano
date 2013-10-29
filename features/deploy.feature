@@ -50,3 +50,11 @@ Feature: Deploy
     When I run cap "deploy:symlink:release"
     Then the current directory will be a symlink to the release
 
+  Scenario Outline: Deploy failure
+    When I run cap "<task>" and it fails
+    Then deploy:failed is invoked
+
+    Examples:
+      | task            |
+      | deploy          |
+      | deploy:rollback |

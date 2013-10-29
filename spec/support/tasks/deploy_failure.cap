@@ -1,0 +1,13 @@
+namespace :fail do
+  task :fail do
+    raise 'Houston, we have a problem!'
+  end
+
+  task :failed do
+    File.open(File.dirname(__FILE__) + 'FAILED', 'w') {|f| f.write('This task failed!') }
+  end
+end
+
+after 'deploy:updating', 'fail:fail'
+after 'deploy:reverting', 'fail:fail'
+after 'deploy:failed', 'fail:failed'
