@@ -1,3 +1,3 @@
-load File.expand_path("../tasks/framework.rake", __FILE__)
+require 'capistrano/framework'
+
 load File.expand_path("../tasks/deploy.rake", __FILE__)
-require 'capistrano/install'
