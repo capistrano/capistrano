@@ -77,19 +77,3 @@ It's better to use:
     end
   end
 {% endprism %}
-
-#### Refactor roles
-
-Instead of:
-
-{% prism ruby %}
-  role :app, %w{example.com}
-  role :web, %w{example.com}
-  role :db,  %w{example.com}
-{% endprism %}
-
-It's better to use:
-
-{% prism ruby %}
-  role :all, %w{example.com}
-{% endprism %}
