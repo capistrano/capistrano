@@ -81,8 +81,9 @@ namespace :deploy do
     desc 'Symlink release to current'
     task :release do
       on roles :all do
-        execute :rm, '-rf', current_path
-        execute :ln, '-s', release_path, current_path
+        current_tmp = deploy_path.join('temp')
+        cmd = %<ln -v -f -s #{release_path} #{current_tmp} && mv -vTf #{current_tmp} #{current_path} >
+        execute cmd
       end
     end
 
