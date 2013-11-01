@@ -92,3 +92,18 @@ end
 Then(/^the task is successful$/) do
   expect(@success).to be_true
 end
+
+Then(/^the failure task will run$/) do
+  failed = TestApp.shared_path.join('failed')
+  run_vagrant_command(test_file_exists(failed))
+end
+
+Then(/^the failure task will not run$/) do
+  failed = TestApp.shared_path.join('failed')
+  !run_vagrant_command(test_file_exists(failed))
+end
+
+When(/^an error is raised$/) do
+  error = TestApp.shared_path.join('fail')
+  run_vagrant_command(test_file_exists(error))
+end
