@@ -49,5 +49,15 @@ module Capistrano
       %w{install}
     end
 
+    def exit_deploy_because_of_exception(ex)
+      warn t(:deploy_failed, ex: ex.inspect)
+      invoke 'deploy:failed'
+      exit(false)
+    end
+
+    def deploying?
+      fetch(:deploying, false)
+    end
+
   end
 end

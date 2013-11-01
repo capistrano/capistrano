@@ -30,6 +30,14 @@ module Capistrano
       end
     end
 
+    def exit_because_of_exception(ex)
+      if deploying?
+        exit_deploy_because_of_exception(ex)
+      else
+        super
+      end
+    end
+
     private
 
     # allows the `cap install` task to load without a capfile

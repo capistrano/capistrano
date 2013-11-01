@@ -26,3 +26,13 @@ end
 Given(/^the configuration is in a custom location$/) do
   TestApp.move_configuration_to_custom_location('app')
 end
+
+Given(/^a custom task that will simulate a failure$/) do
+  safely_remove_file(TestApp.shared_path.join('failed'))
+  TestApp.copy_task_to_test_app('spec/support/tasks/fail.cap')
+end
+
+Given(/^a custom task to run in the event of a failure$/) do
+  safely_remove_file(TestApp.shared_path.join('failed'))
+  TestApp.copy_task_to_test_app('spec/support/tasks/failed.cap')
+end

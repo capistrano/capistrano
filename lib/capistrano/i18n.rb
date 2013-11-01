@@ -18,6 +18,7 @@ en = {
   mirror_exists:               "The repository mirror is at %{at}",
   revision_log_message:        'Branch %{branch} deployed as release %{release} by %{user}',
   rollback_log_message:        '%{user} rolled back to release %{release}',
+  deploy_failed:               'The deploy has failed with an error: %{ex}',
   console: {
     welcome:  'capistrano console - enter command to execute on %{stage}',
     bye:      'bye'
