@@ -200,6 +200,7 @@ namespace :deploy do
     end
   end
 
+  task :restart
   task :failed
 
 end
