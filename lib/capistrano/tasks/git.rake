@@ -42,7 +42,10 @@ namespace :git do
   task update: :'git:clone' do
     on roles :all do
       within repo_path do
+        get_revision = -> { capture("cd #{repo_path} && git rev-parse --short HEAD") }
+        set :previous_revision, get_revision[]
         execute :git, :remote, :update
+        set :current_revision, get_revision[]
       end
     end
   end
