@@ -2,6 +2,12 @@
 
 Reverse Chronological Order:
 
+## `3.0.1` (Not yet released)
+
+  * capify' not listed as executable (@leehambley)
+  * Confirm license as MIT (@leehambley)
+  * Move the git ssh helper to application path (@mpapis)
+
 ## `3.0.0`
 
 If you are coming here to wonder why your Capfile doesn't work anymore, please
