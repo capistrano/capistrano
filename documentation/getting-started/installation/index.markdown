@@ -15,9 +15,7 @@ therefore recommended to use an appropriate bundler.
 
 ### General Usage
 
-The following commands will clone Capistrano at the latest `v3` revision, and
-will build the gem and install it locally. **The Gem is not yet availalble via
-Rubygems.org.**
+The following command will install the latest released capistrano `v3` revision:
 
 {% prism bash %}
     $ gem install capistrano
