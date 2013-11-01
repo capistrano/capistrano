@@ -28,7 +28,11 @@ module Capistrano
 
     def revision_log_message
       fetch(:revision_log_message,
-            t(:revision_log_message, branch: fetch(:branch), user: local_user, release: release_timestamp))
+            t(:revision_log_message, branch: fetch(:branch),
+              user: local_user,
+              sha: fetch(:current_revision),
+              release: release_timestamp)
+           )
     end
 
     def rollback_log_message
