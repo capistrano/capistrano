@@ -126,7 +126,7 @@ This method is widely used.
 ``` ruby
 desc "Ask about breakfast"
 task :breakfast do
-  breakfast = ask(:breakfast, "What would you like your colleagues to you for breakfast?")
+  breakfast = ask(:breakfast, "What would you like your colleagues to get you for breakfast?")
   on roles(:all) do |h|
     execute "echo \"$(whoami) wants #{breakfast} for breakfast!\" | wall"
   end
@@ -207,11 +207,11 @@ your company lacks the infrastructure to test this in a staging environment).
 
 The following variables are settable:
 
-| Variable Name         | Description                                                         | Notes                                                           |
-|:---------------------:|---------------------------------------------------------------------|-----------------------------------------------------------------|
-| `:repo_url`           | The URL of your Git repository                                      | file://, https://, or ssh:// are all supported                  |
-| `:git_https_username` | The (optional) username for accessing your Git repostory over HTTPS | if this is an SSH connection, this setting will have no effect. |
-| `:git_https_password` | The (optional) password for accessing your Git repostory over HTTPS | if this is an SSH connection, this setting will have no effect. |
+| Variable Name         | Description                                                          | Notes                                                           |
+|:---------------------:|----------------------------------------------------------------------|-----------------------------------------------------------------|
+| `:repo_url`           | The URL of your Git repository                                       | file://, https://, or ssh:// are all supported                  |
+| `:git_https_username` | The (optional) username for accessing your Git repository over HTTPS | if this is an SSH connection, this setting will have no effect. |
+| `:git_https_password` | The (optional) password for accessing your Git repository over HTTPS | if this is an SSH connection, this setting will have no effect. |
 | `:tmp_dir` | The (optional) temp directory that will be used (default: /tmp) | if you have a shared web host, this setting may need to be set (i.e. /home/user/tmp/capistrano). |
 
 __Support removed__ for following variables:
