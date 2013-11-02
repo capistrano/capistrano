@@ -6,9 +6,10 @@ module Capistrano
     end
 
     def after(task, post_task, *args, &block)
-      post_task = Rake::Task.define_task(post_task, *args, &block) if block_given?
+      Rake::Task.define_task(post_task, *args, &block) if block_given?
+      post_task = Rake::Task[post_task]
       Rake::Task[task].enhance do
-        invoke(post_task)
+        post_task.invoke
       end
     end
 
@@ -47,6 +48,16 @@ module Capistrano
 
     def default_tasks
       %w{install}
+    end
+
+    def exit_deploy_because_of_exception(ex)
+      warn t(:deploy_failed, ex: ex.inspect)
+      invoke 'deploy:failed'
+      exit(false)
+    end
+
+    def deploying?
+      fetch(:deploying, false)
     end
 
   end

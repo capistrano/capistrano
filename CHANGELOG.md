@@ -2,9 +2,20 @@
 
 Reverse Chronological Order:
 
+## `3.1.0` (not released)
+
+  * `deploy:restart` task is no longer run by default.
+    From this version, developers who restart the app on each deploy need to declare it in their deploy flow (@kirs)
+  * Fixed bug when `deploy:cleanup` was executed twice by default (@kirs)
+  * Config location can now be changed with `deploy_config_path` and `stage_config_path` options (@seenmyfate)
+  * `no_release` option is now available (@seenmyfate)
+  * Raise an error if developer tries to define `:all` role, which is reserved (@kirs)
+  * `deploy:fallback` hook was added to add some custom behaviour on failed deploy (@seenmyfate)
+  * Correctly infer namespace in task enhancements (@seenmyfate)
+
 ## `3.0.1`
 
-  * capify' not listed as executable (@leehambley)
+  * `capify` not listed as executable (@leehambley)
   * Confirm license as MIT (@leehambley)
   * Move the git ssh helper to application path (@mpapis)
 

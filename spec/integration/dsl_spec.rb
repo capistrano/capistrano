@@ -11,13 +11,33 @@ describe Capistrano::DSL do
         dsl.server 'example2.com', roles: %w{web}
         dsl.server 'example3.com', roles: %w{app web}, active: true
         dsl.server 'example4.com', roles: %w{app}, primary: true
+        dsl.server 'example5.com', roles: %w{db}, no_release: true
       end
 
       describe 'fetching all servers' do
         subject { dsl.roles(:all) }
 
         it 'returns all servers' do
-          expect(subject.map(&:hostname)).to eq %w{example1.com example2.com example3.com example4.com}
+          expect(subject.map(&:hostname)).to eq %w{example1.com example2.com example3.com example4.com example5.com}
+        end
+      end
+
+      describe 'fetching all release servers' do
+
+        context 'with no additional options' do
+          subject { dsl.release_roles(:all) }
+
+          it 'returns all release servers' do
+            expect(subject.map(&:hostname)).to eq %w{example1.com example2.com example3.com example4.com}
+          end
+        end
+
+        context 'with filter options' do
+          subject { dsl.release_roles(:all, filter: :active) }
+
+          it 'returns all release servers that match the filter' do
+            expect(subject.map(&:hostname)).to eq %w{example1.com example3.com}
+          end
         end
       end
 
@@ -70,6 +90,14 @@ describe Capistrano::DSL do
 
     end
 
+    describe 'when defining role with reserved name' do
+      it 'fails with ArgumentError' do
+        expect {
+          dsl.role :all, %w{example1.com}
+        }.to raise_error(ArgumentError, "all reserved name for role. Please choose another name")
+      end
+    end
+
     describe 'when defining hosts using the `role` syntax' do
       before do
         dsl.role :web, %w{example1.com example2.com example3.com}
@@ -77,15 +105,36 @@ describe Capistrano::DSL do
         dsl.role :app, %w{example3.com example4.com}
         dsl.role :app, %w{example3.com}, active: true
         dsl.role :app, %w{example4.com}, primary: true
+        dsl.role :db, %w{example5.com}, no_release: true
       end
 
       describe 'fetching all servers' do
         subject { dsl.roles(:all) }
 
         it 'returns all servers' do
-          expect(subject.map(&:hostname)).to eq %w{example1.com example2.com example3.com example4.com}
+          expect(subject.map(&:hostname)).to eq %w{example1.com example2.com example3.com example4.com example5.com}
         end
       end
+
+      describe 'fetching all release servers' do
+
+        context 'with no additional options' do
+          subject { dsl.release_roles(:all) }
+
+          it 'returns all release servers' do
+            expect(subject.map(&:hostname)).to eq %w{example1.com example2.com example3.com example4.com}
+          end
+        end
+
+        context 'with filter options' do
+          subject { dsl.release_roles(:all, filter: :active) }
+
+          it 'returns all release servers that match the filter' do
+            expect(subject.map(&:hostname)).to eq %w{example1.com example3.com}
+          end
+        end
+      end
+
 
       describe 'fetching servers by role' do
         subject { dsl.roles(:app) }
@@ -340,5 +389,53 @@ describe Capistrano::DSL do
       end
     end
 
+    describe 'setting deploy configuration path' do
+      subject { dsl.deploy_config_path.to_s }
+
+      context 'where no config path is set' do
+        before do
+          dsl.delete(:deploy_config_path)
+        end
+
+        it 'returns "config/deploy.rb"' do
+          expect(subject).to eq 'config/deploy.rb'
+        end
+      end
+
+      context 'where a custom path is set' do
+        before do
+          dsl.set(:deploy_config_path, 'my/custom/path.rb')
+        end
+
+        it 'returns the custom path' do
+          expect(subject).to eq 'my/custom/path.rb'
+        end
+      end
+    end
+
+    describe 'setting stage configuration path' do
+      subject { dsl.stage_config_path.to_s }
+
+      context 'where no config path is set' do
+
+        before do
+          dsl.delete(:stage_config_path)
+        end
+
+        it 'returns "config/deploy"' do
+          expect(subject).to eq 'config/deploy'
+        end
+      end
+
+      context 'where a custom path is set' do
+        before do
+          dsl.set(:stage_config_path, 'my/custom/path')
+        end
+
+        it 'returns the custom path' do
+          expect(subject).to eq 'my/custom/path'
+        end
+      end
+    end
   end
 end

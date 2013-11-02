@@ -8,10 +8,9 @@ module TestApp
 
   def default_config
     %{
-      set :stage, :#{stage}
       set :deploy_to, '#{deploy_to}'
       set :repo_url, 'git://github.com/capistrano/capistrano.git'
-      set :branch, 'v3'
+      set :branch, 'master'
       set :ssh_options, { keys: "\#{ENV['HOME']}/.vagrant.d/insecure_private_key" }
       server 'vagrant@localhost:2220', roles: %w{web app}
       set :linked_files, #{linked_files}
@@ -58,6 +57,14 @@ module TestApp
     end
   end
 
+  def prepend_to_capfile(config)
+    current_capfile = File.read(capfile)
+    File.open(capfile, 'w') do |file|
+      file.write config
+      file.write current_capfile
+    end
+  end
+
   def create_shared_directory(path)
     FileUtils.mkdir_p(shared_path.join(path))
   end
@@ -67,9 +74,14 @@ module TestApp
   end
 
   def cap(task)
+    run "bundle exec cap #{stage} #{task}"
+  end
+
+  def run(command)
     Dir.chdir(test_app_path) do
-      %x[bundle exec cap #{stage} #{task}]
+      %x[#{command}]
     end
+    $?.success?
   end
 
   def stage
@@ -135,4 +147,22 @@ module TestApp
   def copy_task_to_test_app(source)
     FileUtils.cp(source, task_dir)
   end
+
+  def config_path
+    test_app_path.join('config')
+  end
+
+  def move_configuration_to_custom_location(location)
+    prepend_to_capfile(
+      %{
+        set :stage_config_path, "app/config/deploy"
+        set :deploy_config_path, "app/config/deploy.rb"
+      }
+    )
+
+    location = test_app_path.join(location)
+    FileUtils.mkdir_p(location)
+    FileUtils.mv(config_path, location)
+  end
+
 end

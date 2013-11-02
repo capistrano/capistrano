@@ -159,6 +159,11 @@ module Capistrano
               let(:options) { { select: :active }}
               it { should be_true }
             end
+
+            context 'with :exclude' do
+              let(:options) { { exclude: :active }}
+              it { should be_false }
+            end
           end
 
           context 'value does not match server properly' do
@@ -170,6 +175,11 @@ module Capistrano
             context 'with :select' do
               let(:options) { { select: :inactive }}
               it { should be_false }
+            end
+
+            context 'with :exclude' do
+              let(:options) { { exclude: :inactive }}
+              it { should be_true }
             end
           end
         end
@@ -186,6 +196,12 @@ module Capistrano
               let(:options) { { select: ->(s) { s.properties.active } } }
               it { should be_true }
             end
+
+            context 'with :exclude' do
+              let(:options) { { exclude: ->(s) { s.properties.active } } }
+              it { should be_false }
+            end
+
           end
 
           context 'value does not match server properly' do
@@ -198,6 +214,12 @@ module Capistrano
               let(:options) { { select: ->(s) { s.properties.inactive } } }
               it { should be_false }
             end
+
+            context 'with :exclude' do
+              let(:options) { { exclude: ->(s) { s.properties.inactive } } }
+              it { should be_true }
+            end
+
           end
         end
 
