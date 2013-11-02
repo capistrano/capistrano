@@ -12,6 +12,7 @@ Reverse Chronological Order:
   * Raise an error if developer tries to define `:all` role, which is reserved (@kirs)
   * `deploy:fallback` hook was added to add some custom behaviour on failed deploy (@seenmyfate)
   * Correctly infer namespace in task enhancements (@seenmyfate)
+  * Add SHA to revision log (@blackxored)
 
 ## `3.0.1`
 
