@@ -2,7 +2,7 @@
 
 Reverse Chronological Order:
 
-## `3.0.1` (Not yet released)
+## `3.0.1`
 
   * capify' not listed as executable (@leehambley)
   * Confirm license as MIT (@leehambley)
