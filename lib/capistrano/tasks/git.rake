@@ -45,7 +45,9 @@ namespace :git do
   task update: :'git:clone' do
     on release_roles :all do
       within repo_path do
-        execute :git, :remote, :update
+        capturing_revisions do
+          execute :git, :remote, :update
+        end
       end
     end
   end
