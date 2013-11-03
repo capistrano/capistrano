@@ -295,7 +295,7 @@ contrived example will both evaluate that independently, and when both servers
 are finished removing old releases the `task :cleanup` block will have
 finished.
 
-Also in Capistrano v3 most path varaibles are [`Pathname`] objects, so they natively
+Also in Capistrano v3 most path variables are [`Pathname`] objects, so they natively
 respond to things like `#basename`, `#expand_path`, `#join` and similar.
 
 **Warning:** `#expand_path` probably won't do what you expect, it will execute
@@ -360,7 +360,7 @@ Other options here include `as :a_user` and
 
 In Capistrano v2 there were certain bits of magic where if calling a variable
 and NoMethodError would have been raised (for example the
-`latest_release_directory` varaible). This variable never existed on the
+`latest_release_directory` variable). This variable never existed on the
 global namespace, as a fall-back the list of `set()` variables would be
 consulted.
 
