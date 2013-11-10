@@ -125,7 +125,7 @@ environment.
 
 Servers can be defined in a bunch of ways, the following shows defining two
 servers, one where we set the username, and another where we set the port.
-These host strings are parsed and expanded out in to the equivilent of the
+These host strings are parsed and expanded out in to the equivalent of the
 server line after the comment:
 
 {% prism ruby %}
