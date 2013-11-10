@@ -30,30 +30,6 @@ Or grab the bleeding edge head from:
     $ gem install *.gem
 {% endprism %}
 
-### Signed Rubygems (currently not signed)
-
-As Capistrano is a signed gem, you should always be careful to use the
-`--trust-policy` flag when installing Gems, or since Bundler 1.3 you should
-use the same flag:
-
-{% prism bash %}
-    $ gem install capistrano --trust-policy HighSecurity
-    $ bundle install --trust-policy HighSecurity
-{% endprism %}
-
-If you get a message that looks like:
-
-{% prism bash %}
-    ERROR:  While executing gem ... (Gem::Security::Exception)
-    unsigned gems are not allowed by the High Security policy
-{% endprism %}
-
-Then ***please*** complain to your Gem author, and have them start signing
-their Gems.
-
-([More information about using Bundler with signed
-gems](http://blog.meldium.com/home/2013/3/3/signed-rubygems-part))
-
 ### Usage in a Rails project
 
 Add the following lines to the Gemfile to the `:development` group ideally.
