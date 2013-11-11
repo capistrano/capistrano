@@ -174,7 +174,7 @@ implemeted to facilitate rolling deployments at a large German firm by a
 couple of freelancers who were consulting with them. (Hint, one of those guys
 went on to found Travis-CI!)
 
-The equivilent code in under Capistrano v3 would look like this:
+The equivalent code in under Capistrano v3 would look like this:
 
 {% prism ruby %}
     # Capistrano 3.0.x
