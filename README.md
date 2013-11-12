@@ -91,7 +91,7 @@ after :finishing, :notify do
 end
 ```
 
-If it makes sense for your use-case (often, that means *generating a file*)
+If it makes sense for your use case (often, that means *generating a file*)
 the Rake prerequisite mechanism can be used:
 
 ``` ruby
@@ -184,7 +184,7 @@ DEBUG [9ce34809]  leehambley pts/0        2013-06-13 17:11 (port-11262.pppoe.wtn
 
 ## A word about PTYs
 
-There is a configuration option which asks the backend driver to as the remote host
+There is a configuration option which asks the backend driver to ask the remote host
 to assign the connection a *pty*. A *pty* is a pseudo-terminal, which in effect means
 *tell the backend that this is an **interactive** session*. This is normally a bad idea.
 
@@ -200,7 +200,7 @@ or at least they are being used incorrectly.
 Whilst, especially in the case of language runtimes (Ruby, Node, Python and friends in
 particular) there is a temptation to run multiple versions in parallel on a single server
 and to switch between them using environmental variables, this is an anti-pattern, and
-symptomatic of bad design (i.e. you're testing a second version of Ruby in production because
+symptomatic of bad design (e.g. you're testing a second version of Ruby in production because
 your company lacks the infrastructure to test this in a staging environment).
 
 ## Configuration
@@ -221,7 +221,7 @@ __Support removed__ for following variables:
 ## SSHKit
 
 [SSHKit](https://github.com/leehambley/sshkit) is the driver for SSH
-connections behind the scenes in Capistrano, depending how deep you dig, you
+connections behind the scenes in Capistrano. Depending on how deep you dig, you
 might run into interfaces that come directly from SSHKit (the configuration is
 a good example).
 
