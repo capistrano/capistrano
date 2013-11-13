@@ -4,6 +4,7 @@ Reverse Chronological Order:
 
 ## `3.1.0` (not released)
 
+  * Tasks that used `linked_dirs` and `linked_files` now run on all roles, not just app roles (@mikespokefire)
   * Tasks `deploy:linked_dirs`, `deploy:make_linked_dirs`, `deploy:linked_files`, `deploy:cleanup_rollback`,
     `deploy:log_revision` and `deploy:revert_release` now use `release_roles()` not `roles()` meaning that they
     will only run on servers where the `no_release` property is not falsy. (@leehambley)
