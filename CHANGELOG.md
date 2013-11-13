@@ -4,6 +4,9 @@ Reverse Chronological Order:
 
 ## `3.1.0` (not released)
 
+  * Tasks `deploy:linked_dirs`, `deploy:make_linked_dirs`, `deploy:linked_files`, `deploy:cleanup_rollback`,
+    `deploy:log_revision` and `deploy:revert_release` now use `release_roles()` not `roles()` meaning that they
+    will only run on servers where the `no_release` property is not falsy. (@leehambley)
   * `deploy:restart` task is no longer run by default.
     From this version, developers who restart the app on each deploy need to declare it in their deploy flow (@kirs)
   * Fixed bug when `deploy:cleanup` was executed twice by default (@kirs)
