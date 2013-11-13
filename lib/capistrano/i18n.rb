@@ -28,7 +28,8 @@ en = {
       does_not_exist:  'User %{user} does not exists',
       cannot_switch:   'Cannot switch to user %{user}'
     }
-  }
+  },
+  copy_source_does_not_exist:   'Source file %{source} is not a file or directory that can be copied (target: %{target})'
 }
 
 I18n.backend.store_translations(:en, { capistrano: en })

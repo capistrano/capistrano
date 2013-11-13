@@ -7,6 +7,7 @@ namespace :deploy do
   task :updating => :new_release_path do
     invoke "#{scm}:create_release"
     invoke 'deploy:symlink:shared'
+    invoke 'deploy:copy'
   end
 
   task :reverting do
@@ -125,6 +126,26 @@ namespace :deploy do
             end
             execute :ln, '-s', source, target
           end
+        end
+      end
+    end
+  end
+
+  task :copy do
+    next unless any? :copy_path
+    on release_roles :app do
+      last_release = capture(:ls, '-xr', releases_path).split.fetch(1, nil)
+      next unless last_release
+      last_release_path = releases_path.join(last_release)
+
+      fetch(:copy_paths).each do |path|
+        source = last_release_path.join(path)
+        target = release_path.join(path)
+
+        if test "[ -d #{source} ]" or test "[ -f #{source} ]"
+          execute :cp, source, target
+        else
+          warn t(:copy_source_does_not_exist, source: source, target: target)
         end
       end
     end
