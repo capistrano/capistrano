@@ -126,7 +126,7 @@ This method is widely used.
 ``` ruby
 desc "Ask about breakfast"
 task :breakfast do
-  ask(:breakfast, "What would you like your colleagues to bring you for breakfast?")
+  ask(:breakfast, "pancakes")
   on roles(:all) do |h|
     execute "echo \"$(whoami) wants #{fetch(:breakfast)} for breakfast!\""
   end
