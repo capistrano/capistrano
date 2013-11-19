@@ -4,7 +4,13 @@ task :console do
   puts I18n.t('console.welcome', scope: :capistrano, stage: stage)
   loop do
     print "#{stage}> "
-    command = $stdin.gets.chomp
+
+    if input = $stdin.gets
+      command = input.chomp
+    else
+      command = 'exit'
+    end
+
     if %w{quit exit q}.include? command
       puts t('console.bye')
       break
