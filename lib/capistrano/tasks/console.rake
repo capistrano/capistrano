@@ -11,6 +11,8 @@ task :console do
       command = 'exit'
     end
 
+    next if command.empty?
+
     if %w{quit exit q}.include? command
       puts t('console.bye')
       break
