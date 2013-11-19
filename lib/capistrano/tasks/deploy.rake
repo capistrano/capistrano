@@ -185,16 +185,14 @@ namespace :deploy do
     set_release_path
   end
 
-  task :last_release_path do
-    on release_roles(:all) do
-      last_release = capture(:ls, '-xr', releases_path).split[1]
-      set_release_path(last_release)
-    end
-  end
-
   task :rollback_release_path do
     on release_roles(:all) do
-      last_release = capture(:ls, '-xr', releases_path).split[1]
+      releases = capture(:ls, '-xr', releases_path).split
+      if releases.count < 2
+        error t(:cannot_rollback)
+        exit 1
+      end
+      last_release = releases[1]
       set_release_path(last_release)
       set(:rollback_timestamp, last_release)
     end

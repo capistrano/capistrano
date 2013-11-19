@@ -15,6 +15,7 @@ en = {
   keeping_releases:            'Keeping %{keep_releases} of %{releases} deployed releases on %{host}',
   no_old_releases:             'No old releases (keeping newest %{keep_releases}) on %{host}',
   linked_file_does_not_exist:  'linked file %{file} does not exist on %{host}',
+  cannot_rollback:             'There are no older releases to rollback to',
   mirror_exists:               "The repository mirror is at %{at}",
   revision_log_message:        'Branch %{branch} (at %{sha}) deployed as release %{release} by %{user}',
   rollback_log_message:        '%{user} rolled back to release %{release}',
