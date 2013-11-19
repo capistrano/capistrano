@@ -43,6 +43,16 @@ module Capistrano
         env.roles_for(names)
       end
 
+      def release_roles(*names)
+        options = { exclude: :no_release }
+        if names.last.is_a? Hash
+          names.last.merge(options)
+        else
+          names << options
+        end
+        roles(*names)
+      end
+
       def primary(role)
         env.primary(role)
       end

@@ -23,7 +23,7 @@ module Capistrano
       end
 
       def select?(options)
-        selector = Selector.new(options)
+        selector = Selector.for(options)
         selector.call(self)
       end
 
@@ -103,6 +103,14 @@ module Capistrano
           @options = options
         end
 
+        def self.for(options)
+          if options.has_key?(:exclude)
+            Exclusive
+          else
+            self
+          end.new(options)
+        end
+
         def callable
           if key.respond_to?(:call)
             key
@@ -124,6 +132,17 @@ module Capistrano
 
         def all
           ->(server) { :all }
+        end
+
+        class Exclusive < Selector
+
+          def key
+            options[:exclude]
+          end
+
+          def call(server)
+            !callable.call(server)
+          end
         end
 
       end

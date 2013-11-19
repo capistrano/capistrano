@@ -57,6 +57,7 @@ end
 
 desc 'Deploy a new release.'
 task :deploy do
+  set(:deploying, true)
   %w{ starting started
       updating updated
       publishing published

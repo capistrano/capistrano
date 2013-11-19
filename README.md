@@ -9,7 +9,7 @@
 Add this line to your application's Gemfile:
 
 ``` ruby
-gem 'capistrano', '~> 3.0.0'
+gem 'capistrano', '~> 3.0.1'
 ```
 
 And then execute:
@@ -91,7 +91,7 @@ after :finishing, :notify do
 end
 ```
 
-If it makes sense for your use-case (often, that means *generating a file*)
+If it makes sense for your use case (often, that means *generating a file*)
 the Rake prerequisite mechanism can be used:
 
 ``` ruby
@@ -126,9 +126,9 @@ This method is widely used.
 ``` ruby
 desc "Ask about breakfast"
 task :breakfast do
-  breakfast = ask(:breakfast, "What would you like your colleagues to you for breakfast?")
+  ask(:breakfast, "What would you like your colleagues to bring you for breakfast?")
   on roles(:all) do |h|
-    execute "echo \"$(whoami) wants #{breakfast} for breakfast!\" | wall"
+    execute "echo \"$(whoami) wants #{fetch(:breakfast)} for breakfast!\""
   end
 end
 ```
@@ -184,7 +184,7 @@ DEBUG [9ce34809]  leehambley pts/0        2013-06-13 17:11 (port-11262.pppoe.wtn
 
 ## A word about PTYs
 
-There is a configuration option which asks the backend driver to as the remote host
+There is a configuration option which asks the backend driver to ask the remote host
 to assign the connection a *pty*. A *pty* is a pseudo-terminal, which in effect means
 *tell the backend that this is an **interactive** session*. This is normally a bad idea.
 
@@ -200,19 +200,17 @@ or at least they are being used incorrectly.
 Whilst, especially in the case of language runtimes (Ruby, Node, Python and friends in
 particular) there is a temptation to run multiple versions in parallel on a single server
 and to switch between them using environmental variables, this is an anti-pattern, and
-symptomatic of bad design (i.e. you're testing a second version of Ruby in production because
+symptomatic of bad design (e.g. you're testing a second version of Ruby in production because
 your company lacks the infrastructure to test this in a staging environment).
 
 ## Configuration
 
 The following variables are settable:
 
-| Variable Name         | Description                                                         | Notes                                                           |
-|:---------------------:|---------------------------------------------------------------------|-----------------------------------------------------------------|
-| `:repo_url`           | The URL of your Git repository                                      | file://, https://, or ssh:// are all supported                  |
-| `:git_https_username` | The (optional) username for accessing your Git repostory over HTTPS | if this is an SSH connection, this setting will have no effect. |
-| `:git_https_password` | The (optional) password for accessing your Git repostory over HTTPS | if this is an SSH connection, this setting will have no effect. |
-| `:tmp_dir` | The (optional) temp directory that will be used (default: /tmp) | if you have a shared web host, this setting may need to be set (i.e. /home/user/tmp/capistrano). |
+| Variable Name         | Description                                                          | Notes                                                           |
+|:---------------------:|----------------------------------------------------------------------|-----------------------------------------------------------------|
+| `:repo_url`           | The URL of your Git repository                                       | file://, https://, or ssh:// are all supported                  |
+| `:tmp_dir`            | The (optional) temp directory that will be used (default: /tmp)      | if you have a shared web host, this setting may need to be set (i.e. /home/user/tmp/capistrano). |
 
 __Support removed__ for following variables:
 
@@ -223,7 +221,7 @@ __Support removed__ for following variables:
 ## SSHKit
 
 [SSHKit](https://github.com/leehambley/sshkit) is the driver for SSH
-connections behind the scenes in Capistrano, depending how deep you dig, you
+connections behind the scenes in Capistrano. Depending on how deep you dig, you
 might run into interfaces that come directly from SSHKit (the configuration is
 a good example).
 
