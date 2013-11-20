@@ -7,7 +7,7 @@ You may have situations where you only want to deploy to servers matching
 a single role. For example, you may have changed some aspect of how the web
 role works, but don't want to trigger a deployment to your database servers.
 
-You can use the _role filter_ to restrict Capistrano tasks to only servers
+You can use the *role filter* to restrict Capistrano tasks to only servers
 match a given role or roles.
 
 If the filter matches no servers, no actions will be taken.
