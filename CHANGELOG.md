@@ -2,6 +2,10 @@
 
 Reverse Chronological Order:
 
+## master
+
+  * Add a command line option to control role filter (`--roles`) (@andytinycat)
+
 ## `3.1.0` (not released)
 
   * Tasks `deploy:linked_dirs`, `deploy:make_linked_dirs`, `deploy:linked_files`, `deploy:cleanup_rollback`,

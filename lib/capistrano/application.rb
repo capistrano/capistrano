@@ -13,7 +13,7 @@ module Capistrano
     end
 
     def sort_options(options)
-      options.push(version,dry_run)
+      options.push(version,dry_run,roles)
       super
     end
 
@@ -60,6 +60,15 @@ module Capistrano
        "Do a dry run without executing actions",
        lambda { |value|
          Configuration.env.set(:sshkit_backend, SSHKit::Backend::Printer)
+       }
+      ]
+    end
+    
+    def roles
+      ['--roles ROLES', '-r',
+       "Filter command to only apply to these roles (separate multiple roles with a comma)",
+       lambda { |value|
+         Configuration.env.set(:filter, :roles => value.split(","))
        }
       ]
     end
