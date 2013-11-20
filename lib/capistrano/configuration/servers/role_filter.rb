@@ -12,7 +12,7 @@ module Capistrano
         end
 
         def roles
-          if required.include?(:all)
+          if available.include?(:all)
             available
           else
             required.select { |name| available.include? name }
