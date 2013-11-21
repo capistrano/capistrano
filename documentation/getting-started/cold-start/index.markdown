@@ -103,7 +103,7 @@ simply call:
 {% endprism %}
 
 This task is defined
-[here](https://github.com/capistrano/capistrano/blob/v3/lib/capistrano/tasks/git.rake#L17)
+[here](https://github.com/capistrano/capistrano/blob/master/lib/capistrano/tasks/git.rake)
 in the source code, and looks a lot like what we wrote above to check the file
 permissions, however the Git check recipe is a bit more complicated, having to
 potentially deal with three different authentication schemes, which need to be
