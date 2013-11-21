@@ -75,6 +75,7 @@
   <li><a href="/documentation/getting-started/flow/">Flow</a></li>
   <li><a href="/documentation/getting-started/rollbacks/">Rollbacks</a></li>
   <li><a href="/documentation/getting-started/remote-file/">Remote file task</a></li>
+  <li><a href="/documentation/getting-started/role-filtering/">Role filtering</a></li>
   <li class="divider"></li>
   <h5>Framework Extensions</h5>
   <li><a href="/documentation/frameworks/ruby-on-rails/">Ruby on Rails</a></li>
@@ -185,22 +186,6 @@ CMD</code></pre>
 end</code></pre>
 </div>
 
-<h4 id="toc_2">Refactor roles</h4>
-
-<p>Instead of:</p>
-
-<div>
-  <pre data-line=''><code class='language-ruby'>role :app, %w{example.com}
-role :web, %w{example.com}
-role :db,  %w{example.com}</code></pre>
-</div>
-
-<p>It&#39;s better to use:</p>
-
-<div>
-  <pre data-line=''><code class='language-ruby'>role :all, %w{example.com}</code></pre>
-</div>
-
         </div>
       </div>
     </div>
@@ -281,22 +266,6 @@ CMD</code></pre>
     execute :rake, &#39;assets:precompile&#39;
   end
 end</code></pre>
-</div>
-
-<h4 id="toc_2">Refactor roles</h4>
-
-<p>Instead of:</p>
-
-<div>
-  <pre data-line=''><code class='language-ruby'>role :app, %w{example.com}
-role :web, %w{example.com}
-role :db,  %w{example.com}</code></pre>
-</div>
-
-<p>It&#39;s better to use:</p>
-
-<div>
-  <pre data-line=''><code class='language-ruby'>role :all, %w{example.com}</code></pre>
 </div>
                                            -->
 

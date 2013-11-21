@@ -75,6 +75,7 @@
   <li><a href="/documentation/getting-started/flow/">Flow</a></li>
   <li><a href="/documentation/getting-started/rollbacks/">Rollbacks</a></li>
   <li><a href="/documentation/getting-started/remote-file/">Remote file task</a></li>
+  <li><a href="/documentation/getting-started/role-filtering/">Role filtering</a></li>
   <li class="divider"></li>
   <h5>Framework Extensions</h5>
   <li><a href="/documentation/frameworks/ruby-on-rails/">Ruby on Rails</a></li>
@@ -124,9 +125,7 @@ therefore recommended to use an appropriate bundler.
 
 <h3 id="toc_0">General Usage</h3>
 
-<p>The following commands will clone Capistrano at the latest <code>v3</code> revision, and
-will build the gem and install it locally. <strong>The Gem is not yet availalble via
-Rubygems.org.</strong></p>
+<p>The following command will install the latest released capistrano <code>v3</code> revision:</p>
 
 <div>
   <pre data-line=''><code class='language-bash'>$ gem install capistrano</code></pre>
@@ -141,31 +140,7 @@ $ gem build *.gemspec
 $ gem install *.gem</code></pre>
 </div>
 
-<h3 id="toc_1">Signed Rubygems (currently not signed)</h3>
-
-<p>As Capistrano is a signed gem, you should always be careful to use the
-<code>--trust-policy</code> flag when installing Gems, or since Bundler 1.3 you should
-use the same flag:</p>
-
-<div>
-  <pre data-line=''><code class='language-bash'>$ gem install capistrano --trust-policy HighSecurity
-$ bundle install --trust-policy HighSecurity</code></pre>
-</div>
-
-<p>If you get a message that looks like:</p>
-
-<div>
-  <pre data-line=''><code class='language-bash'>ERROR:  While executing gem ... (Gem::Security::Exception)
-unsigned gems are not allowed by the High Security policy</code></pre>
-</div>
-
-<p>Then <strong><em>please</em></strong> complain to your Gem author, and have them start signing
-their Gems.</p>
-
-<p>(<a href="http://blog.meldium.com/home/2013/3/3/signed-rubygems-part">More information about using Bundler with signed
-gems</a>)</p>
-
-<h3 id="toc_2">Usage in a Rails project</h3>
+<h3 id="toc_1">Usage in a Rails project</h3>
 
 <p>Add the following lines to the Gemfile to the <code>:development</code> group ideally.</p>
 
@@ -217,7 +192,7 @@ install <code>2.15.4</code>, and any other point-release in the <code>2.15.x</co
 the risk of accidentally upgrading to <code>v3</code>.
 </div></p>
 
-<h2 id="toc_3"></h2>
+<h2 id="toc_2"></h2>
 
         </div>
       </div>
@@ -240,9 +215,7 @@ therefore recommended to use an appropriate bundler.
 
 <h3 id="toc_0">General Usage</h3>
 
-<p>The following commands will clone Capistrano at the latest <code>v3</code> revision, and
-will build the gem and install it locally. <strong>The Gem is not yet availalble via
-Rubygems.org.</strong></p>
+<p>The following command will install the latest released capistrano <code>v3</code> revision:</p>
 
 <div>
   <pre data-line=''><code class='language-bash'>$ gem install capistrano</code></pre>
@@ -257,31 +230,7 @@ $ gem build *.gemspec
 $ gem install *.gem</code></pre>
 </div>
 
-<h3 id="toc_1">Signed Rubygems (currently not signed)</h3>
-
-<p>As Capistrano is a signed gem, you should always be careful to use the
-<code>--trust-policy</code> flag when installing Gems, or since Bundler 1.3 you should
-use the same flag:</p>
-
-<div>
-  <pre data-line=''><code class='language-bash'>$ gem install capistrano --trust-policy HighSecurity
-$ bundle install --trust-policy HighSecurity</code></pre>
-</div>
-
-<p>If you get a message that looks like:</p>
-
-<div>
-  <pre data-line=''><code class='language-bash'>ERROR:  While executing gem ... (Gem::Security::Exception)
-unsigned gems are not allowed by the High Security policy</code></pre>
-</div>
-
-<p>Then <strong><em>please</em></strong> complain to your Gem author, and have them start signing
-their Gems.</p>
-
-<p>(<a href="http://blog.meldium.com/home/2013/3/3/signed-rubygems-part">More information about using Bundler with signed
-gems</a>)</p>
-
-<h3 id="toc_2">Usage in a Rails project</h3>
+<h3 id="toc_1">Usage in a Rails project</h3>
 
 <p>Add the following lines to the Gemfile to the <code>:development</code> group ideally.</p>
 
@@ -333,7 +282,7 @@ install <code>2.15.4</code>, and any other point-release in the <code>2.15.x</co
 the risk of accidentally upgrading to <code>v3</code>.
 </div></p>
 
-<h2 id="toc_3"></h2>
+<h2 id="toc_2"></h2>
                                            -->
 
     <!--</div> [> /container <]                                     -->

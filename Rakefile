@@ -1,5 +1,5 @@
 require 'time'
-require 'sshkit'
+require 'sshkit/dsl'
 
 deploy_to = '/opt/sites/capistranorb_com'
 release_timestamp = Time.now.utc.strftime("%Y%m%d%H%m%S")

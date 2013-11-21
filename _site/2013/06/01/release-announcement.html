@@ -75,6 +75,7 @@
   <li><a href="/documentation/getting-started/flow/">Flow</a></li>
   <li><a href="/documentation/getting-started/rollbacks/">Rollbacks</a></li>
   <li><a href="/documentation/getting-started/remote-file/">Remote file task</a></li>
+  <li><a href="/documentation/getting-started/role-filtering/">Role filtering</a></li>
   <li class="divider"></li>
   <h5>Framework Extensions</h5>
   <li><a href="/documentation/frameworks/ruby-on-rails/">Ruby on Rails</a></li>
@@ -120,7 +121,7 @@ are pleased to announce the first <em>major</em> release of Capistrano in almost
 years.</p>
 
 <p>The reasons behind the length of time between the last architectural overhaul
-and this one are numerous, but it can be summrised to say that Capistrano is a
+and this one are numerous, but it can be summarised to say that Capistrano is a
 widely used tool, and when working around software deployment it&#39;s really a
 question of downtime. If we had changed something significant in Capistrano we
 could have taken a lot of sites offline, and made a lot of people very
@@ -128,8 +129,8 @@ unhappy. Until this point we haven&#39;t felt that the time has been ripe where
 the benefits of a slightly rocky upgrade path are worth the risks of downtime.</p>
 
 <p>It also hasn&#39;t helped historically that we&#39;ve only just gotten to grips with
-Ruby 1.9, and that Bundler&#39;s near ubuquity means that now it&#39;s trivial to lock
-a Gem at a specific version. With other tools in the Ruby eco system it&#39;s
+Ruby 1.9, and that Bundler&#39;s near ubiquity means that now it&#39;s trivial to lock
+a Gem at a specific version. With other tools in the Ruby ecosystem it&#39;s
 become easier for us to make significant changes to a tool upon which many
 hundreds of thousands of people rely.</p>
 
@@ -179,13 +180,13 @@ people who are interested in contributing, or sharing expertise on the
 <em>best-practice</em> way of speedily deploying from your respective choice of
 source control.</li>
 <li>**<code>HOSTFILTER</code> ,<code>ROLEFILTER</code> and friends** These have gone away because we
-always felt they were indemic of a bad design desision about using
+always felt they were endemic of a bad design decision about using
 Environmental Variables. These will be coming back as flags passed to <code>cap</code>
-on the CLI, and options that can be set on the Capistrano::Application Ruby
+on the CLI, and options that can be set on the <code>Capistrano::Application</code> Ruby
 class.</li>
 <li><strong>Shell</strong> The shell has been removed temporarily pending a neater
 implementation, we&#39;ve got something that we are playing with internally, but
-it needs better readline support, and some more controls around what to do
+it needs better <code>readline</code> support, and some more controls around what to do
 when things go badly on some servers, but not others.</li>
 <li><strong>Cold Deploy</strong> The <code>cap deploy:cold</code> is a really old legacy component,
 orignally from the days of the <code>script/spinner</code> where deploying cold
@@ -248,14 +249,14 @@ end</code></pre>
 resolve this dependency at Runtime, mailing the recent changelog to your team,
 assuming everything is setup correctly.</p>
 
-<h4 id="toc_4">Built In Stage Support</h4>
+<h4 id="toc_4">Built-In Stage Support</h4>
 
 <p>In former versions of Capistrano <em>stage</em> support was an after thought,
-provided through the <code>capistrano-ext</code> Gem, and latterly merged into the main
+provided through the <code>capistrano-ext</code> Gem, and laterally merged into the main
 codebase, people insisted in still using the <code>capistrano-ext</code> version
 regardless.</p>
 
-<p>In Capistrano 3.0.x there&#39;s stage support built in, at installation time, two
+<p>In Capistrano 3.0.x there&#39;s stage support built-in, at installation time, two
 stages will be created by default, <em>staging</em> and <em>production</em>; it&#39;s easy to
 add more, just add a file to <code>config/deploy/______.rb</code> which follows the
 conventions established in the examples we created for you.</p>
@@ -362,7 +363,7 @@ did something clever that wasn&#39;t possible in Capistrano v2; we accessed the
 <p>For a lot of reasons in Capistrano v2 is wasn&#39;t possible to do this, the block
 was essentially evaluated once and called verbatim on each host. This lead to
 disappointing missing features such as not being able to pull the host list
-out of Capistrano and examine the roles to do something like controlling chef
+out of Capistrano and examine the roles to do something like controlling Chef
 solo, or similar.</p>
 
 <p>In Capistrano v3 the <code>host</code> object is the same object that is created when a
@@ -385,7 +386,7 @@ releases there.</p>
 implementations silently only ran on the first server that matched the
 properties defined, so server one returned a list of ~95 old timestamped
 release directories. Next Capistrano v2 would call <code>rm -rf
-release1..release95</code> on <strong>both</strong> servers, causing server two to err our, and
+release1..release95</code> on <strong>both</strong> servers, causing server two to error out, and
 leaving an undefined state on server one, as Capistrano would simply hang up
 both connections.</p>
 </blockquote>
@@ -395,7 +396,7 @@ actually more or less the actual implementation in the the new Gem):</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-desc &quot;Cleanup all old releases (keeps #{fetch(:releases_to_keeo_on_cleanup)}
+desc &quot;Cleanup all old releases (keeps #{fetch(:releases_to_keep_on_cleanup)}
 old releases&quot;
 task :cleanup do
   keep_releases     = fetch(:releases_to_keep_on_cleanup)
@@ -412,7 +413,7 @@ contrived example will both evaluate that independently, and when both servers
 are finished removing old releases the <code>task :cleanup</code> block will have
 finished.</p>
 
-<p>Also in Capistrano v3 most path varaibles are [<code>Pathname</code>] objects, so they natively
+<p>Also in Capistrano v3 most path variables are [<code>Pathname</code>] objects, so they natively
 respond to things like <code>#basename</code>, <code>#expand_path</code>, <code>#join</code> and similar.</p>
 
 <p><strong>Warning:</strong> <code>#expand_path</code> probably won&#39;t do what you expect, it will execute
@@ -476,12 +477,12 @@ you, environmental variables are capitalised and applied at the correct point
 <h4 id="toc_10">Better <em>magic</em> Variable Support</h4>
 
 <p>In Capistrano v2 there were certain bits of magic where if calling a variable
-and NoMethodError would have been raised (for example the
-<code>latest_release_directory</code> varaible). This variable never existed on the
+and <code>NoMethodError</code> would have been raised (for example the
+<code>latest_release_directory</code> variable). This variable never existed on the
 global namespace, as a fall-back the list of <code>set()</code> variables would be
 consulted.</p>
 
-<p>This magic lead to times when people were not recognising that magic variables
+<p>This magic led to times when people were not recognising that magic variables
 were even being used. The magic variable system of Capistrano v2 did also
 include a way to <code>fetch(:some_variable, &#39;with a default value&#39;)</code> incase the
 variable might not be set already, but it wasn&#39;t widely used, and more often
@@ -499,11 +500,11 @@ explicit caching. <em>Again, we are favoring clarity over micro optimisation</em
 
 <h4 id="toc_11">SSHKit</h4>
 
-<p>Many of the new features in Capistrano whch relate to logging, formatting,
-SSH, connection management and pooling, parallism, batch execution and more
+<p>Many of the new features in Capistrano which relate to logging, formatting,
+SSH, connection management and pooling, parallelism, batch execution and more
 are from a library that fell out of the Capistrano v3 development process.</p>
 
-<p>[*SSHKit*][] is a lower level toolkit, a level higher than <em>Net::SSH</em>, still
+<p><a href="https://github.com/leehambley/sshkit"><em>SSHKit</em></a> is a lower level toolkit, a level higher than <em>Net::SSH</em> still,
 but lacking the roles, environments, rollbacks and other higher level features
 from Capistrano.</p>
 
@@ -588,7 +589,7 @@ exec</code>, and in this case could be mapped to:</p>
 SSHKit.config.command_map[:rails] = &quot;bundle exec rails&quot;</code></pre>
 </div>
 
-<p>There can also be a lamda or Proc applied in place of the mapping like so:</p>
+<p>There can also be a <code>lambda</code> or <code>Proc</code> applied in place of the mapping like so:</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'>SSHKit.config.command_map = Hash.new do |hash, key|
@@ -624,7 +625,7 @@ environment without requiring an interactive login shell.</p>
 <h4 id="toc_13">Testing</h4>
 
 <p>The old test suite for Capistrano was purely unit tests, and didn&#39;t cover a
-wide varity of problem cases, specifically nothing in the <code>deploy.rb</code> (that is
+wide variety of problem cases, specifically nothing in the <code>deploy.rb</code> (that is
 the actual <em>deployment</em> code) was tested at all; because of having our own DSL
 implementation, and other slightly odd design points, it was painful to test
 the actual <em>recipes</em>.</p>
@@ -707,7 +708,7 @@ are pleased to announce the first <em>major</em> release of Capistrano in almost
 years.</p>
 
 <p>The reasons behind the length of time between the last architectural overhaul
-and this one are numerous, but it can be summrised to say that Capistrano is a
+and this one are numerous, but it can be summarised to say that Capistrano is a
 widely used tool, and when working around software deployment it&#39;s really a
 question of downtime. If we had changed something significant in Capistrano we
 could have taken a lot of sites offline, and made a lot of people very
@@ -715,8 +716,8 @@ unhappy. Until this point we haven&#39;t felt that the time has been ripe where
 the benefits of a slightly rocky upgrade path are worth the risks of downtime.</p>
 
 <p>It also hasn&#39;t helped historically that we&#39;ve only just gotten to grips with
-Ruby 1.9, and that Bundler&#39;s near ubuquity means that now it&#39;s trivial to lock
-a Gem at a specific version. With other tools in the Ruby eco system it&#39;s
+Ruby 1.9, and that Bundler&#39;s near ubiquity means that now it&#39;s trivial to lock
+a Gem at a specific version. With other tools in the Ruby ecosystem it&#39;s
 become easier for us to make significant changes to a tool upon which many
 hundreds of thousands of people rely.</p>
 
@@ -766,13 +767,13 @@ people who are interested in contributing, or sharing expertise on the
 <em>best-practice</em> way of speedily deploying from your respective choice of
 source control.</li>
 <li>**<code>HOSTFILTER</code> ,<code>ROLEFILTER</code> and friends** These have gone away because we
-always felt they were indemic of a bad design desision about using
+always felt they were endemic of a bad design decision about using
 Environmental Variables. These will be coming back as flags passed to <code>cap</code>
-on the CLI, and options that can be set on the Capistrano::Application Ruby
+on the CLI, and options that can be set on the <code>Capistrano::Application</code> Ruby
 class.</li>
 <li><strong>Shell</strong> The shell has been removed temporarily pending a neater
 implementation, we&#39;ve got something that we are playing with internally, but
-it needs better readline support, and some more controls around what to do
+it needs better <code>readline</code> support, and some more controls around what to do
 when things go badly on some servers, but not others.</li>
 <li><strong>Cold Deploy</strong> The <code>cap deploy:cold</code> is a really old legacy component,
 orignally from the days of the <code>script/spinner</code> where deploying cold
@@ -835,14 +836,14 @@ end</code></pre>
 resolve this dependency at Runtime, mailing the recent changelog to your team,
 assuming everything is setup correctly.</p>
 
-<h4 id="toc_4">Built In Stage Support</h4>
+<h4 id="toc_4">Built-In Stage Support</h4>
 
 <p>In former versions of Capistrano <em>stage</em> support was an after thought,
-provided through the <code>capistrano-ext</code> Gem, and latterly merged into the main
+provided through the <code>capistrano-ext</code> Gem, and laterally merged into the main
 codebase, people insisted in still using the <code>capistrano-ext</code> version
 regardless.</p>
 
-<p>In Capistrano 3.0.x there&#39;s stage support built in, at installation time, two
+<p>In Capistrano 3.0.x there&#39;s stage support built-in, at installation time, two
 stages will be created by default, <em>staging</em> and <em>production</em>; it&#39;s easy to
 add more, just add a file to <code>config/deploy/______.rb</code> which follows the
 conventions established in the examples we created for you.</p>
@@ -949,7 +950,7 @@ did something clever that wasn&#39;t possible in Capistrano v2; we accessed the
 <p>For a lot of reasons in Capistrano v2 is wasn&#39;t possible to do this, the block
 was essentially evaluated once and called verbatim on each host. This lead to
 disappointing missing features such as not being able to pull the host list
-out of Capistrano and examine the roles to do something like controlling chef
+out of Capistrano and examine the roles to do something like controlling Chef
 solo, or similar.</p>
 
 <p>In Capistrano v3 the <code>host</code> object is the same object that is created when a
@@ -972,7 +973,7 @@ releases there.</p>
 implementations silently only ran on the first server that matched the
 properties defined, so server one returned a list of ~95 old timestamped
 release directories. Next Capistrano v2 would call <code>rm -rf
-release1..release95</code> on <strong>both</strong> servers, causing server two to err our, and
+release1..release95</code> on <strong>both</strong> servers, causing server two to error out, and
 leaving an undefined state on server one, as Capistrano would simply hang up
 both connections.</p>
 </blockquote>
@@ -982,7 +983,7 @@ actually more or less the actual implementation in the the new Gem):</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-desc &quot;Cleanup all old releases (keeps #{fetch(:releases_to_keeo_on_cleanup)}
+desc &quot;Cleanup all old releases (keeps #{fetch(:releases_to_keep_on_cleanup)}
 old releases&quot;
 task :cleanup do
   keep_releases     = fetch(:releases_to_keep_on_cleanup)
@@ -999,7 +1000,7 @@ contrived example will both evaluate that independently, and when both servers
 are finished removing old releases the <code>task :cleanup</code> block will have
 finished.</p>
 
-<p>Also in Capistrano v3 most path varaibles are [<code>Pathname</code>] objects, so they natively
+<p>Also in Capistrano v3 most path variables are [<code>Pathname</code>] objects, so they natively
 respond to things like <code>#basename</code>, <code>#expand_path</code>, <code>#join</code> and similar.</p>
 
 <p><strong>Warning:</strong> <code>#expand_path</code> probably won&#39;t do what you expect, it will execute
@@ -1063,12 +1064,12 @@ you, environmental variables are capitalised and applied at the correct point
 <h4 id="toc_10">Better <em>magic</em> Variable Support</h4>
 
 <p>In Capistrano v2 there were certain bits of magic where if calling a variable
-and NoMethodError would have been raised (for example the
-<code>latest_release_directory</code> varaible). This variable never existed on the
+and <code>NoMethodError</code> would have been raised (for example the
+<code>latest_release_directory</code> variable). This variable never existed on the
 global namespace, as a fall-back the list of <code>set()</code> variables would be
 consulted.</p>
 
-<p>This magic lead to times when people were not recognising that magic variables
+<p>This magic led to times when people were not recognising that magic variables
 were even being used. The magic variable system of Capistrano v2 did also
 include a way to <code>fetch(:some_variable, &#39;with a default value&#39;)</code> incase the
 variable might not be set already, but it wasn&#39;t widely used, and more often
@@ -1086,11 +1087,11 @@ explicit caching. <em>Again, we are favoring clarity over micro optimisation</em
 
 <h4 id="toc_11">SSHKit</h4>
 
-<p>Many of the new features in Capistrano whch relate to logging, formatting,
-SSH, connection management and pooling, parallism, batch execution and more
+<p>Many of the new features in Capistrano which relate to logging, formatting,
+SSH, connection management and pooling, parallelism, batch execution and more
 are from a library that fell out of the Capistrano v3 development process.</p>
 
-<p>[*SSHKit*][] is a lower level toolkit, a level higher than <em>Net::SSH</em>, still
+<p><a href="https://github.com/leehambley/sshkit"><em>SSHKit</em></a> is a lower level toolkit, a level higher than <em>Net::SSH</em> still,
 but lacking the roles, environments, rollbacks and other higher level features
 from Capistrano.</p>
 
@@ -1175,7 +1176,7 @@ exec</code>, and in this case could be mapped to:</p>
 SSHKit.config.command_map[:rails] = &quot;bundle exec rails&quot;</code></pre>
 </div>
 
-<p>There can also be a lamda or Proc applied in place of the mapping like so:</p>
+<p>There can also be a <code>lambda</code> or <code>Proc</code> applied in place of the mapping like so:</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'>SSHKit.config.command_map = Hash.new do |hash, key|
@@ -1211,7 +1212,7 @@ environment without requiring an interactive login shell.</p>
 <h4 id="toc_13">Testing</h4>
 
 <p>The old test suite for Capistrano was purely unit tests, and didn&#39;t cover a
-wide varity of problem cases, specifically nothing in the <code>deploy.rb</code> (that is
+wide variety of problem cases, specifically nothing in the <code>deploy.rb</code> (that is
 the actual <em>deployment</em> code) was tested at all; because of having our own DSL
 implementation, and other slightly odd design points, it was painful to test
 the actual <em>recipes</em>.</p>
