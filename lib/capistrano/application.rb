@@ -13,7 +13,7 @@ module Capistrano
     end
 
     def sort_options(options)
-      options.push(version,dry_run,roles)
+      options.push(version, dry_run, roles)
       super
     end
 
