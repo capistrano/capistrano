@@ -9,6 +9,10 @@ module Capistrano
       def env
         @env ||= new
       end
+
+      def reset!
+        @env = new
+      end
     end
 
     def ask(key, default=nil)

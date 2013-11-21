@@ -106,6 +106,11 @@ module Capistrano
           expect(servers.roles_for([:all]).first.properties.test).to eq :value
         end
 
+        it 'can accept multiple servers with the same hostname but different ports' do
+          servers.add_host('2', roles: [:app, 'web'], test: :value, port: 12)
+          servers.add_host('2', roles: [:app, 'web'], test: :value, port: 34)
+          expect(servers.count { |server| server.hostname == '2' }).to eq 2
+        end
       end
 
       describe 'selecting roles' do

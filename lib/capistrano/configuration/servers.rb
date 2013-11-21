@@ -30,11 +30,7 @@ module Capistrano
       private
 
       def server(host)
-        if host.is_a? Server
-          host
-        else
-          servers.find { |server| server.matches?(host) } || Server.new(host)
-        end
+        servers.find { |server| server.matches? Server[host] } || Server[host]
       end
 
       def fetch(role)
