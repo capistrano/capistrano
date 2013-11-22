@@ -26,6 +26,7 @@ Reverse Chronological Order:
   * Make use of recent changes in Rake to over-ride the application name (@shime)
   * Readme corrections (@nathanstitt)
   * Allow roles to be fetched with a variable containing an array (@seenmyfate)
+  * Improve console (@jage)
 
 ## `3.0.1`
 
