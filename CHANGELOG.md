@@ -22,6 +22,9 @@ Reverse Chronological Order:
   * Correctly infer namespace in task enhancements (@seenmyfate)
   * Add SHA to revision log (@blackxored)
   * Allow configuration of multiple servers with same hostname but different ports (@rsslldnphy)
+  * Add command line option to control role filtering (@andytinycat)
+  * Make use of recent changes in Rake to over-ride the application name (@shime)
+  * Readme corrections (@nathanstitt)
 
 ## `3.0.1`
 
