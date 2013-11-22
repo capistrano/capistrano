@@ -27,6 +27,9 @@ en = {
     user: {
       does_not_exist:  'User %{user} does not exists',
       cannot_switch:   'Cannot switch to user %{user}'
+    },
+    repo: {
+      not_reachable: 'The repository is not reachable.',
     }
   }
 }

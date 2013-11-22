@@ -21,7 +21,10 @@ namespace :git do
     fetch(:branch)
     on release_roles :all do
       with fetch(:git_environmental_variables) do
-        exit 1 unless test :git, :'ls-remote', repo_url
+        unless test :git, :'ls-remote', repo_url
+          error t('error.repo.not_reachable')
+          exit 1
+        end
       end
     end
   end
