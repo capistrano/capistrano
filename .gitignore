@@ -18,3 +18,4 @@ tmp
 .rspec-local
 .ruby-version
 _site
+.rspec
