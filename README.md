@@ -218,12 +218,22 @@ __Support removed__ for following variables:
 |:---------------------:|---------------------------------------------------------------------|-----------------------------------------------------------------|
 | `:copy_exclude`       | The (optional) array of files and/or folders excluded from deploy | Replaced by Git's native `.gitattributes`, see [#515](https://github.com/capistrano/capistrano/issues/515) for more info. |
 
+## Help
+
+Need help with getting Capistrano up and running? Got a code problem you want to get solved quickly? 
+
+Get <a href="http://codersclan.net/?repo_id=325">Capistrano support on CodersClan.</a>
+
+<a href="http://codersclan.net/?repo_id=325"><img src="http://www.codersclan.net/gs_button/?repo_id=325" width="200"></a>
+
+
 ## SSHKit
 
 [SSHKit](https://github.com/leehambley/sshkit) is the driver for SSH
 connections behind the scenes in Capistrano. Depending on how deep you dig, you
 might run into interfaces that come directly from SSHKit (the configuration is
 a good example).
+
 
 ## Licence
 
