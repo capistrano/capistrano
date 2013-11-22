@@ -65,7 +65,7 @@ server 'example.org', roles: [:db, :workers]
 desc "Report Uptimes"
 task :uptime do
   on roles(:all) do |host|
-    info "Host #{host} (#{host.roles.join(', ')}):\t#{capture(:uptime)}"
+    info "Host #{host} (#{host.roles.to_a.join(', ')}):\t#{capture(:uptime)}"
   end
 end
 ```
