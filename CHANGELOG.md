@@ -25,6 +25,7 @@ Reverse Chronological Order:
   * Add command line option to control role filtering (@andytinycat)
   * Make use of recent changes in Rake to over-ride the application name (@shime)
   * Readme corrections (@nathanstitt)
+  * Allow roles to be fetched with a variable containing an array (@seenmyfate)
 
 ## `3.0.1`
 
