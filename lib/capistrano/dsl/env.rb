@@ -40,7 +40,7 @@ module Capistrano
       end
 
       def roles(*names)
-        env.roles_for(names)
+        env.roles_for(names.flatten)
       end
 
       def release_roles(*names)

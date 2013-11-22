@@ -60,6 +60,14 @@ describe Capistrano::DSL do
         end
       end
 
+      describe 'fetching servers by an array of roles' do
+        subject { dsl.roles([:app]) }
+
+        it 'returns the servers' do
+          expect(subject.map(&:hostname)).to eq %w{example3.com example4.com}
+        end
+      end
+
       describe 'fetching filtered servers by role' do
         subject { dsl.roles(:app, filter: :active) }
 
@@ -142,6 +150,14 @@ describe Capistrano::DSL do
 
       describe 'fetching servers by role' do
         subject { dsl.roles(:app) }
+
+        it 'returns the servers' do
+          expect(subject.map(&:hostname)).to eq %w{example3.com example4.com}
+        end
+      end
+
+      describe 'fetching servers by an array of roles' do
+        subject { dsl.roles([:app]) }
 
         it 'returns the servers' do
           expect(subject.map(&:hostname)).to eq %w{example3.com example4.com}
