@@ -16,6 +16,7 @@ Reverse Chronological Order:
   * `deploy:fallback` hook was added to add some custom behaviour on failed deploy (@seenmyfate)
   * Correctly infer namespace in task enhancements (@seenmyfate)
   * Add SHA to revision log (@blackxored)
+  * Allow configuration of multiple servers with same hostname but different ports (@rsslldnphy)
 
 ## `3.0.1`
 

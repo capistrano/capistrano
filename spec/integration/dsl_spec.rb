@@ -4,6 +4,10 @@ describe Capistrano::DSL do
 
   let(:dsl) { Class.new.extend Capistrano::DSL }
 
+  before do
+    Capistrano::Configuration.reset!
+  end
+
   describe 'setting and fetching hosts' do
     describe 'when defining a host using the `server` syntax' do
       before do
@@ -173,6 +177,34 @@ describe Capistrano::DSL do
           it 'returns the servers' do
             expect(subject.hostname).to eq 'example4.com'
           end
+        end
+      end
+
+    end
+
+    describe 'when defining a host using a combination of the `server` and `role` syntax' do
+
+      before do
+        dsl.server 'example1.com:1234', roles: %w{web}, active: true
+        dsl.server 'example1.com:5678', roles: %w{web}, active: true
+        dsl.role :app, %w{example1.com:5678}
+      end
+
+      describe 'fetching all servers' do
+        subject { dsl.roles(:all).map { |server| "#{server.hostname}:#{server.port}" } }
+
+        it 'creates a server instance for each unique host:port combination' do
+          expect(subject).to eq %w{example1.com:1234 example1.com:5678}
+        end
+      end
+
+      describe 'fetching servers for a role' do
+        it 'roles defined using the `server` syntax are included' do
+          expect(dsl.roles(:web)).to have(2).items
+        end
+
+        it 'roles defined using the `role` syntax are included' do
+          expect(dsl.roles(:app)).to have(1).items
         end
       end
 

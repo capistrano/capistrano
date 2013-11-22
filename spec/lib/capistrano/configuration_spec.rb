@@ -12,6 +12,14 @@ module Capistrano
       end
     end
 
+    describe '.reset!' do
+      it 'blows away the existing `env` and creates a new one' do
+        old_env = Configuration.env
+        Configuration.reset!
+        expect(Configuration.env).not_to be old_env
+      end
+    end
+
     describe 'roles' do
       context 'adding a role' do
         subject { config.role(:app, %w{server1 server2}) }

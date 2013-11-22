@@ -3,7 +3,7 @@ require 'spec_helper'
 module Capistrano
   class Configuration
     describe Server do
-      let(:server) { Server.new('hostname') }
+      let(:server) { Server.new('hostname:1234') }
 
       describe 'adding a role' do
         subject { server.add_role(:test) }
@@ -33,16 +33,21 @@ module Capistrano
       end
 
       describe 'comparing identity' do
-        subject { server.matches? hostname }
+        subject { server.matches? Server[hostname] }
 
         context 'with the same hostname' do
-          let(:hostname) { 'hostname' }
+          let(:hostname) { 'hostname:1234' }
           it { should be_true }
         end
 
         context 'with the same hostname and a user' do
-          let(:hostname) { 'user@hostname' }
+          let(:hostname) { 'user@hostname:1234' }
           it { should be_true }
+        end
+
+        context 'with the same hostname but different port' do
+          let(:hostname) { 'hostname:5678' }
+          it { should be_false }
         end
 
         context 'with a different hostname' do
@@ -266,6 +271,15 @@ module Capistrano
 
       end
 
+      describe ".[]" do
+        it 'creates a server if its argument is not already a server' do
+          expect(Server['hostname:1234']).to be_a Server
+        end
+
+        it 'returns its argument if it is already a server' do
+          expect(Server[server]).to be server
+        end
+      end
     end
   end
 end
