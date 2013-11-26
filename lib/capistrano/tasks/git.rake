@@ -60,7 +60,7 @@ namespace :git do
           execute :mkdir, '-p', release_path
           current_repo_url = execute :git, :config, :'--get', :'remote.origin.url'
           unless repo_url == current_repo_url
-            execute :git, :remote, :'set-url', 'origin', repo_url
+            execute :git, :remote, :'set-url', :origin, repo_url
             execute :git, :remote, :update
           end
           execute :git, :archive, fetch(:branch), '| tar -x -C', release_path
