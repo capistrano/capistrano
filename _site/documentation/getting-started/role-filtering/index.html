@@ -136,16 +136,22 @@ be executed on it.</p>
 
 <p>Capistrano will read the role filter from the environment variable <code>ROLES</code>
 if it is set. You can set it inline:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">ROLES=app,web cap production deploy
-</code></pre></div>
+
+<div>
+  <pre data-line=''><code class='language-bash'>ROLES=app,web cap production deploy</code></pre>
+</div>
+
 <p>Specify multiple roles by separating them with a comma.</p>
 
 <h4 id="toc_2">In configuration</h4>
 
 <p>You can set the role filter inside your deploy configuration. For example,
 you can set the following inside <code>config/deploy.rb</code>:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">set :filter, :roles =&gt; %w{app web}
-</code></pre></div>
+
+<div>
+  <pre data-line=''><code class='language-ruby'>set :filter, :roles =&gt; %w{app web}</code></pre>
+</div>
+
 <p>Note that you specify the filter as an array rather than as a comma-separated
 list of roles when using this method.</p>
 
@@ -153,8 +159,11 @@ list of roles when using this method.</p>
 
 <p>In a similar way to using the environment variable, you can set the role
 filter by specifying it as a command line argument to <code>cap</code>:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">cap --roles=app,web production deploy
-</code></pre></div>
+
+<div>
+  <pre data-line=''><code class='language-bash'>cap --roles=app,web production deploy</code></pre>
+</div>
+
 <p>Like the environment variable method, specify multiple roles by separating them
 with a comma.</p>
 
@@ -190,16 +199,22 @@ be executed on it.</p>
 
 <p>Capistrano will read the role filter from the environment variable <code>ROLES</code>
 if it is set. You can set it inline:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">ROLES=app,web cap production deploy
-</code></pre></div>
+
+<div>
+  <pre data-line=''><code class='language-bash'>ROLES=app,web cap production deploy</code></pre>
+</div>
+
 <p>Specify multiple roles by separating them with a comma.</p>
 
 <h4 id="toc_2">In configuration</h4>
 
 <p>You can set the role filter inside your deploy configuration. For example,
 you can set the following inside <code>config/deploy.rb</code>:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">set :filter, :roles =&gt; %w{app web}
-</code></pre></div>
+
+<div>
+  <pre data-line=''><code class='language-ruby'>set :filter, :roles =&gt; %w{app web}</code></pre>
+</div>
+
 <p>Note that you specify the filter as an array rather than as a comma-separated
 list of roles when using this method.</p>
 
@@ -207,8 +222,11 @@ list of roles when using this method.</p>
 
 <p>In a similar way to using the environment variable, you can set the role
 filter by specifying it as a command line argument to <code>cap</code>:</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">cap --roles=app,web production deploy
-</code></pre></div>
+
+<div>
+  <pre data-line=''><code class='language-bash'>cap --roles=app,web production deploy</code></pre>
+</div>
+
 <p>Like the environment variable method, specify multiple roles by separating them
 with a comma.</p>
                                            -->
