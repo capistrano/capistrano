@@ -16,7 +16,7 @@ module Capistrano
     end
 
     def sort_options(options)
-      options.push(version, dry_run, roles)
+      options.push(version, roles, dry_run, hostfilter)
       super
     end
 
@@ -74,6 +74,16 @@ module Capistrano
        }
       ]
     end
+    
+    def hostfilter
+      ['--hosts HOSTS', '-z',
+       "Filter command to only apply to these hosts (separate multiple hosts with a comma)",
+       lambda { |value|
+         Configuration.env.set(:filter, :hosts => value.split(","))
+       }
+      ]
+    end
+    
   end
 
 end

@@ -179,6 +179,7 @@ module Capistrano
 
         before do
           ENV.stubs(:[]).with('ROLES').returns('web,db')
+          ENV.stubs(:[]).with('HOSTS').returns(nil)
           servers.add_host('1', roles: :app, active: true)
           servers.add_host('2', roles: :app)
           servers.add_host('3', roles: :web)
