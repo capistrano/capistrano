@@ -67,7 +67,7 @@ keys securely between uses, typically the first time a key is needed in a
 given time period, the SSH agent will load the key, prompt you for your
 passphrase and then the key agent will remember the key for a certain amount
 of time (on OSX it tends to be indefinite, on linux this can vary from 15
-minutes updwards.)
+minutes upwards.)
 
 We can see which keys are loaded in the SSH agent by running `ssh-add -l`
 
@@ -79,7 +79,7 @@ We can see which keys are loaded in the SSH agent by running `ssh-add -l`
 If you don't see any keys listed, you can simply run `ssh-add`:
 
 {% prism bash %}
-    me@localhsot $ ssh-add
+    me@localhost $ ssh-add
     Identity added: /Users/me/.ssh/id_rsa (/Users/me/.ssh/id_rsa)
 {% endprism %}
 
@@ -216,7 +216,7 @@ From the SSH documentation:
          loaded into the agent.
 {% endprism %}
 
-In laymans terms, you should't use SSH agent forwarding to machines where you
+In layman's terms, you shouldn't use SSH agent forwarding to machines where you
 don't trust the administrators, as they can can override the permissions on
 the system and use your keys as if they were you. That said, if you can't
 trust your server administrators, perhaps they shouldn't have access to your
@@ -314,7 +314,7 @@ this carefully, and ideally architect your systems so that non-privileged
 users can restart services, or that services restart *themselves* when they
 notice a change.
 
-To configure this heirarchy, ignoring for the moment the passwordless `sudo`
+To configure this hierarchy, ignoring for the moment the passwordless `sudo`
 access that you may or may not need depending how well your servers are setup:
 
 {% prism bash %}
@@ -332,7 +332,7 @@ access that you may or may not need depending how well your servers are setup:
 **Note:** The `chmod g+s` is a really handy, and little known Unix feature, it
 means that at the operating system level, without having to pay much attention
 to the permissions at runtime, all files an directories created inside the
-`${deploy_to}` directoy will inherit the group ownership, that means in this
+`${deploy_to}` directory will inherit the group ownership, that means in this
 case even though we are root, the files will be created being owned by `root`
 with the group `deploy`, the `umask 0002` ensures that the files created
 *during this session* are created with the permissions *owner read/write,
