@@ -19,7 +19,7 @@ which almost never happens, as a `login` shell, or as an `interactive` shell.
 
 Depending which mode a shell starts in (and which shell you are using) this
 will affect which startup (more commonly known as *dot*-files) files, if any
-are loaded, here's more or less the matrix of what is loaded when:
+are loaded, [here's](#which_startup_files_loaded) more or less the matrix of what is loaded when.
 
 ## What about the Capistrano option to assign a `pty`?
 
