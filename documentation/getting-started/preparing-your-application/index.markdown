@@ -129,7 +129,7 @@ These host strings are parsed and expanded out in to the equivalent of the
 server line after the comment:
 
 {% prism ruby %}
-  role :all, %w{hello@world.com example.com:1234}
+  role :web, %w{hello@world.com example.com:1234}
   # ...is the same as doing...
   server 'world.com' roles: [:web], user: 'hello'
   server 'example.com', roles: [:web], port: 1234
