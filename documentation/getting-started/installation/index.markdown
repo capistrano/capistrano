@@ -32,7 +32,7 @@ Or grab the bleeding edge head from:
 
 ### Usage in a Rails project
 
-Add the following lines to the Gemfile to the `:development` group ideally.
+Add the following lines to the Gemfile:
 
 {% prism ruby %}
     group :development do
@@ -40,12 +40,7 @@ Add the following lines to the Gemfile to the `:development` group ideally.
     end
 {% endprism %}
 
-There will be a Gem released via [rubygems.org][rubygems], but as most people
-are still using Capistrano v2.x, the v3 release will not be pushed to
-[rubygems.org][rubygems] just yet give people a chance to lock their version
-in their `Gemfile`.
-
-The *Capistrano-Rails* Gem includes extras specifically designed for Ruby on
+The `capistrano-rails` gem includes extras specifically designed for Ruby on
 Rails, specifically:
 
  * Asset Pipeline Support
@@ -55,12 +50,11 @@ The documentation for these components can be found in
 [their][capistrano-rails-asset-pipeline-readme],
 [respective][capistrano-rails-gem-bundler-readme],
 [READMEs][capistrano-rails-database-migrations-readme]. However for the most
-part, to get the best, and most sensible results, simply `require` these
-files:
+part, to get the best, and most sensible results, simply `require` in
+Capfile:
 
 {% prism ruby %}
-    require 'capistrano/rails/assets'
-    require 'capistrano/rails/migrations'
+    require 'capistrano/rails'
 {% endprism %}
 
 <div class="alert alert-info">
