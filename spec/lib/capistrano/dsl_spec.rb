@@ -48,5 +48,13 @@ module Capistrano
         dsl.sudo(:my, :command)
       end
     end
+
+    describe '#scm_perform' do
+      it "calls a block with self" do
+        klass = Class.new
+        klass.expects(:performable).with(dsl)
+        dsl.scm_perform(&klass.method(:performable))
+      end
+    end
   end
 end
