@@ -54,6 +54,24 @@ namespace :git do
 
   desc 'Copy repo to releases'
   task create_release: :'git:update' do
+    invoke "git:create_release_via_#{fetch(:git_strategy, :archive)}"
+  end
+
+  task :create_release_via_clone do
+    on roles :all do
+      with fetch(:git_environmental_variables) do
+        within repo_path do
+          execute :git, :clone, '--branch', fetch(:branch),               \
+            '--depth 1',                                                  \
+            '--recursive',                                                \
+            '--no-hardlinks',                                             \
+            repo_path, release_path
+        end
+      end
+    end
+  end
+
+  task :create_release_via_archive do
     on release_roles :all do
       with fetch(:git_environmental_variables) do
         within repo_path do

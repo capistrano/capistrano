@@ -27,6 +27,7 @@ Reverse Chronological Order:
   * Readme corrections (@nathanstitt)
   * Allow roles to be fetched with a variable containing an array (@seenmyfate)
   * Improve console (@jage)
+  * Support Git submodules by setting `git_strategy` to `:clone` (@seenmyfate)
 
 ## `3.0.1`
 
