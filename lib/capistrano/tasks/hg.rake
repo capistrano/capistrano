@@ -2,18 +2,18 @@ namespace :hg do
   desc 'Check that the repo is reachable'
   task :check do
     on release_roles :all do
-      execute "hg", "id", repo_url
+      scm_perform(&Capistrano::Hg.method(:check))
     end
   end
 
   desc 'Clone the repo to the cache'
   task :clone do
     on release_roles :all do
-      if test " [ -d #{repo_path}/.hg ] "
+      if scm_perform(&Capistrano::Hg.method(:test))
         info t(:mirror_exists, at: repo_path)
       else
         within deploy_path do
-          execute "hg", "clone", "--noupdate", repo_url, repo_path
+          scm_perform(&Capistrano::Hg.method(:clone))
         end
       end
     end
@@ -23,7 +23,7 @@ namespace :hg do
   task :update => :'hg:clone' do
     on release_roles :all do
       within repo_path do
-        execute "hg", "pull"
+        scm_perform(&Capistrano::Hg.method(:update))
       end
     end
   end
@@ -32,7 +32,7 @@ namespace :hg do
   task :create_release => :'hg:update' do
     on release_roles :all do
       within repo_path do
-        execute "hg", "archive", release_path, "--rev", fetch(:branch)
+        scm_perform(&Capistrano::Hg.method(:release))
       end
     end
   end
