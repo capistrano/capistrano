@@ -54,6 +54,11 @@ module Capistrano
       VersionValidator.new(locked_version).verify
     end
 
+    # wrap a method call in the context of self
+    def scm_perform(&block)
+      yield(self)
+    end
+
     private
     def fetch_revision
       capture("cd #{repo_path} && git rev-parse --short HEAD")
