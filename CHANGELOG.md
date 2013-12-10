@@ -5,6 +5,7 @@ Reverse Chronological Order:
 ## master
 
   * Add a command line option to control role filter (`--roles`) (@andytinycat)
+  * Use an SCM object with a pluggable strategy
 
 ## `3.1.0` (not released)
 

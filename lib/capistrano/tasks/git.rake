@@ -1,5 +1,9 @@
 namespace :git do
 
+  def strategy
+    @strategy ||= Capistrano::Git.new(self, fetch(:git_strategy, Capistrano::Git::DefaultStrategy))
+  end
+
   set :git_environmental_variables, ->() {
     {
       git_askpass: "/bin/echo",
@@ -21,7 +25,7 @@ namespace :git do
     fetch(:branch)
     on release_roles :all do
       with fetch(:git_environmental_variables) do
-        exit 1 unless test :git, :'ls-remote', repo_url
+        exit 1 unless strategy.check
       end
     end
   end
@@ -29,12 +33,12 @@ namespace :git do
   desc 'Clone the repo to the cache'
   task clone: :'git:wrapper' do
     on release_roles :all do
-      if test " [ -f #{repo_path}/HEAD ] "
+      if strategy.test
         info t(:mirror_exists, at: repo_path)
       else
         within deploy_path do
           with fetch(:git_environmental_variables) do
-            execute :git, :clone, '--mirror', repo_url, repo_path
+            strategy.clone
           end
         end
       end
@@ -46,7 +50,7 @@ namespace :git do
     on release_roles :all do
       within repo_path do
         capturing_revisions do
-          execute :git, :remote, :update
+          strategy.update
         end
       end
     end
@@ -58,7 +62,7 @@ namespace :git do
       with fetch(:git_environmental_variables) do
         within repo_path do
           execute :mkdir, '-p', release_path
-          execute :git, :archive, fetch(:branch), '| tar -x -C', release_path
+          strategy.release
         end
       end
     end
