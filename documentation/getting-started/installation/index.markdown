@@ -51,7 +51,7 @@ The documentation for these components can be found in
 [respective][capistrano-rails-gem-bundler-readme],
 [READMEs][capistrano-rails-database-migrations-readme]. However for the most
 part, to get the best, and most sensible results, simply `require` in
-Capfile:
+Capfile, after the `require 'capistrano/deploy'` line:
 
 {% prism ruby %}
     require 'capistrano/rails'
