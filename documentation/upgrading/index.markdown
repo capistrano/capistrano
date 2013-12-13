@@ -33,6 +33,17 @@ layout: default
   Update `config/deploy/production.rb` and `config/deploy/staging.rb` to have relevant data there. You may also want to add more stages from old configs (`old_cap/deploy/`).
 
 5.
+  If you had a gateway server set doing `set :gateway, "www.capify.org"` you should upgrade to
+
+  {% prism ruby %}
+    require 'net/ssh/proxy/command'
+
+    set :ssh_options, proxy: Net::SSH::Proxy::Command.new('ssh mygateway.com -W %h:%p')
+  {% endprism %}
+
+  Or the per-server `ssh_options` equivalent.
+
+6.
   Now you need to refactor your old `deploy.rb` (also `Capfile`, but in most of cases developers didn't change it in Capistrano 2.x). Move parameters (like `set :deploy_to, "/home/deploy/#{application}"` or `set :keep_releases, 4`) to `config/deploy.rb` and tasks to `Capfile`.
 
   *Important: `repository` option was renamed to `repo_url`.*
@@ -40,7 +51,7 @@ layout: default
 
   Notice that some parameters are not necessary anymore: `use_sudo`, `normalize_asset_timestamps`.
 
-6.
+7.
   If you didn't use `deploy_to` before and deployed to `/u/apps/your_app_name`, you need one more change. Now default deploy path is `/var/www/app_name` and your config will be broken after upgrade. Just declare custom `deploy_to` option:
 
   {% prism ruby %}
@@ -49,10 +60,10 @@ layout: default
 
   But in advance, `/u/apps` is not the best place to store apps and we advice you to change it later.
 
-7.
+8.
   Keep editing Capfile and uncomment addons you need, such as rbenv/rvm, bundler or rails.
 
-8.
+9.
   Yay! Try to deploy with your new config set. If you discover any missing info in this upgrade guide, you're welcome to contribute to it.
 
 # General recommendations
