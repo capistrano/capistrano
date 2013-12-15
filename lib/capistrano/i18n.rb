@@ -32,3 +32,4 @@ en = {
 }
 
 I18n.backend.store_translations(:en, { capistrano: en })
+I18n.enforce_available_locales = true
