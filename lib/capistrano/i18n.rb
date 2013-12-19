@@ -1,7 +1,6 @@
 require 'i18n'
 
 en = {
-  starting:                    'Starting',
   capified:                    'Capified',
   starting:                    'Starting',
   start:                       'Start',
@@ -15,7 +14,7 @@ en = {
   keeping_releases:            'Keeping %{keep_releases} of %{releases} deployed releases on %{host}',
   no_old_releases:             'No old releases (keeping newest %{keep_releases}) on %{host}',
   linked_file_does_not_exist:  'linked file %{file} does not exist on %{host}',
-  mirror_exists:               "The repository mirror is at %{at}",
+  mirror_exists:               'The repository mirror is at %{at}',
   revision_log_message:        'Branch %{branch} (at %{sha}) deployed as release %{release} by %{user}',
   rollback_log_message:        '%{user} rolled back to release %{release}',
   deploy_failed:               'The deploy has failed with an error: %{ex}',
