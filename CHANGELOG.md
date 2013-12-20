@@ -2,20 +2,15 @@
 
 Reverse Chronological Order:
 
-## master
+## `3.1.0`
 
-  * Add ability to filter tasks to specific servers (host filtering). (@andytinycat)
-  * Add a command line option to control role filter (`--roles`) (@andytinycat)
-  * Use an SCM object with a pluggable strategy
-
-## `3.1.0` (not released)
-
+  * `deploy:restart` task is no longer run by default.
+    From this version, developers who restart the app on each deploy need to declare it in their deploy flow (@kirs).
+    eg `after 'deploy:publishing', 'deploy:restart'`
   * Tasks that used `linked_dirs` and `linked_files` now run on all roles, not just app roles (@mikespokefire)
   * Tasks `deploy:linked_dirs`, `deploy:make_linked_dirs`, `deploy:linked_files`, `deploy:cleanup_rollback`,
     `deploy:log_revision` and `deploy:revert_release` now use `release_roles()` not `roles()` meaning that they
     will only run on servers where the `no_release` property is not falsy. (@leehambley)
-  * `deploy:restart` task is no longer run by default.
-    From this version, developers who restart the app on each deploy need to declare it in their deploy flow (@kirs)
   * Fixed bug when `deploy:cleanup` was executed twice by default (@kirs)
   * Config location can now be changed with `deploy_config_path` and `stage_config_path` options (@seenmyfate)
   * `no_release` option is now available (@seenmyfate)
@@ -29,6 +24,9 @@ Reverse Chronological Order:
   * Readme corrections (@nathanstitt)
   * Allow roles to be fetched with a variable containing an array (@seenmyfate)
   * Improve console (@jage)
+  * Add ability to filter tasks to specific servers (host filtering). (@andytinycat)
+  * Add a command line option to control role filter (`--roles`) (@andytinycat)
+  * Use an SCM object with a pluggable strategy (@coffeeaddict)
 
 ## `3.0.1`
 
