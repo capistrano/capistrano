@@ -2,11 +2,11 @@ require 'fileutils'
 module TestApp
   extend self
 
-  def install
-    install_test_app_with(default_config)
+  def install(override='')
+    install_test_app_with(default_config(override))
   end
 
-  def default_config
+  def default_config(override='')
     %{
       set :deploy_to, '#{deploy_to}'
       set :repo_url, 'git://github.com/capistrano/capistrano.git'
@@ -15,6 +15,7 @@ module TestApp
       server 'vagrant@localhost:2220', roles: %w{web app}
       set :linked_files, #{linked_files}
       set :linked_dirs, #{linked_dirs}
+      #{override}
     }
   end
 
