@@ -4,6 +4,7 @@ Reverse Chronological Order:
 
 ## master
 
+  * Add ability to filter tasks to specific servers (host filtering). (@andytinycat)
   * Add a command line option to control role filter (`--roles`) (@andytinycat)
   * Use an SCM object with a pluggable strategy
 
