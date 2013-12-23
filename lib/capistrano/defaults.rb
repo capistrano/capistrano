@@ -1,6 +1,5 @@
 set :scm, :git
 set :branch, :master
-set :deploy_to, "/var/www/#{fetch(:application)}"
 set :tmp_dir, "/tmp"
 
 set :default_env, {}
