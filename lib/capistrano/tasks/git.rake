@@ -50,7 +50,9 @@ namespace :git do
     on release_roles :all do
       within repo_path do
         capturing_revisions do
-          strategy.update
+          with fetch(:git_environmental_variables) do
+            strategy.update
+          end
         end
       end
     end
