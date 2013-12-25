@@ -65,7 +65,7 @@ module Capistrano
        }
       ]
     end
-    
+
     def roles
       ['--roles ROLES', '-r',
        "Filter command to only apply to these roles (separate multiple roles with a comma)",
@@ -74,7 +74,7 @@ module Capistrano
        }
       ]
     end
-    
+
     def hostfilter
       ['--hosts HOSTS', '-z',
        "Filter command to only apply to these hosts (separate multiple hosts with a comma)",
@@ -83,7 +83,7 @@ module Capistrano
        }
       ]
     end
-    
+
   end
 
 end

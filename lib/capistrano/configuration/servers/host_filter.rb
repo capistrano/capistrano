@@ -12,7 +12,7 @@ module Capistrano
         end
 
         def hosts
-          if host_filter.any?  
+          if host_filter.any?
             @available.select { |server| host_filter.include? server.hostname }
           else
             @available

@@ -19,11 +19,9 @@ module Capistrano
           subject { HostFilter.for(available) }
 
           context 'without env vars' do
-            
             it 'returns all available hosts' do
               expect(subject).to eq available
             end
-
           end
 
           context 'with ENV vars' do
