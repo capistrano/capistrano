@@ -160,6 +160,22 @@ href="https://twitter.com/postmodern_mod3/statuses/300438256200339456">February
 <script async src="//platform.twitter.com/widgets.js"
 charset="utf-8"></script>
 
+If your server isn't accessible directly and you need to use the SSH
+ProxyCommand option, you should do
+
+{% prism ruby %}
+require 'net/ssh/proxy/command'
+
+set :ssh_options, proxy: Net::SSH::Proxy::Command.new('ssh mygateway.com -W %h:%p')
+
+# OR
+
+server 'internal-hostname',
+  ssh_options: {
+    proxy: Net::SSH::Proxy::Command.new('ssh mygateway.com -W %h:%p'),
+  }
+{% endprism %}
+
 #### 1.2 From our servers to the repository host
 
 With access from workstations to the servers settled, there is another hop to
