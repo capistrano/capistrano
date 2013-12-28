@@ -76,6 +76,7 @@
   <li><a href="/documentation/getting-started/rollbacks/">Rollbacks</a></li>
   <li><a href="/documentation/getting-started/remote-file/">Remote file task</a></li>
   <li><a href="/documentation/getting-started/role-filtering/">Role filtering</a></li>
+  <li><a href="/documentation/getting-started/capistrano-in-ruby-script/">Capistrano in ruby script</a></li>
   <li class="divider"></li>
   <h5>Framework Extensions</h5>
   <li><a href="/documentation/frameworks/ruby-on-rails/">Ruby on Rails</a></li>
@@ -142,13 +143,24 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
   Update <code>config/deploy/production.rb</code> and <code>config/deploy/staging.rb</code> to have relevant data there. You may also want to add more stages from old configs (<code>old_cap/deploy/</code>).</p>
 
 <p>5.
+  If you had a gateway server set doing <code>set :gateway, &quot;www.capify.org&quot;</code> you should upgrade to</p>
+
+<p><div>
+  <pre data-line=''><code class='language-ruby'>require &#39;net/ssh/proxy/command&#39;</p>
+
+<p>set :ssh_options, proxy: Net::SSH::Proxy::Command.new(&#39;ssh mygateway.com -W %h:%p&#39;)</code></pre>
+</div></p>
+
+<p>Or the per-server <code>ssh_options</code> equivalent.</p>
+
+<p>6.
   Now you need to refactor your old <code>deploy.rb</code> (also <code>Capfile</code>, but in most of cases developers didn&#39;t change it in Capistrano 2.x). Move parameters (like <code>set :deploy_to, &quot;/home/deploy/#{application}&quot;</code> or <code>set :keep_releases, 4</code>) to <code>config/deploy.rb</code> and tasks to <code>Capfile</code>.</p>
 
 <p><em>Important: <code>repository</code> option was renamed to <code>repo_url</code>.</em></p>
 
 <p>Notice that some parameters are not necessary anymore: <code>use_sudo</code>, <code>normalize_asset_timestamps</code>.</p>
 
-<p>6.
+<p>7.
   If you didn&#39;t use <code>deploy_to</code> before and deployed to <code>/u/apps/your_app_name</code>, you need one more change. Now default deploy path is <code>/var/www/app_name</code> and your config will be broken after upgrade. Just declare custom <code>deploy_to</code> option:</p>
 
 <p><div>
@@ -157,10 +169,10 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 
 <p>But in advance, <code>/u/apps</code> is not the best place to store apps and we advice you to change it later.</p>
 
-<p>7.
+<p>8.
   Keep editing Capfile and uncomment addons you need, such as rbenv/rvm, bundler or rails.</p>
 
-<p>8.
+<p>9.
   Yay! Try to deploy with your new config set. If you discover any missing info in this upgrade guide, you&#39;re welcome to contribute to it.</p>
 
 <h1 id="toc_0">General recommendations</h1>
@@ -224,13 +236,24 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
   Update <code>config/deploy/production.rb</code> and <code>config/deploy/staging.rb</code> to have relevant data there. You may also want to add more stages from old configs (<code>old_cap/deploy/</code>).</p>
 
 <p>5.
+  If you had a gateway server set doing <code>set :gateway, &quot;www.capify.org&quot;</code> you should upgrade to</p>
+
+<p><div>
+  <pre data-line=''><code class='language-ruby'>require &#39;net/ssh/proxy/command&#39;</p>
+
+<p>set :ssh_options, proxy: Net::SSH::Proxy::Command.new(&#39;ssh mygateway.com -W %h:%p&#39;)</code></pre>
+</div></p>
+
+<p>Or the per-server <code>ssh_options</code> equivalent.</p>
+
+<p>6.
   Now you need to refactor your old <code>deploy.rb</code> (also <code>Capfile</code>, but in most of cases developers didn&#39;t change it in Capistrano 2.x). Move parameters (like <code>set :deploy_to, &quot;/home/deploy/#{application}&quot;</code> or <code>set :keep_releases, 4</code>) to <code>config/deploy.rb</code> and tasks to <code>Capfile</code>.</p>
 
 <p><em>Important: <code>repository</code> option was renamed to <code>repo_url</code>.</em></p>
 
 <p>Notice that some parameters are not necessary anymore: <code>use_sudo</code>, <code>normalize_asset_timestamps</code>.</p>
 
-<p>6.
+<p>7.
   If you didn&#39;t use <code>deploy_to</code> before and deployed to <code>/u/apps/your_app_name</code>, you need one more change. Now default deploy path is <code>/var/www/app_name</code> and your config will be broken after upgrade. Just declare custom <code>deploy_to</code> option:</p>
 
 <p><div>
@@ -239,10 +262,10 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 
 <p>But in advance, <code>/u/apps</code> is not the best place to store apps and we advice you to change it later.</p>
 
-<p>7.
+<p>8.
   Keep editing Capfile and uncomment addons you need, such as rbenv/rvm, bundler or rails.</p>
 
-<p>8.
+<p>9.
   Yay! Try to deploy with your new config set. If you discover any missing info in this upgrade guide, you&#39;re welcome to contribute to it.</p>
 
 <h1 id="toc_0">General recommendations</h1>

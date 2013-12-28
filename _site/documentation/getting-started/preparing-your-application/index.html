@@ -76,6 +76,7 @@
   <li><a href="/documentation/getting-started/rollbacks/">Rollbacks</a></li>
   <li><a href="/documentation/getting-started/remote-file/">Remote file task</a></li>
   <li><a href="/documentation/getting-started/role-filtering/">Role filtering</a></li>
+  <li><a href="/documentation/getting-started/capistrano-in-ruby-script/">Capistrano in ruby script</a></li>
   <li class="divider"></li>
   <h5>Framework Extensions</h5>
   <li><a href="/documentation/frameworks/ruby-on-rails/">Ruby on Rails</a></li>
@@ -239,7 +240,7 @@ These host strings are parsed and expanded out in to the equivalent of the
 server line after the comment:</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>role :all, %w{hello@world.com example.com:1234}
+  <pre data-line=''><code class='language-ruby'>role :web, %w{hello@world.com example.com:1234}
 # ...is the same as doing...
 server &#39;world.com&#39; roles: [:web], user: &#39;hello&#39;
 server &#39;example.com&#39;, roles: [:web], port: 1234</code></pre>
@@ -431,7 +432,7 @@ These host strings are parsed and expanded out in to the equivalent of the
 server line after the comment:</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>role :all, %w{hello@world.com example.com:1234}
+  <pre data-line=''><code class='language-ruby'>role :web, %w{hello@world.com example.com:1234}
 # ...is the same as doing...
 server &#39;world.com&#39; roles: [:web], user: &#39;hello&#39;
 server &#39;example.com&#39;, roles: [:web], port: 1234</code></pre>

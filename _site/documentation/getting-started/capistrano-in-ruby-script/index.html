@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bundler</title>
+    <title>Capistrano in ruby script</title>
     <link href='http://fonts.googleapis.com/css?family=Enriqueta' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="//use.typekit.net/itm5ubu.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
@@ -113,11 +113,27 @@
       </div>
       <div class="large-8 column">
         <div class="content">
-          <h2>Bundler</h2>
-          <p>Capistrano 3.x has moved out Bundler integration into the gem called <code>capistrano-bundler</code>.
-You don&#39;t need anything except <code>require &#39;capistrano/bundler&#39;</code> to enable it, although check the project page with README if you wish to customize bundle options.</p>
+          <h2>Capistrano in ruby script</h2>
+          <p>Instead of building a config folder and deploy, you may want to programmatically set everything in a single ruby script. This could be done as follows:
+<div>
+  <pre data-line=''><code class='language-ruby'>require &#39;capistrano/all&#39;</p>
 
-<div class="github-widget" data-repo="capistrano/bundler"></div>
+<p>stages = &quot;production&quot;
+set :application, &#39;my_app_name&#39;
+set :repo_url, &#39;<a href="mailto:git@github.com">git@github.com</a>:capistrano/capistrano.git&#39;
+set :deploy_to, &#39;/var/www/&#39;
+set :stage, :production
+role :app, %w{}</p>
+
+<p>require &#39;capistrano/setup&#39;
+require &#39;capistrano/deploy&#39;
+Dir.glob(&#39;capistrano/tasks/*.cap&#39;).each { |r| import r }</p>
+
+<p>Capistrano::Application.invoke(&quot;production&quot;)
+Capistrano::Application.invoke(&quot;deploy&quot;)</code></pre>
+</div></p>
+
+<p>Note that the require order is important as the stage needs to be set before you load setup and deploy.</p>
 
         </div>
       </div>
@@ -128,10 +144,26 @@ You don&#39;t need anything except <code>require &#39;capistrano/bundler&#39;</c
       <!--      <a class="extra" href="/">home</a>                    -->
       <!--    </div>                                                  -->
 
-    <!--    <p>Capistrano 3.x has moved out Bundler integration into the gem called <code>capistrano-bundler</code>.
-You don&#39;t need anything except <code>require &#39;capistrano/bundler&#39;</code> to enable it, although check the project page with README if you wish to customize bundle options.</p>
+    <!--    <p>Instead of building a config folder and deploy, you may want to programmatically set everything in a single ruby script. This could be done as follows:
+<div>
+  <pre data-line=''><code class='language-ruby'>require &#39;capistrano/all&#39;</p>
 
-<div class="github-widget" data-repo="capistrano/bundler"></div>
+<p>stages = &quot;production&quot;
+set :application, &#39;my_app_name&#39;
+set :repo_url, &#39;<a href="mailto:git@github.com">git@github.com</a>:capistrano/capistrano.git&#39;
+set :deploy_to, &#39;/var/www/&#39;
+set :stage, :production
+role :app, %w{}</p>
+
+<p>require &#39;capistrano/setup&#39;
+require &#39;capistrano/deploy&#39;
+Dir.glob(&#39;capistrano/tasks/*.cap&#39;).each { |r| import r }</p>
+
+<p>Capistrano::Application.invoke(&quot;production&quot;)
+Capistrano::Application.invoke(&quot;deploy&quot;)</code></pre>
+</div></p>
+
+<p>Note that the require order is important as the stage needs to be set before you load setup and deploy.</p>
                                            -->
 
     <!--</div> [> /container <]                                     -->

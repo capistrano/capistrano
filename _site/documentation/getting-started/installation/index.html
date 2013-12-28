@@ -76,6 +76,7 @@
   <li><a href="/documentation/getting-started/rollbacks/">Rollbacks</a></li>
   <li><a href="/documentation/getting-started/remote-file/">Remote file task</a></li>
   <li><a href="/documentation/getting-started/role-filtering/">Role filtering</a></li>
+  <li><a href="/documentation/getting-started/capistrano-in-ruby-script/">Capistrano in ruby script</a></li>
   <li class="divider"></li>
   <h5>Framework Extensions</h5>
   <li><a href="/documentation/frameworks/ruby-on-rails/">Ruby on Rails</a></li>
@@ -142,7 +143,7 @@ $ gem install *.gem</code></pre>
 
 <h3 id="toc_1">Usage in a Rails project</h3>
 
-<p>Add the following lines to the Gemfile to the <code>:development</code> group ideally.</p>
+<p>Add the following lines to the Gemfile:</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'>group :development do
@@ -150,12 +151,7 @@ $ gem install *.gem</code></pre>
 end</code></pre>
 </div>
 
-<p>There will be a Gem released via <a href="http://rubygems.org/">rubygems.org</a>, but as most people
-are still using Capistrano v2.x, the v3 release will not be pushed to
-<a href="http://rubygems.org/">rubygems.org</a> just yet give people a chance to lock their version
-in their <code>Gemfile</code>.</p>
-
-<p>The <em>Capistrano-Rails</em> Gem includes extras specifically designed for Ruby on
+<p>The <code>capistrano-rails</code> gem includes extras specifically designed for Ruby on
 Rails, specifically:</p>
 
 <ul>
@@ -167,12 +163,11 @@ Rails, specifically:</p>
 <a href="https://github.com/capistrano/rails/blob/master/README.md">their</a>,
 <a href="https://github.com/capistrano/bundler/blob/master/README.md">respective</a>,
 <a href="https://github.com/capistrano/rails/blob/master/README.md">READMEs</a>. However for the most
-part, to get the best, and most sensible results, simply <code>require</code> these
-files:</p>
+part, to get the best, and most sensible results, simply <code>require</code> in
+Capfile, after the <code>require &#39;capistrano/deploy&#39;</code> line:</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>require &#39;capistrano/rails/assets&#39;
-require &#39;capistrano/rails/migrations&#39;</code></pre>
+  <pre data-line=''><code class='language-ruby'>require &#39;capistrano/rails&#39;</code></pre>
 </div>
 
 <div class="alert alert-info">
@@ -232,7 +227,7 @@ $ gem install *.gem</code></pre>
 
 <h3 id="toc_1">Usage in a Rails project</h3>
 
-<p>Add the following lines to the Gemfile to the <code>:development</code> group ideally.</p>
+<p>Add the following lines to the Gemfile:</p>
 
 <div>
   <pre data-line=''><code class='language-ruby'>group :development do
@@ -240,12 +235,7 @@ $ gem install *.gem</code></pre>
 end</code></pre>
 </div>
 
-<p>There will be a Gem released via <a href="http://rubygems.org/">rubygems.org</a>, but as most people
-are still using Capistrano v2.x, the v3 release will not be pushed to
-<a href="http://rubygems.org/">rubygems.org</a> just yet give people a chance to lock their version
-in their <code>Gemfile</code>.</p>
-
-<p>The <em>Capistrano-Rails</em> Gem includes extras specifically designed for Ruby on
+<p>The <code>capistrano-rails</code> gem includes extras specifically designed for Ruby on
 Rails, specifically:</p>
 
 <ul>
@@ -257,12 +247,11 @@ Rails, specifically:</p>
 <a href="https://github.com/capistrano/rails/blob/master/README.md">their</a>,
 <a href="https://github.com/capistrano/bundler/blob/master/README.md">respective</a>,
 <a href="https://github.com/capistrano/rails/blob/master/README.md">READMEs</a>. However for the most
-part, to get the best, and most sensible results, simply <code>require</code> these
-files:</p>
+part, to get the best, and most sensible results, simply <code>require</code> in
+Capfile, after the <code>require &#39;capistrano/deploy&#39;</code> line:</p>
 
 <div>
-  <pre data-line=''><code class='language-ruby'>require &#39;capistrano/rails/assets&#39;
-require &#39;capistrano/rails/migrations&#39;</code></pre>
+  <pre data-line=''><code class='language-ruby'>require &#39;capistrano/rails&#39;</code></pre>
 </div>
 
 <div class="alert alert-info">
