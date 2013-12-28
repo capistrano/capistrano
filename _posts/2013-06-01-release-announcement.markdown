@@ -432,11 +432,14 @@ for example:
     # Capistrano 3.0.x
     execute <<-EOBLOCK
       # All of this block is interpreted as Bash script
-      if ! [ -e /tmp/somefile ]; then
-        touch /tmp/somefile
+      if ! [ -e /tmp/somefile ]
+        then touch /tmp/somefile
+        chmod 0644 /tmp/somefile
       end
     EOBLOCK
 {% endprism %}
+
+**Caveat:** The SSHKit multiline command sanitizing logic will remove line feeds and add an `;` after each line to separate the commands. So make sure you are not putting a newline between `then` and the following command.
 
 The idiomatic way to write that command in Capistrano v3 is to use the
 separated variadaric method to specify the command:

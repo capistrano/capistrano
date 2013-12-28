@@ -550,11 +550,14 @@ for example:</p>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
 execute &lt;&lt;-EOBLOCK
   # All of this block is interpreted as Bash script
-  if ! [ -e /tmp/somefile ]; then
-    touch /tmp/somefile
+  if ! [ -e /tmp/somefile ]
+    then touch /tmp/somefile
+    chmod 0644 /tmp/somefile
   end
 EOBLOCK</code></pre>
 </div>
+
+<p><strong>Caveat:</strong> The SSHKit multiline command sanitizing logic will remove line feeds and add an <code>;</code> after each line to separate the commands. So make sure you are not putting a newline between <code>then</code> and the following command.</p>
 
 <p>The idiomatic way to write that command in Capistrano v3 is to use the
 separated variadaric method to specify the command:</p>
@@ -1137,11 +1140,14 @@ for example:</p>
   <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
 execute &lt;&lt;-EOBLOCK
   # All of this block is interpreted as Bash script
-  if ! [ -e /tmp/somefile ]; then
-    touch /tmp/somefile
+  if ! [ -e /tmp/somefile ]
+    then touch /tmp/somefile
+    chmod 0644 /tmp/somefile
   end
 EOBLOCK</code></pre>
 </div>
+
+<p><strong>Caveat:</strong> The SSHKit multiline command sanitizing logic will remove line feeds and add an <code>;</code> after each line to separate the commands. So make sure you are not putting a newline between <code>then</code> and the following command.</p>
 
 <p>The idiomatic way to write that command in Capistrano v3 is to use the
 separated variadaric method to specify the command:</p>
