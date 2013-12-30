@@ -151,6 +151,66 @@ task :notify do
 end
 ```
 
+## Example 
+
+An example for config/deploy.rb
+
+``` ruby
+set :application, "MY APP NAME"
+set :domain,      "60.60.60.60" #remote ip of server
+set :repo_url,    "git@github.com:username/application.git"
+set :use_sudo,    false
+set :deploy_to,   "/home/username/appfolder"
+set :scm,         :git
+set :ssh_options, { forward_agent: true, port: 22 }
+set :branch, "master"
+set :user, "username"
+set :rails_env, "production"
+set :deploy_via, :copy
+
+
+set :pty, true
+
+set :keep_releases, 3
+
+namespace :deploy do
+
+  desc 'Restart application'
+  task :restart do
+    on roles(:app), in: :sequence, wait: 5 do
+      # Your restart mechanism here, for example:
+       execute :touch, release_path.join('tmp/restart.txt')
+    end
+  end
+ 
+  after :restart, :clear_cache do
+    on roles(:web), in: :groups, limit: 3, wait: 10 do
+      # Here we can do anything such as:
+       within release_path do
+        execute :rake, 'tmp:clear'
+       end
+    end
+  end
+ 
+  after :finishing, 'deploy:cleanup'
+ 
+
+end
+```
+
+Local tasks can be run by replacing `on` with `run_locally`
+
+``` ruby
+desc "Notify service of deployment"
+task :notify do
+  run_locally do
+    with rails_env: :development do
+      rake 'service:notify'
+    end
+  end
+end
+```
+
 ## Console
 
 **Note:** Here be dragons. The console is very immature, but it's much more
