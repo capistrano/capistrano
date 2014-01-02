@@ -70,14 +70,16 @@
   <li><a href="https://github.com/capistrano/capistrano/blob/master/README.md">The Readme, start here!</a></li>
   <li><a href="/documentation/getting-started/installation/">Installation</a></li>
   <li><a href="/documentation/getting-started/preparing-your-application/">Preparing Your Application</a></li>
-  <li><a href="/documentation/getting-started/authentication-and-authorisation/">Authentication & Authorisation</a></li>
+  <li><a href="/documentation/getting-started/authentication-and-authorisation/">Authentication &amp; Authorisation</a></li>
   <li><a href="/documentation/getting-started/cold-start/">Cold Start</a></li>
   <li><a href="/documentation/getting-started/flow/">Flow</a></li>
   <li><a href="/documentation/getting-started/rollbacks/">Rollbacks</a></li>
   <li class="divider"></li>
   <h5>Advanced Features</h5>
+  <li><a href="/documentation/advanced-features/ssh-kit">Remote commands with SSHKit</li>
   <li><a href="/documentation/advanced-features/remote-file/">Remote file task</a></li>
   <li><a href="/documentation/advanced-features/role-filtering/">Role filtering</a></li>
+  <li><a href="/documentation/advanced-features/host-filtering/">Host filtering</a></li>
   <li><a href="/documentation/advanced-features/capistrano-pure-ruby/">Using Capistrano from pure Ruby</a></li>
   <li class="divider"></li>
   <h5>Framework Extensions</h5>
@@ -178,7 +180,7 @@ writing your own tasks, namely <code>desc()</code>, <code>task()</code>, <code>o
 <p>The first two methods, <code>desc()</code> and <code>task()</code> are actually from Rake, the
 library that forms the foundation of the Capistrano task system, the other
 methods are part of our sub-project
-<a href="https://github.com/leehambley/sshkit"><strong>SSHKit</strong></a>. We&#39;ll dive into those more
+<a href="https://github.com/capistrano/sshkit"><strong>SSHKit</strong></a>. We&#39;ll dive into those more
 later, but add those lines to a file in <code>./lib/capistrano/tasks</code>, call it
 something like <code>access_check.cap</code>, and run <code>cap -T</code> from the top directory and
 we&#39;ll be able to see the task listed:</p>
@@ -398,7 +400,7 @@ writing your own tasks, namely <code>desc()</code>, <code>task()</code>, <code>o
 <p>The first two methods, <code>desc()</code> and <code>task()</code> are actually from Rake, the
 library that forms the foundation of the Capistrano task system, the other
 methods are part of our sub-project
-<a href="https://github.com/leehambley/sshkit"><strong>SSHKit</strong></a>. We&#39;ll dive into those more
+<a href="https://github.com/capistrano/sshkit"><strong>SSHKit</strong></a>. We&#39;ll dive into those more
 later, but add those lines to a file in <code>./lib/capistrano/tasks</code>, call it
 something like <code>access_check.cap</code>, and run <code>cap -T</code> from the top directory and
 we&#39;ll be able to see the task listed:</p>
@@ -554,8 +556,8 @@ DEBUG [f40edfbb]  3419812c9f146d9a84b44bcc2c3caef94da54758  refs/heads/master
   <div class="row">
     <div class="large-4 columns">
       <ul>
-      <li><a href="/about">About Capistrano</a></li>
-      <li><a href="https://github.com/capistrano/capistrano/blob/master/CONTRIBUTING">Contributing</a></li>
+      <li><a href="/documentation/overview/what-is-capistrano/">About Capistrano</a></li>
+      <li><a href="https://github.com/capistrano/capistrano/blob/master/CONTRIBUTING.md">Contributing</a></li>
       <li><a href="https://rubygems.org/gems/capistrano/versions">Releases</a></li>
       </ul>
     </div>

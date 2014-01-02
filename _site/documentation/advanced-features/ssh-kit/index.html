@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rollbacks</title>
+    <title>Remote commands with SSH Kit</title>
     <link href='http://fonts.googleapis.com/css?family=Enriqueta' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="//use.typekit.net/itm5ubu.js"></script>
     <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
@@ -117,8 +117,32 @@
       </div>
       <div class="large-8 column">
         <div class="content">
-          <h2>Rollbacks</h2>
-          <p><strong>Missing Content</strong></p>
+          <h2>Remote commands with SSH Kit</h2>
+          <p>Capistrano executes commands on remote servers using <a href="https://github.com/capistrano/sshkit"><strong>SSHKit</strong></a>.</p>
+
+<p>An example setting a working directory, user and environment variable:</p>
+
+<div>
+  <pre data-line=''><code class='language-ruby'>on roles(:app), in: :sequence, wait: 5 do
+  within &quot;/opt/sites/example.com&quot; do
+    # commands in this block execute in the 
+    # directory: /opt/sites/example.com
+    as :deploy  do
+      # commands in this block execute as the &quot;deploy&quot; user.
+      with rails_env: :production do
+        # commands in this block execute with the environment
+        # variable RAILS_ENV=production
+        rake   &quot;assets:precompile&quot;
+        runner &quot;S3::Sync.notify&quot;
+      end
+    end
+  end
+end</code></pre>
+</div>
+
+<p>For more examples, see the EXAMPLES.md file in the <a href="https://github.com/capistrano/sshkit"><strong>SSHKit</strong></a> project:</p>
+
+<p><a href="https://github.com/capistrano/sshkit/blob/master/EXAMPLES.md">https://github.com/capistrano/sshkit/blob/master/EXAMPLES.md</a></p>
 
         </div>
       </div>
@@ -129,7 +153,31 @@
       <!--      <a class="extra" href="/">home</a>                    -->
       <!--    </div>                                                  -->
 
-    <!--    <p><strong>Missing Content</strong></p>
+    <!--    <p>Capistrano executes commands on remote servers using <a href="https://github.com/capistrano/sshkit"><strong>SSHKit</strong></a>.</p>
+
+<p>An example setting a working directory, user and environment variable:</p>
+
+<div>
+  <pre data-line=''><code class='language-ruby'>on roles(:app), in: :sequence, wait: 5 do
+  within &quot;/opt/sites/example.com&quot; do
+    # commands in this block execute in the 
+    # directory: /opt/sites/example.com
+    as :deploy  do
+      # commands in this block execute as the &quot;deploy&quot; user.
+      with rails_env: :production do
+        # commands in this block execute with the environment
+        # variable RAILS_ENV=production
+        rake   &quot;assets:precompile&quot;
+        runner &quot;S3::Sync.notify&quot;
+      end
+    end
+  end
+end</code></pre>
+</div>
+
+<p>For more examples, see the EXAMPLES.md file in the <a href="https://github.com/capistrano/sshkit"><strong>SSHKit</strong></a> project:</p>
+
+<p><a href="https://github.com/capistrano/sshkit/blob/master/EXAMPLES.md">https://github.com/capistrano/sshkit/blob/master/EXAMPLES.md</a></p>
                                            -->
 
     <!--</div> [> /container <]                                     -->
