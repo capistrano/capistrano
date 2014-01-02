@@ -67,6 +67,8 @@ This will create a bunch of files, the important ones are:
               └── tasks
 {% endprism %}
 
+Your new Capfile will automatically any tasks from any *.cap files in lib/capistrano/tasks.
+
 ### 4. Configure your server addresses in the generated files.
 
 We'll just work with the staging environment here, so you can pretend that
