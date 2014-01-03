@@ -19,10 +19,11 @@ Gem::Specification.new do |gem|
 
   gem.licenses      = ['MIT']
 
-  gem.post_install_message = "If you're updating Capistrano from 2.x.x, we recommend you to read the upgrade guide: http://www.capistranorb.com/documentation/upgrading/"
+  gem.post_install_message = <<eos
+Capistrano 3.1 has some breaking changes, like `deploy:restart` callback should be added manually to your deploy.rb. Please, check the CHANGELOG: http://goo.gl/SxB0lr
 
-  #gem.signing_key = '/Volumes/SD Card/leehambley-private_key.pem'
-  #gem.cert_chain  = ['capistrano-public_cert.pem', 'leehambley-public_cert.pem']
+If you're upgrading Capistrano from 2.x, we recommend to read the upgrade guide: http://goo.gl/4536kB
+eos
 
   gem.add_dependency 'sshkit', '>= 0.0.23'
   gem.add_dependency 'rake', '>= 10.0.0'
