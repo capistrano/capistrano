@@ -25,7 +25,7 @@ Capistrano 3.1 has some breaking changes, like `deploy:restart` callback should 
 If you're upgrading Capistrano from 2.x, we recommend to read the upgrade guide: http://goo.gl/4536kB
 eos
 
-  gem.add_dependency 'sshkit', '>= 0.0.23'
+  gem.add_dependency 'sshkit', '~> 1.3'
   gem.add_dependency 'rake', '>= 10.0.0'
   gem.add_dependency 'i18n'
 
