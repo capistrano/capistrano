@@ -4,9 +4,14 @@ Reverse Chronological Order:
 
 ## `3.1.0`
 
-  * `deploy:restart` task is no longer run by default.
-    From this version, developers who restart the app on each deploy need to declare it in their deploy flow (@kirs).
-    eg `after 'deploy:publishing', 'deploy:restart'`
+Breaking changes:
+
+  * `deploy:restart` task **is no longer run by default**.
+    From this version, developers who restart the app on each deploy need to declare it in their deploy flow (eg `after 'deploy:publishing', 'deploy:restart'`).
+
+    Please, check https://github.com/capistrano/capistrano/commit/4e6523e1f50707499cf75eb53dce37a89528a9b0 for more information. (@kirs)
+
+* Minor changes
   * Tasks that used `linked_dirs` and `linked_files` now run on all roles, not just app roles (@mikespokefire)
   * Tasks `deploy:linked_dirs`, `deploy:make_linked_dirs`, `deploy:linked_files`, `deploy:cleanup_rollback`,
     `deploy:log_revision` and `deploy:revert_release` now use `release_roles()` not `roles()` meaning that they
@@ -27,6 +32,8 @@ Reverse Chronological Order:
   * Add ability to filter tasks to specific servers (host filtering). (@andytinycat)
   * Add a command line option to control role filter (`--roles`) (@andytinycat)
   * Use an SCM object with a pluggable strategy (@coffeeaddict)
+
+Big thanks to @Kriechi for his help.
 
 ## `3.0.1`
 
