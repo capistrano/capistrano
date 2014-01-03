@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -128,14 +129,14 @@ that match a given set of hostnames.</p>
 
 <p>If the filter matches no servers, no actions will be taken.</p>
 
-<p>If you specify a filter, it will match servers that have the listed hostnames, 
+<p>If you specify a filter, it will match servers that have the listed hostnames,
 and it will run <em>all</em> the roles for each server. In other words, it only affects
-the servers the task runs on, not what tasks are run on a server. </p>
+the servers the task runs on, not what tasks are run on a server.</p>
 
 <p>You can limit by role and by host; if you do this, the role filtering will
 apply first. For example, lets say you filtered by the role <code>app</code>, then by
 the hostnames <code>server1</code> and <code>server2</code>. Capistrano would first filter the
-available servers to only those with the role <code>app</code>, then filter them 
+available servers to only those with the role <code>app</code>, then filter them
 to look for servers with the hostname <code>server1</code> or <code>server2</code>. If only <code>server2</code>
 had the role <code>app</code> (<code>server1</code> has some other role), then in this situation your
 task would only run on <code>server2</code>.</p>
@@ -149,9 +150,8 @@ task would only run on <code>server2</code>.</p>
 <p>Capistrano will read the host filter from the environment variable <code>HOSTS</code>
 if it is set. You can set it inline:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>HOSTS=server1,server2 cap production deploy</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="nv">HOSTS</span><span class="o">=</span>server1,server2 cap production deploy
+</code></pre></div>
 
 <p>Specify multiple hosts by separating them with a comma.</p>
 
@@ -160,9 +160,8 @@ if it is set. You can set it inline:</p>
 <p>You can set the host filter inside your deploy configuration. For example,
 you can set the following inside <code>config/deploy.rb</code>:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>set :filter, :hosts =&gt; %w{server1 server2}</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">set</span> <span class="ss">:filter</span><span class="p">,</span> <span class="ss">:hosts</span> <span class="o">=&gt;</span> <span class="sx">%w{server1 server2}</span>
+</code></pre></div>
 
 <p>Note that you specify the filter as an array rather than as a comma-separated
 list of servers when using this method.</p>
@@ -172,11 +171,10 @@ list of servers when using this method.</p>
 <p>In a similar way to using the environment variable, you can set the role
 filter by specifying it as a command line argument to <code>cap</code>:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>cap --hosts=server1,server2 production deploy</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    cap --hosts<span class="o">=</span>server1,server2 production deploy
+</code></pre></div>
 
-<p>Like the environment variable method, specify multiple servers by separating 
+<p>Like the environment variable method, specify multiple servers by separating
 them with a comma.</p>
 
         </div>
@@ -198,14 +196,14 @@ that match a given set of hostnames.</p>
 
 <p>If the filter matches no servers, no actions will be taken.</p>
 
-<p>If you specify a filter, it will match servers that have the listed hostnames, 
+<p>If you specify a filter, it will match servers that have the listed hostnames,
 and it will run <em>all</em> the roles for each server. In other words, it only affects
-the servers the task runs on, not what tasks are run on a server. </p>
+the servers the task runs on, not what tasks are run on a server.</p>
 
 <p>You can limit by role and by host; if you do this, the role filtering will
 apply first. For example, lets say you filtered by the role <code>app</code>, then by
 the hostnames <code>server1</code> and <code>server2</code>. Capistrano would first filter the
-available servers to only those with the role <code>app</code>, then filter them 
+available servers to only those with the role <code>app</code>, then filter them
 to look for servers with the hostname <code>server1</code> or <code>server2</code>. If only <code>server2</code>
 had the role <code>app</code> (<code>server1</code> has some other role), then in this situation your
 task would only run on <code>server2</code>.</p>
@@ -219,9 +217,8 @@ task would only run on <code>server2</code>.</p>
 <p>Capistrano will read the host filter from the environment variable <code>HOSTS</code>
 if it is set. You can set it inline:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>HOSTS=server1,server2 cap production deploy</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="nv">HOSTS</span><span class="o">=</span>server1,server2 cap production deploy
+</code></pre></div>
 
 <p>Specify multiple hosts by separating them with a comma.</p>
 
@@ -230,9 +227,8 @@ if it is set. You can set it inline:</p>
 <p>You can set the host filter inside your deploy configuration. For example,
 you can set the following inside <code>config/deploy.rb</code>:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>set :filter, :hosts =&gt; %w{server1 server2}</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">set</span> <span class="ss">:filter</span><span class="p">,</span> <span class="ss">:hosts</span> <span class="o">=&gt;</span> <span class="sx">%w{server1 server2}</span>
+</code></pre></div>
 
 <p>Note that you specify the filter as an array rather than as a comma-separated
 list of servers when using this method.</p>
@@ -242,11 +238,10 @@ list of servers when using this method.</p>
 <p>In a similar way to using the environment variable, you can set the role
 filter by specifying it as a command line argument to <code>cap</code>:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>cap --hosts=server1,server2 production deploy</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    cap --hosts<span class="o">=</span>server1,server2 production deploy
+</code></pre></div>
 
-<p>Like the environment variable method, specify multiple servers by separating 
+<p>Like the environment variable method, specify multiple servers by separating
 them with a comma.</p>
                                            -->
 

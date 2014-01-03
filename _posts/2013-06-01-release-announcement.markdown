@@ -111,7 +111,7 @@ acompanying documentation if you want to explore that any further.
 The guiding principle is dependency resolution, and interoperability with
 other tools, for example:
 
-{% prism ruby %}
+{% highlight ruby %}
     # Capistrano 3.0.x
     task :notify do
       this_release_tag = sh("git describe --abbrev=0 --tags")
@@ -126,7 +126,7 @@ other tools, for example:
     namespace :deploy
       task default: :notify
     end
-{% endprism %}
+{% endhighlight %}
 
 The last three lines rely on Rake's additive task declaration, by redefining the
 `deploy:default` task by adding another dependency. Rake will automatically
@@ -148,9 +148,9 @@ conventions established in the examples we created for you.
 To create different stages at installation time, simply set the `STAGES`
 environmental variable to a comma separated list of stages:
 
-{% prism bash %}
+{% highlight bash %}
     $ cap install STAGES=staging,production,ci,qa
-{% endprism %}
+{% endhighlight %}
 
 #### Parallelism
 
@@ -158,7 +158,7 @@ In former versions of Capistrano there was a *parallel* option to run
 different tasks differently on groups of servers, it looked something like
 this:
 
-{% prism ruby %}
+{% highlight ruby %}
     # Capistrano 2.0.x
     task :restart do
       parallel do |session|
@@ -167,7 +167,7 @@ this:
         session.else "echo nothing to do"
       end
     end
-{% endprism %}
+{% endhighlight %}
 
 This always felt a little unclean, and indeed it's a hack that was originally
 implemeted to facilitate rolling deployments at a large German firm by a
@@ -176,7 +176,7 @@ went on to found Travis-CI!)
 
 The equivalent code in under Capistrano v3 would look like this:
 
-{% prism ruby %}
+{% highlight ruby %}
     # Capistrano 3.0.x
     task :restart do
       on :all, in: :parallel do |host|
@@ -190,7 +190,7 @@ The equivalent code in under Capistrano v3 would look like this:
         end
       end
     end
-{% endprism %}
+{% endhighlight %}
 
 The second block of code, that representing the new Rake derived DSL and
 demonstrating how to use the parallel execution mode is a little longer, but I
@@ -200,7 +200,7 @@ built-in logging subsystem, keep reading to learn more.
 
 Other modes for parallelism include:
 
-{% prism ruby %}
+{% highlight ruby %}
     # Capistrano 3.0.x
     on :all, in: :groups, max: 3, wait: 5 do
       # Take all servers, in groups of three which execute in parallel
@@ -220,7 +220,7 @@ Other modes for parallelism include:
       # the block in parallel on all servers. This might be perfect for kicking
       # off something like a Git checkout or similar.
     end
-{% endprism %}
+{% endhighlight %}
 
 The internal tasks, for standard deploy recipes make use of all of these as is
 appropriate for the normal case, no need to be afraid of scary slow deploys
@@ -276,7 +276,7 @@ both connections.
 This cleanup routine can now be better implemented as follows (which is
 actually more or less the actual implementation in the the new Gem):
 
-{% prism ruby %}
+{% highlight ruby %}
     # Capistrano 3.0.x
     desc "Cleanup all old releases (keeps #{fetch(:releases_to_keep_on_cleanup)}
     old releases"
@@ -288,7 +288,7 @@ actually more or less the actual implementation in the the new Gem):
         execute :rm, fetch(:releases_directory).join(r)
       end
     end
-{% endprism %}
+{% endhighlight %}
 
 Some handy things to note here are that both server one and server two in our
 contrived example will both evaluate that independently, and when both servers
@@ -315,16 +315,16 @@ your application.
 
 An example of it's usage might be:
 
-{% prism ruby %}
+{% highlight ruby %}
     h = SSHKit::Host.new 'example.com'
     h.properties.roles ||= %i{wep app}
-{% endprism %}
+{% endhighlight %}
 
 #### More Expressive Command Language
 
 In Capistrano v2, it wasn't uncommon to find commands such as:
 
-{% prism ruby %}
+{% highlight ruby %}
     # Capistrano 2.0.x
     task :precompile, :roles => lambda { assets_role }, :except => { :no_release => true } do
       run <<-CMD.compact
@@ -332,11 +332,11 @@ In Capistrano v2, it wasn't uncommon to find commands such as:
         RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile
       CMD
     end
-{% endprism %}
+{% endhighlight %}
 
 In Capistrano v3 this looks more like this:
 
-{% prism ruby %}
+{% highlight ruby %}
     # Capistrano 3.0.x
     task :precompile do
       on :sprockets_asset_host, reject: lambda { |h| h.properties.no_release } do
@@ -347,7 +347,7 @@ In Capistrano v3 this looks more like this:
         end
       end
     end
-{% endprism %}
+{% endhighlight %}
 
 Again, with other examples this format is a little longer, but much more
 expressive, and all the nightmare of shell escaping is handled interally for
@@ -393,14 +393,14 @@ from Capistrano.
 SSHkit is ideal for use if you need to just connect to a machine and run some
 arbitrary command, for example:
 
-{% prism ruby %}
+{% highlight ruby %}
     # Rakefile (even without Capistrano loaded)
     require 'sshkit'
     desc "Check the uptime of example.com"
     task :uptime do |h|
       execute :uptime
     end
-{% endprism %}
+{% endhighlight %}
 
 There is much more than can be done with SSHKit, and we have quite an
 extensive [list of
@@ -416,10 +416,10 @@ from preceedings, there is a so-called command map for commands.
 
 When executing something like:
 
-{% prism ruby %}
+{% highlight ruby %}
     # Capistrano 2.0.x
     execute "git clone ........ ......."
-{% endprism %}
+{% endhighlight %}
 
 The command is passed through to the remote server *completely unchanged*.
 This includes the options which might be set, such as user, directory, and
@@ -428,7 +428,7 @@ allow people to write non-trivial commands in
 [heredocs](https://en.wikipedia.org/wiki/Here_document) when the need arises,
 for example:
 
-{% prism ruby %}
+{% highlight ruby %}
     # Capistrano 3.0.x
     execute <<-EOBLOCK
       # All of this block is interpreted as Bash script
@@ -437,27 +437,27 @@ for example:
         chmod 0644 /tmp/somefile
       end
     EOBLOCK
-{% endprism %}
+{% endhighlight %}
 
 **Caveat:** The SSHKit multiline command sanitizing logic will remove line feeds and add an `;` after each line to separate the commands. So make sure you are not putting a newline between `then` and the following command.
 
 The idiomatic way to write that command in Capistrano v3 is to use the
 separated variadaric method to specify the command:
 
-{% prism ruby %}
+{% highlight ruby %}
     # Capistrano 3.0.x
     execute :git, :clone, "........", "......."
-{% endprism %}
+{% endhighlight %}
 
 ... or for the larger example
 
-{% prism ruby %}
+{% highlight ruby %}
     # Capistrano 3.0.x
     file = '/tmp/somefile'
     unless test("-e #{file}")
       execute :touch, file
     end
-{% endprism %}
+{% endhighlight %}
 
 In this way the *command map* is consulted, the command map maps all unknown
 commands (which in this case is `git`, the rest of the line are *arguments* to
@@ -469,14 +469,14 @@ indirectly) to determine which `git` to run.
 Commands such as `rake` and `rails` are often better prefixed by `bundle
 exec`, and in this case could be mapped to:
 
-{% prism ruby %}
+{% highlight ruby %}
     SSHKit.config.command_map[:rake]  = "bundle exec rake"
     SSHKit.config.command_map[:rails] = "bundle exec rails"
-{% endprism %}
+{% endhighlight %}
 
 There can also be a `lambda` or `Proc` applied in place of the mapping like so:
 
-{% prism ruby %}
+{% highlight ruby %}
     SSHKit.config.command_map = Hash.new do |hash, key|
       if %i{rails rake bundle clockwork heroku}.include?(key.to_sym)
         hash[key] = "/usr/bin/env bundle exec #{key}"
@@ -484,7 +484,7 @@ There can also be a `lambda` or `Proc` applied in place of the mapping like so:
         hash[key] = "/usr/bin/env #{key}"
       end
     end
-{% endprism %}
+{% endhighlight %}
 
 Between these two options there should be quite powerful options to map
 commands in your environment without having to override internal tasks from
@@ -493,7 +493,7 @@ Capistrano just because a path is different, or a binary has a different name.
 This can also be *slightly* abused in environments where *shim* executables
 are used, for example `rbenv` *wrappers*:
 
-{% prism ruby %}
+{% highlight ruby %}
     SSHKit.config.command_map = Hash.new do |hash, key|
       if %i{rails rake bundle clockwork heroku}.include?(key.to_sym)
         hash[key] = "/usr/bin/env myproject_bundle exec myproject_#{key}"
@@ -501,7 +501,7 @@ are used, for example `rbenv` *wrappers*:
         hash[key] = "/usr/bin/env #{key}"
       end
     end
-{% endprism %}
+{% endhighlight %}
 
 The above assumes that you have done something like `rbenv wrapper default
 myproject` which creates wrapper binaries which correctly set up the Ruby
@@ -534,7 +534,7 @@ Capistrano exposes the methods `debug()`, `info()`, `warn()`, `error()` and
 `fatal()` inside of `on()` blocks which can be used to log using the existing
 logging infrastructure and streaming IO formatters:
 
-{% prism ruby %}
+{% highlight ruby %}
     # Capistrano 3.0.x
     on hosts do |host|
       f = '/some/file'
@@ -544,7 +544,7 @@ logging infrastructure and streaming IO formatters:
         info "#{f} already exists on #{host}!"
       end
     end
-{% endprism %}
+{% endhighlight %}
 
 ### Upgrading
 

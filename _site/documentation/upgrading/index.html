@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -126,18 +127,18 @@
 <p>2.
   We recommend to capify the project from scratch and move definitions from old to new configs then.</p>
 
-<p><div>
-  <pre data-line=''><code class='language-bash'>mkdir old_cap
-mv Capfile old_cap
-mv config/deploy.rb old_cap
-mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
-</div></p>
+<div class="highlight"><pre><code class="bash">    mkdir old_cap
+    mv Capfile old_cap
+    mv config/deploy.rb old_cap
+    mv config/deploy/ old_cap <span class="c"># --&gt; only for multistage setups</span>
+  
+</code></pre></div>
 
 <p>It&#39;s time to capify:</p>
 
-<p><div>
-  <pre data-line=''><code class='language-bash'>cap install</code></pre>
-</div></p>
+<div class="highlight"><pre><code class="bash">    cap install
+  
+</code></pre></div>
 
 <p>3.
   Capistrano 3.x is multistage by default, so you will have <code>config/deploy/production.rb</code> and <code>config/deploy/staging.rb</code> right after capifying.
@@ -149,11 +150,11 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 <p>5.
   If you had a gateway server set doing <code>set :gateway, &quot;www.capify.org&quot;</code> you should upgrade to</p>
 
-<p><div>
-  <pre data-line=''><code class='language-ruby'>require &#39;net/ssh/proxy/command&#39;</p>
+<div class="highlight"><pre><code class="ruby">    <span class="nb">require</span> <span class="s1">&#39;net/ssh/proxy/command&#39;</span>
 
-<p>set :ssh_options, proxy: Net::SSH::Proxy::Command.new(&#39;ssh mygateway.com -W %h:%p&#39;)</code></pre>
-</div></p>
+    <span class="n">set</span> <span class="ss">:ssh_options</span><span class="p">,</span> <span class="ss">proxy</span><span class="p">:</span> <span class="no">Net</span><span class="o">::</span><span class="no">SSH</span><span class="o">::</span><span class="no">Proxy</span><span class="o">::</span><span class="no">Command</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ssh mygateway.com -W %h:%p&#39;</span><span class="p">)</span>
+  
+</code></pre></div>
 
 <p>Or the per-server <code>ssh_options</code> equivalent.</p>
 
@@ -167,9 +168,9 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 <p>7.
   If you didn&#39;t use <code>deploy_to</code> before and deployed to <code>/u/apps/your_app_name</code>, you need one more change. Now default deploy path is <code>/var/www/app_name</code> and your config will be broken after upgrade. Just declare custom <code>deploy_to</code> option:</p>
 
-<p><div>
-  <pre data-line=''><code class='language-ruby'>set :deploy_to, &quot;/u/apps/#{fetch(:application)}&quot;</code></pre>
-</div></p>
+<div class="highlight"><pre><code class="ruby">    <span class="n">set</span> <span class="ss">:deploy_to</span><span class="p">,</span> <span class="s2">&quot;/u/apps/</span><span class="si">#{</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:application</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+  
+</code></pre></div>
 
 <p>But in advance, <code>/u/apps</code> is not the best place to store apps and we advice you to change it later.</p>
 
@@ -185,22 +186,20 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 
 <p>Instead of:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>run &lt;&lt;-CMD.compact
-  cd -- #{latest_release} &amp;&amp;
-  RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile
-CMD</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">  <span class="n">run</span> <span class="o">&lt;&lt;-</span><span class="no">CMD</span><span class="o">.</span><span class="n">compact</span>
+<span class="sh">    cd -- #{latest_release} &amp;&amp;</span>
+<span class="sh">    RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile</span>
+<span class="no">  CMD</span>
+</code></pre></div>
 
 <p>It&#39;s better to use:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>within fetch(:latest_release_directory)
-  with rails_env: fetch(:rails_env) do
-    execute :rake, &#39;assets:precompile&#39;
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">  <span class="n">within</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:latest_release_directory</span><span class="p">)</span>
+    <span class="n">with</span> <span class="n">rails_env</span><span class="p">:</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:rails_env</span><span class="p">)</span> <span class="k">do</span>
+      <span class="n">execute</span> <span class="ss">:rake</span><span class="p">,</span> <span class="s1">&#39;assets:precompile&#39;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
 
         </div>
       </div>
@@ -219,18 +218,18 @@ end</code></pre>
 <p>2.
   We recommend to capify the project from scratch and move definitions from old to new configs then.</p>
 
-<p><div>
-  <pre data-line=''><code class='language-bash'>mkdir old_cap
-mv Capfile old_cap
-mv config/deploy.rb old_cap
-mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
-</div></p>
+<div class="highlight"><pre><code class="bash">    mkdir old_cap
+    mv Capfile old_cap
+    mv config/deploy.rb old_cap
+    mv config/deploy/ old_cap <span class="c"># --&gt; only for multistage setups</span>
+  
+</code></pre></div>
 
 <p>It&#39;s time to capify:</p>
 
-<p><div>
-  <pre data-line=''><code class='language-bash'>cap install</code></pre>
-</div></p>
+<div class="highlight"><pre><code class="bash">    cap install
+  
+</code></pre></div>
 
 <p>3.
   Capistrano 3.x is multistage by default, so you will have <code>config/deploy/production.rb</code> and <code>config/deploy/staging.rb</code> right after capifying.
@@ -242,11 +241,11 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 <p>5.
   If you had a gateway server set doing <code>set :gateway, &quot;www.capify.org&quot;</code> you should upgrade to</p>
 
-<p><div>
-  <pre data-line=''><code class='language-ruby'>require &#39;net/ssh/proxy/command&#39;</p>
+<div class="highlight"><pre><code class="ruby">    <span class="nb">require</span> <span class="s1">&#39;net/ssh/proxy/command&#39;</span>
 
-<p>set :ssh_options, proxy: Net::SSH::Proxy::Command.new(&#39;ssh mygateway.com -W %h:%p&#39;)</code></pre>
-</div></p>
+    <span class="n">set</span> <span class="ss">:ssh_options</span><span class="p">,</span> <span class="ss">proxy</span><span class="p">:</span> <span class="no">Net</span><span class="o">::</span><span class="no">SSH</span><span class="o">::</span><span class="no">Proxy</span><span class="o">::</span><span class="no">Command</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ssh mygateway.com -W %h:%p&#39;</span><span class="p">)</span>
+  
+</code></pre></div>
 
 <p>Or the per-server <code>ssh_options</code> equivalent.</p>
 
@@ -260,9 +259,9 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 <p>7.
   If you didn&#39;t use <code>deploy_to</code> before and deployed to <code>/u/apps/your_app_name</code>, you need one more change. Now default deploy path is <code>/var/www/app_name</code> and your config will be broken after upgrade. Just declare custom <code>deploy_to</code> option:</p>
 
-<p><div>
-  <pre data-line=''><code class='language-ruby'>set :deploy_to, &quot;/u/apps/#{fetch(:application)}&quot;</code></pre>
-</div></p>
+<div class="highlight"><pre><code class="ruby">    <span class="n">set</span> <span class="ss">:deploy_to</span><span class="p">,</span> <span class="s2">&quot;/u/apps/</span><span class="si">#{</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:application</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+  
+</code></pre></div>
 
 <p>But in advance, <code>/u/apps</code> is not the best place to store apps and we advice you to change it later.</p>
 
@@ -278,22 +277,20 @@ mv config/deploy/ old_cap # --&gt; only for multistage setups</code></pre>
 
 <p>Instead of:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>run &lt;&lt;-CMD.compact
-  cd -- #{latest_release} &amp;&amp;
-  RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile
-CMD</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">  <span class="n">run</span> <span class="o">&lt;&lt;-</span><span class="no">CMD</span><span class="o">.</span><span class="n">compact</span>
+<span class="sh">    cd -- #{latest_release} &amp;&amp;</span>
+<span class="sh">    RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile</span>
+<span class="no">  CMD</span>
+</code></pre></div>
 
 <p>It&#39;s better to use:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>within fetch(:latest_release_directory)
-  with rails_env: fetch(:rails_env) do
-    execute :rake, &#39;assets:precompile&#39;
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">  <span class="n">within</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:latest_release_directory</span><span class="p">)</span>
+    <span class="n">with</span> <span class="n">rails_env</span><span class="p">:</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:rails_env</span><span class="p">)</span> <span class="k">do</span>
+      <span class="n">execute</span> <span class="ss">:rake</span><span class="p">,</span> <span class="s1">&#39;assets:precompile&#39;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
                                            -->
 
     <!--</div> [> /container <]                                     -->

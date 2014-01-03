@@ -5,7 +5,7 @@ title: A remote server automation and deployment tool written in Ruby.
 
 ### A Simple Task
 
-{% prism ruby %}
+{% highlight ruby %}
 role :demo, %w{example.com example.org example.net}
 task :uptime do |host|
   on roles(:demo), in: :parallel do
@@ -13,7 +13,7 @@ task :uptime do |host|
     puts "#{host.hostname} reports: #{uptime}"
   end
 end
-{% endprism %}
+{% endhighlight %}
 
 Capistrano extends the *Rake* DSL with methods specific to running commands
 `on()` servers.

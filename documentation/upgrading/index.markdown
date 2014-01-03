@@ -12,18 +12,18 @@ layout: default
 2.
   We recommend to capify the project from scratch and move definitions from old to new configs then.
 
-  {% prism bash %}
+  {% highlight bash %}
     mkdir old_cap
     mv Capfile old_cap
     mv config/deploy.rb old_cap
     mv config/deploy/ old_cap # --> only for multistage setups
-  {% endprism %}
+  {% endhighlight %}
 
   It's time to capify:
 
-  {% prism bash %}
+  {% highlight bash %}
     cap install
-  {% endprism %}
+  {% endhighlight %}
 
 3.
   Capistrano 3.x is multistage by default, so you will have `config/deploy/production.rb` and `config/deploy/staging.rb` right after capifying.
@@ -35,11 +35,11 @@ layout: default
 5.
   If you had a gateway server set doing `set :gateway, "www.capify.org"` you should upgrade to
 
-  {% prism ruby %}
+  {% highlight ruby %}
     require 'net/ssh/proxy/command'
 
     set :ssh_options, proxy: Net::SSH::Proxy::Command.new('ssh mygateway.com -W %h:%p')
-  {% endprism %}
+  {% endhighlight %}
 
   Or the per-server `ssh_options` equivalent.
 
@@ -54,9 +54,9 @@ layout: default
 7.
   If you didn't use `deploy_to` before and deployed to `/u/apps/your_app_name`, you need one more change. Now default deploy path is `/var/www/app_name` and your config will be broken after upgrade. Just declare custom `deploy_to` option:
 
-  {% prism ruby %}
+  {% highlight ruby %}
     set :deploy_to, "/u/apps/#{fetch(:application)}"
-  {% endprism %}
+  {% endhighlight %}
 
   But in advance, `/u/apps` is not the best place to store apps and we advice you to change it later.
 
@@ -72,19 +72,19 @@ layout: default
 
 Instead of:
 
-{% prism ruby %}
+{% highlight ruby %}
   run <<-CMD.compact
     cd -- #{latest_release} &&
     RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile
   CMD
-{% endprism %}
+{% endhighlight %}
 
 It's better to use:
 
-{% prism ruby %}
+{% highlight ruby %}
   within fetch(:latest_release_directory)
     with rails_env: fetch(:rails_env) do
       execute :rake, 'assets:precompile'
     end
   end
-{% endprism %}
+{% endhighlight %}

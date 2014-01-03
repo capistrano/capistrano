@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -132,47 +133,48 @@ therefore recommended to use an appropriate bundler.
 
 <p>The following command will install the latest released capistrano <code>v3</code> revision:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>$ gem install capistrano</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="nv">$ </span>gem install capistrano
+</code></pre></div>
 
-<p>Or grab the bleeding edge head from:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>$ git clone https://github.com/capistrano/capistrano.git
-$ cd capistrano
-$ gem build *.gemspec
-$ gem install *.gem</code></pre>
-</div>
+Or grab the bleeding edge head from:
 
-<h3 id="toc_1">Usage in a Rails project</h3>
 
-<p>Add the following lines to the Gemfile:</p>
+<div class="highlight"><pre><code class="bash">    <span class="nv">$ </span>git clone https://github.com/capistrano/capistrano.git
+    <span class="nv">$ </span><span class="nb">cd </span>capistrano
+    <span class="nv">$ </span>gem build *.gemspec
+    <span class="nv">$ </span>gem install *.gem
+</code></pre></div>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>group :development do
-  gem &#39;capistrano-rails&#39;, &#39;~&gt; 1.0.0&#39;
-end</code></pre>
-</div>
 
-<p>The <code>capistrano-rails</code> gem includes extras specifically designed for Ruby on
-Rails, specifically:</p>
+### Usage in a Rails project
 
-<ul>
-<li>Asset Pipeline Support</li>
-<li>Database Migration Support</li>
-</ul>
+Add the following lines to the Gemfile:
 
-<p>The documentation for these components can be found in
-<a href="https://github.com/capistrano/rails/blob/master/README.md">their</a>,
-<a href="https://github.com/capistrano/bundler/blob/master/README.md">respective</a>,
-<a href="https://github.com/capistrano/rails/blob/master/README.md">READMEs</a>. However for the most
-part, to get the best, and most sensible results, simply <code>require</code> in
-Capfile, after the <code>require &#39;capistrano/deploy&#39;</code> line:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>require &#39;capistrano/rails&#39;</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
+      <span class="n">gem</span> <span class="s1">&#39;capistrano-rails&#39;</span><span class="p">,</span> <span class="s1">&#39;~&gt; 1.0.0&#39;</span>
+    <span class="k">end</span>
+</code></pre></div>
+
+
+The `capistrano-rails` gem includes extras specifically designed for Ruby on
+Rails, specifically:
+
+ * Asset Pipeline Support
+ * Database Migration Support
+
+The documentation for these components can be found in
+[their][capistrano-rails-asset-pipeline-readme],
+[respective][capistrano-rails-gem-bundler-readme],
+[READMEs][capistrano-rails-database-migrations-readme]. However for the most
+part, to get the best, and most sensible results, simply `require` in
+Capfile, after the `require 'capistrano/deploy'` line:
+
+
+<div class="highlight"><pre><code class="ruby">    <span class="nb">require</span> <span class="s1">&#39;capistrano/rails&#39;</span>
+</code></pre></div>
+
 
 <div class="alert alert-info">
 <h5>Help! I was using Capistrano `v2.x` and I didn't want to upgrade!</h5>
@@ -181,17 +183,18 @@ If you are using Capistrano `v2.x.x` and have also installed Capistrano `v3`
 by mistake, then you can lock your Gem version for Capistrano at something
 like:
 
-<div>
-  <pre data-line=''><code class='language-ruby'>gem &#39;capistrano&#39;, &#39;~&gt; 2.15&#39; # Or whatever patch release you are using</code></pre>
+
+<div class="highlight"><pre><code class="ruby">    <span class="n">gem</span> <span class="s1">&#39;capistrano&#39;</span><span class="p">,</span> <span class="s1">&#39;~&gt; 2.15&#39;</span> <span class="c1"># Or whatever patch release you are using</span>
+</code></pre></div>
+
+
+This is the [pessimistic operator][rubygems-pessimistic-operator] which
+installs the closest matching version, at the time of writing this would
+install `2.15.4`, and any other point-release in the `2.15.x` family without
+the risk of accidentally upgrading to `v3`.
 </div>
 
-<p>This is the <a href="http://docs.rubygems.org/read/chapter/16#page74">pessimistic operator</a> which
-installs the closest matching version, at the time of writing this would
-install <code>2.15.4</code>, and any other point-release in the <code>2.15.x</code> family without
-the risk of accidentally upgrading to <code>v3</code>.
-</div></p>
-
-<h2 id="toc_2"></h2>
+<h2 id="toc_1"></h2>
 
         </div>
       </div>
@@ -216,47 +219,48 @@ therefore recommended to use an appropriate bundler.
 
 <p>The following command will install the latest released capistrano <code>v3</code> revision:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>$ gem install capistrano</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="nv">$ </span>gem install capistrano
+</code></pre></div>
 
-<p>Or grab the bleeding edge head from:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>$ git clone https://github.com/capistrano/capistrano.git
-$ cd capistrano
-$ gem build *.gemspec
-$ gem install *.gem</code></pre>
-</div>
+Or grab the bleeding edge head from:
 
-<h3 id="toc_1">Usage in a Rails project</h3>
 
-<p>Add the following lines to the Gemfile:</p>
+<div class="highlight"><pre><code class="bash">    <span class="nv">$ </span>git clone https://github.com/capistrano/capistrano.git
+    <span class="nv">$ </span><span class="nb">cd </span>capistrano
+    <span class="nv">$ </span>gem build *.gemspec
+    <span class="nv">$ </span>gem install *.gem
+</code></pre></div>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>group :development do
-  gem &#39;capistrano-rails&#39;, &#39;~&gt; 1.0.0&#39;
-end</code></pre>
-</div>
 
-<p>The <code>capistrano-rails</code> gem includes extras specifically designed for Ruby on
-Rails, specifically:</p>
+### Usage in a Rails project
 
-<ul>
-<li>Asset Pipeline Support</li>
-<li>Database Migration Support</li>
-</ul>
+Add the following lines to the Gemfile:
 
-<p>The documentation for these components can be found in
-<a href="https://github.com/capistrano/rails/blob/master/README.md">their</a>,
-<a href="https://github.com/capistrano/bundler/blob/master/README.md">respective</a>,
-<a href="https://github.com/capistrano/rails/blob/master/README.md">READMEs</a>. However for the most
-part, to get the best, and most sensible results, simply <code>require</code> in
-Capfile, after the <code>require &#39;capistrano/deploy&#39;</code> line:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>require &#39;capistrano/rails&#39;</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">group</span> <span class="ss">:development</span> <span class="k">do</span>
+      <span class="n">gem</span> <span class="s1">&#39;capistrano-rails&#39;</span><span class="p">,</span> <span class="s1">&#39;~&gt; 1.0.0&#39;</span>
+    <span class="k">end</span>
+</code></pre></div>
+
+
+The `capistrano-rails` gem includes extras specifically designed for Ruby on
+Rails, specifically:
+
+ * Asset Pipeline Support
+ * Database Migration Support
+
+The documentation for these components can be found in
+[their][capistrano-rails-asset-pipeline-readme],
+[respective][capistrano-rails-gem-bundler-readme],
+[READMEs][capistrano-rails-database-migrations-readme]. However for the most
+part, to get the best, and most sensible results, simply `require` in
+Capfile, after the `require 'capistrano/deploy'` line:
+
+
+<div class="highlight"><pre><code class="ruby">    <span class="nb">require</span> <span class="s1">&#39;capistrano/rails&#39;</span>
+</code></pre></div>
+
 
 <div class="alert alert-info">
 <h5>Help! I was using Capistrano `v2.x` and I didn't want to upgrade!</h5>
@@ -265,17 +269,18 @@ If you are using Capistrano `v2.x.x` and have also installed Capistrano `v3`
 by mistake, then you can lock your Gem version for Capistrano at something
 like:
 
-<div>
-  <pre data-line=''><code class='language-ruby'>gem &#39;capistrano&#39;, &#39;~&gt; 2.15&#39; # Or whatever patch release you are using</code></pre>
+
+<div class="highlight"><pre><code class="ruby">    <span class="n">gem</span> <span class="s1">&#39;capistrano&#39;</span><span class="p">,</span> <span class="s1">&#39;~&gt; 2.15&#39;</span> <span class="c1"># Or whatever patch release you are using</span>
+</code></pre></div>
+
+
+This is the [pessimistic operator][rubygems-pessimistic-operator] which
+installs the closest matching version, at the time of writing this would
+install `2.15.4`, and any other point-release in the `2.15.x` family without
+the risk of accidentally upgrading to `v3`.
 </div>
 
-<p>This is the <a href="http://docs.rubygems.org/read/chapter/16#page74">pessimistic operator</a> which
-installs the closest matching version, at the time of writing this would
-install <code>2.15.4</code>, and any other point-release in the <code>2.15.x</code> family without
-the risk of accidentally upgrading to <code>v3</code>.
-</div></p>
-
-<h2 id="toc_2"></h2>
+<h2 id="toc_1"></h2>
                                            -->
 
     <!--</div> [> /container <]                                     -->

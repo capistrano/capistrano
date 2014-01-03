@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -122,23 +123,22 @@
 
 <p>An example setting a working directory, user and environment variable:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>on roles(:app), in: :sequence, wait: 5 do
-  within &quot;/opt/sites/example.com&quot; do
-    # commands in this block execute in the 
-    # directory: /opt/sites/example.com
-    as :deploy  do
-      # commands in this block execute as the &quot;deploy&quot; user.
-      with rails_env: :production do
-        # commands in this block execute with the environment
-        # variable RAILS_ENV=production
-        rake   &quot;assets:precompile&quot;
-        runner &quot;S3::Sync.notify&quot;
-      end
-    end
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:app</span><span class="p">),</span> <span class="k">in</span><span class="p">:</span> <span class="ss">:sequence</span><span class="p">,</span> <span class="ss">wait</span><span class="p">:</span> <span class="mi">5</span> <span class="k">do</span>
+  <span class="n">within</span> <span class="s2">&quot;/opt/sites/example.com&quot;</span> <span class="k">do</span>
+    <span class="c1"># commands in this block execute in the</span>
+    <span class="c1"># directory: /opt/sites/example.com</span>
+    <span class="n">as</span> <span class="ss">:deploy</span>  <span class="k">do</span>
+      <span class="c1"># commands in this block execute as the &quot;deploy&quot; user.</span>
+      <span class="n">with</span> <span class="n">rails_env</span><span class="p">:</span> <span class="ss">:production</span> <span class="k">do</span>
+        <span class="c1"># commands in this block execute with the environment</span>
+        <span class="c1"># variable RAILS_ENV=production</span>
+        <span class="n">rake</span>   <span class="s2">&quot;assets:precompile&quot;</span>
+        <span class="n">runner</span> <span class="s2">&quot;S3::Sync.notify&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 
 <p>For more examples, see the EXAMPLES.md file in the <a href="https://github.com/capistrano/sshkit"><strong>SSHKit</strong></a> project:</p>
 
@@ -157,23 +157,22 @@ end</code></pre>
 
 <p>An example setting a working directory, user and environment variable:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>on roles(:app), in: :sequence, wait: 5 do
-  within &quot;/opt/sites/example.com&quot; do
-    # commands in this block execute in the 
-    # directory: /opt/sites/example.com
-    as :deploy  do
-      # commands in this block execute as the &quot;deploy&quot; user.
-      with rails_env: :production do
-        # commands in this block execute with the environment
-        # variable RAILS_ENV=production
-        rake   &quot;assets:precompile&quot;
-        runner &quot;S3::Sync.notify&quot;
-      end
-    end
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:app</span><span class="p">),</span> <span class="k">in</span><span class="p">:</span> <span class="ss">:sequence</span><span class="p">,</span> <span class="ss">wait</span><span class="p">:</span> <span class="mi">5</span> <span class="k">do</span>
+  <span class="n">within</span> <span class="s2">&quot;/opt/sites/example.com&quot;</span> <span class="k">do</span>
+    <span class="c1"># commands in this block execute in the</span>
+    <span class="c1"># directory: /opt/sites/example.com</span>
+    <span class="n">as</span> <span class="ss">:deploy</span>  <span class="k">do</span>
+      <span class="c1"># commands in this block execute as the &quot;deploy&quot; user.</span>
+      <span class="n">with</span> <span class="n">rails_env</span><span class="p">:</span> <span class="ss">:production</span> <span class="k">do</span>
+        <span class="c1"># commands in this block execute with the environment</span>
+        <span class="c1"># variable RAILS_ENV=production</span>
+        <span class="n">rake</span>   <span class="s2">&quot;assets:precompile&quot;</span>
+        <span class="n">runner</span> <span class="s2">&quot;S3::Sync.notify&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 
 <p>For more examples, see the EXAMPLES.md file in the <a href="https://github.com/capistrano/sshkit"><strong>SSHKit</strong></a> project:</p>
 

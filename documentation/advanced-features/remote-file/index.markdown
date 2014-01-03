@@ -8,7 +8,7 @@ The `remote_file` task is allowing the existence of a remote file to be set as a
 As as example, this task can be used to ensure that files to be linked exist
 before running the check:linked_files task:
 
-{% prism ruby %}
+{% highlight ruby %}
   namespace :deploy do
     namespace :check do
       task :linked_files => 'config/newrelic.yml'
@@ -21,4 +21,4 @@ before running the check:linked_files task:
     sh "curl -o #{t.name} https://rpm.newrelic.com/accounts/xx/newrelic.yml"
   end
 
-{% endprism %}
+{% endhighlight %}

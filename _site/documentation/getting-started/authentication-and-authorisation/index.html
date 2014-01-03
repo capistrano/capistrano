@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -127,10 +128,9 @@ to make this work reliably for unique logins across team members)</p>
 <p>To create this deploy user we&#39;ll assume something like the following has been
 done:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>root@remote $ adduser deploy
-root@remote $ passwd -l deploy</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    root@remote <span class="nv">$ </span>adduser deploy
+    root@remote <span class="nv">$ </span>passwd -l deploy
+</code></pre></div>
 
 <p>The first line creates a completely standard user, it has a home directory,
 which we&#39;ll need in a moment, and has a shell, so it may log in. This needs to
@@ -170,9 +170,8 @@ public key to the <code>deploy</code> user&#39;s <code>authorized_keys</code> fi
 quits or gets fired, you can remove their key from that file, and the rest of
 you can keep on shipping!</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-keygen -t rsa -C &#39;me@my_email_address.com&#39;</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh-keygen -t rsa -C <span class="s1">&#39;me@my_email_address.com&#39;</span>
+</code></pre></div>
 
 <p>You&#39;ll be prompted for a passphrase, that&#39;s fine. Type one and keep it safe.
 This passphrase ensures that if your computer is stolen, people still need a
@@ -188,17 +187,15 @@ minutes upwards.)</p>
 
 <p>We can see which keys are loaded in the SSH agent by running <code>ssh-add -l</code></p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-add -l
-2048 af:ce:7e:c5:93:18:39:ff:54:20:7a:2d:ec:05:7c:a5 /Users/me/.ssh/id_rsa (RSA)</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh-add -l
+    2048 af:ce:7e:c5:93:18:39:ff:54:20:7a:2d:ec:05:7c:a5 /Users/me/.ssh/id_rsa <span class="o">(</span>RSA<span class="o">)</span>
+</code></pre></div>
 
 <p>If you don&#39;t see any keys listed, you can simply run <code>ssh-add</code>:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-add
-Identity added: /Users/me/.ssh/id_rsa (/Users/me/.ssh/id_rsa)</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh-add
+    Identity added: /Users/me/.ssh/id_rsa <span class="o">(</span>/Users/me/.ssh/id_rsa<span class="o">)</span>
+</code></pre></div>
 
 <p>Typically, ssh-add will ask you for the passphrase when you add a key.</p>
 
@@ -214,10 +211,9 @@ additional identity.</p>
 <code>/home/users/deploy/.ssh/authorized_keys</code>, to get the contents of that file,
 we can ask our local key agent for the public parts of the keys it has loaded:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-add -L
-ssh-rsa jccXJ/JRfGxnkh/8iL........dbfCH/9cDiKa0Dw8XGAo01mU/w== /Users/me/.ssh/id_rsa</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh-add -L
+    ssh-rsa jccXJ/JRfGxnkh/8iL........dbfCH/9cDiKa0Dw8XGAo01mU/w<span class="o">==</span> /Users/me/.ssh/id_rsa
+</code></pre></div>
 
 <p>This will be a lot longer when you run it, I snipped the output because it
 looked bad.</p>
@@ -232,15 +228,14 @@ none, other none), in the <code>~/.ssh</code> directory which needs the permissi
 <a href="http://linux.die.net/man/1/ssh-copy-id"><code>ssh-copy-id</code></a> which streamlines this
 process, otherwise the workflow is something like:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh root@remote
-root@remote $ su - deploy
-deploy@remote $ cd ~
-deploy@remote $ mkdir .ssh
-deploy@remote $ echo &quot;ssh-rsa jccXJ/JRfGxnkh/8iL........dbfCH/9cDiKa0Dw8XGAo01mU/w== /Users/me/.ssh/id_rsa&quot; &gt;&gt; .ssh/authorized_keys
-deploy@remote $ chmod 700 .ssh
-deploy@remote $ chmod 600 .ssh/authorized_keys</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh root@remote
+    root@remote <span class="nv">$ </span>su - deploy
+    deploy@remote <span class="nv">$ </span><span class="nb">cd</span> ~
+    deploy@remote <span class="nv">$ </span>mkdir .ssh
+    deploy@remote <span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;ssh-rsa jccXJ/JRfGxnkh/8iL........dbfCH/9cDiKa0Dw8XGAo01mU/w== /Users/me/.ssh/id_rsa&quot;</span> &gt;&gt; .ssh/authorized_keys
+    deploy@remote <span class="nv">$ </span>chmod 700 .ssh
+    deploy@remote <span class="nv">$ </span>chmod 600 .ssh/authorized_keys
+</code></pre></div>
 
 <p><strong>Remember:</strong> This needs to be done on every server you want to use, you can
 use the same key for each one, but only one key per developer is recommended.
@@ -248,11 +243,10 @@ use the same key for each one, but only one key per developer is recommended.
 
 <p>If we did all that correctly, we should now be able to do something like this:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@one-of-my-servers.com &#39;hostname; uptime&#39;
-one-of-my-servers.com
-19:23:32 up 62 days, 44 min, 1 user, load average: 0.00, 0.01, 0.05</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh deploy@one-of-my-servers.com <span class="s1">&#39;hostname; uptime&#39;</span>
+    one-of-my-servers.com
+    19:23:32 up 62 days, 44 min, 1 user, load average: 0.00, 0.01, 0.05
+</code></pre></div>
 
 <p>That should happen without having to enter a passphrase for your SSH key, or
 prompting you for an SSH password (which the deploy user doesn&#39;t have anyway).</p>
@@ -283,18 +277,17 @@ charset="utf-8"></script>
 <p>If your server isn&#39;t accessible directly and you need to use the SSH
 ProxyCommand option, you should do</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>require &#39;net/ssh/proxy/command&#39;
+<div class="highlight"><pre><code class="ruby"><span class="nb">require</span> <span class="s1">&#39;net/ssh/proxy/command&#39;</span>
 
-set :ssh_options, proxy: Net::SSH::Proxy::Command.new(&#39;ssh mygateway.com -W %h:%p&#39;)
+<span class="n">set</span> <span class="ss">:ssh_options</span><span class="p">,</span> <span class="ss">proxy</span><span class="p">:</span> <span class="no">Net</span><span class="o">::</span><span class="no">SSH</span><span class="o">::</span><span class="no">Proxy</span><span class="o">::</span><span class="no">Command</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ssh mygateway.com -W %h:%p&#39;</span><span class="p">)</span>
 
-# OR
+<span class="c1"># OR</span>
 
-server &#39;internal-hostname&#39;,
-  ssh_options: {
-    proxy: Net::SSH::Proxy::Command.new(&#39;ssh mygateway.com -W %h:%p&#39;),
-  }</code></pre>
-</div>
+<span class="n">server</span> <span class="s1">&#39;internal-hostname&#39;</span><span class="p">,</span>
+  <span class="n">ssh_options</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">proxy</span><span class="p">:</span> <span class="no">Net</span><span class="o">::</span><span class="no">SSH</span><span class="o">::</span><span class="no">Proxy</span><span class="o">::</span><span class="no">Command</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ssh mygateway.com -W %h:%p&#39;</span><span class="p">),</span>
+  <span class="p">}</span>
+</code></pre></div>
 
 <h4 id="toc_2">1.2 From our servers to the repository host</h4>
 
@@ -311,10 +304,9 @@ Github.</p>
 
 <p>Here&#39;s how we can check if that works, first get the URL of the repository:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ git config remote.origin.url
-git@github.com:capistrano/rails3-bootstrap-devise-cancan.git</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>git config remote.origin.url
+    git@github.com:capistrano/rails3-bootstrap-devise-cancan.git
+</code></pre></div>
 
 <p>Here we&#39;re listing our private (for testing purposes) fork of the
 rails3-bootstrap-devise-cancan repository forked from the Rails Examples and
@@ -322,13 +314,12 @@ Tutorials project.</p>
 
 <p>We can try to access the repository via our server by doing the following:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'># List SSH keys that are loaded into the agent
-me@localhost $ ssh-add -l
-# Make sure they key is loaded if &#39;ssh-add -l&#39; didn&#39;t show anything
-me@localhost $ ssh-add
-me@localhost $ ssh -A deploy@one-of-my-servers.com &#39;git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="c"># List SSH keys that are loaded into the agent</span>
+    me@localhost <span class="nv">$ </span>ssh-add -l
+    <span class="c"># Make sure they key is loaded if &#39;ssh-add -l&#39; didn&#39;t show anything</span>
+    me@localhost <span class="nv">$ </span>ssh-add
+    me@localhost <span class="nv">$ </span>ssh -A deploy@one-of-my-servers.com <span class="err">&#39;</span>git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git
+</code></pre></div>
 
 <p>We first check that the agent has the keys loaded. If not we simply load it
 and enter the passphrase when prompted.</p>
@@ -344,17 +335,16 @@ to the list of known hosts.</p>
 
 <p>From the SSH documentation:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>-A  Enables forwarding of the authentication agent connection.  This can also be
-    specified on a per-host basis in a configuration file.
+<div class="highlight"><pre><code class="bash">     -A  Enables forwarding of the authentication agent connection.  This can also be
+         specified on a per-host basis in a configuration file.
 
-    Agent forwarding should be enabled with caution.  Users with the ability to
-    bypass file permissions on the remote host (for the agent&#39;s UNIX-domain
-    socket) can access the local agent through the forwarded connection.  An
-    attacker cannot obtain key material from the agent, however they can perform
-    operations on the keys that enable them to authenticate using the identities
-    loaded into the agent.</code></pre>
-</div>
+         Agent forwarding should be enabled with caution.  Users with the ability to
+         bypass file permissions on the remote host <span class="o">(</span><span class="k">for </span>the agent<span class="err">&#39;</span>s UNIX-domain
+         socket<span class="o">)</span> can access the <span class="nb">local </span>agent through the forwarded connection.  An
+         attacker cannot obtain key material from the agent, however they can perform
+         operations on the keys that <span class="nb">enable </span>them to authenticate using the identities
+         loaded into the agent.
+</code></pre></div>
 
 <p>In layman&#39;s terms, you shouldn&#39;t use SSH agent forwarding to machines where you
 don&#39;t trust the administrators, as they can can override the permissions on
@@ -373,11 +363,10 @@ Github, we&#39;ll be prompted for a username and password:</p>
 
 <h5 id="toc_5">1.2.2.1 With a regular username/password</h5>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ git ls-remote https://github.com/capistrano/rails3-bootstrap-devise-cancan.git
-Username for &#39;https://github.com&#39;: myownusername
-Password for &#39;https://capistrano@github.com&#39;:</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>git ls-remote https://github.com/capistrano/rails3-bootstrap-devise-cancan.git
+    Username <span class="k">for</span> <span class="s1">&#39;https://github.com&#39;</span>: myownusername
+    Password <span class="k">for</span> <span class="s1">&#39;https://capistrano@github.com&#39;</span>:
+</code></pre></div>
 
 <p>This challenge response prompt doesn&#39;t work well for automating things, so
 there are two ways to get around this depending on your server&#39;s host
@@ -388,11 +377,10 @@ because the netrc is a global file that doesn&#39;t lend itself well to security
 HTTPS not plain ol&#39; HTTP is to embed the username and password in the URL,
 note this won&#39;t work well if your password has special characters:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ git ls-remote https://capistrano:ourverysecretpassword@github.com/capistrano/rails3-bootstrap-devise-cancan.git
-3419812c9f146d9a84b44bcc2c3caef94da54758HEAD
-3419812c9f146d9a84b44bcc2c3caef94da54758HEADrefs/heads/master</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>git ls-remote https://capistrano:ourverysecretpassword@github.com/capistrano/rails3-bootstrap-devise-cancan.git
+    3419812c9f146d9a84b44bcc2c3caef94da54758HEAD
+    3419812c9f146d9a84b44bcc2c3caef94da54758HEADrefs/heads/master
+</code></pre></div>
 
 <p>The bigger problem with passwords, whether inlined into the URL, or entered
 into a <code>netrc</code> file, is that the password gives access to <strong>your entire Github
@@ -405,11 +393,10 @@ at Github, they recently rolled out a feature called <a href="https://github.com
 Tokens</a> which allow you to
 do something like this:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ git ls-remote https://.....................@github.com/capistrano/rails3-bootstrap-devise-cancan.git
-3419812c9f146d9a84b44bcc2c3caef94da54758HEAD
-3419812c9f146d9a84b44bcc2c3caef94da54758HEADrefs/heads/master</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>git ls-remote https://.....................@github.com/capistrano/rails3-bootstrap-devise-cancan.git
+    3419812c9f146d9a84b44bcc2c3caef94da54758HEAD
+    3419812c9f146d9a84b44bcc2c3caef94da54758HEADrefs/heads/master
+</code></pre></div>
 
 <p>Where <code>....</code> is a personal API token, as such:</p>
 
@@ -442,9 +429,8 @@ have configured <em>passwordless</em> <code>sudo</code>. Configuring <code>sudo<
 access to come commands under some circumstances is beyond the scope of this
 documentation, but sufficed to say something like:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>deploy ALL=NOPASSWD:/etc/init.d/mysqld, /etc/init.d/apache2</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">deploy <span class="nv">ALL</span><span class="o">=</span>NOPASSWD:/etc/init.d/mysqld, /etc/init.d/apache2
+</code></pre></div>
 
 <p>This example would give the user named <code>deploy</code> access to call <code>sudo
 /etc/init.d/mysql _________</code> and the same for the <code>apache2</code> control script.</p>
@@ -459,17 +445,16 @@ notice a change.</p>
 <p>To configure this hierarchy, ignoring for the moment the passwordless <code>sudo</code>
 access that you may or may not need depending how well your servers are setup:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh root@remote
-# Capistrano will use /var/www/....... where ... is the value set in
-# :application, you can override this by setting the &#39;:deploy_to&#39; variable
-root@remote $ deploy_to=/var/www/rails3-bootstrap-devise-cancan-demo
-root@remote $ mkdir -p ${deploy_to}
-root@remote $ chown deploy:deploy ${deploy_to}
-root@remote $ umask 0002
-root@remote $ chmod g+s ${deploy_to}
-root@remote $ mkdir ${deploy_to}/{releases,shared}</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh root@remote
+    <span class="c"># Capistrano will use /var/www/....... where ... is the value set in</span>
+    <span class="c"># :application, you can override this by setting the &#39;:deploy_to&#39; variable</span>
+    root@remote <span class="nv">$ deploy_to</span><span class="o">=</span>/var/www/rails3-bootstrap-devise-cancan-demo
+    root@remote <span class="nv">$ </span>mkdir -p <span class="k">${</span><span class="nv">deploy_to</span><span class="k">}</span>
+    root@remote <span class="nv">$ </span>chown deploy:deploy <span class="k">${</span><span class="nv">deploy_to</span><span class="k">}</span>
+    root@remote <span class="nv">$ </span><span class="nb">umask </span>0002
+    root@remote <span class="nv">$ </span>chmod g+s <span class="k">${</span><span class="nv">deploy_to</span><span class="k">}</span>
+    root@remote <span class="nv">$ </span>mkdir <span class="k">${</span><span class="nv">deploy_to</span><span class="k">}</span>/<span class="o">{</span>releases,shared<span class="o">}</span>
+</code></pre></div>
 
 <p><strong>Note:</strong> The <code>chmod g+s</code> is a really handy, and little known Unix feature, it
 means that at the operating system level, without having to pay much attention
@@ -482,14 +467,13 @@ group: read/write, other: none</em>. This means that we&#39;ll be able to read t
 files from Apache, or our web server by running the web server in the <code>deploy</code>
 group namespace.</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>root@remote # stat -c &quot;%A (%a) %n&quot; ${deploy_to}/
-drwx--S--- (2700)  /var/www/rails3-bootstrap-devise-cancan-demo
+<div class="highlight"><pre><code class="bash">    root@remote <span class="c"># stat -c &quot;%A (%a) %n&quot; ${deploy_to}/</span>
+    drwx--S--- <span class="o">(</span>2700<span class="o">)</span>  /var/www/rails3-bootstrap-devise-cancan-demo
 
-root@remote # stat -c &quot;%A (%a) %n&quot; ${deploy_to}/*
-drwxrwsr-x (2775)  /var/www/rails3-bootstrap-devise-cancan-demo/releases
-drwxrwsr-x (2775)  /var/www/rails3-bootstrap-devise-cancan-demo/shared</code></pre>
-</div>
+    root@remote <span class="c"># stat -c &quot;%A (%a) %n&quot; ${deploy_to}/*</span>
+    drwxrwsr-x <span class="o">(</span>2775<span class="o">)</span>  /var/www/rails3-bootstrap-devise-cancan-demo/releases
+    drwxrwsr-x <span class="o">(</span>2775<span class="o">)</span>  /var/www/rails3-bootstrap-devise-cancan-demo/shared
+</code></pre></div>
 
         </div>
       </div>
@@ -509,10 +493,9 @@ to make this work reliably for unique logins across team members)</p>
 <p>To create this deploy user we&#39;ll assume something like the following has been
 done:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>root@remote $ adduser deploy
-root@remote $ passwd -l deploy</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    root@remote <span class="nv">$ </span>adduser deploy
+    root@remote <span class="nv">$ </span>passwd -l deploy
+</code></pre></div>
 
 <p>The first line creates a completely standard user, it has a home directory,
 which we&#39;ll need in a moment, and has a shell, so it may log in. This needs to
@@ -552,9 +535,8 @@ public key to the <code>deploy</code> user&#39;s <code>authorized_keys</code> fi
 quits or gets fired, you can remove their key from that file, and the rest of
 you can keep on shipping!</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-keygen -t rsa -C &#39;me@my_email_address.com&#39;</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh-keygen -t rsa -C <span class="s1">&#39;me@my_email_address.com&#39;</span>
+</code></pre></div>
 
 <p>You&#39;ll be prompted for a passphrase, that&#39;s fine. Type one and keep it safe.
 This passphrase ensures that if your computer is stolen, people still need a
@@ -570,17 +552,15 @@ minutes upwards.)</p>
 
 <p>We can see which keys are loaded in the SSH agent by running <code>ssh-add -l</code></p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-add -l
-2048 af:ce:7e:c5:93:18:39:ff:54:20:7a:2d:ec:05:7c:a5 /Users/me/.ssh/id_rsa (RSA)</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh-add -l
+    2048 af:ce:7e:c5:93:18:39:ff:54:20:7a:2d:ec:05:7c:a5 /Users/me/.ssh/id_rsa <span class="o">(</span>RSA<span class="o">)</span>
+</code></pre></div>
 
 <p>If you don&#39;t see any keys listed, you can simply run <code>ssh-add</code>:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-add
-Identity added: /Users/me/.ssh/id_rsa (/Users/me/.ssh/id_rsa)</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh-add
+    Identity added: /Users/me/.ssh/id_rsa <span class="o">(</span>/Users/me/.ssh/id_rsa<span class="o">)</span>
+</code></pre></div>
 
 <p>Typically, ssh-add will ask you for the passphrase when you add a key.</p>
 
@@ -596,10 +576,9 @@ additional identity.</p>
 <code>/home/users/deploy/.ssh/authorized_keys</code>, to get the contents of that file,
 we can ask our local key agent for the public parts of the keys it has loaded:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh-add -L
-ssh-rsa jccXJ/JRfGxnkh/8iL........dbfCH/9cDiKa0Dw8XGAo01mU/w== /Users/me/.ssh/id_rsa</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh-add -L
+    ssh-rsa jccXJ/JRfGxnkh/8iL........dbfCH/9cDiKa0Dw8XGAo01mU/w<span class="o">==</span> /Users/me/.ssh/id_rsa
+</code></pre></div>
 
 <p>This will be a lot longer when you run it, I snipped the output because it
 looked bad.</p>
@@ -614,15 +593,14 @@ none, other none), in the <code>~/.ssh</code> directory which needs the permissi
 <a href="http://linux.die.net/man/1/ssh-copy-id"><code>ssh-copy-id</code></a> which streamlines this
 process, otherwise the workflow is something like:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh root@remote
-root@remote $ su - deploy
-deploy@remote $ cd ~
-deploy@remote $ mkdir .ssh
-deploy@remote $ echo &quot;ssh-rsa jccXJ/JRfGxnkh/8iL........dbfCH/9cDiKa0Dw8XGAo01mU/w== /Users/me/.ssh/id_rsa&quot; &gt;&gt; .ssh/authorized_keys
-deploy@remote $ chmod 700 .ssh
-deploy@remote $ chmod 600 .ssh/authorized_keys</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh root@remote
+    root@remote <span class="nv">$ </span>su - deploy
+    deploy@remote <span class="nv">$ </span><span class="nb">cd</span> ~
+    deploy@remote <span class="nv">$ </span>mkdir .ssh
+    deploy@remote <span class="nv">$ </span><span class="nb">echo</span> <span class="s2">&quot;ssh-rsa jccXJ/JRfGxnkh/8iL........dbfCH/9cDiKa0Dw8XGAo01mU/w== /Users/me/.ssh/id_rsa&quot;</span> &gt;&gt; .ssh/authorized_keys
+    deploy@remote <span class="nv">$ </span>chmod 700 .ssh
+    deploy@remote <span class="nv">$ </span>chmod 600 .ssh/authorized_keys
+</code></pre></div>
 
 <p><strong>Remember:</strong> This needs to be done on every server you want to use, you can
 use the same key for each one, but only one key per developer is recommended.
@@ -630,11 +608,10 @@ use the same key for each one, but only one key per developer is recommended.
 
 <p>If we did all that correctly, we should now be able to do something like this:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@one-of-my-servers.com &#39;hostname; uptime&#39;
-one-of-my-servers.com
-19:23:32 up 62 days, 44 min, 1 user, load average: 0.00, 0.01, 0.05</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh deploy@one-of-my-servers.com <span class="s1">&#39;hostname; uptime&#39;</span>
+    one-of-my-servers.com
+    19:23:32 up 62 days, 44 min, 1 user, load average: 0.00, 0.01, 0.05
+</code></pre></div>
 
 <p>That should happen without having to enter a passphrase for your SSH key, or
 prompting you for an SSH password (which the deploy user doesn&#39;t have anyway).</p>
@@ -665,18 +642,17 @@ charset="utf-8"></script>
 <p>If your server isn&#39;t accessible directly and you need to use the SSH
 ProxyCommand option, you should do</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>require &#39;net/ssh/proxy/command&#39;
+<div class="highlight"><pre><code class="ruby"><span class="nb">require</span> <span class="s1">&#39;net/ssh/proxy/command&#39;</span>
 
-set :ssh_options, proxy: Net::SSH::Proxy::Command.new(&#39;ssh mygateway.com -W %h:%p&#39;)
+<span class="n">set</span> <span class="ss">:ssh_options</span><span class="p">,</span> <span class="ss">proxy</span><span class="p">:</span> <span class="no">Net</span><span class="o">::</span><span class="no">SSH</span><span class="o">::</span><span class="no">Proxy</span><span class="o">::</span><span class="no">Command</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ssh mygateway.com -W %h:%p&#39;</span><span class="p">)</span>
 
-# OR
+<span class="c1"># OR</span>
 
-server &#39;internal-hostname&#39;,
-  ssh_options: {
-    proxy: Net::SSH::Proxy::Command.new(&#39;ssh mygateway.com -W %h:%p&#39;),
-  }</code></pre>
-</div>
+<span class="n">server</span> <span class="s1">&#39;internal-hostname&#39;</span><span class="p">,</span>
+  <span class="n">ssh_options</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">proxy</span><span class="p">:</span> <span class="no">Net</span><span class="o">::</span><span class="no">SSH</span><span class="o">::</span><span class="no">Proxy</span><span class="o">::</span><span class="no">Command</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;ssh mygateway.com -W %h:%p&#39;</span><span class="p">),</span>
+  <span class="p">}</span>
+</code></pre></div>
 
 <h4 id="toc_2">1.2 From our servers to the repository host</h4>
 
@@ -693,10 +669,9 @@ Github.</p>
 
 <p>Here&#39;s how we can check if that works, first get the URL of the repository:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ git config remote.origin.url
-git@github.com:capistrano/rails3-bootstrap-devise-cancan.git</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>git config remote.origin.url
+    git@github.com:capistrano/rails3-bootstrap-devise-cancan.git
+</code></pre></div>
 
 <p>Here we&#39;re listing our private (for testing purposes) fork of the
 rails3-bootstrap-devise-cancan repository forked from the Rails Examples and
@@ -704,13 +679,12 @@ Tutorials project.</p>
 
 <p>We can try to access the repository via our server by doing the following:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'># List SSH keys that are loaded into the agent
-me@localhost $ ssh-add -l
-# Make sure they key is loaded if &#39;ssh-add -l&#39; didn&#39;t show anything
-me@localhost $ ssh-add
-me@localhost $ ssh -A deploy@one-of-my-servers.com &#39;git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="c"># List SSH keys that are loaded into the agent</span>
+    me@localhost <span class="nv">$ </span>ssh-add -l
+    <span class="c"># Make sure they key is loaded if &#39;ssh-add -l&#39; didn&#39;t show anything</span>
+    me@localhost <span class="nv">$ </span>ssh-add
+    me@localhost <span class="nv">$ </span>ssh -A deploy@one-of-my-servers.com <span class="err">&#39;</span>git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git
+</code></pre></div>
 
 <p>We first check that the agent has the keys loaded. If not we simply load it
 and enter the passphrase when prompted.</p>
@@ -726,17 +700,16 @@ to the list of known hosts.</p>
 
 <p>From the SSH documentation:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>-A  Enables forwarding of the authentication agent connection.  This can also be
-    specified on a per-host basis in a configuration file.
+<div class="highlight"><pre><code class="bash">     -A  Enables forwarding of the authentication agent connection.  This can also be
+         specified on a per-host basis in a configuration file.
 
-    Agent forwarding should be enabled with caution.  Users with the ability to
-    bypass file permissions on the remote host (for the agent&#39;s UNIX-domain
-    socket) can access the local agent through the forwarded connection.  An
-    attacker cannot obtain key material from the agent, however they can perform
-    operations on the keys that enable them to authenticate using the identities
-    loaded into the agent.</code></pre>
-</div>
+         Agent forwarding should be enabled with caution.  Users with the ability to
+         bypass file permissions on the remote host <span class="o">(</span><span class="k">for </span>the agent<span class="err">&#39;</span>s UNIX-domain
+         socket<span class="o">)</span> can access the <span class="nb">local </span>agent through the forwarded connection.  An
+         attacker cannot obtain key material from the agent, however they can perform
+         operations on the keys that <span class="nb">enable </span>them to authenticate using the identities
+         loaded into the agent.
+</code></pre></div>
 
 <p>In layman&#39;s terms, you shouldn&#39;t use SSH agent forwarding to machines where you
 don&#39;t trust the administrators, as they can can override the permissions on
@@ -755,11 +728,10 @@ Github, we&#39;ll be prompted for a username and password:</p>
 
 <h5 id="toc_5">1.2.2.1 With a regular username/password</h5>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ git ls-remote https://github.com/capistrano/rails3-bootstrap-devise-cancan.git
-Username for &#39;https://github.com&#39;: myownusername
-Password for &#39;https://capistrano@github.com&#39;:</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>git ls-remote https://github.com/capistrano/rails3-bootstrap-devise-cancan.git
+    Username <span class="k">for</span> <span class="s1">&#39;https://github.com&#39;</span>: myownusername
+    Password <span class="k">for</span> <span class="s1">&#39;https://capistrano@github.com&#39;</span>:
+</code></pre></div>
 
 <p>This challenge response prompt doesn&#39;t work well for automating things, so
 there are two ways to get around this depending on your server&#39;s host
@@ -770,11 +742,10 @@ because the netrc is a global file that doesn&#39;t lend itself well to security
 HTTPS not plain ol&#39; HTTP is to embed the username and password in the URL,
 note this won&#39;t work well if your password has special characters:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ git ls-remote https://capistrano:ourverysecretpassword@github.com/capistrano/rails3-bootstrap-devise-cancan.git
-3419812c9f146d9a84b44bcc2c3caef94da54758HEAD
-3419812c9f146d9a84b44bcc2c3caef94da54758HEADrefs/heads/master</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>git ls-remote https://capistrano:ourverysecretpassword@github.com/capistrano/rails3-bootstrap-devise-cancan.git
+    3419812c9f146d9a84b44bcc2c3caef94da54758HEAD
+    3419812c9f146d9a84b44bcc2c3caef94da54758HEADrefs/heads/master
+</code></pre></div>
 
 <p>The bigger problem with passwords, whether inlined into the URL, or entered
 into a <code>netrc</code> file, is that the password gives access to <strong>your entire Github
@@ -787,11 +758,10 @@ at Github, they recently rolled out a feature called <a href="https://github.com
 Tokens</a> which allow you to
 do something like this:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ git ls-remote https://.....................@github.com/capistrano/rails3-bootstrap-devise-cancan.git
-3419812c9f146d9a84b44bcc2c3caef94da54758HEAD
-3419812c9f146d9a84b44bcc2c3caef94da54758HEADrefs/heads/master</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>git ls-remote https://.....................@github.com/capistrano/rails3-bootstrap-devise-cancan.git
+    3419812c9f146d9a84b44bcc2c3caef94da54758HEAD
+    3419812c9f146d9a84b44bcc2c3caef94da54758HEADrefs/heads/master
+</code></pre></div>
 
 <p>Where <code>....</code> is a personal API token, as such:</p>
 
@@ -824,9 +794,8 @@ have configured <em>passwordless</em> <code>sudo</code>. Configuring <code>sudo<
 access to come commands under some circumstances is beyond the scope of this
 documentation, but sufficed to say something like:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>deploy ALL=NOPASSWD:/etc/init.d/mysqld, /etc/init.d/apache2</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">deploy <span class="nv">ALL</span><span class="o">=</span>NOPASSWD:/etc/init.d/mysqld, /etc/init.d/apache2
+</code></pre></div>
 
 <p>This example would give the user named <code>deploy</code> access to call <code>sudo
 /etc/init.d/mysql _________</code> and the same for the <code>apache2</code> control script.</p>
@@ -841,17 +810,16 @@ notice a change.</p>
 <p>To configure this hierarchy, ignoring for the moment the passwordless <code>sudo</code>
 access that you may or may not need depending how well your servers are setup:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh root@remote
-# Capistrano will use /var/www/....... where ... is the value set in
-# :application, you can override this by setting the &#39;:deploy_to&#39; variable
-root@remote $ deploy_to=/var/www/rails3-bootstrap-devise-cancan-demo
-root@remote $ mkdir -p ${deploy_to}
-root@remote $ chown deploy:deploy ${deploy_to}
-root@remote $ umask 0002
-root@remote $ chmod g+s ${deploy_to}
-root@remote $ mkdir ${deploy_to}/{releases,shared}</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh root@remote
+    <span class="c"># Capistrano will use /var/www/....... where ... is the value set in</span>
+    <span class="c"># :application, you can override this by setting the &#39;:deploy_to&#39; variable</span>
+    root@remote <span class="nv">$ deploy_to</span><span class="o">=</span>/var/www/rails3-bootstrap-devise-cancan-demo
+    root@remote <span class="nv">$ </span>mkdir -p <span class="k">${</span><span class="nv">deploy_to</span><span class="k">}</span>
+    root@remote <span class="nv">$ </span>chown deploy:deploy <span class="k">${</span><span class="nv">deploy_to</span><span class="k">}</span>
+    root@remote <span class="nv">$ </span><span class="nb">umask </span>0002
+    root@remote <span class="nv">$ </span>chmod g+s <span class="k">${</span><span class="nv">deploy_to</span><span class="k">}</span>
+    root@remote <span class="nv">$ </span>mkdir <span class="k">${</span><span class="nv">deploy_to</span><span class="k">}</span>/<span class="o">{</span>releases,shared<span class="o">}</span>
+</code></pre></div>
 
 <p><strong>Note:</strong> The <code>chmod g+s</code> is a really handy, and little known Unix feature, it
 means that at the operating system level, without having to pay much attention
@@ -864,14 +832,13 @@ group: read/write, other: none</em>. This means that we&#39;ll be able to read t
 files from Apache, or our web server by running the web server in the <code>deploy</code>
 group namespace.</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>root@remote # stat -c &quot;%A (%a) %n&quot; ${deploy_to}/
-drwx--S--- (2700)  /var/www/rails3-bootstrap-devise-cancan-demo
+<div class="highlight"><pre><code class="bash">    root@remote <span class="c"># stat -c &quot;%A (%a) %n&quot; ${deploy_to}/</span>
+    drwx--S--- <span class="o">(</span>2700<span class="o">)</span>  /var/www/rails3-bootstrap-devise-cancan-demo
 
-root@remote # stat -c &quot;%A (%a) %n&quot; ${deploy_to}/*
-drwxrwsr-x (2775)  /var/www/rails3-bootstrap-devise-cancan-demo/releases
-drwxrwsr-x (2775)  /var/www/rails3-bootstrap-devise-cancan-demo/shared</code></pre>
-</div>
+    root@remote <span class="c"># stat -c &quot;%A (%a) %n&quot; ${deploy_to}/*</span>
+    drwxrwsr-x <span class="o">(</span>2775<span class="o">)</span>  /var/www/rails3-bootstrap-devise-cancan-demo/releases
+    drwxrwsr-x <span class="o">(</span>2775<span class="o">)</span>  /var/www/rails3-bootstrap-devise-cancan-demo/shared
+</code></pre></div>
                                            -->
 
     <!--</div> [> /container <]                                     -->

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -139,9 +140,9 @@ Ruby software to form part of a larger tool.</p>
 
 <h4 id="toc_1">What does it look like?</h4>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ cap staging deploy</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>cap staging deploy
+</code></pre></div>
+
 
 <div>
 <pre data-line class="language-capistrano"><code data-language="capistrano"><span style="color:white;">DEBUG</span> Uploading /tmp/git-ssh.sh 0%
@@ -217,53 +218,52 @@ Ruby software to form part of a larger tool.</p>
 <li>A sane, expressive API:</li>
 </ul>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>desc &quot;Show off the API&quot;
-task :ditty do
+<div class="highlight"><pre><code class="ruby">  <span class="n">desc</span> <span class="s2">&quot;Show off the API&quot;</span>
+  <span class="n">task</span> <span class="ss">:ditty</span> <span class="k">do</span>
 
-  on roles(:all) do |host|
-    # Capture output from the remote host, and re-use it
-    # we can reflect on the `host` object passed to the block
-    # and use the `info` logger method to benefit from the
-    # output formatter that is selected.
-    uptime = capture(&#39;uptime&#39;)
-    if host.roles.include?(:web)
-      info &quot;Your webserver #{host} has uptime: #{uptime}&quot;
-    end
-  end
+    <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:all</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">host</span><span class="o">|</span>
+      <span class="c1"># Capture output from the remote host, and re-use it</span>
+      <span class="c1"># we can reflect on the `host` object passed to the block</span>
+      <span class="c1"># and use the `info` logger method to benefit from the</span>
+      <span class="c1"># output formatter that is selected.</span>
+      <span class="n">uptime</span> <span class="o">=</span> <span class="n">capture</span><span class="p">(</span><span class="s1">&#39;uptime&#39;</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">host</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="ss">:web</span><span class="p">)</span>
+        <span class="n">info</span> <span class="s2">&quot;Your webserver </span><span class="si">#{</span><span class="n">host</span><span class="si">}</span><span class="s2"> has uptime: </span><span class="si">#{</span><span class="n">uptime</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
 
-  on roles(:app) do
-    # We can set environmental variables for the duration of a block
-    # and move the process into a directoy, executing arbitrary tasks
-    # such as letting Rails do some heavy lifting.
-    with({:rails_env =&gt; :production}) do
-      within(&#39;/var/www/my/rails/app&#39;) do
-        execute :rails, :runner, &#39;MyModel.something&#39;
-      end
-    end
-  end
+    <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:app</span><span class="p">)</span> <span class="k">do</span>
+      <span class="c1"># We can set environmental variables for the duration of a block</span>
+      <span class="c1"># and move the process into a directoy, executing arbitrary tasks</span>
+      <span class="c1"># such as letting Rails do some heavy lifting.</span>
+      <span class="n">with</span><span class="p">({</span><span class="ss">:rails_env</span> <span class="o">=&gt;</span> <span class="ss">:production</span><span class="p">})</span> <span class="k">do</span>
+        <span class="n">within</span><span class="p">(</span><span class="s1">&#39;/var/www/my/rails/app&#39;</span><span class="p">)</span> <span class="k">do</span>
+          <span class="n">execute</span> <span class="ss">:rails</span><span class="p">,</span> <span class="ss">:runner</span><span class="p">,</span> <span class="s1">&#39;MyModel.something&#39;</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
 
-  on roles(:db) do
-    # We can even switch users, provided we have support on the remote
-    # server for switching to that user without being prompted for a
-    # passphrase.
-    as &#39;postgres&#39; do
-      widgets = capture &quot;echo &#39;SELECT * FROM widgets;&#39; | psql my_database&quot;
-      if widgets.to_i &lt; 50
-        warn &quot;There are fewer than 50 widgets in the database on #{host}!&quot;
-      end
-    end
-  end
+    <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:db</span><span class="p">)</span> <span class="k">do</span>
+      <span class="c1"># We can even switch users, provided we have support on the remote</span>
+      <span class="c1"># server for switching to that user without being prompted for a</span>
+      <span class="c1"># passphrase.</span>
+      <span class="n">as</span> <span class="s1">&#39;postgres&#39;</span> <span class="k">do</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="n">capture</span> <span class="s2">&quot;echo &#39;SELECT * FROM widgets;&#39; | psql my_database&quot;</span>
+        <span class="k">if</span> <span class="n">widgets</span><span class="o">.</span><span class="n">to_i</span> <span class="o">&lt;</span> <span class="mi">50</span>
+          <span class="nb">warn</span> <span class="s2">&quot;There are fewer than 50 widgets in the database on </span><span class="si">#{</span><span class="n">host</span><span class="si">}</span><span class="s2">!&quot;</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
 
-  on roles(:all) do
-    # We can even use `test` the way the Unix gods intended
-    if test(&quot;[ -d /some/directory ]&quot;)
-      info &quot;Phew, it&#39;s ok, the directory exists!&quot;
-    end
-  end
+    <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:all</span><span class="p">)</span> <span class="k">do</span>
+      <span class="c1"># We can even use `test` the way the Unix gods intended</span>
+      <span class="k">if</span> <span class="nb">test</span><span class="p">(</span><span class="s2">&quot;[ -d /some/directory ]&quot;</span><span class="p">)</span>
+        <span class="n">info</span> <span class="s2">&quot;Phew, it&#39;s ok, the directory exists!&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
 
-end</code></pre>
-</div>
+  <span class="k">end</span>
+</code></pre></div>
 
         </div>
       </div>
@@ -295,9 +295,9 @@ Ruby software to form part of a larger tool.</p>
 
 <h4 id="toc_1">What does it look like?</h4>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ cap staging deploy</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>cap staging deploy
+</code></pre></div>
+
 
 <div>
 <pre data-line class="language-capistrano"><code data-language="capistrano"><span style="color:white;">DEBUG</span> Uploading /tmp/git-ssh.sh 0%
@@ -373,53 +373,52 @@ Ruby software to form part of a larger tool.</p>
 <li>A sane, expressive API:</li>
 </ul>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>desc &quot;Show off the API&quot;
-task :ditty do
+<div class="highlight"><pre><code class="ruby">  <span class="n">desc</span> <span class="s2">&quot;Show off the API&quot;</span>
+  <span class="n">task</span> <span class="ss">:ditty</span> <span class="k">do</span>
 
-  on roles(:all) do |host|
-    # Capture output from the remote host, and re-use it
-    # we can reflect on the `host` object passed to the block
-    # and use the `info` logger method to benefit from the
-    # output formatter that is selected.
-    uptime = capture(&#39;uptime&#39;)
-    if host.roles.include?(:web)
-      info &quot;Your webserver #{host} has uptime: #{uptime}&quot;
-    end
-  end
+    <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:all</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">host</span><span class="o">|</span>
+      <span class="c1"># Capture output from the remote host, and re-use it</span>
+      <span class="c1"># we can reflect on the `host` object passed to the block</span>
+      <span class="c1"># and use the `info` logger method to benefit from the</span>
+      <span class="c1"># output formatter that is selected.</span>
+      <span class="n">uptime</span> <span class="o">=</span> <span class="n">capture</span><span class="p">(</span><span class="s1">&#39;uptime&#39;</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">host</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="ss">:web</span><span class="p">)</span>
+        <span class="n">info</span> <span class="s2">&quot;Your webserver </span><span class="si">#{</span><span class="n">host</span><span class="si">}</span><span class="s2"> has uptime: </span><span class="si">#{</span><span class="n">uptime</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
 
-  on roles(:app) do
-    # We can set environmental variables for the duration of a block
-    # and move the process into a directoy, executing arbitrary tasks
-    # such as letting Rails do some heavy lifting.
-    with({:rails_env =&gt; :production}) do
-      within(&#39;/var/www/my/rails/app&#39;) do
-        execute :rails, :runner, &#39;MyModel.something&#39;
-      end
-    end
-  end
+    <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:app</span><span class="p">)</span> <span class="k">do</span>
+      <span class="c1"># We can set environmental variables for the duration of a block</span>
+      <span class="c1"># and move the process into a directoy, executing arbitrary tasks</span>
+      <span class="c1"># such as letting Rails do some heavy lifting.</span>
+      <span class="n">with</span><span class="p">({</span><span class="ss">:rails_env</span> <span class="o">=&gt;</span> <span class="ss">:production</span><span class="p">})</span> <span class="k">do</span>
+        <span class="n">within</span><span class="p">(</span><span class="s1">&#39;/var/www/my/rails/app&#39;</span><span class="p">)</span> <span class="k">do</span>
+          <span class="n">execute</span> <span class="ss">:rails</span><span class="p">,</span> <span class="ss">:runner</span><span class="p">,</span> <span class="s1">&#39;MyModel.something&#39;</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
 
-  on roles(:db) do
-    # We can even switch users, provided we have support on the remote
-    # server for switching to that user without being prompted for a
-    # passphrase.
-    as &#39;postgres&#39; do
-      widgets = capture &quot;echo &#39;SELECT * FROM widgets;&#39; | psql my_database&quot;
-      if widgets.to_i &lt; 50
-        warn &quot;There are fewer than 50 widgets in the database on #{host}!&quot;
-      end
-    end
-  end
+    <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:db</span><span class="p">)</span> <span class="k">do</span>
+      <span class="c1"># We can even switch users, provided we have support on the remote</span>
+      <span class="c1"># server for switching to that user without being prompted for a</span>
+      <span class="c1"># passphrase.</span>
+      <span class="n">as</span> <span class="s1">&#39;postgres&#39;</span> <span class="k">do</span>
+        <span class="n">widgets</span> <span class="o">=</span> <span class="n">capture</span> <span class="s2">&quot;echo &#39;SELECT * FROM widgets;&#39; | psql my_database&quot;</span>
+        <span class="k">if</span> <span class="n">widgets</span><span class="o">.</span><span class="n">to_i</span> <span class="o">&lt;</span> <span class="mi">50</span>
+          <span class="nb">warn</span> <span class="s2">&quot;There are fewer than 50 widgets in the database on </span><span class="si">#{</span><span class="n">host</span><span class="si">}</span><span class="s2">!&quot;</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
 
-  on roles(:all) do
-    # We can even use `test` the way the Unix gods intended
-    if test(&quot;[ -d /some/directory ]&quot;)
-      info &quot;Phew, it&#39;s ok, the directory exists!&quot;
-    end
-  end
+    <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:all</span><span class="p">)</span> <span class="k">do</span>
+      <span class="c1"># We can even use `test` the way the Unix gods intended</span>
+      <span class="k">if</span> <span class="nb">test</span><span class="p">(</span><span class="s2">&quot;[ -d /some/directory ]&quot;</span><span class="p">)</span>
+        <span class="n">info</span> <span class="s2">&quot;Phew, it&#39;s ok, the directory exists!&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
 
-end</code></pre>
-</div>
+  <span class="k">end</span>
+</code></pre></div>
                                            -->
 
     <!--</div> [> /container <]                                     -->

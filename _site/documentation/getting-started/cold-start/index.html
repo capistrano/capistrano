@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -135,19 +136,18 @@ technologies.</p>
 
 <h3 id="toc_0">1. Checking the directory structure on the remote machine:</h3>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@remote &#39;ls -lR /var/www/my-application&#39;
-my-application:
-total 8
-drwxrwsr-x 2 deploy deploy 4096 Jun 24 20:55 releases
-drwxrwsr-x 2 deploy deploy 4096 Jun 24 20:55 shared
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh deploy@remote <span class="s1">&#39;ls -lR /var/www/my-application&#39;</span>
+    my-application:
+    total 8
+    drwxrwsr-x 2 deploy deploy 4096 Jun 24 20:55 releases
+    drwxrwsr-x 2 deploy deploy 4096 Jun 24 20:55 shared
 
-my-application/releases:
-total 0
+    my-application/releases:
+    total 0
 
-my-application/shared:
-total 0</code></pre>
-</div>
+    my-application/shared:
+    total 0
+</code></pre></div>
 
 <p>This checks in one simple command that the ssh keys you setup are working (you
 might yet be prompted for the password), and the permissions on the directory
@@ -159,18 +159,17 @@ can be seen.</p>
 quickly introduce ourselves to a quick Cap task to check these things on all
 the machines for us:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>desc &quot;Check that we can access everything&quot;
-task :check_write_permissions do
-  on roles(:all) do |host|
-    if test(&quot;[ -w #{fetch(:deploy_to)} ]&quot;)
-      info &quot;#{fetch(:deploy_to)} is writable on #{host}&quot;
-    else
-      error &quot;#{fetch(:deploy_to)} is not writable on #{host}&quot;
-    end
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">desc</span> <span class="s2">&quot;Check that we can access everything&quot;</span>
+    <span class="n">task</span> <span class="ss">:check_write_permissions</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:all</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">host</span><span class="o">|</span>
+        <span class="k">if</span> <span class="nb">test</span><span class="p">(</span><span class="s2">&quot;[ -w </span><span class="si">#{</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:deploy_to</span><span class="p">)</span><span class="si">}</span><span class="s2"> ]&quot;</span><span class="p">)</span>
+          <span class="n">info</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:deploy_to</span><span class="p">)</span><span class="si">}</span><span class="s2"> is writable on </span><span class="si">#{</span><span class="n">host</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span>
+          <span class="n">error</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:deploy_to</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not writable on </span><span class="si">#{</span><span class="n">host</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>Running this should give you a pretty decent overview, one line of output for
 each server. It&#39;s also your first introduction to the API of Capistrano for
@@ -185,22 +184,20 @@ later, but add those lines to a file in <code>./lib/capistrano/tasks</code>, cal
 something like <code>access_check.cap</code>, and run <code>cap -T</code> from the top directory and
 we&#39;ll be able to see the task listed:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ bundle exec cap -T
-# ... lots of other tasks ...
-cap check_write_permissions  # Check that we can access everything
-# ... lots of other tasks ...</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>bundle <span class="nb">exec </span>cap -T
+    <span class="c"># ... lots of other tasks ...</span>
+    cap check_write_permissions  <span class="c"># Check that we can access everything</span>
+    <span class="c"># ... lots of other tasks ...</span>
+</code></pre></div>
 
 <p>Then we simply call it:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ bundle exec cap staging check_write_permissions
-DEBUG [82c92144] Running /usr/bin/env [ -w /var/www/my-application ] on myserver.com
-DEBUG [82c92144] Command: [ -w /var/www/my-application ]
-DEBUG [82c92144] Finished in 0.456 seconds command successful.
-INFO /var/www/my-application is writable on myserver.com</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>bundle <span class="nb">exec </span>cap staging check_write_permissions
+    DEBUG <span class="o">[</span>82c92144<span class="o">]</span> Running /usr/bin/env <span class="o">[</span> -w /var/www/my-application <span class="o">]</span> on myserver.com
+    DEBUG <span class="o">[</span>82c92144<span class="o">]</span> Command: <span class="o">[</span> -w /var/www/my-application <span class="o">]</span>
+    DEBUG <span class="o">[</span>82c92144<span class="o">]</span> Finished in 0.456 seconds <span class="nb">command </span>successful.
+    INFO /var/www/my-application is writable on myserver.com
+</code></pre></div>
 
 <p>If we&#39;ve done something wrong, that won&#39;t happen and we&#39;ll know that we need
 to jump on the mailing list to get help, into IRC or ask a friend.</p>
@@ -213,9 +210,8 @@ wrap Git in a shell script that makes it behave.</p>
 <p>Capistrano does just this, so to check if the Git access is working, we can
 simply call:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ cap staging git:check</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">  me@localhost <span class="nv">$ </span>cap staging git:check
+</code></pre></div>
 
 <p>This task is defined
 <a href="https://github.com/capistrano/capistrano/blob/master/lib/capistrano/tasks/git.rake">here</a>
@@ -228,26 +224,25 @@ one of the pieces we inherit from Rake)</p>
 
 <p>If this fails we&#39;ll see:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ cap staging git:check
-cap staging git:check
-DEBUG Uploading /tmp/git-ssh.sh 0%
- INFO Uploading /tmp/git-ssh.sh 100%
- INFO [118bd3e4] Running /usr/bin/env chmod +x /tmp/git-ssh.sh on example.com
-DEBUG [118bd3e4] Command: /usr/bin/env chmod +x /tmp/git-ssh.sh
- INFO [118bd3e4] Finished in 0.049 seconds command successful.
- INFO [a996463f] Running /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git on harrow
-DEBUG [a996463f] Command: ( GIT_ASKPASS=/bin/echo GIT_SSH=/tmp/git-ssh.sh /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git )
-DEBUG [a996463f]  Warning: Permanently added &#39;github.com,204.232.175.90&#39; (RSA) to the list of known hosts.
-DEBUG [a996463f]  Permission denied (publickey).
-DEBUG [a996463f]  fatal: The remote end hung up unexpectedly
-cap aborted!
-git stdout: Nothing written
-git stderr: Nothing written
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>cap staging git:check
+    cap staging git:check
+    DEBUG Uploading /tmp/git-ssh.sh 0%
+     INFO Uploading /tmp/git-ssh.sh 100%
+     INFO <span class="o">[</span>118bd3e4<span class="o">]</span> Running /usr/bin/env chmod +x /tmp/git-ssh.sh on example.com
+    DEBUG <span class="o">[</span>118bd3e4<span class="o">]</span> Command: /usr/bin/env chmod +x /tmp/git-ssh.sh
+     INFO <span class="o">[</span>118bd3e4<span class="o">]</span> Finished in 0.049 seconds <span class="nb">command </span>successful.
+     INFO <span class="o">[</span>a996463f<span class="o">]</span> Running /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git on harrow
+    DEBUG <span class="o">[</span>a996463f<span class="o">]</span> Command: <span class="o">(</span> <span class="nv">GIT_ASKPASS</span><span class="o">=</span>/bin/echo <span class="nv">GIT_SSH</span><span class="o">=</span>/tmp/git-ssh.sh /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git <span class="o">)</span>
+    DEBUG <span class="o">[</span>a996463f<span class="o">]</span>  Warning: Permanently added <span class="s1">&#39;github.com,204.232.175.90&#39;</span> <span class="o">(</span>RSA<span class="o">)</span> to the list of known hosts.
+    DEBUG <span class="o">[</span>a996463f<span class="o">]</span>  Permission denied <span class="o">(</span>publickey<span class="o">)</span>.
+    DEBUG <span class="o">[</span>a996463f<span class="o">]</span>  fatal: The remote end hung up unexpectedly
+    cap aborted!
+    git stdout: Nothing written
+    git stderr: Nothing written
 
-Tasks: TOP =&gt; git:check
-(See full trace by running task with --trace)</code></pre>
-</div>
+    Tasks: <span class="nv">TOP</span> <span class="o">=</span>&gt; git:check
+    <span class="o">(</span>See full trace by running task with --trace<span class="o">)</span>
+</code></pre></div>
 
 <p>This&#39;ll typically come out looking more beautiful depending on your terminal
 colour support, you may well see something like this:</p>
@@ -276,56 +271,52 @@ printed out the error messages for us to try and figure out what broke.</li>
 working by writing a tiny Cap task, or simply using SSH to do it for us, the
 choice is yours:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># lib/capistrano/tasks/agent_forwarding.cap
-desc &quot;Check if agent forwarding is working&quot;
-task :forwarding do
-  on roles(:all) do |h|
-    if test(&quot;env | grep SSH_AUTH_SOCK&quot;)
-      info &quot;Agent forwarding is up to #{h}&quot;
-    else
-      error &quot;Agent forwarding is NOT up to #{h}&quot;
-    end
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># lib/capistrano/tasks/agent_forwarding.cap</span>
+    <span class="n">desc</span> <span class="s2">&quot;Check if agent forwarding is working&quot;</span>
+    <span class="n">task</span> <span class="ss">:forwarding</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:all</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">h</span><span class="o">|</span>
+        <span class="k">if</span> <span class="nb">test</span><span class="p">(</span><span class="s2">&quot;env | grep SSH_AUTH_SOCK&quot;</span><span class="p">)</span>
+          <span class="n">info</span> <span class="s2">&quot;Agent forwarding is up to </span><span class="si">#{</span><span class="n">h</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span>
+          <span class="n">error</span> <span class="s2">&quot;Agent forwarding is NOT up to </span><span class="si">#{</span><span class="n">h</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>That gave the output:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>cap staging forwarding
-DEBUG [f1269276] Running /usr/bin/env env | grep SSH_AUTH_SOCK on example.com
-DEBUG [f1269276] Command: env | grep SSH_AUTH_SOCK
-DEBUG [f1269276]  SSH_AUTH_SOCK=/tmp/ssh-nQUEmyQ2nS/agent.2546
-DEBUG [f1269276] Finished in 0.453 seconds command successful.
- INFO Agent forwarding is up to example.com</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    cap staging forwarding
+    DEBUG <span class="o">[</span>f1269276<span class="o">]</span> Running /usr/bin/env env <span class="p">|</span> grep SSH_AUTH_SOCK on example.com
+    DEBUG <span class="o">[</span>f1269276<span class="o">]</span> Command: env <span class="p">|</span> grep SSH_AUTH_SOCK
+    DEBUG <span class="o">[</span>f1269276<span class="o">]</span>  <span class="nv">SSH_AUTH_SOCK</span><span class="o">=</span>/tmp/ssh-nQUEmyQ2nS/agent.2546
+    DEBUG <span class="o">[</span>f1269276<span class="o">]</span> Finished in 0.453 seconds <span class="nb">command </span>successful.
+     INFO Agent forwarding is up to example.com
+</code></pre></div>
 
 <p>If you don&#39;t feel like writing a Capistrano task, one could simply do:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh -A example.com &#39;env | grep SSH_AUTH_SOCK&#39;
-SSH_AUTH_SOCK=/tmp/ssh-Tb6X8V53tm/agent.2934</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh -A example.com <span class="s1">&#39;env | grep SSH_AUTH_SOCK&#39;</span>
+    <span class="nv">SSH_AUTH_SOCK</span><span class="o">=</span>/tmp/ssh-Tb6X8V53tm/agent.2934
+</code></pre></div>
 
 <p>If we see the <code>SSH_AUTH_SOCK</code> output, that&#39;s a pretty good indication that SSH
 agent forwarding is enabled, and if on your local machine <code>ssh-add -l</code> shows
 you an SSH key, then we&#39;re good to go. <strong>Make sure that you&#39;re using the
 <code>git@...</code> repository URL</strong></p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>cap staging git:check
-DEBUG Uploading /tmp/git-ssh.sh 0%
- INFO Uploading /tmp/git-ssh.sh 100%
- INFO [21382716] Running /usr/bin/env chmod +x /tmp/git-ssh.sh on example.com
-DEBUG [21382716] Command: /usr/bin/env chmod +x /tmp/git-ssh.sh
- INFO [21382716] Finished in 0.047 seconds command successful.
- INFO [f40edfbb] Running /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git on example.com
-DEBUG [f40edfbb] Command: ( GIT_ASKPASS=/bin/echo GIT_SSH=/tmp/git-ssh.sh /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git )
-DEBUG [f40edfbb]  3419812c9f146d9a84b44bcc2c3caef94da54758  HEAD
-DEBUG [f40edfbb]  3419812c9f146d9a84b44bcc2c3caef94da54758  refs/heads/master
- INFO [f40edfbb] Finished in 3.319 seconds command successful.</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    cap staging git:check
+    DEBUG Uploading /tmp/git-ssh.sh 0%
+     INFO Uploading /tmp/git-ssh.sh 100%
+     INFO <span class="o">[</span>21382716<span class="o">]</span> Running /usr/bin/env chmod +x /tmp/git-ssh.sh on example.com
+    DEBUG <span class="o">[</span>21382716<span class="o">]</span> Command: /usr/bin/env chmod +x /tmp/git-ssh.sh
+     INFO <span class="o">[</span>21382716<span class="o">]</span> Finished in 0.047 seconds <span class="nb">command </span>successful.
+     INFO <span class="o">[</span>f40edfbb<span class="o">]</span> Running /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git on example.com
+    DEBUG <span class="o">[</span>f40edfbb<span class="o">]</span> Command: <span class="o">(</span> <span class="nv">GIT_ASKPASS</span><span class="o">=</span>/bin/echo <span class="nv">GIT_SSH</span><span class="o">=</span>/tmp/git-ssh.sh /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git <span class="o">)</span>
+    DEBUG <span class="o">[</span>f40edfbb<span class="o">]</span>  3419812c9f146d9a84b44bcc2c3caef94da54758  HEAD
+    DEBUG <span class="o">[</span>f40edfbb<span class="o">]</span>  3419812c9f146d9a84b44bcc2c3caef94da54758  refs/heads/master
+     INFO <span class="o">[</span>f40edfbb<span class="o">]</span> Finished in 3.319 seconds <span class="nb">command </span>successful.
+</code></pre></div>
 
 <p><img src="/images/successful-git-check-example-screenshot.png" alt="Capistrano Git Check Colour Example"></p>
 
@@ -355,19 +346,18 @@ technologies.</p>
 
 <h3 id="toc_0">1. Checking the directory structure on the remote machine:</h3>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh deploy@remote &#39;ls -lR /var/www/my-application&#39;
-my-application:
-total 8
-drwxrwsr-x 2 deploy deploy 4096 Jun 24 20:55 releases
-drwxrwsr-x 2 deploy deploy 4096 Jun 24 20:55 shared
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh deploy@remote <span class="s1">&#39;ls -lR /var/www/my-application&#39;</span>
+    my-application:
+    total 8
+    drwxrwsr-x 2 deploy deploy 4096 Jun 24 20:55 releases
+    drwxrwsr-x 2 deploy deploy 4096 Jun 24 20:55 shared
 
-my-application/releases:
-total 0
+    my-application/releases:
+    total 0
 
-my-application/shared:
-total 0</code></pre>
-</div>
+    my-application/shared:
+    total 0
+</code></pre></div>
 
 <p>This checks in one simple command that the ssh keys you setup are working (you
 might yet be prompted for the password), and the permissions on the directory
@@ -379,18 +369,17 @@ can be seen.</p>
 quickly introduce ourselves to a quick Cap task to check these things on all
 the machines for us:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>desc &quot;Check that we can access everything&quot;
-task :check_write_permissions do
-  on roles(:all) do |host|
-    if test(&quot;[ -w #{fetch(:deploy_to)} ]&quot;)
-      info &quot;#{fetch(:deploy_to)} is writable on #{host}&quot;
-    else
-      error &quot;#{fetch(:deploy_to)} is not writable on #{host}&quot;
-    end
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">desc</span> <span class="s2">&quot;Check that we can access everything&quot;</span>
+    <span class="n">task</span> <span class="ss">:check_write_permissions</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:all</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">host</span><span class="o">|</span>
+        <span class="k">if</span> <span class="nb">test</span><span class="p">(</span><span class="s2">&quot;[ -w </span><span class="si">#{</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:deploy_to</span><span class="p">)</span><span class="si">}</span><span class="s2"> ]&quot;</span><span class="p">)</span>
+          <span class="n">info</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:deploy_to</span><span class="p">)</span><span class="si">}</span><span class="s2"> is writable on </span><span class="si">#{</span><span class="n">host</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span>
+          <span class="n">error</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:deploy_to</span><span class="p">)</span><span class="si">}</span><span class="s2"> is not writable on </span><span class="si">#{</span><span class="n">host</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>Running this should give you a pretty decent overview, one line of output for
 each server. It&#39;s also your first introduction to the API of Capistrano for
@@ -405,22 +394,20 @@ later, but add those lines to a file in <code>./lib/capistrano/tasks</code>, cal
 something like <code>access_check.cap</code>, and run <code>cap -T</code> from the top directory and
 we&#39;ll be able to see the task listed:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ bundle exec cap -T
-# ... lots of other tasks ...
-cap check_write_permissions  # Check that we can access everything
-# ... lots of other tasks ...</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>bundle <span class="nb">exec </span>cap -T
+    <span class="c"># ... lots of other tasks ...</span>
+    cap check_write_permissions  <span class="c"># Check that we can access everything</span>
+    <span class="c"># ... lots of other tasks ...</span>
+</code></pre></div>
 
 <p>Then we simply call it:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ bundle exec cap staging check_write_permissions
-DEBUG [82c92144] Running /usr/bin/env [ -w /var/www/my-application ] on myserver.com
-DEBUG [82c92144] Command: [ -w /var/www/my-application ]
-DEBUG [82c92144] Finished in 0.456 seconds command successful.
-INFO /var/www/my-application is writable on myserver.com</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>bundle <span class="nb">exec </span>cap staging check_write_permissions
+    DEBUG <span class="o">[</span>82c92144<span class="o">]</span> Running /usr/bin/env <span class="o">[</span> -w /var/www/my-application <span class="o">]</span> on myserver.com
+    DEBUG <span class="o">[</span>82c92144<span class="o">]</span> Command: <span class="o">[</span> -w /var/www/my-application <span class="o">]</span>
+    DEBUG <span class="o">[</span>82c92144<span class="o">]</span> Finished in 0.456 seconds <span class="nb">command </span>successful.
+    INFO /var/www/my-application is writable on myserver.com
+</code></pre></div>
 
 <p>If we&#39;ve done something wrong, that won&#39;t happen and we&#39;ll know that we need
 to jump on the mailing list to get help, into IRC or ask a friend.</p>
@@ -433,9 +420,8 @@ wrap Git in a shell script that makes it behave.</p>
 <p>Capistrano does just this, so to check if the Git access is working, we can
 simply call:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ cap staging git:check</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">  me@localhost <span class="nv">$ </span>cap staging git:check
+</code></pre></div>
 
 <p>This task is defined
 <a href="https://github.com/capistrano/capistrano/blob/master/lib/capistrano/tasks/git.rake">here</a>
@@ -448,26 +434,25 @@ one of the pieces we inherit from Rake)</p>
 
 <p>If this fails we&#39;ll see:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ cap staging git:check
-cap staging git:check
-DEBUG Uploading /tmp/git-ssh.sh 0%
- INFO Uploading /tmp/git-ssh.sh 100%
- INFO [118bd3e4] Running /usr/bin/env chmod +x /tmp/git-ssh.sh on example.com
-DEBUG [118bd3e4] Command: /usr/bin/env chmod +x /tmp/git-ssh.sh
- INFO [118bd3e4] Finished in 0.049 seconds command successful.
- INFO [a996463f] Running /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git on harrow
-DEBUG [a996463f] Command: ( GIT_ASKPASS=/bin/echo GIT_SSH=/tmp/git-ssh.sh /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git )
-DEBUG [a996463f]  Warning: Permanently added &#39;github.com,204.232.175.90&#39; (RSA) to the list of known hosts.
-DEBUG [a996463f]  Permission denied (publickey).
-DEBUG [a996463f]  fatal: The remote end hung up unexpectedly
-cap aborted!
-git stdout: Nothing written
-git stderr: Nothing written
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>cap staging git:check
+    cap staging git:check
+    DEBUG Uploading /tmp/git-ssh.sh 0%
+     INFO Uploading /tmp/git-ssh.sh 100%
+     INFO <span class="o">[</span>118bd3e4<span class="o">]</span> Running /usr/bin/env chmod +x /tmp/git-ssh.sh on example.com
+    DEBUG <span class="o">[</span>118bd3e4<span class="o">]</span> Command: /usr/bin/env chmod +x /tmp/git-ssh.sh
+     INFO <span class="o">[</span>118bd3e4<span class="o">]</span> Finished in 0.049 seconds <span class="nb">command </span>successful.
+     INFO <span class="o">[</span>a996463f<span class="o">]</span> Running /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git on harrow
+    DEBUG <span class="o">[</span>a996463f<span class="o">]</span> Command: <span class="o">(</span> <span class="nv">GIT_ASKPASS</span><span class="o">=</span>/bin/echo <span class="nv">GIT_SSH</span><span class="o">=</span>/tmp/git-ssh.sh /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git <span class="o">)</span>
+    DEBUG <span class="o">[</span>a996463f<span class="o">]</span>  Warning: Permanently added <span class="s1">&#39;github.com,204.232.175.90&#39;</span> <span class="o">(</span>RSA<span class="o">)</span> to the list of known hosts.
+    DEBUG <span class="o">[</span>a996463f<span class="o">]</span>  Permission denied <span class="o">(</span>publickey<span class="o">)</span>.
+    DEBUG <span class="o">[</span>a996463f<span class="o">]</span>  fatal: The remote end hung up unexpectedly
+    cap aborted!
+    git stdout: Nothing written
+    git stderr: Nothing written
 
-Tasks: TOP =&gt; git:check
-(See full trace by running task with --trace)</code></pre>
-</div>
+    Tasks: <span class="nv">TOP</span> <span class="o">=</span>&gt; git:check
+    <span class="o">(</span>See full trace by running task with --trace<span class="o">)</span>
+</code></pre></div>
 
 <p>This&#39;ll typically come out looking more beautiful depending on your terminal
 colour support, you may well see something like this:</p>
@@ -496,56 +481,52 @@ printed out the error messages for us to try and figure out what broke.</li>
 working by writing a tiny Cap task, or simply using SSH to do it for us, the
 choice is yours:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># lib/capistrano/tasks/agent_forwarding.cap
-desc &quot;Check if agent forwarding is working&quot;
-task :forwarding do
-  on roles(:all) do |h|
-    if test(&quot;env | grep SSH_AUTH_SOCK&quot;)
-      info &quot;Agent forwarding is up to #{h}&quot;
-    else
-      error &quot;Agent forwarding is NOT up to #{h}&quot;
-    end
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># lib/capistrano/tasks/agent_forwarding.cap</span>
+    <span class="n">desc</span> <span class="s2">&quot;Check if agent forwarding is working&quot;</span>
+    <span class="n">task</span> <span class="ss">:forwarding</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:all</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">h</span><span class="o">|</span>
+        <span class="k">if</span> <span class="nb">test</span><span class="p">(</span><span class="s2">&quot;env | grep SSH_AUTH_SOCK&quot;</span><span class="p">)</span>
+          <span class="n">info</span> <span class="s2">&quot;Agent forwarding is up to </span><span class="si">#{</span><span class="n">h</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">else</span>
+          <span class="n">error</span> <span class="s2">&quot;Agent forwarding is NOT up to </span><span class="si">#{</span><span class="n">h</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>That gave the output:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>cap staging forwarding
-DEBUG [f1269276] Running /usr/bin/env env | grep SSH_AUTH_SOCK on example.com
-DEBUG [f1269276] Command: env | grep SSH_AUTH_SOCK
-DEBUG [f1269276]  SSH_AUTH_SOCK=/tmp/ssh-nQUEmyQ2nS/agent.2546
-DEBUG [f1269276] Finished in 0.453 seconds command successful.
- INFO Agent forwarding is up to example.com</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    cap staging forwarding
+    DEBUG <span class="o">[</span>f1269276<span class="o">]</span> Running /usr/bin/env env <span class="p">|</span> grep SSH_AUTH_SOCK on example.com
+    DEBUG <span class="o">[</span>f1269276<span class="o">]</span> Command: env <span class="p">|</span> grep SSH_AUTH_SOCK
+    DEBUG <span class="o">[</span>f1269276<span class="o">]</span>  <span class="nv">SSH_AUTH_SOCK</span><span class="o">=</span>/tmp/ssh-nQUEmyQ2nS/agent.2546
+    DEBUG <span class="o">[</span>f1269276<span class="o">]</span> Finished in 0.453 seconds <span class="nb">command </span>successful.
+     INFO Agent forwarding is up to example.com
+</code></pre></div>
 
 <p>If you don&#39;t feel like writing a Capistrano task, one could simply do:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh -A example.com &#39;env | grep SSH_AUTH_SOCK&#39;
-SSH_AUTH_SOCK=/tmp/ssh-Tb6X8V53tm/agent.2934</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh -A example.com <span class="s1">&#39;env | grep SSH_AUTH_SOCK&#39;</span>
+    <span class="nv">SSH_AUTH_SOCK</span><span class="o">=</span>/tmp/ssh-Tb6X8V53tm/agent.2934
+</code></pre></div>
 
 <p>If we see the <code>SSH_AUTH_SOCK</code> output, that&#39;s a pretty good indication that SSH
 agent forwarding is enabled, and if on your local machine <code>ssh-add -l</code> shows
 you an SSH key, then we&#39;re good to go. <strong>Make sure that you&#39;re using the
 <code>git@...</code> repository URL</strong></p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>cap staging git:check
-DEBUG Uploading /tmp/git-ssh.sh 0%
- INFO Uploading /tmp/git-ssh.sh 100%
- INFO [21382716] Running /usr/bin/env chmod +x /tmp/git-ssh.sh on example.com
-DEBUG [21382716] Command: /usr/bin/env chmod +x /tmp/git-ssh.sh
- INFO [21382716] Finished in 0.047 seconds command successful.
- INFO [f40edfbb] Running /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git on example.com
-DEBUG [f40edfbb] Command: ( GIT_ASKPASS=/bin/echo GIT_SSH=/tmp/git-ssh.sh /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git )
-DEBUG [f40edfbb]  3419812c9f146d9a84b44bcc2c3caef94da54758  HEAD
-DEBUG [f40edfbb]  3419812c9f146d9a84b44bcc2c3caef94da54758  refs/heads/master
- INFO [f40edfbb] Finished in 3.319 seconds command successful.</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    cap staging git:check
+    DEBUG Uploading /tmp/git-ssh.sh 0%
+     INFO Uploading /tmp/git-ssh.sh 100%
+     INFO <span class="o">[</span>21382716<span class="o">]</span> Running /usr/bin/env chmod +x /tmp/git-ssh.sh on example.com
+    DEBUG <span class="o">[</span>21382716<span class="o">]</span> Command: /usr/bin/env chmod +x /tmp/git-ssh.sh
+     INFO <span class="o">[</span>21382716<span class="o">]</span> Finished in 0.047 seconds <span class="nb">command </span>successful.
+     INFO <span class="o">[</span>f40edfbb<span class="o">]</span> Running /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git on example.com
+    DEBUG <span class="o">[</span>f40edfbb<span class="o">]</span> Command: <span class="o">(</span> <span class="nv">GIT_ASKPASS</span><span class="o">=</span>/bin/echo <span class="nv">GIT_SSH</span><span class="o">=</span>/tmp/git-ssh.sh /usr/bin/env git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git <span class="o">)</span>
+    DEBUG <span class="o">[</span>f40edfbb<span class="o">]</span>  3419812c9f146d9a84b44bcc2c3caef94da54758  HEAD
+    DEBUG <span class="o">[</span>f40edfbb<span class="o">]</span>  3419812c9f146d9a84b44bcc2c3caef94da54758  refs/heads/master
+     INFO <span class="o">[</span>f40edfbb<span class="o">]</span> Finished in 3.319 seconds <span class="nb">command </span>successful.
+</code></pre></div>
 
 <p><img src="/images/successful-git-check-example-screenshot.png" alt="Capistrano Git Check Colour Example"></p>
                                            -->

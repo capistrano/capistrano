@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -120,15 +121,14 @@
           <h2>A remote server automation and deployment tool written in Ruby.</h2>
           <h3 id="toc_0">A Simple Task</h3>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>role :demo, %w{example.com example.org example.net}
-task :uptime do |host|
-  on roles(:demo), in: :parallel do
-    uptime = capture(:uptime)
-    puts &quot;#{host.hostname} reports: #{uptime}&quot;
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="n">role</span> <span class="ss">:demo</span><span class="p">,</span> <span class="sx">%w{example.com example.org example.net}</span>
+<span class="n">task</span> <span class="ss">:uptime</span> <span class="k">do</span> <span class="o">|</span><span class="n">host</span><span class="o">|</span>
+  <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:demo</span><span class="p">),</span> <span class="k">in</span><span class="p">:</span> <span class="ss">:parallel</span> <span class="k">do</span>
+    <span class="n">uptime</span> <span class="o">=</span> <span class="n">capture</span><span class="p">(</span><span class="ss">:uptime</span><span class="p">)</span>
+    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">host</span><span class="o">.</span><span class="n">hostname</span><span class="si">}</span><span class="s2"> reports: </span><span class="si">#{</span><span class="n">uptime</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 
 <p>Capistrano extends the <em>Rake</em> DSL with methods specific to running commands
 <code>on()</code> servers.</p>
@@ -160,15 +160,14 @@ extended to support them.</p>
 
     <!--    <h3 id="toc_0">A Simple Task</h3>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>role :demo, %w{example.com example.org example.net}
-task :uptime do |host|
-  on roles(:demo), in: :parallel do
-    uptime = capture(:uptime)
-    puts &quot;#{host.hostname} reports: #{uptime}&quot;
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="n">role</span> <span class="ss">:demo</span><span class="p">,</span> <span class="sx">%w{example.com example.org example.net}</span>
+<span class="n">task</span> <span class="ss">:uptime</span> <span class="k">do</span> <span class="o">|</span><span class="n">host</span><span class="o">|</span>
+  <span class="n">on</span> <span class="n">roles</span><span class="p">(</span><span class="ss">:demo</span><span class="p">),</span> <span class="k">in</span><span class="p">:</span> <span class="ss">:parallel</span> <span class="k">do</span>
+    <span class="n">uptime</span> <span class="o">=</span> <span class="n">capture</span><span class="p">(</span><span class="ss">:uptime</span><span class="p">)</span>
+    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">host</span><span class="o">.</span><span class="n">hostname</span><span class="si">}</span><span class="s2"> reports: </span><span class="si">#{</span><span class="n">uptime</span><span class="si">}</span><span class="s2">&quot;</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
 
 <p>Capistrano extends the <em>Rake</em> DSL with methods specific to running commands
 <code>on()</code> servers.</p>

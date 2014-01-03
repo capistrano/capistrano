@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -153,34 +154,31 @@ configuration into place at deploy time.</p>
 <p>The original <code>database.yml</code> should be added to the <code>.gitignore</code> (or your SCM&#39;s
 parallel concept of ignored files)</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>$ cp config/database.yml{,.example}
-$ echo config/database.yml &gt;&gt; .gitignore</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="nv">$ </span>cp config/database.yml<span class="o">{</span>,.example<span class="o">}</span>
+    <span class="nv">$ </span><span class="nb">echo </span>config/database.yml &gt;&gt; .gitignore
+</code></pre></div>
 
 <p>This should be done for any other secret files, we&#39;ll create the production
 version of the file when we deploy, and symlink it into place.</p>
 
 <h3 id="toc_2">3. Initialize Capistrano in your application.</h3>
 
-<div>
-  <pre data-line=''><code class='language-bash'>$ cd my-project
-$ cap install</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="nv">$ </span><span class="nb">cd </span>my-project
+    <span class="nv">$ </span>cap install
+</code></pre></div>
 
 <p>This will create a bunch of files, the important ones are:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>├── Capfile
-├── config
-│   ├── deploy
-│   │   ├── production.rb
-│   │   └── staging.rb
-│   └── deploy.rb
-└── lib
-    └── capistrano
-            └── tasks</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">  ├── Capfile
+  ├── config
+  │   ├── deploy
+  │   │   ├── production.rb
+  │   │   └── staging.rb
+  │   └── deploy.rb
+  └── lib
+      └── capistrano
+              └── tasks
+</code></pre></div>
 
 <p>Your new Capfile will automatically any tasks from any *.cap files in lib/capistrano/tasks.</p>
 
@@ -205,28 +203,27 @@ common.</p>
 
 <p>The example file generated will look something like this:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>set :stage, :staging
+<div class="highlight"><pre><code class="ruby">    <span class="n">set</span> <span class="ss">:stage</span><span class="p">,</span> <span class="ss">:staging</span>
 
-# Simple Role Syntax
-# ==================
-# Supports bulk-adding hosts to roles, the primary
-# server in each group is considered to be the first
-# unless any hosts have the primary property set.
-role :app, %w{example.com}
-role :web, %w{example.com}
-role :db,  %w{example.com}
+    <span class="c1"># Simple Role Syntax</span>
+    <span class="c1"># ==================</span>
+    <span class="c1"># Supports bulk-adding hosts to roles, the primary</span>
+    <span class="c1"># server in each group is considered to be the first</span>
+    <span class="c1"># unless any hosts have the primary property set.</span>
+    <span class="n">role</span> <span class="ss">:app</span><span class="p">,</span> <span class="sx">%w{example.com}</span>
+    <span class="n">role</span> <span class="ss">:web</span><span class="p">,</span> <span class="sx">%w{example.com}</span>
+    <span class="n">role</span> <span class="ss">:db</span><span class="p">,</span>  <span class="sx">%w{example.com}</span>
 
-# Extended Server Syntax
-# ======================
-# This can be used to drop a more detailed server
-# definition into the server list. The second argument
-# is something that quacks like a hash and can be used
-# to set extended properties on the server.
-server &#39;example.com&#39;, roles: %w{web app}, my_property: :my_value
+    <span class="c1"># Extended Server Syntax</span>
+    <span class="c1"># ======================</span>
+    <span class="c1"># This can be used to drop a more detailed server</span>
+    <span class="c1"># definition into the server list. The second argument</span>
+    <span class="c1"># is something that quacks like a hash and can be used</span>
+    <span class="c1"># to set extended properties on the server.</span>
+    <span class="n">server</span> <span class="s1">&#39;example.com&#39;</span><span class="p">,</span> <span class="ss">roles</span><span class="p">:</span> <span class="sx">%w{web app}</span><span class="p">,</span> <span class="n">my_property</span><span class="p">:</span> <span class="ss">:my_value</span>
 
-# set :rails_env, :staging</code></pre>
-</div>
+    <span class="c1"># set :rails_env, :staging</span>
+</code></pre></div>
 
 <p>Both the simple role, and extended server syntaxes result in one or more
 servers for each role being defined. The <code>app</code> and <code>db</code> roles are just
@@ -245,12 +242,11 @@ servers, one where we set the username, and another where we set the port.
 These host strings are parsed and expanded out in to the equivalent of the
 server line after the comment:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>role :web, %w{hello@world.com example.com:1234}
-# ...is the same as doing...
-server &#39;world.com&#39; roles: [:web], user: &#39;hello&#39;
-server &#39;example.com&#39;, roles: [:web], port: 1234</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">  <span class="n">role</span> <span class="ss">:web</span><span class="p">,</span> <span class="sx">%w{hello@world.com example.com:1234}</span>
+  <span class="c1"># ...is the same as doing...</span>
+  <span class="n">server</span> <span class="s1">&#39;world.com&#39;</span> <span class="ss">roles</span><span class="p">:</span> <span class="o">[</span><span class="ss">:web</span><span class="o">]</span><span class="p">,</span> <span class="ss">user</span><span class="p">:</span> <span class="s1">&#39;hello&#39;</span>
+  <span class="n">server</span> <span class="s1">&#39;example.com&#39;</span><span class="p">,</span> <span class="ss">roles</span><span class="p">:</span> <span class="o">[</span><span class="ss">:web</span><span class="o">]</span><span class="p">,</span> <span class="ss">port</span><span class="p">:</span> <span class="mi">1234</span>
+</code></pre></div>
 
 <h3 id="toc_4">5. Set the shared information in <code>deploy.rb</code>.</h3>
 
@@ -262,11 +258,10 @@ deploy</em> are specified here.</p>
 self-documenting, commented-out configuration options, feel free to play with
 them a little:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>set :application, &#39;my app name&#39;
-set :repo_url, &#39;git@example.com:me/my_repo.git&#39;
-ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">set</span> <span class="ss">:application</span><span class="p">,</span> <span class="s1">&#39;my app name&#39;</span>
+    <span class="n">set</span> <span class="ss">:repo_url</span><span class="p">,</span> <span class="s1">&#39;git@example.com:me/my_repo.git&#39;</span>
+    <span class="n">ask</span> <span class="ss">:branch</span><span class="p">,</span> <span class="nb">proc</span> <span class="p">{</span> <span class="sb">`git rev-parse --abbrev-ref HEAD`</span><span class="o">.</span><span class="n">chomp</span> <span class="p">}</span>
+</code></pre></div>
 
 <p>Here we&#39;d set the name of the application, ideally in a way that&#39;s safe for
 filenames on your target operating system.</p>
@@ -285,11 +280,10 @@ Cancan (for authorisation) along side Twitter Bootstrap for assets has been
 forked to the Capistrano repository, but you can find the (unchanged) original
 <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">here</a>.</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>set :application, &#39;rails3-bootstrap-devise-cancan-demo&#39;
-set :repo_url, &#39;https://github.com/capistrano/rails3-bootstrap-devise-cancan&#39;
-set :branch, &#39;master&#39;</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">set</span> <span class="ss">:application</span><span class="p">,</span> <span class="s1">&#39;rails3-bootstrap-devise-cancan-demo&#39;</span>
+    <span class="n">set</span> <span class="ss">:repo_url</span><span class="p">,</span> <span class="s1">&#39;https://github.com/capistrano/rails3-bootstrap-devise-cancan&#39;</span>
+    <span class="n">set</span> <span class="ss">:branch</span><span class="p">,</span> <span class="s1">&#39;master&#39;</span>
+</code></pre></div>
 
 <p>I&#39;ve simplified the <code>:branch</code> variable to simply be a <code>set</code> variable, not a
 question prompt, as this repository only has a master branch.</p>
@@ -347,34 +341,31 @@ configuration into place at deploy time.</p>
 <p>The original <code>database.yml</code> should be added to the <code>.gitignore</code> (or your SCM&#39;s
 parallel concept of ignored files)</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>$ cp config/database.yml{,.example}
-$ echo config/database.yml &gt;&gt; .gitignore</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="nv">$ </span>cp config/database.yml<span class="o">{</span>,.example<span class="o">}</span>
+    <span class="nv">$ </span><span class="nb">echo </span>config/database.yml &gt;&gt; .gitignore
+</code></pre></div>
 
 <p>This should be done for any other secret files, we&#39;ll create the production
 version of the file when we deploy, and symlink it into place.</p>
 
 <h3 id="toc_2">3. Initialize Capistrano in your application.</h3>
 
-<div>
-  <pre data-line=''><code class='language-bash'>$ cd my-project
-$ cap install</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="nv">$ </span><span class="nb">cd </span>my-project
+    <span class="nv">$ </span>cap install
+</code></pre></div>
 
 <p>This will create a bunch of files, the important ones are:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>├── Capfile
-├── config
-│   ├── deploy
-│   │   ├── production.rb
-│   │   └── staging.rb
-│   └── deploy.rb
-└── lib
-    └── capistrano
-            └── tasks</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">  ├── Capfile
+  ├── config
+  │   ├── deploy
+  │   │   ├── production.rb
+  │   │   └── staging.rb
+  │   └── deploy.rb
+  └── lib
+      └── capistrano
+              └── tasks
+</code></pre></div>
 
 <p>Your new Capfile will automatically any tasks from any *.cap files in lib/capistrano/tasks.</p>
 
@@ -399,28 +390,27 @@ common.</p>
 
 <p>The example file generated will look something like this:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>set :stage, :staging
+<div class="highlight"><pre><code class="ruby">    <span class="n">set</span> <span class="ss">:stage</span><span class="p">,</span> <span class="ss">:staging</span>
 
-# Simple Role Syntax
-# ==================
-# Supports bulk-adding hosts to roles, the primary
-# server in each group is considered to be the first
-# unless any hosts have the primary property set.
-role :app, %w{example.com}
-role :web, %w{example.com}
-role :db,  %w{example.com}
+    <span class="c1"># Simple Role Syntax</span>
+    <span class="c1"># ==================</span>
+    <span class="c1"># Supports bulk-adding hosts to roles, the primary</span>
+    <span class="c1"># server in each group is considered to be the first</span>
+    <span class="c1"># unless any hosts have the primary property set.</span>
+    <span class="n">role</span> <span class="ss">:app</span><span class="p">,</span> <span class="sx">%w{example.com}</span>
+    <span class="n">role</span> <span class="ss">:web</span><span class="p">,</span> <span class="sx">%w{example.com}</span>
+    <span class="n">role</span> <span class="ss">:db</span><span class="p">,</span>  <span class="sx">%w{example.com}</span>
 
-# Extended Server Syntax
-# ======================
-# This can be used to drop a more detailed server
-# definition into the server list. The second argument
-# is something that quacks like a hash and can be used
-# to set extended properties on the server.
-server &#39;example.com&#39;, roles: %w{web app}, my_property: :my_value
+    <span class="c1"># Extended Server Syntax</span>
+    <span class="c1"># ======================</span>
+    <span class="c1"># This can be used to drop a more detailed server</span>
+    <span class="c1"># definition into the server list. The second argument</span>
+    <span class="c1"># is something that quacks like a hash and can be used</span>
+    <span class="c1"># to set extended properties on the server.</span>
+    <span class="n">server</span> <span class="s1">&#39;example.com&#39;</span><span class="p">,</span> <span class="ss">roles</span><span class="p">:</span> <span class="sx">%w{web app}</span><span class="p">,</span> <span class="n">my_property</span><span class="p">:</span> <span class="ss">:my_value</span>
 
-# set :rails_env, :staging</code></pre>
-</div>
+    <span class="c1"># set :rails_env, :staging</span>
+</code></pre></div>
 
 <p>Both the simple role, and extended server syntaxes result in one or more
 servers for each role being defined. The <code>app</code> and <code>db</code> roles are just
@@ -439,12 +429,11 @@ servers, one where we set the username, and another where we set the port.
 These host strings are parsed and expanded out in to the equivalent of the
 server line after the comment:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>role :web, %w{hello@world.com example.com:1234}
-# ...is the same as doing...
-server &#39;world.com&#39; roles: [:web], user: &#39;hello&#39;
-server &#39;example.com&#39;, roles: [:web], port: 1234</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">  <span class="n">role</span> <span class="ss">:web</span><span class="p">,</span> <span class="sx">%w{hello@world.com example.com:1234}</span>
+  <span class="c1"># ...is the same as doing...</span>
+  <span class="n">server</span> <span class="s1">&#39;world.com&#39;</span> <span class="ss">roles</span><span class="p">:</span> <span class="o">[</span><span class="ss">:web</span><span class="o">]</span><span class="p">,</span> <span class="ss">user</span><span class="p">:</span> <span class="s1">&#39;hello&#39;</span>
+  <span class="n">server</span> <span class="s1">&#39;example.com&#39;</span><span class="p">,</span> <span class="ss">roles</span><span class="p">:</span> <span class="o">[</span><span class="ss">:web</span><span class="o">]</span><span class="p">,</span> <span class="ss">port</span><span class="p">:</span> <span class="mi">1234</span>
+</code></pre></div>
 
 <h3 id="toc_4">5. Set the shared information in <code>deploy.rb</code>.</h3>
 
@@ -456,11 +445,10 @@ deploy</em> are specified here.</p>
 self-documenting, commented-out configuration options, feel free to play with
 them a little:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>set :application, &#39;my app name&#39;
-set :repo_url, &#39;git@example.com:me/my_repo.git&#39;
-ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">set</span> <span class="ss">:application</span><span class="p">,</span> <span class="s1">&#39;my app name&#39;</span>
+    <span class="n">set</span> <span class="ss">:repo_url</span><span class="p">,</span> <span class="s1">&#39;git@example.com:me/my_repo.git&#39;</span>
+    <span class="n">ask</span> <span class="ss">:branch</span><span class="p">,</span> <span class="nb">proc</span> <span class="p">{</span> <span class="sb">`git rev-parse --abbrev-ref HEAD`</span><span class="o">.</span><span class="n">chomp</span> <span class="p">}</span>
+</code></pre></div>
 
 <p>Here we&#39;d set the name of the application, ideally in a way that&#39;s safe for
 filenames on your target operating system.</p>
@@ -479,11 +467,10 @@ Cancan (for authorisation) along side Twitter Bootstrap for assets has been
 forked to the Capistrano repository, but you can find the (unchanged) original
 <a href="https://github.com/RailsApps/rails3-bootstrap-devise-cancan">here</a>.</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>set :application, &#39;rails3-bootstrap-devise-cancan-demo&#39;
-set :repo_url, &#39;https://github.com/capistrano/rails3-bootstrap-devise-cancan&#39;
-set :branch, &#39;master&#39;</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">set</span> <span class="ss">:application</span><span class="p">,</span> <span class="s1">&#39;rails3-bootstrap-devise-cancan-demo&#39;</span>
+    <span class="n">set</span> <span class="ss">:repo_url</span><span class="p">,</span> <span class="s1">&#39;https://github.com/capistrano/rails3-bootstrap-devise-cancan&#39;</span>
+    <span class="n">set</span> <span class="ss">:branch</span><span class="p">,</span> <span class="s1">&#39;master&#39;</span>
+</code></pre></div>
 
 <p>I&#39;ve simplified the <code>:branch</code> variable to simply be a <code>set</code> variable, not a
 question prompt, as this repository only has a master branch.</p>

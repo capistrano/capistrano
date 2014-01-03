@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -127,7 +128,7 @@ match a given role or roles.</p>
 
 <p>If the filter matches no servers, no actions will be taken.</p>
 
-<p>If you specify a filter, it will match any servers that have that role, but 
+<p>If you specify a filter, it will match any servers that have that role, but
 it will <em>only</em> run the tasks for that role, not for any other roles that
 server may have. For example, if you filtered for servers with the <code>web</code> role,
 and a server had both the <code>web</code> and <code>db</code> role, only the <code>web</code> role would
@@ -142,9 +143,8 @@ be executed on it.</p>
 <p>Capistrano will read the role filter from the environment variable <code>ROLES</code>
 if it is set. You can set it inline:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>ROLES=app,web cap production deploy</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="nv">ROLES</span><span class="o">=</span>app,web cap production deploy
+</code></pre></div>
 
 <p>Specify multiple roles by separating them with a comma.</p>
 
@@ -153,9 +153,8 @@ if it is set. You can set it inline:</p>
 <p>You can set the role filter inside your deploy configuration. For example,
 you can set the following inside <code>config/deploy.rb</code>:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>set :filter, :roles =&gt; %w{app web}</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">set</span> <span class="ss">:filter</span><span class="p">,</span> <span class="ss">:roles</span> <span class="o">=&gt;</span> <span class="sx">%w{app web}</span>
+</code></pre></div>
 
 <p>Note that you specify the filter as an array rather than as a comma-separated
 list of roles when using this method.</p>
@@ -165,9 +164,8 @@ list of roles when using this method.</p>
 <p>In a similar way to using the environment variable, you can set the role
 filter by specifying it as a command line argument to <code>cap</code>:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>cap --roles=app,web production deploy</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    cap --roles<span class="o">=</span>app,web production deploy
+</code></pre></div>
 
 <p>Like the environment variable method, specify multiple roles by separating them
 with a comma.</p>
@@ -190,7 +188,7 @@ match a given role or roles.</p>
 
 <p>If the filter matches no servers, no actions will be taken.</p>
 
-<p>If you specify a filter, it will match any servers that have that role, but 
+<p>If you specify a filter, it will match any servers that have that role, but
 it will <em>only</em> run the tasks for that role, not for any other roles that
 server may have. For example, if you filtered for servers with the <code>web</code> role,
 and a server had both the <code>web</code> and <code>db</code> role, only the <code>web</code> role would
@@ -205,9 +203,8 @@ be executed on it.</p>
 <p>Capistrano will read the role filter from the environment variable <code>ROLES</code>
 if it is set. You can set it inline:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>ROLES=app,web cap production deploy</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="nv">ROLES</span><span class="o">=</span>app,web cap production deploy
+</code></pre></div>
 
 <p>Specify multiple roles by separating them with a comma.</p>
 
@@ -216,9 +213,8 @@ if it is set. You can set it inline:</p>
 <p>You can set the role filter inside your deploy configuration. For example,
 you can set the following inside <code>config/deploy.rb</code>:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>set :filter, :roles =&gt; %w{app web}</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">set</span> <span class="ss">:filter</span><span class="p">,</span> <span class="ss">:roles</span> <span class="o">=&gt;</span> <span class="sx">%w{app web}</span>
+</code></pre></div>
 
 <p>Note that you specify the filter as an array rather than as a comma-separated
 list of roles when using this method.</p>
@@ -228,9 +224,8 @@ list of roles when using this method.</p>
 <p>In a similar way to using the environment variable, you can set the role
 filter by specifying it as a command line argument to <code>cap</code>:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>cap --roles=app,web production deploy</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    cap --roles<span class="o">=</span>app,web production deploy
+</code></pre></div>
 
 <p>Like the environment variable method, specify multiple roles by separating them
 with a comma.</p>

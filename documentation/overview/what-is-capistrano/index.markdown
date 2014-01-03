@@ -22,9 +22,9 @@ Ruby software to form part of a larger tool.
 
 #### What does it look like?
 
-{% prism bash %}
+{% highlight bash %}
     me@localhost $ cap staging deploy
-{% endprism %}
+{% endhighlight %}
 
 <div>
 <pre data-line class="language-capistrano"><code data-language="capistrano"><span style="color:white;">DEBUG</span> Uploading /tmp/git-ssh.sh 0%
@@ -98,7 +98,7 @@ There's lots of cool stuff in the Capistrano toy box:
 * Support for complex environments.
 * A sane, expressive API:
 
-{% prism ruby %}
+{% highlight ruby %}
   desc "Show off the API"
   task :ditty do
 
@@ -144,4 +144,4 @@ There's lots of cool stuff in the Capistrano toy box:
     end
 
   end
-{% endprism %}
+{% endhighlight %}

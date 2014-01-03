@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -118,24 +119,24 @@
       <div class="large-8 column">
         <div class="content">
           <h2>Capistrano in ruby script</h2>
-          <p>Instead of building a config folder and deploy, you may want to programmatically set everything in a single ruby script. This could be done as follows:
-<div>
-  <pre data-line=''><code class='language-ruby'>require &#39;capistrano/all&#39;</p>
+          <p>Instead of building a config folder and deploy, you may want to programmatically set everything in a single ruby script. This could be done as follows:</p>
 
-<p>stages = &quot;production&quot;
-set :application, &#39;my_app_name&#39;
-set :repo_url, &#39;<a href="mailto:git@github.com">git@github.com</a>:capistrano/capistrano.git&#39;
-set :deploy_to, &#39;/var/www/&#39;
-set :stage, :production
-role :app, %w{}</p>
+<div class="highlight"><pre><code class="ruby">  <span class="nb">require</span> <span class="s1">&#39;capistrano/all&#39;</span>
 
-<p>require &#39;capistrano/setup&#39;
-require &#39;capistrano/deploy&#39;
-Dir.glob(&#39;capistrano/tasks/*.cap&#39;).each { |r| import r }</p>
+  <span class="n">stages</span> <span class="o">=</span> <span class="s2">&quot;production&quot;</span>
+  <span class="n">set</span> <span class="ss">:application</span><span class="p">,</span> <span class="s1">&#39;my_app_name&#39;</span>
+  <span class="n">set</span> <span class="ss">:repo_url</span><span class="p">,</span> <span class="s1">&#39;git@github.com:capistrano/capistrano.git&#39;</span>
+  <span class="n">set</span> <span class="ss">:deploy_to</span><span class="p">,</span> <span class="s1">&#39;/var/www/&#39;</span>
+  <span class="n">set</span> <span class="ss">:stage</span><span class="p">,</span> <span class="ss">:production</span>
+  <span class="n">role</span> <span class="ss">:app</span><span class="p">,</span> <span class="sx">%w{}</span>
 
-<p>Capistrano::Application.invoke(&quot;production&quot;)
-Capistrano::Application.invoke(&quot;deploy&quot;)</code></pre>
-</div></p>
+  <span class="nb">require</span> <span class="s1">&#39;capistrano/setup&#39;</span>
+  <span class="nb">require</span> <span class="s1">&#39;capistrano/deploy&#39;</span>
+  <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;capistrano/tasks/*.cap&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span> <span class="n">import</span> <span class="n">r</span> <span class="p">}</span>
+
+  <span class="no">Capistrano</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;production&quot;</span><span class="p">)</span>
+  <span class="no">Capistrano</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;deploy&quot;</span><span class="p">)</span>
+</code></pre></div>
 
 <p>Note that the require order is important as the stage needs to be set before you load setup and deploy.</p>
 
@@ -148,24 +149,24 @@ Capistrano::Application.invoke(&quot;deploy&quot;)</code></pre>
       <!--      <a class="extra" href="/">home</a>                    -->
       <!--    </div>                                                  -->
 
-    <!--    <p>Instead of building a config folder and deploy, you may want to programmatically set everything in a single ruby script. This could be done as follows:
-<div>
-  <pre data-line=''><code class='language-ruby'>require &#39;capistrano/all&#39;</p>
+    <!--    <p>Instead of building a config folder and deploy, you may want to programmatically set everything in a single ruby script. This could be done as follows:</p>
 
-<p>stages = &quot;production&quot;
-set :application, &#39;my_app_name&#39;
-set :repo_url, &#39;<a href="mailto:git@github.com">git@github.com</a>:capistrano/capistrano.git&#39;
-set :deploy_to, &#39;/var/www/&#39;
-set :stage, :production
-role :app, %w{}</p>
+<div class="highlight"><pre><code class="ruby">  <span class="nb">require</span> <span class="s1">&#39;capistrano/all&#39;</span>
 
-<p>require &#39;capistrano/setup&#39;
-require &#39;capistrano/deploy&#39;
-Dir.glob(&#39;capistrano/tasks/*.cap&#39;).each { |r| import r }</p>
+  <span class="n">stages</span> <span class="o">=</span> <span class="s2">&quot;production&quot;</span>
+  <span class="n">set</span> <span class="ss">:application</span><span class="p">,</span> <span class="s1">&#39;my_app_name&#39;</span>
+  <span class="n">set</span> <span class="ss">:repo_url</span><span class="p">,</span> <span class="s1">&#39;git@github.com:capistrano/capistrano.git&#39;</span>
+  <span class="n">set</span> <span class="ss">:deploy_to</span><span class="p">,</span> <span class="s1">&#39;/var/www/&#39;</span>
+  <span class="n">set</span> <span class="ss">:stage</span><span class="p">,</span> <span class="ss">:production</span>
+  <span class="n">role</span> <span class="ss">:app</span><span class="p">,</span> <span class="sx">%w{}</span>
 
-<p>Capistrano::Application.invoke(&quot;production&quot;)
-Capistrano::Application.invoke(&quot;deploy&quot;)</code></pre>
-</div></p>
+  <span class="nb">require</span> <span class="s1">&#39;capistrano/setup&#39;</span>
+  <span class="nb">require</span> <span class="s1">&#39;capistrano/deploy&#39;</span>
+  <span class="no">Dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;capistrano/tasks/*.cap&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="p">{</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span> <span class="n">import</span> <span class="n">r</span> <span class="p">}</span>
+
+  <span class="no">Capistrano</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;production&quot;</span><span class="p">)</span>
+  <span class="no">Capistrano</span><span class="o">::</span><span class="no">Application</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">&quot;deploy&quot;</span><span class="p">)</span>
+</code></pre></div>
 
 <p>Note that the require order is important as the stage needs to be set before you load setup and deploy.</p>
                                            -->

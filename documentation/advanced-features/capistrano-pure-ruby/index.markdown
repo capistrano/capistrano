@@ -3,7 +3,7 @@ title: Capistrano in ruby script
 layout: default
 ---
 Instead of building a config folder and deploy, you may want to programmatically set everything in a single ruby script. This could be done as follows:
-{% prism ruby %}
+{% highlight ruby %}
   require 'capistrano/all'
 
   stages = "production"
@@ -19,6 +19,6 @@ Instead of building a config folder and deploy, you may want to programmatically
 
   Capistrano::Application.invoke("production")
   Capistrano::Application.invoke("deploy")
-{% endprism%}
+{% endhighlight%}
 
 Note that the require order is important as the stage needs to be set before you load setup and deploy.

@@ -20,7 +20,7 @@ technologies.
 
 ### 1. Checking the directory structure on the remote machine:
 
-{% prism bash %}
+{% highlight bash %}
     me@localhost $ ssh deploy@remote 'ls -lR /var/www/my-application'
     my-application:
     total 8
@@ -32,7 +32,7 @@ technologies.
 
     my-application/shared:
     total 0
-{% endprism %}
+{% endhighlight %}
 
 This checks in one simple command that the ssh keys you setup are working (you
 might yet be prompted for the password), and the permissions on the directory
@@ -44,7 +44,7 @@ Now that we know how to check for permissions, and repository access, we'll
 quickly introduce ourselves to a quick Cap task to check these things on all
 the machines for us:
 
-{% prism ruby %}
+{% highlight ruby %}
     desc "Check that we can access everything"
     task :check_write_permissions do
       on roles(:all) do |host|
@@ -55,7 +55,7 @@ the machines for us:
         end
       end
     end
-{% endprism %}
+{% endhighlight %}
 
 Running this should give you a pretty decent overview, one line of output for
 each server. It's also your first introduction to the API of Capistrano for
@@ -70,22 +70,22 @@ later, but add those lines to a file in `./lib/capistrano/tasks`, call it
 something like `access_check.cap`, and run `cap -T` from the top directory and
 we'll be able to see the task listed:
 
-{% prism bash %}
+{% highlight bash %}
     me@localhost $ bundle exec cap -T
     # ... lots of other tasks ...
     cap check_write_permissions  # Check that we can access everything
     # ... lots of other tasks ...
-{% endprism %}
+{% endhighlight %}
 
 Then we simply call it:
 
-{% prism bash %}
+{% highlight bash %}
     me@localhost $ bundle exec cap staging check_write_permissions
     DEBUG [82c92144] Running /usr/bin/env [ -w /var/www/my-application ] on myserver.com
     DEBUG [82c92144] Command: [ -w /var/www/my-application ]
     DEBUG [82c92144] Finished in 0.456 seconds command successful.
     INFO /var/www/my-application is writable on myserver.com
-{% endprism %}
+{% endhighlight %}
 
 If we've done something wrong, that won't happen and we'll know that we need
 to jump on the mailing list to get help, into IRC or ask a friend.
@@ -98,9 +98,9 @@ wrap Git in a shell script that makes it behave.
 Capistrano does just this, so to check if the Git access is working, we can
 simply call:
 
-{% prism bash %}
+{% highlight bash %}
   me@localhost $ cap staging git:check
-{% endprism %}
+{% endhighlight %}
 
 This task is defined
 [here](https://github.com/capistrano/capistrano/blob/master/lib/capistrano/tasks/git.rake)
@@ -113,7 +113,7 @@ one of the pieces we inherit from Rake)
 
 If this fails we'll see:
 
-{% prism bash %}
+{% highlight bash %}
     me@localhost $ cap staging git:check
     cap staging git:check
     DEBUG Uploading /tmp/git-ssh.sh 0%
@@ -132,7 +132,7 @@ If this fails we'll see:
 
     Tasks: TOP => git:check
     (See full trace by running task with --trace)
-{% endprism %}
+{% endhighlight %}
 
 This'll typically come out looking more beautiful depending on your terminal
 colour support, you may well see something like this:
@@ -159,7 +159,7 @@ In this case, we'll be using SSH agent forwarding, we can check if that's
 working by writing a tiny Cap task, or simply using SSH to do it for us, the
 choice is yours:
 
-{% prism ruby %}
+{% highlight ruby %}
     # lib/capistrano/tasks/agent_forwarding.cap
     desc "Check if agent forwarding is working"
     task :forwarding do
@@ -171,32 +171,32 @@ choice is yours:
         end
       end
     end
-{% endprism %}
+{% endhighlight %}
 
 That gave the output:
 
-{% prism bash %}
+{% highlight bash %}
     cap staging forwarding
     DEBUG [f1269276] Running /usr/bin/env env | grep SSH_AUTH_SOCK on example.com
     DEBUG [f1269276] Command: env | grep SSH_AUTH_SOCK
     DEBUG [f1269276]  SSH_AUTH_SOCK=/tmp/ssh-nQUEmyQ2nS/agent.2546
     DEBUG [f1269276] Finished in 0.453 seconds command successful.
      INFO Agent forwarding is up to example.com
-{% endprism %}
+{% endhighlight %}
 
 If you don't feel like writing a Capistrano task, one could simply do:
 
-{% prism bash %}
+{% highlight bash %}
     me@localhost $ ssh -A example.com 'env | grep SSH_AUTH_SOCK'
     SSH_AUTH_SOCK=/tmp/ssh-Tb6X8V53tm/agent.2934
-{% endprism %}
+{% endhighlight %}
 
 If we see the `SSH_AUTH_SOCK` output, that's a pretty good indication that SSH
 agent forwarding is enabled, and if on your local machine `ssh-add -l` shows
 you an SSH key, then we're good to go. **Make sure that you're using the
 `git@...` repository URL**
 
-{% prism bash %}
+{% highlight bash %}
     cap staging git:check
     DEBUG Uploading /tmp/git-ssh.sh 0%
      INFO Uploading /tmp/git-ssh.sh 100%
@@ -208,6 +208,6 @@ you an SSH key, then we're good to go. **Make sure that you're using the
     DEBUG [f40edfbb]  3419812c9f146d9a84b44bcc2c3caef94da54758  HEAD
     DEBUG [f40edfbb]  3419812c9f146d9a84b44bcc2c3caef94da54758  refs/heads/master
      INFO [f40edfbb] Finished in 3.319 seconds command successful.
-{% endprism %}
+{% endhighlight %}
 
 ![Capistrano Git Check Colour Example](/images/successful-git-check-example-screenshot.png)

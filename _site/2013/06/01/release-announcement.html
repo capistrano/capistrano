@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -232,22 +233,21 @@ acompanying documentation if you want to explore that any further.</p>
 <p>The guiding principle is dependency resolution, and interoperability with
 other tools, for example:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-task :notify do
-  this_release_tag = sh(&quot;git describe --abbrev=0 --tags&quot;)
-  last_ten_commits = sh(&quot;git log #{this_release_tag}~10..#{this_release_tag}&quot;)
-  Mail.deliver do
-    to      &quot;team@example.com&quot;
-    subject &quot;Releasing #{this_release_tag} Now!&quot;
-    body    last_ten_commits
-  end
-end
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">task</span> <span class="ss">:notify</span> <span class="k">do</span>
+      <span class="n">this_release_tag</span> <span class="o">=</span> <span class="n">sh</span><span class="p">(</span><span class="s2">&quot;git describe --abbrev=0 --tags&quot;</span><span class="p">)</span>
+      <span class="n">last_ten_commits</span> <span class="o">=</span> <span class="n">sh</span><span class="p">(</span><span class="s2">&quot;git log </span><span class="si">#{</span><span class="n">this_release_tag</span><span class="si">}</span><span class="s2">~10..</span><span class="si">#{</span><span class="n">this_release_tag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+      <span class="no">Mail</span><span class="o">.</span><span class="n">deliver</span> <span class="k">do</span>
+        <span class="n">to</span>      <span class="s2">&quot;team@example.com&quot;</span>
+        <span class="n">subject</span> <span class="s2">&quot;Releasing </span><span class="si">#{</span><span class="n">this_release_tag</span><span class="si">}</span><span class="s2"> Now!&quot;</span>
+        <span class="n">body</span>    <span class="n">last_ten_commits</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
 
-namespace :deploy
-  task default: :notify
-end</code></pre>
-</div>
+    <span class="n">namespace</span> <span class="ss">:deploy</span>
+      <span class="n">task</span> <span class="ss">default</span><span class="p">:</span> <span class="ss">:notify</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>The last three lines rely on Rake&#39;s additive task declaration, by redefining the
 <code>deploy:default</code> task by adding another dependency. Rake will automatically
@@ -269,9 +269,8 @@ conventions established in the examples we created for you.</p>
 <p>To create different stages at installation time, simply set the <code>STAGES</code>
 environmental variable to a comma separated list of stages:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>$ cap install STAGES=staging,production,ci,qa</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="nv">$ </span>cap install <span class="nv">STAGES</span><span class="o">=</span>staging,production,ci,qa
+</code></pre></div>
 
 <h4 id="toc_5">Parallelism</h4>
 
@@ -279,16 +278,15 @@ environmental variable to a comma separated list of stages:</p>
 different tasks differently on groups of servers, it looked something like
 this:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 2.0.x
-task :restart do
-  parallel do |session|
-    session.when &quot;in?(:app)&quot;, &quot;/u/apps/social/script/restart-mongrel&quot;
-    session.when &quot;in?(:web)&quot;, &quot;/u/apps/social/script/restart-apache&quot;
-    session.else &quot;echo nothing to do&quot;
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 2.0.x</span>
+    <span class="n">task</span> <span class="ss">:restart</span> <span class="k">do</span>
+      <span class="n">parallel</span> <span class="k">do</span> <span class="o">|</span><span class="n">session</span><span class="o">|</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">when</span> <span class="s2">&quot;in?(:app)&quot;</span><span class="p">,</span> <span class="s2">&quot;/u/apps/social/script/restart-mongrel&quot;</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">when</span> <span class="s2">&quot;in?(:web)&quot;</span><span class="p">,</span> <span class="s2">&quot;/u/apps/social/script/restart-apache&quot;</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">else</span> <span class="s2">&quot;echo nothing to do&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>This always felt a little unclean, and indeed it&#39;s a hack that was originally
 implemeted to facilitate rolling deployments at a large German firm by a
@@ -297,21 +295,20 @@ went on to found Travis-CI!)</p>
 
 <p>The equivalent code in under Capistrano v3 would look like this:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-task :restart do
-  on :all, in: :parallel do |host|
-    if host.roles.include?(:app)
-      execute &quot;/u/apps/social/script/restart-mongrel&quot;
-    elsif host.roles.include?(:web)
-      execute &quot;/u/apps/social/script/restart-web&quot;
-    else
-      info sprintf(&quot;Nothing to do for %s with roles %s&quot;, host,
-      host.properties.roles)
-    end
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">task</span> <span class="ss">:restart</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="ss">:all</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="ss">:parallel</span> <span class="k">do</span> <span class="o">|</span><span class="n">host</span><span class="o">|</span>
+        <span class="k">if</span> <span class="n">host</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="ss">:app</span><span class="p">)</span>
+          <span class="n">execute</span> <span class="s2">&quot;/u/apps/social/script/restart-mongrel&quot;</span>
+        <span class="k">elsif</span> <span class="n">host</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="ss">:web</span><span class="p">)</span>
+          <span class="n">execute</span> <span class="s2">&quot;/u/apps/social/script/restart-web&quot;</span>
+        <span class="k">else</span>
+          <span class="n">info</span> <span class="nb">sprintf</span><span class="p">(</span><span class="s2">&quot;Nothing to do for %s with roles %s&quot;</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span>
+          <span class="n">host</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">roles</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>The second block of code, that representing the new Rake derived DSL and
 demonstrating how to use the parallel execution mode is a little longer, but I
@@ -321,27 +318,26 @@ built-in logging subsystem, keep reading to learn more.</p>
 
 <p>Other modes for parallelism include:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-on :all, in: :groups, max: 3, wait: 5 do
-  # Take all servers, in groups of three which execute in parallel
-  # wait five seconds between groups of servers.
-  # This is perfect for rolling restarts
-end
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">on</span> <span class="ss">:all</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="ss">:groups</span><span class="p">,</span> <span class="ss">max</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="ss">wait</span><span class="p">:</span> <span class="mi">5</span> <span class="k">do</span>
+      <span class="c1"># Take all servers, in groups of three which execute in parallel</span>
+      <span class="c1"># wait five seconds between groups of servers.</span>
+      <span class="c1"># This is perfect for rolling restarts</span>
+    <span class="k">end</span>
 
-on :all, in: :sequence, wait: 15 do
-  # This takes all servers, in sequence and waits 15 seconds between
-  # each server, this might be perfect if you are afraid about
-  # overloading a shared resource, or want to defer the asset compilation
-  # over your cluster owing to worries about load
-end
+    <span class="n">on</span> <span class="ss">:all</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="ss">:sequence</span><span class="p">,</span> <span class="ss">wait</span><span class="p">:</span> <span class="mi">15</span> <span class="k">do</span>
+      <span class="c1"># This takes all servers, in sequence and waits 15 seconds between</span>
+      <span class="c1"># each server, this might be perfect if you are afraid about</span>
+      <span class="c1"># overloading a shared resource, or want to defer the asset compilation</span>
+      <span class="c1"># over your cluster owing to worries about load</span>
+    <span class="k">end</span>
 
-on :all, in: :parallel do
-  # This will simply try and execute the commands contained within
-  # the block in parallel on all servers. This might be perfect for kicking
-  # off something like a Git checkout or similar.
-end</code></pre>
-</div>
+    <span class="n">on</span> <span class="ss">:all</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="ss">:parallel</span> <span class="k">do</span>
+      <span class="c1"># This will simply try and execute the commands contained within</span>
+      <span class="c1"># the block in parallel on all servers. This might be perfect for kicking</span>
+      <span class="c1"># off something like a Git checkout or similar.</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>The internal tasks, for standard deploy recipes make use of all of these as is
 appropriate for the normal case, no need to be afraid of scary slow deploys
@@ -399,19 +395,18 @@ both connections.</p>
 <p>This cleanup routine can now be better implemented as follows (which is
 actually more or less the actual implementation in the the new Gem):</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-desc &quot;Cleanup all old releases (keeps #{fetch(:releases_to_keep_on_cleanup)}
-old releases&quot;
-task :cleanup do
-  keep_releases     = fetch(:releases_to_keep_on_cleanup)
-  releases          = capture(:ls, fetch(:releases_directory))
-  release_to_delete = releases.sort_by { |r| rn.to_i }.slice(1..-(keep_releases + 1))
-  releases_to_delete.each do |r|
-    execute :rm, fetch(:releases_directory).join(r)
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">desc</span> <span class="s2">&quot;Cleanup all old releases (keeps </span><span class="si">#{</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:releases_to_keep_on_cleanup</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    old releases&quot;</span>
+    <span class="n">task</span> <span class="ss">:cleanup</span> <span class="k">do</span>
+      <span class="n">keep_releases</span>     <span class="o">=</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:releases_to_keep_on_cleanup</span><span class="p">)</span>
+      <span class="n">releases</span>          <span class="o">=</span> <span class="n">capture</span><span class="p">(</span><span class="ss">:ls</span><span class="p">,</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:releases_directory</span><span class="p">))</span>
+      <span class="n">release_to_delete</span> <span class="o">=</span> <span class="n">releases</span><span class="o">.</span><span class="n">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span> <span class="n">rn</span><span class="o">.</span><span class="n">to_i</span> <span class="p">}</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="p">(</span><span class="n">keep_releases</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+      <span class="n">releases_to_delete</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
+        <span class="n">execute</span> <span class="ss">:rm</span><span class="p">,</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:releases_directory</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>Some handy things to note here are that both server one and server two in our
 contrived example will both evaluate that independently, and when both servers
@@ -438,39 +433,36 @@ your application.</p>
 
 <p>An example of it&#39;s usage might be:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>h = SSHKit::Host.new &#39;example.com&#39;
-h.properties.roles ||= %i{wep app}</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">h</span> <span class="o">=</span> <span class="no">SSHKit</span><span class="o">::</span><span class="no">Host</span><span class="o">.</span><span class="n">new</span> <span class="s1">&#39;example.com&#39;</span>
+    <span class="n">h</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">roles</span> <span class="o">||=</span> <span class="o">%</span><span class="n">i</span><span class="p">{</span><span class="n">wep</span> <span class="n">app</span><span class="p">}</span>
+</code></pre></div>
 
 <h4 id="toc_9">More Expressive Command Language</h4>
 
 <p>In Capistrano v2, it wasn&#39;t uncommon to find commands such as:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 2.0.x
-task :precompile, :roles =&gt; lambda { assets_role }, :except =&gt; { :no_release =&gt; true } do
-  run &lt;&lt;-CMD.compact
-    cd -- #{latest_release} &amp;&amp;
-    RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile
-  CMD
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 2.0.x</span>
+    <span class="n">task</span> <span class="ss">:precompile</span><span class="p">,</span> <span class="ss">:roles</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="n">assets_role</span> <span class="p">},</span> <span class="ss">:except</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:no_release</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="p">}</span> <span class="k">do</span>
+      <span class="n">run</span> <span class="o">&lt;&lt;-</span><span class="no">CMD</span><span class="o">.</span><span class="n">compact</span>
+<span class="sh">        cd -- #{latest_release} &amp;&amp;</span>
+<span class="sh">        RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile</span>
+<span class="no">      CMD</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>In Capistrano v3 this looks more like this:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-task :precompile do
-  on :sprockets_asset_host, reject: lambda { |h| h.properties.no_release } do
-    within fetch(:latest_release_directory)
-      with rails_env: fetch(:rails_env) do
-        execute :rake, &#39;assets:precompile&#39;
-      end
-    end
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">task</span> <span class="ss">:precompile</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="ss">:sprockets_asset_host</span><span class="p">,</span> <span class="ss">reject</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="o">|</span> <span class="n">h</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">no_release</span> <span class="p">}</span> <span class="k">do</span>
+        <span class="n">within</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:latest_release_directory</span><span class="p">)</span>
+          <span class="n">with</span> <span class="n">rails_env</span><span class="p">:</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:rails_env</span><span class="p">)</span> <span class="k">do</span>
+            <span class="n">execute</span> <span class="ss">:rake</span><span class="p">,</span> <span class="s1">&#39;assets:precompile&#39;</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>Again, with other examples this format is a little longer, but much more
 expressive, and all the nightmare of shell escaping is handled interally for
@@ -516,14 +508,13 @@ from Capistrano.</p>
 <p>SSHkit is ideal for use if you need to just connect to a machine and run some
 arbitrary command, for example:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Rakefile (even without Capistrano loaded)
-require &#39;sshkit&#39;
-desc &quot;Check the uptime of example.com&quot;
-task :uptime do |h|
-  execute :uptime
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Rakefile (even without Capistrano loaded)</span>
+    <span class="nb">require</span> <span class="s1">&#39;sshkit&#39;</span>
+    <span class="n">desc</span> <span class="s2">&quot;Check the uptime of example.com&quot;</span>
+    <span class="n">task</span> <span class="ss">:uptime</span> <span class="k">do</span> <span class="o">|</span><span class="n">h</span><span class="o">|</span>
+      <span class="n">execute</span> <span class="ss">:uptime</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>There is much more than can be done with SSHKit, and we have quite an
 extensive <a href="https://github.com/leehambley/sshkit/blob/master/EXAMPLES.md">list of
@@ -539,10 +530,9 @@ from preceedings, there is a so-called command map for commands.</p>
 
 <p>When executing something like:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 2.0.x
-execute &quot;git clone ........ .......&quot;</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 2.0.x</span>
+    <span class="n">execute</span> <span class="s2">&quot;git clone ........ .......&quot;</span>
+</code></pre></div>
 
 <p>The command is passed through to the remote server <em>completely unchanged</em>.
 This includes the options which might be set, such as user, directory, and
@@ -551,36 +541,33 @@ allow people to write non-trivial commands in
 <a href="https://en.wikipedia.org/wiki/Here_document">heredocs</a> when the need arises,
 for example:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-execute &lt;&lt;-EOBLOCK
-  # All of this block is interpreted as Bash script
-  if ! [ -e /tmp/somefile ]
-    then touch /tmp/somefile
-    chmod 0644 /tmp/somefile
-  end
-EOBLOCK</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">execute</span> <span class="o">&lt;&lt;-</span><span class="no">EOBLOCK</span>
+<span class="sh">      # All of this block is interpreted as Bash script</span>
+<span class="sh">      if ! [ -e /tmp/somefile ]</span>
+<span class="sh">        then touch /tmp/somefile</span>
+<span class="sh">        chmod 0644 /tmp/somefile</span>
+<span class="sh">      end</span>
+<span class="no">    EOBLOCK</span>
+</code></pre></div>
 
 <p><strong>Caveat:</strong> The SSHKit multiline command sanitizing logic will remove line feeds and add an <code>;</code> after each line to separate the commands. So make sure you are not putting a newline between <code>then</code> and the following command.</p>
 
 <p>The idiomatic way to write that command in Capistrano v3 is to use the
 separated variadaric method to specify the command:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-execute :git, :clone, &quot;........&quot;, &quot;.......&quot;</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">execute</span> <span class="ss">:git</span><span class="p">,</span> <span class="ss">:clone</span><span class="p">,</span> <span class="s2">&quot;........&quot;</span><span class="p">,</span> <span class="s2">&quot;.......&quot;</span>
+</code></pre></div>
 
 <p>... or for the larger example</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-file = &#39;/tmp/somefile&#39;
-unless test(&quot;-e #{file}&quot;)
-  execute :touch, file
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;/tmp/somefile&#39;</span>
+    <span class="k">unless</span> <span class="nb">test</span><span class="p">(</span><span class="s2">&quot;-e </span><span class="si">#{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+      <span class="n">execute</span> <span class="ss">:touch</span><span class="p">,</span> <span class="n">file</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>In this way the <em>command map</em> is consulted, the command map maps all unknown
 commands (which in this case is <code>git</code>, the rest of the line are <em>arguments</em> to
@@ -592,22 +579,20 @@ indirectly) to determine which <code>git</code> to run.</p>
 <p>Commands such as <code>rake</code> and <code>rails</code> are often better prefixed by <code>bundle
 exec</code>, and in this case could be mapped to:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>SSHKit.config.command_map[:rake]  = &quot;bundle exec rake&quot;
-SSHKit.config.command_map[:rails] = &quot;bundle exec rails&quot;</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="no">SSHKit</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">command_map</span><span class="o">[</span><span class="ss">:rake</span><span class="o">]</span>  <span class="o">=</span> <span class="s2">&quot;bundle exec rake&quot;</span>
+    <span class="no">SSHKit</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">command_map</span><span class="o">[</span><span class="ss">:rails</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;bundle exec rails&quot;</span>
+</code></pre></div>
 
 <p>There can also be a <code>lambda</code> or <code>Proc</code> applied in place of the mapping like so:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>SSHKit.config.command_map = Hash.new do |hash, key|
-  if %i{rails rake bundle clockwork heroku}.include?(key.to_sym)
-    hash[key] = &quot;/usr/bin/env bundle exec #{key}&quot;
-  else
-    hash[key] = &quot;/usr/bin/env #{key}&quot;
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="no">SSHKit</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">command_map</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="nb">hash</span><span class="p">,</span> <span class="n">key</span><span class="o">|</span>
+      <span class="k">if</span> <span class="o">%</span><span class="n">i</span><span class="p">{</span><span class="n">rails</span> <span class="n">rake</span> <span class="n">bundle</span> <span class="n">clockwork</span> <span class="n">heroku</span><span class="p">}</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">to_sym</span><span class="p">)</span>
+        <span class="nb">hash</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/env bundle exec </span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="k">else</span>
+        <span class="nb">hash</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/env </span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>Between these two options there should be quite powerful options to map
 commands in your environment without having to override internal tasks from
@@ -616,15 +601,14 @@ Capistrano just because a path is different, or a binary has a different name.</
 <p>This can also be <em>slightly</em> abused in environments where <em>shim</em> executables
 are used, for example <code>rbenv</code> <em>wrappers</em>:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>SSHKit.config.command_map = Hash.new do |hash, key|
-  if %i{rails rake bundle clockwork heroku}.include?(key.to_sym)
-    hash[key] = &quot;/usr/bin/env myproject_bundle exec myproject_#{key}&quot;
-  else
-    hash[key] = &quot;/usr/bin/env #{key}&quot;
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="no">SSHKit</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">command_map</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="nb">hash</span><span class="p">,</span> <span class="n">key</span><span class="o">|</span>
+      <span class="k">if</span> <span class="o">%</span><span class="n">i</span><span class="p">{</span><span class="n">rails</span> <span class="n">rake</span> <span class="n">bundle</span> <span class="n">clockwork</span> <span class="n">heroku</span><span class="p">}</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">to_sym</span><span class="p">)</span>
+        <span class="nb">hash</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/env myproject_bundle exec myproject_</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="k">else</span>
+        <span class="nb">hash</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/env </span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>The above assumes that you have done something like <code>rbenv wrapper default
 myproject</code> which creates wrapper binaries which correctly set up the Ruby
@@ -657,17 +641,16 @@ made, or not made as expected.</p>
 <code>fatal()</code> inside of <code>on()</code> blocks which can be used to log using the existing
 logging infrastructure and streaming IO formatters:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-on hosts do |host|
-  f = &#39;/some/file&#39;
-  if test(&quot;[ -d #{f} ]&quot;)
-    execute :touch, f
-  else
-    info &quot;#{f} already exists on #{host}!&quot;
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">on</span> <span class="n">hosts</span> <span class="k">do</span> <span class="o">|</span><span class="n">host</span><span class="o">|</span>
+      <span class="n">f</span> <span class="o">=</span> <span class="s1">&#39;/some/file&#39;</span>
+      <span class="k">if</span> <span class="nb">test</span><span class="p">(</span><span class="s2">&quot;[ -d </span><span class="si">#{</span><span class="n">f</span><span class="si">}</span><span class="s2"> ]&quot;</span><span class="p">)</span>
+        <span class="n">execute</span> <span class="ss">:touch</span><span class="p">,</span> <span class="n">f</span>
+      <span class="k">else</span>
+        <span class="n">info</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">f</span><span class="si">}</span><span class="s2"> already exists on </span><span class="si">#{</span><span class="n">host</span><span class="si">}</span><span class="s2">!&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <h3 id="toc_15"> Upgrading</h3>
 
@@ -822,22 +805,21 @@ acompanying documentation if you want to explore that any further.</p>
 <p>The guiding principle is dependency resolution, and interoperability with
 other tools, for example:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-task :notify do
-  this_release_tag = sh(&quot;git describe --abbrev=0 --tags&quot;)
-  last_ten_commits = sh(&quot;git log #{this_release_tag}~10..#{this_release_tag}&quot;)
-  Mail.deliver do
-    to      &quot;team@example.com&quot;
-    subject &quot;Releasing #{this_release_tag} Now!&quot;
-    body    last_ten_commits
-  end
-end
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">task</span> <span class="ss">:notify</span> <span class="k">do</span>
+      <span class="n">this_release_tag</span> <span class="o">=</span> <span class="n">sh</span><span class="p">(</span><span class="s2">&quot;git describe --abbrev=0 --tags&quot;</span><span class="p">)</span>
+      <span class="n">last_ten_commits</span> <span class="o">=</span> <span class="n">sh</span><span class="p">(</span><span class="s2">&quot;git log </span><span class="si">#{</span><span class="n">this_release_tag</span><span class="si">}</span><span class="s2">~10..</span><span class="si">#{</span><span class="n">this_release_tag</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+      <span class="no">Mail</span><span class="o">.</span><span class="n">deliver</span> <span class="k">do</span>
+        <span class="n">to</span>      <span class="s2">&quot;team@example.com&quot;</span>
+        <span class="n">subject</span> <span class="s2">&quot;Releasing </span><span class="si">#{</span><span class="n">this_release_tag</span><span class="si">}</span><span class="s2"> Now!&quot;</span>
+        <span class="n">body</span>    <span class="n">last_ten_commits</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
 
-namespace :deploy
-  task default: :notify
-end</code></pre>
-</div>
+    <span class="n">namespace</span> <span class="ss">:deploy</span>
+      <span class="n">task</span> <span class="ss">default</span><span class="p">:</span> <span class="ss">:notify</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>The last three lines rely on Rake&#39;s additive task declaration, by redefining the
 <code>deploy:default</code> task by adding another dependency. Rake will automatically
@@ -859,9 +841,8 @@ conventions established in the examples we created for you.</p>
 <p>To create different stages at installation time, simply set the <code>STAGES</code>
 environmental variable to a comma separated list of stages:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>$ cap install STAGES=staging,production,ci,qa</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    <span class="nv">$ </span>cap install <span class="nv">STAGES</span><span class="o">=</span>staging,production,ci,qa
+</code></pre></div>
 
 <h4 id="toc_5">Parallelism</h4>
 
@@ -869,16 +850,15 @@ environmental variable to a comma separated list of stages:</p>
 different tasks differently on groups of servers, it looked something like
 this:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 2.0.x
-task :restart do
-  parallel do |session|
-    session.when &quot;in?(:app)&quot;, &quot;/u/apps/social/script/restart-mongrel&quot;
-    session.when &quot;in?(:web)&quot;, &quot;/u/apps/social/script/restart-apache&quot;
-    session.else &quot;echo nothing to do&quot;
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 2.0.x</span>
+    <span class="n">task</span> <span class="ss">:restart</span> <span class="k">do</span>
+      <span class="n">parallel</span> <span class="k">do</span> <span class="o">|</span><span class="n">session</span><span class="o">|</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">when</span> <span class="s2">&quot;in?(:app)&quot;</span><span class="p">,</span> <span class="s2">&quot;/u/apps/social/script/restart-mongrel&quot;</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">when</span> <span class="s2">&quot;in?(:web)&quot;</span><span class="p">,</span> <span class="s2">&quot;/u/apps/social/script/restart-apache&quot;</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">else</span> <span class="s2">&quot;echo nothing to do&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>This always felt a little unclean, and indeed it&#39;s a hack that was originally
 implemeted to facilitate rolling deployments at a large German firm by a
@@ -887,21 +867,20 @@ went on to found Travis-CI!)</p>
 
 <p>The equivalent code in under Capistrano v3 would look like this:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-task :restart do
-  on :all, in: :parallel do |host|
-    if host.roles.include?(:app)
-      execute &quot;/u/apps/social/script/restart-mongrel&quot;
-    elsif host.roles.include?(:web)
-      execute &quot;/u/apps/social/script/restart-web&quot;
-    else
-      info sprintf(&quot;Nothing to do for %s with roles %s&quot;, host,
-      host.properties.roles)
-    end
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">task</span> <span class="ss">:restart</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="ss">:all</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="ss">:parallel</span> <span class="k">do</span> <span class="o">|</span><span class="n">host</span><span class="o">|</span>
+        <span class="k">if</span> <span class="n">host</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="ss">:app</span><span class="p">)</span>
+          <span class="n">execute</span> <span class="s2">&quot;/u/apps/social/script/restart-mongrel&quot;</span>
+        <span class="k">elsif</span> <span class="n">host</span><span class="o">.</span><span class="n">roles</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="ss">:web</span><span class="p">)</span>
+          <span class="n">execute</span> <span class="s2">&quot;/u/apps/social/script/restart-web&quot;</span>
+        <span class="k">else</span>
+          <span class="n">info</span> <span class="nb">sprintf</span><span class="p">(</span><span class="s2">&quot;Nothing to do for %s with roles %s&quot;</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span>
+          <span class="n">host</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">roles</span><span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>The second block of code, that representing the new Rake derived DSL and
 demonstrating how to use the parallel execution mode is a little longer, but I
@@ -911,27 +890,26 @@ built-in logging subsystem, keep reading to learn more.</p>
 
 <p>Other modes for parallelism include:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-on :all, in: :groups, max: 3, wait: 5 do
-  # Take all servers, in groups of three which execute in parallel
-  # wait five seconds between groups of servers.
-  # This is perfect for rolling restarts
-end
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">on</span> <span class="ss">:all</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="ss">:groups</span><span class="p">,</span> <span class="ss">max</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="ss">wait</span><span class="p">:</span> <span class="mi">5</span> <span class="k">do</span>
+      <span class="c1"># Take all servers, in groups of three which execute in parallel</span>
+      <span class="c1"># wait five seconds between groups of servers.</span>
+      <span class="c1"># This is perfect for rolling restarts</span>
+    <span class="k">end</span>
 
-on :all, in: :sequence, wait: 15 do
-  # This takes all servers, in sequence and waits 15 seconds between
-  # each server, this might be perfect if you are afraid about
-  # overloading a shared resource, or want to defer the asset compilation
-  # over your cluster owing to worries about load
-end
+    <span class="n">on</span> <span class="ss">:all</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="ss">:sequence</span><span class="p">,</span> <span class="ss">wait</span><span class="p">:</span> <span class="mi">15</span> <span class="k">do</span>
+      <span class="c1"># This takes all servers, in sequence and waits 15 seconds between</span>
+      <span class="c1"># each server, this might be perfect if you are afraid about</span>
+      <span class="c1"># overloading a shared resource, or want to defer the asset compilation</span>
+      <span class="c1"># over your cluster owing to worries about load</span>
+    <span class="k">end</span>
 
-on :all, in: :parallel do
-  # This will simply try and execute the commands contained within
-  # the block in parallel on all servers. This might be perfect for kicking
-  # off something like a Git checkout or similar.
-end</code></pre>
-</div>
+    <span class="n">on</span> <span class="ss">:all</span><span class="p">,</span> <span class="k">in</span><span class="p">:</span> <span class="ss">:parallel</span> <span class="k">do</span>
+      <span class="c1"># This will simply try and execute the commands contained within</span>
+      <span class="c1"># the block in parallel on all servers. This might be perfect for kicking</span>
+      <span class="c1"># off something like a Git checkout or similar.</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>The internal tasks, for standard deploy recipes make use of all of these as is
 appropriate for the normal case, no need to be afraid of scary slow deploys
@@ -989,19 +967,18 @@ both connections.</p>
 <p>This cleanup routine can now be better implemented as follows (which is
 actually more or less the actual implementation in the the new Gem):</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-desc &quot;Cleanup all old releases (keeps #{fetch(:releases_to_keep_on_cleanup)}
-old releases&quot;
-task :cleanup do
-  keep_releases     = fetch(:releases_to_keep_on_cleanup)
-  releases          = capture(:ls, fetch(:releases_directory))
-  release_to_delete = releases.sort_by { |r| rn.to_i }.slice(1..-(keep_releases + 1))
-  releases_to_delete.each do |r|
-    execute :rm, fetch(:releases_directory).join(r)
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">desc</span> <span class="s2">&quot;Cleanup all old releases (keeps </span><span class="si">#{</span><span class="n">fetch</span><span class="p">(</span><span class="ss">:releases_to_keep_on_cleanup</span><span class="p">)</span><span class="si">}</span><span class="s2"></span>
+<span class="s2">    old releases&quot;</span>
+    <span class="n">task</span> <span class="ss">:cleanup</span> <span class="k">do</span>
+      <span class="n">keep_releases</span>     <span class="o">=</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:releases_to_keep_on_cleanup</span><span class="p">)</span>
+      <span class="n">releases</span>          <span class="o">=</span> <span class="n">capture</span><span class="p">(</span><span class="ss">:ls</span><span class="p">,</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:releases_directory</span><span class="p">))</span>
+      <span class="n">release_to_delete</span> <span class="o">=</span> <span class="n">releases</span><span class="o">.</span><span class="n">sort_by</span> <span class="p">{</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span> <span class="n">rn</span><span class="o">.</span><span class="n">to_i</span> <span class="p">}</span><span class="o">.</span><span class="n">slice</span><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="p">(</span><span class="n">keep_releases</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+      <span class="n">releases_to_delete</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">r</span><span class="o">|</span>
+        <span class="n">execute</span> <span class="ss">:rm</span><span class="p">,</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:releases_directory</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>Some handy things to note here are that both server one and server two in our
 contrived example will both evaluate that independently, and when both servers
@@ -1028,39 +1005,36 @@ your application.</p>
 
 <p>An example of it&#39;s usage might be:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>h = SSHKit::Host.new &#39;example.com&#39;
-h.properties.roles ||= %i{wep app}</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="n">h</span> <span class="o">=</span> <span class="no">SSHKit</span><span class="o">::</span><span class="no">Host</span><span class="o">.</span><span class="n">new</span> <span class="s1">&#39;example.com&#39;</span>
+    <span class="n">h</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">roles</span> <span class="o">||=</span> <span class="o">%</span><span class="n">i</span><span class="p">{</span><span class="n">wep</span> <span class="n">app</span><span class="p">}</span>
+</code></pre></div>
 
 <h4 id="toc_9">More Expressive Command Language</h4>
 
 <p>In Capistrano v2, it wasn&#39;t uncommon to find commands such as:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 2.0.x
-task :precompile, :roles =&gt; lambda { assets_role }, :except =&gt; { :no_release =&gt; true } do
-  run &lt;&lt;-CMD.compact
-    cd -- #{latest_release} &amp;&amp;
-    RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile
-  CMD
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 2.0.x</span>
+    <span class="n">task</span> <span class="ss">:precompile</span><span class="p">,</span> <span class="ss">:roles</span> <span class="o">=&gt;</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="n">assets_role</span> <span class="p">},</span> <span class="ss">:except</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="ss">:no_release</span> <span class="o">=&gt;</span> <span class="kp">true</span> <span class="p">}</span> <span class="k">do</span>
+      <span class="n">run</span> <span class="o">&lt;&lt;-</span><span class="no">CMD</span><span class="o">.</span><span class="n">compact</span>
+<span class="sh">        cd -- #{latest_release} &amp;&amp;</span>
+<span class="sh">        RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile</span>
+<span class="no">      CMD</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>In Capistrano v3 this looks more like this:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-task :precompile do
-  on :sprockets_asset_host, reject: lambda { |h| h.properties.no_release } do
-    within fetch(:latest_release_directory)
-      with rails_env: fetch(:rails_env) do
-        execute :rake, &#39;assets:precompile&#39;
-      end
-    end
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">task</span> <span class="ss">:precompile</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="ss">:sprockets_asset_host</span><span class="p">,</span> <span class="ss">reject</span><span class="p">:</span> <span class="nb">lambda</span> <span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="o">|</span> <span class="n">h</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">no_release</span> <span class="p">}</span> <span class="k">do</span>
+        <span class="n">within</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:latest_release_directory</span><span class="p">)</span>
+          <span class="n">with</span> <span class="n">rails_env</span><span class="p">:</span> <span class="n">fetch</span><span class="p">(</span><span class="ss">:rails_env</span><span class="p">)</span> <span class="k">do</span>
+            <span class="n">execute</span> <span class="ss">:rake</span><span class="p">,</span> <span class="s1">&#39;assets:precompile&#39;</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>Again, with other examples this format is a little longer, but much more
 expressive, and all the nightmare of shell escaping is handled interally for
@@ -1106,14 +1080,13 @@ from Capistrano.</p>
 <p>SSHkit is ideal for use if you need to just connect to a machine and run some
 arbitrary command, for example:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Rakefile (even without Capistrano loaded)
-require &#39;sshkit&#39;
-desc &quot;Check the uptime of example.com&quot;
-task :uptime do |h|
-  execute :uptime
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Rakefile (even without Capistrano loaded)</span>
+    <span class="nb">require</span> <span class="s1">&#39;sshkit&#39;</span>
+    <span class="n">desc</span> <span class="s2">&quot;Check the uptime of example.com&quot;</span>
+    <span class="n">task</span> <span class="ss">:uptime</span> <span class="k">do</span> <span class="o">|</span><span class="n">h</span><span class="o">|</span>
+      <span class="n">execute</span> <span class="ss">:uptime</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>There is much more than can be done with SSHKit, and we have quite an
 extensive <a href="https://github.com/leehambley/sshkit/blob/master/EXAMPLES.md">list of
@@ -1129,10 +1102,9 @@ from preceedings, there is a so-called command map for commands.</p>
 
 <p>When executing something like:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 2.0.x
-execute &quot;git clone ........ .......&quot;</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 2.0.x</span>
+    <span class="n">execute</span> <span class="s2">&quot;git clone ........ .......&quot;</span>
+</code></pre></div>
 
 <p>The command is passed through to the remote server <em>completely unchanged</em>.
 This includes the options which might be set, such as user, directory, and
@@ -1141,36 +1113,33 @@ allow people to write non-trivial commands in
 <a href="https://en.wikipedia.org/wiki/Here_document">heredocs</a> when the need arises,
 for example:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-execute &lt;&lt;-EOBLOCK
-  # All of this block is interpreted as Bash script
-  if ! [ -e /tmp/somefile ]
-    then touch /tmp/somefile
-    chmod 0644 /tmp/somefile
-  end
-EOBLOCK</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">execute</span> <span class="o">&lt;&lt;-</span><span class="no">EOBLOCK</span>
+<span class="sh">      # All of this block is interpreted as Bash script</span>
+<span class="sh">      if ! [ -e /tmp/somefile ]</span>
+<span class="sh">        then touch /tmp/somefile</span>
+<span class="sh">        chmod 0644 /tmp/somefile</span>
+<span class="sh">      end</span>
+<span class="no">    EOBLOCK</span>
+</code></pre></div>
 
 <p><strong>Caveat:</strong> The SSHKit multiline command sanitizing logic will remove line feeds and add an <code>;</code> after each line to separate the commands. So make sure you are not putting a newline between <code>then</code> and the following command.</p>
 
 <p>The idiomatic way to write that command in Capistrano v3 is to use the
 separated variadaric method to specify the command:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-execute :git, :clone, &quot;........&quot;, &quot;.......&quot;</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">execute</span> <span class="ss">:git</span><span class="p">,</span> <span class="ss">:clone</span><span class="p">,</span> <span class="s2">&quot;........&quot;</span><span class="p">,</span> <span class="s2">&quot;.......&quot;</span>
+</code></pre></div>
 
 <p>... or for the larger example</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-file = &#39;/tmp/somefile&#39;
-unless test(&quot;-e #{file}&quot;)
-  execute :touch, file
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;/tmp/somefile&#39;</span>
+    <span class="k">unless</span> <span class="nb">test</span><span class="p">(</span><span class="s2">&quot;-e </span><span class="si">#{</span><span class="n">file</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+      <span class="n">execute</span> <span class="ss">:touch</span><span class="p">,</span> <span class="n">file</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>In this way the <em>command map</em> is consulted, the command map maps all unknown
 commands (which in this case is <code>git</code>, the rest of the line are <em>arguments</em> to
@@ -1182,22 +1151,20 @@ indirectly) to determine which <code>git</code> to run.</p>
 <p>Commands such as <code>rake</code> and <code>rails</code> are often better prefixed by <code>bundle
 exec</code>, and in this case could be mapped to:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>SSHKit.config.command_map[:rake]  = &quot;bundle exec rake&quot;
-SSHKit.config.command_map[:rails] = &quot;bundle exec rails&quot;</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="no">SSHKit</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">command_map</span><span class="o">[</span><span class="ss">:rake</span><span class="o">]</span>  <span class="o">=</span> <span class="s2">&quot;bundle exec rake&quot;</span>
+    <span class="no">SSHKit</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">command_map</span><span class="o">[</span><span class="ss">:rails</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;bundle exec rails&quot;</span>
+</code></pre></div>
 
 <p>There can also be a <code>lambda</code> or <code>Proc</code> applied in place of the mapping like so:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>SSHKit.config.command_map = Hash.new do |hash, key|
-  if %i{rails rake bundle clockwork heroku}.include?(key.to_sym)
-    hash[key] = &quot;/usr/bin/env bundle exec #{key}&quot;
-  else
-    hash[key] = &quot;/usr/bin/env #{key}&quot;
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="no">SSHKit</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">command_map</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="nb">hash</span><span class="p">,</span> <span class="n">key</span><span class="o">|</span>
+      <span class="k">if</span> <span class="o">%</span><span class="n">i</span><span class="p">{</span><span class="n">rails</span> <span class="n">rake</span> <span class="n">bundle</span> <span class="n">clockwork</span> <span class="n">heroku</span><span class="p">}</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">to_sym</span><span class="p">)</span>
+        <span class="nb">hash</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/env bundle exec </span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="k">else</span>
+        <span class="nb">hash</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/env </span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>Between these two options there should be quite powerful options to map
 commands in your environment without having to override internal tasks from
@@ -1206,15 +1173,14 @@ Capistrano just because a path is different, or a binary has a different name.</
 <p>This can also be <em>slightly</em> abused in environments where <em>shim</em> executables
 are used, for example <code>rbenv</code> <em>wrappers</em>:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>SSHKit.config.command_map = Hash.new do |hash, key|
-  if %i{rails rake bundle clockwork heroku}.include?(key.to_sym)
-    hash[key] = &quot;/usr/bin/env myproject_bundle exec myproject_#{key}&quot;
-  else
-    hash[key] = &quot;/usr/bin/env #{key}&quot;
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="no">SSHKit</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">command_map</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="nb">hash</span><span class="p">,</span> <span class="n">key</span><span class="o">|</span>
+      <span class="k">if</span> <span class="o">%</span><span class="n">i</span><span class="p">{</span><span class="n">rails</span> <span class="n">rake</span> <span class="n">bundle</span> <span class="n">clockwork</span> <span class="n">heroku</span><span class="p">}</span><span class="o">.</span><span class="n">include?</span><span class="p">(</span><span class="n">key</span><span class="o">.</span><span class="n">to_sym</span><span class="p">)</span>
+        <span class="nb">hash</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/env myproject_bundle exec myproject_</span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="k">else</span>
+        <span class="nb">hash</span><span class="o">[</span><span class="n">key</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;/usr/bin/env </span><span class="si">#{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>The above assumes that you have done something like <code>rbenv wrapper default
 myproject</code> which creates wrapper binaries which correctly set up the Ruby
@@ -1247,17 +1213,16 @@ made, or not made as expected.</p>
 <code>fatal()</code> inside of <code>on()</code> blocks which can be used to log using the existing
 logging infrastructure and streaming IO formatters:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-on hosts do |host|
-  f = &#39;/some/file&#39;
-  if test(&quot;[ -d #{f} ]&quot;)
-    execute :touch, f
-  else
-    info &quot;#{f} already exists on #{host}!&quot;
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">on</span> <span class="n">hosts</span> <span class="k">do</span> <span class="o">|</span><span class="n">host</span><span class="o">|</span>
+      <span class="n">f</span> <span class="o">=</span> <span class="s1">&#39;/some/file&#39;</span>
+      <span class="k">if</span> <span class="nb">test</span><span class="p">(</span><span class="s2">&quot;[ -d </span><span class="si">#{</span><span class="n">f</span><span class="si">}</span><span class="s2"> ]&quot;</span><span class="p">)</span>
+        <span class="n">execute</span> <span class="ss">:touch</span><span class="p">,</span> <span class="n">f</span>
+      <span class="k">else</span>
+        <span class="n">info</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">f</span><span class="si">}</span><span class="s2"> already exists on </span><span class="si">#{</span><span class="n">host</span><span class="si">}</span><span class="s2">!&quot;</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <h3 id="toc_15"> Upgrading</h3>
 

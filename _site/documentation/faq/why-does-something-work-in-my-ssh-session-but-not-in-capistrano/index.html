@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -177,23 +178,21 @@ figure this out!</p>
 <p>First, we&#39;ll try a <em>real</em> SSH session, logging in via our terminal, and seeing
 what happens:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote
-me@remote $ [[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;
-Interactive
-me@remote $ shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;
-Login shell</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh me@remote
+    me@remote <span class="nv">$ </span><span class="o">[[</span> <span class="nv">$-</span> <span class="o">==</span> *i* <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s1">&#39;Interactive&#39;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s1">&#39;Not interactive&#39;</span>
+    Interactive
+    me@remote <span class="nv">$ </span><span class="nb">shopt</span> -q login_shell <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s1">&#39;Login shell&#39;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s1">&#39;Not login shell&#39;</span>
+    Login shell
+</code></pre></div>
 
 <p>Contrast that with what happens when we hand the command to run to the SSH
 command line without logging in first...</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote &quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;
-Interactive
-me@localhost $ ssh me@remote &quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;
-Not login shell</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh me@remote <span class="s2">&quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;</span>
+    Interactive
+    me@localhost <span class="nv">$ </span>ssh me@remote <span class="s2">&quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;</span>
+    Not login shell
+</code></pre></div>
 
 <p>Here we can see that Bash is still starting in <strong>interactive</strong> mode when we&#39;re
 just running a single command, that&#39;s because the terminal we are using is
@@ -203,28 +202,26 @@ interactive, and SSH inherits that and passes that on to the remote server.</p>
 can have a very simple, Capfile, we don&#39;t even need to load the default
 recipes to test this:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-task :query_interactive do
-  on &#39;me@remote&#39; do
-    info capture(&quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;)
-  end
-end
-task :query_login do
-  on &#39;me@remote&#39; do
-    info capture(&quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;)
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">task</span> <span class="ss">:query_interactive</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="s1">&#39;me@remote&#39;</span> <span class="k">do</span>
+        <span class="n">info</span> <span class="n">capture</span><span class="p">(</span><span class="s2">&quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">task</span> <span class="ss">:query_login</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="s1">&#39;me@remote&#39;</span> <span class="k">do</span>
+        <span class="n">info</span> <span class="n">capture</span><span class="p">(</span><span class="s2">&quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>Gives us the following:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ cap query_login
-INFO Not login shell
-me@localhost $ cap query_interactive
-INFO Not interactive</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>cap query_login
+    INFO Not login shell
+    me@localhost <span class="nv">$ </span>cap query_interactive
+    INFO Not interactive
+</code></pre></div>
 
 <h2 id="toc_4"><a id="which_startup_files_loaded"></a>Which shell startup files do get loaded?</h2>
 
@@ -305,23 +302,21 @@ figure this out!</p>
 <p>First, we&#39;ll try a <em>real</em> SSH session, logging in via our terminal, and seeing
 what happens:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote
-me@remote $ [[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;
-Interactive
-me@remote $ shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;
-Login shell</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh me@remote
+    me@remote <span class="nv">$ </span><span class="o">[[</span> <span class="nv">$-</span> <span class="o">==</span> *i* <span class="o">]]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s1">&#39;Interactive&#39;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s1">&#39;Not interactive&#39;</span>
+    Interactive
+    me@remote <span class="nv">$ </span><span class="nb">shopt</span> -q login_shell <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s1">&#39;Login shell&#39;</span> <span class="o">||</span> <span class="nb">echo</span> <span class="s1">&#39;Not login shell&#39;</span>
+    Login shell
+</code></pre></div>
 
 <p>Contrast that with what happens when we hand the command to run to the SSH
 command line without logging in first...</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ ssh me@remote &quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;
-Interactive
-me@localhost $ ssh me@remote &quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;
-Not login shell</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>ssh me@remote <span class="s2">&quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;</span>
+    Interactive
+    me@localhost <span class="nv">$ </span>ssh me@remote <span class="s2">&quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;</span>
+    Not login shell
+</code></pre></div>
 
 <p>Here we can see that Bash is still starting in <strong>interactive</strong> mode when we&#39;re
 just running a single command, that&#39;s because the terminal we are using is
@@ -331,28 +326,26 @@ interactive, and SSH inherits that and passes that on to the remote server.</p>
 can have a very simple, Capfile, we don&#39;t even need to load the default
 recipes to test this:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capistrano 3.0.x
-task :query_interactive do
-  on &#39;me@remote&#39; do
-    info capture(&quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;)
-  end
-end
-task :query_login do
-  on &#39;me@remote&#39; do
-    info capture(&quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;)
-  end
-end</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby">    <span class="c1"># Capistrano 3.0.x</span>
+    <span class="n">task</span> <span class="ss">:query_interactive</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="s1">&#39;me@remote&#39;</span> <span class="k">do</span>
+        <span class="n">info</span> <span class="n">capture</span><span class="p">(</span><span class="s2">&quot;[[ $- == *i* ]] &amp;&amp; echo &#39;Interactive&#39; || echo &#39;Not interactive&#39;&quot;</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">task</span> <span class="ss">:query_login</span> <span class="k">do</span>
+      <span class="n">on</span> <span class="s1">&#39;me@remote&#39;</span> <span class="k">do</span>
+        <span class="n">info</span> <span class="n">capture</span><span class="p">(</span><span class="s2">&quot;shopt -q login_shell &amp;&amp; echo &#39;Login shell&#39; || echo &#39;Not login shell&#39;&quot;</span><span class="p">)</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+</code></pre></div>
 
 <p>Gives us the following:</p>
 
-<div>
-  <pre data-line=''><code class='language-bash'>me@localhost $ cap query_login
-INFO Not login shell
-me@localhost $ cap query_interactive
-INFO Not interactive</code></pre>
-</div>
+<div class="highlight"><pre><code class="bash">    me@localhost <span class="nv">$ </span>cap query_login
+    INFO Not login shell
+    me@localhost <span class="nv">$ </span>cap query_interactive
+    INFO Not interactive
+</code></pre></div>
 
 <h2 id="toc_4"><a id="which_startup_files_loaded"></a>Which shell startup files do get loaded?</h2>
 

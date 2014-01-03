@@ -14,14 +14,14 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Enriqueta', serif;
 }
 
-p code, li code {
+/*p code, li code {
   padding: 3px;
   background-color: #E6E6E6;
 	font-family: "droid-sans-mono", Consolas, Monaco, 'Andale Mono', monospace;
   font-size: 0.9em;
   color: #222;
   border-radius: 3px;
-}
+}*/
 
 footer {
   padding: 1em;
@@ -52,6 +52,6 @@ footer ul.social.icons li {
   height: 44px !important;
 }
 
-pre code {
+/*pre code {
   color: #fff;
-}
+}*/

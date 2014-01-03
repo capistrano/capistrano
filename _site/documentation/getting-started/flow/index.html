@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="/css/capistrano.css">
     <link rel="stylesheet" href="/css/social_foundicons.css" />
     <link rel="stylesheet" href="/css/okaidia.css">
+    <link rel="stylesheet" href="/css/syntax.css">
     <script src="/js/vendor/custom.modernizr.js"></script>
   </head>
   <body>
@@ -125,16 +126,15 @@
 <p>When you run <code>cap production deploy</code>, it invokes the following tasks in
 sequence:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>deploy:starting    - start a deployment, make sure everything is ready
-deploy:started     - started hook (for custom tasks)
-deploy:updating    - update server(s) with a new release
-deploy:updated     - updated hook
-deploy:publishing  - publish the new release
-deploy:published   - published hook
-deploy:finishing   - finish the deployment, clean up everything
-deploy:finished    - finished hook</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="ss">deploy</span><span class="p">:</span><span class="n">starting</span>    <span class="o">-</span> <span class="n">start</span> <span class="n">a</span> <span class="n">deployment</span><span class="p">,</span> <span class="n">make</span> <span class="n">sure</span> <span class="n">everything</span> <span class="n">is</span> <span class="n">ready</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">started</span>     <span class="o">-</span> <span class="n">started</span> <span class="n">hook</span> <span class="p">(</span><span class="k">for</span> <span class="n">custom</span> <span class="n">tasks</span><span class="p">)</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">updating</span>    <span class="o">-</span> <span class="n">update</span> <span class="n">server</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="n">with</span> <span class="n">a</span> <span class="kp">new</span> <span class="n">release</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">updated</span>     <span class="o">-</span> <span class="n">updated</span> <span class="n">hook</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">publishing</span>  <span class="o">-</span> <span class="n">publish</span> <span class="n">the</span> <span class="kp">new</span> <span class="n">release</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">published</span>   <span class="o">-</span> <span class="n">published</span> <span class="n">hook</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">finishing</span>   <span class="o">-</span> <span class="n">finish</span> <span class="n">the</span> <span class="n">deployment</span><span class="p">,</span> <span class="n">clean</span> <span class="n">up</span> <span class="n">everything</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">finished</span>    <span class="o">-</span> <span class="n">finished</span> <span class="n">hook</span>
+</code></pre></div>
 
 <p>Notice there are several hook tasks e.g. <code>:started</code>, <code>:updated</code> for
 you to hook up custom tasks into the flow using <code>after()</code> and <code>before()</code>.</p>
@@ -144,16 +144,15 @@ you to hook up custom tasks into the flow using <code>after()</code> and <code>b
 <p>When you run <code>cap production deploy:rollback</code>, it invokes the following
 tasks in sequence:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>deploy:starting
-deploy:started
-deploy:reverting           - revert server(s) to previous release
-deploy:reverted            - reverted hook
-deploy:publishing
-deploy:published
-deploy:finishing_rollback  - finish the rollback, clean up everything
-deploy:finished</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="ss">deploy</span><span class="p">:</span><span class="n">starting</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">started</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">reverting</span>           <span class="o">-</span> <span class="n">revert</span> <span class="n">server</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="n">to</span> <span class="n">previous</span> <span class="n">release</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">reverted</span>            <span class="o">-</span> <span class="n">reverted</span> <span class="n">hook</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">publishing</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">published</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">finishing_rollback</span>  <span class="o">-</span> <span class="n">finish</span> <span class="n">the</span> <span class="n">rollback</span><span class="p">,</span> <span class="n">clean</span> <span class="n">up</span> <span class="n">everything</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">finished</span>
+</code></pre></div>
 
 <p>As you can see, rollback flow shares many tasks with deploy flow. But note that, rollback flow runs its own <code>:finishing_rollback</code> task because its
 cleanup process is usually different from deploy flow.</p>
@@ -162,70 +161,67 @@ cleanup process is usually different from deploy flow.</p>
 
 <p>Assume you require the following files in <code>Capfile</code>,</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capfile
-require &#39;capistrano/setup&#39;
-require &#39;capistrano/deploy&#39;
-require &#39;capistrano/bundler&#39;
-require &#39;capistrano/rails/migrations&#39;
-require &#39;capistrano/rails/assets&#39;</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="c1"># Capfile</span>
+<span class="nb">require</span> <span class="s1">&#39;capistrano/setup&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;capistrano/deploy&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;capistrano/bundler&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;capistrano/rails/migrations&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;capistrano/rails/assets&#39;</span>
+</code></pre></div>
 
 <p>When you run <code>cap production deploy</code>, it runs these tasks:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>deploy
-  deploy:starting
-    [before]
-      deploy:ensure_stage
-      deploy:set_shared_assets
-    deploy:check
-  deploy:started
-  deploy:updating
-    git:create_release
-    deploy:symlink:shared
-  deploy:updated
-    [before]
-      deploy:bundle
-    [after]
-      deploy:migrate
-      deploy:compile_assets
-      deploy:cleanup_assets
-      deploy:normalise_assets
-  deploy:publishing
-    deploy:symlink:release
-    deploy:restart
-  deploy:published
-  deploy:finishing
-    deploy:cleanup
-  deploy:finished
-    deploy:log_revision</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="n">deploy</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">starting</span>
+    <span class="o">[</span><span class="n">before</span><span class="o">]</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">ensure_stage</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">set_shared_assets</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">check</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">started</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">updating</span>
+    <span class="ss">git</span><span class="p">:</span><span class="n">create_release</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="ss">symlink</span><span class="p">:</span><span class="n">shared</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">updated</span>
+    <span class="o">[</span><span class="n">before</span><span class="o">]</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">bundle</span>
+    <span class="o">[</span><span class="n">after</span><span class="o">]</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">migrate</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">compile_assets</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">cleanup_assets</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">normalise_assets</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">publishing</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="ss">symlink</span><span class="p">:</span><span class="n">release</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">restart</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">published</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">finishing</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">cleanup</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">finished</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">log_revision</span>
+</code></pre></div>
 
 <p>For <code>cap production deploy:rollback</code>, it runs these tasks:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>deploy
-  deploy:starting
-    [before]
-      deploy:ensure_stage
-      deploy:set_shared_assets
-    deploy:check
-  deploy:started
-  deploy:reverting
-    deploy:revert_release
-  deploy:reverted
-    [after]
-      deploy:rollback_assets
-  deploy:publishing
-    deploy:symlink:release
-    deploy:restart
-  deploy:published
-  deploy:finishing_rollback
-    deploy:cleanup_rollback
-  deploy:finished
-    deploy:log_revision</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="n">deploy</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">starting</span>
+    <span class="o">[</span><span class="n">before</span><span class="o">]</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">ensure_stage</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">set_shared_assets</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">check</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">started</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">reverting</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">revert_release</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">reverted</span>
+    <span class="o">[</span><span class="n">after</span><span class="o">]</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">rollback_assets</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">publishing</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="ss">symlink</span><span class="p">:</span><span class="n">release</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">restart</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">published</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">finishing_rollback</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">cleanup_rollback</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">finished</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">log_revision</span>
+</code></pre></div>
 
         </div>
       </div>
@@ -243,16 +239,15 @@ require &#39;capistrano/rails/assets&#39;</code></pre>
 <p>When you run <code>cap production deploy</code>, it invokes the following tasks in
 sequence:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>deploy:starting    - start a deployment, make sure everything is ready
-deploy:started     - started hook (for custom tasks)
-deploy:updating    - update server(s) with a new release
-deploy:updated     - updated hook
-deploy:publishing  - publish the new release
-deploy:published   - published hook
-deploy:finishing   - finish the deployment, clean up everything
-deploy:finished    - finished hook</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="ss">deploy</span><span class="p">:</span><span class="n">starting</span>    <span class="o">-</span> <span class="n">start</span> <span class="n">a</span> <span class="n">deployment</span><span class="p">,</span> <span class="n">make</span> <span class="n">sure</span> <span class="n">everything</span> <span class="n">is</span> <span class="n">ready</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">started</span>     <span class="o">-</span> <span class="n">started</span> <span class="n">hook</span> <span class="p">(</span><span class="k">for</span> <span class="n">custom</span> <span class="n">tasks</span><span class="p">)</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">updating</span>    <span class="o">-</span> <span class="n">update</span> <span class="n">server</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="n">with</span> <span class="n">a</span> <span class="kp">new</span> <span class="n">release</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">updated</span>     <span class="o">-</span> <span class="n">updated</span> <span class="n">hook</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">publishing</span>  <span class="o">-</span> <span class="n">publish</span> <span class="n">the</span> <span class="kp">new</span> <span class="n">release</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">published</span>   <span class="o">-</span> <span class="n">published</span> <span class="n">hook</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">finishing</span>   <span class="o">-</span> <span class="n">finish</span> <span class="n">the</span> <span class="n">deployment</span><span class="p">,</span> <span class="n">clean</span> <span class="n">up</span> <span class="n">everything</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">finished</span>    <span class="o">-</span> <span class="n">finished</span> <span class="n">hook</span>
+</code></pre></div>
 
 <p>Notice there are several hook tasks e.g. <code>:started</code>, <code>:updated</code> for
 you to hook up custom tasks into the flow using <code>after()</code> and <code>before()</code>.</p>
@@ -262,16 +257,15 @@ you to hook up custom tasks into the flow using <code>after()</code> and <code>b
 <p>When you run <code>cap production deploy:rollback</code>, it invokes the following
 tasks in sequence:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>deploy:starting
-deploy:started
-deploy:reverting           - revert server(s) to previous release
-deploy:reverted            - reverted hook
-deploy:publishing
-deploy:published
-deploy:finishing_rollback  - finish the rollback, clean up everything
-deploy:finished</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="ss">deploy</span><span class="p">:</span><span class="n">starting</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">started</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">reverting</span>           <span class="o">-</span> <span class="n">revert</span> <span class="n">server</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="n">to</span> <span class="n">previous</span> <span class="n">release</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">reverted</span>            <span class="o">-</span> <span class="n">reverted</span> <span class="n">hook</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">publishing</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">published</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">finishing_rollback</span>  <span class="o">-</span> <span class="n">finish</span> <span class="n">the</span> <span class="n">rollback</span><span class="p">,</span> <span class="n">clean</span> <span class="n">up</span> <span class="n">everything</span>
+<span class="ss">deploy</span><span class="p">:</span><span class="n">finished</span>
+</code></pre></div>
 
 <p>As you can see, rollback flow shares many tasks with deploy flow. But note that, rollback flow runs its own <code>:finishing_rollback</code> task because its
 cleanup process is usually different from deploy flow.</p>
@@ -280,70 +274,67 @@ cleanup process is usually different from deploy flow.</p>
 
 <p>Assume you require the following files in <code>Capfile</code>,</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'># Capfile
-require &#39;capistrano/setup&#39;
-require &#39;capistrano/deploy&#39;
-require &#39;capistrano/bundler&#39;
-require &#39;capistrano/rails/migrations&#39;
-require &#39;capistrano/rails/assets&#39;</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="c1"># Capfile</span>
+<span class="nb">require</span> <span class="s1">&#39;capistrano/setup&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;capistrano/deploy&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;capistrano/bundler&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;capistrano/rails/migrations&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;capistrano/rails/assets&#39;</span>
+</code></pre></div>
 
 <p>When you run <code>cap production deploy</code>, it runs these tasks:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>deploy
-  deploy:starting
-    [before]
-      deploy:ensure_stage
-      deploy:set_shared_assets
-    deploy:check
-  deploy:started
-  deploy:updating
-    git:create_release
-    deploy:symlink:shared
-  deploy:updated
-    [before]
-      deploy:bundle
-    [after]
-      deploy:migrate
-      deploy:compile_assets
-      deploy:cleanup_assets
-      deploy:normalise_assets
-  deploy:publishing
-    deploy:symlink:release
-    deploy:restart
-  deploy:published
-  deploy:finishing
-    deploy:cleanup
-  deploy:finished
-    deploy:log_revision</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="n">deploy</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">starting</span>
+    <span class="o">[</span><span class="n">before</span><span class="o">]</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">ensure_stage</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">set_shared_assets</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">check</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">started</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">updating</span>
+    <span class="ss">git</span><span class="p">:</span><span class="n">create_release</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="ss">symlink</span><span class="p">:</span><span class="n">shared</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">updated</span>
+    <span class="o">[</span><span class="n">before</span><span class="o">]</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">bundle</span>
+    <span class="o">[</span><span class="n">after</span><span class="o">]</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">migrate</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">compile_assets</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">cleanup_assets</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">normalise_assets</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">publishing</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="ss">symlink</span><span class="p">:</span><span class="n">release</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">restart</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">published</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">finishing</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">cleanup</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">finished</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">log_revision</span>
+</code></pre></div>
 
 <p>For <code>cap production deploy:rollback</code>, it runs these tasks:</p>
 
-<div>
-  <pre data-line=''><code class='language-ruby'>deploy
-  deploy:starting
-    [before]
-      deploy:ensure_stage
-      deploy:set_shared_assets
-    deploy:check
-  deploy:started
-  deploy:reverting
-    deploy:revert_release
-  deploy:reverted
-    [after]
-      deploy:rollback_assets
-  deploy:publishing
-    deploy:symlink:release
-    deploy:restart
-  deploy:published
-  deploy:finishing_rollback
-    deploy:cleanup_rollback
-  deploy:finished
-    deploy:log_revision</code></pre>
-</div>
+<div class="highlight"><pre><code class="ruby"><span class="n">deploy</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">starting</span>
+    <span class="o">[</span><span class="n">before</span><span class="o">]</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">ensure_stage</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">set_shared_assets</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">check</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">started</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">reverting</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">revert_release</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">reverted</span>
+    <span class="o">[</span><span class="n">after</span><span class="o">]</span>
+      <span class="ss">deploy</span><span class="p">:</span><span class="n">rollback_assets</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">publishing</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="ss">symlink</span><span class="p">:</span><span class="n">release</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">restart</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">published</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">finishing_rollback</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">cleanup_rollback</span>
+  <span class="ss">deploy</span><span class="p">:</span><span class="n">finished</span>
+    <span class="ss">deploy</span><span class="p">:</span><span class="n">log_revision</span>
+</code></pre></div>
                                            -->
 
     <!--</div> [> /container <]                                     -->
