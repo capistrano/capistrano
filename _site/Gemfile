@@ -1,8 +1,7 @@
 source "https://rubygems.org"
 
-#gem "debugger"
-gem "jekyll", "~> 1.1.2"
+gem "jekyll"
 gem "redcarpet"
 gem "unindent"
+gem 'github-pages', github: 'github/pages-gem'
 gem "git"
-gem "sshkit"

@@ -1,47 +1,64 @@
+GIT
+  remote: git://github.com/github/pages-gem.git
+  revision: a73cbe4d6b683e0ef1bbeefc01e10daac1498a65
+  specs:
+    github-pages (12)
+      RedCloth (= 4.2.9)
+      jekyll (= 1.4.2)
+      kramdown (= 1.2.0)
+      liquid (= 2.5.4)
+      maruku (= 0.7.0)
+      rdiscount (= 2.1.7)
+      redcarpet (= 2.3.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
-    classifier (1.3.3)
+    RedCloth (4.2.9)
+    blankslate (2.1.2.4)
+    classifier (1.3.4)
       fast-stemmer (>= 1.0.0)
     colorator (0.1)
-    commander (4.1.3)
+    commander (4.1.5)
       highline (~> 1.6.11)
-    directory_watcher (1.4.1)
     fast-stemmer (1.0.2)
-    git (1.2.5)
-    highline (1.6.19)
-    jekyll (1.1.2)
+    ffi (1.9.3)
+    git (1.2.6)
+    highline (1.6.20)
+    jekyll (1.4.2)
       classifier (~> 1.3)
       colorator (~> 0.1)
       commander (~> 4.1.3)
-      directory_watcher (~> 1.4.1)
-      kramdown (~> 1.0.2)
-      liquid (~> 2.5.1)
-      maruku (~> 0.5)
+      liquid (~> 2.5.2)
+      listen (~> 1.3)
+      maruku (~> 0.7.0)
       pygments.rb (~> 0.5.0)
-      redcarpet (~> 2.2.2)
-      safe_yaml (~> 0.7.0)
-    kramdown (1.0.2)
-    liquid (2.5.1)
-    maruku (0.6.1)
-      syntax (>= 1.0.0)
-    net-scp (1.1.2)
-      net-ssh (>= 2.6.5)
-    net-ssh (2.6.8)
-    posix-spawn (0.3.6)
-    pygments.rb (0.5.0)
+      redcarpet (~> 2.3.0)
+      safe_yaml (~> 0.9.7)
+      toml (~> 0.1.0)
+    kramdown (1.2.0)
+    liquid (2.5.4)
+    listen (1.3.1)
+      rb-fsevent (>= 0.9.3)
+      rb-inotify (>= 0.9)
+      rb-kqueue (>= 0.2)
+    maruku (0.7.0)
+    parslet (1.5.0)
+      blankslate (~> 2.0)
+    posix-spawn (0.3.8)
+    pygments.rb (0.5.4)
       posix-spawn (~> 0.3.6)
       yajl-ruby (~> 1.1.0)
-    redcarpet (2.2.2)
-    safe_yaml (0.7.1)
-    sshkit (0.0.34)
-      net-scp
-      net-ssh
-      term-ansicolor
-    syntax (1.0.0)
-    term-ansicolor (1.2.2)
-      tins (~> 0.8)
-    tins (0.9.0)
+    rb-fsevent (0.9.4)
+    rb-inotify (0.9.3)
+      ffi (>= 0.5.0)
+    rb-kqueue (0.2.0)
+      ffi (>= 0.5.0)
+    rdiscount (2.1.7)
+    redcarpet (2.3.0)
+    safe_yaml (0.9.7)
+    toml (0.1.0)
+      parslet (~> 1.5.0)
     unindent (1.0)
     yajl-ruby (1.1.0)
 
@@ -50,7 +67,7 @@ PLATFORMS
 
 DEPENDENCIES
   git
-  jekyll (~> 1.1.2)
+  github-pages!
+  jekyll
   redcarpet
-  sshkit
   unindent
