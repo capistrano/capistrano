@@ -31,7 +31,4 @@ eos
 
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'mocha'
-  gem.add_development_dependency 'kuroko'
-  gem.add_development_dependency 'cucumber'
-
 end
