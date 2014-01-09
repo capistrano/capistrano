@@ -117,13 +117,23 @@ namespace :deploy do
         execute :mkdir, '-pv', linked_file_dirs(release_path)
 
         fetch(:linked_files).each do |file|
-          target = release_path.join(file)
-          source = shared_path.join(file)
-          unless test "[ -L #{target} ]"
-            if test "[ -f #{target} ]"
-              execute :rm, target
+          if file =~ /\*/
+            dir = file.split('/')
+            file_mask = dir.last
+            dir = dir[0..-2].join('/')
+            target = release_path.join(dir)
+            source = shared_path.join(dir)
+            bash_command = "cd #{source}; for file_name in `ls #{file_mask}`; do ln -s $file_name #{target}/$file_name; done"
+            execute bash_command
+          else
+            target = release_path.join(file)
+            source = shared_path.join(file)
+            unless test "[ -L #{target} ]"
+              if test "[ -f #{target} ]"
+                execute :rm, target
+              end
+              execute :ln, '-s', source, target
             end
-            execute :ln, '-s', source, target
           end
         end
       end
