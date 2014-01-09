@@ -5,4 +5,6 @@ rvm:
   - 1.9.3
   - 1.9.2
   - rbx
-script: "rake spec"
+script: bundle exec rake spec
+cache: bundler
+bundler_args: --without cucumber
