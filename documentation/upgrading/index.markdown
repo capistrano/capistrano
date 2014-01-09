@@ -102,9 +102,25 @@ Instead of:
 It's better to use:
 
 {% highlight ruby %}
-  within fetch(:latest_release_directory)
-    with rails_env: fetch(:rails_env) do
-      execute :rake, 'assets:precompile'
+  on roles :all do
+    within fetch(:latest_release_directory) do
+      with rails_env: fetch(:rails_env) do
+        execute :rake, 'assets:precompile'
+      end
+    end
+  end
+{% endhighlight %}
+
+Note: 'within' blocks are required to be wrapped in an 'on' block for the dsl to recognize it
+
+You may only have one 'with' block per call. If you need more than one env set, use the syntax in the 'with' block arg like this (pass it a map):
+
+{% highlight ruby %}
+  on roles :all do
+    within fetch(:latest_release_directory) do
+      with rails_env: fetch(:rails_env), rails_relative_url_root: '/home' do
+        execute :rake, 'assets:precompile', env: {rails_env: fetch(:rails_env), rails_relative_url_root: ''}
+      end
     end
   end
 {% endhighlight %}
