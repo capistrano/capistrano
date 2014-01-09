@@ -91,9 +91,9 @@ It's better to use:
   end
 {% endhighlight %}
 
-Note: within blocks require wrapping in the on block for the dsl to recognize the call
+Note: 'within' blocks are required to be wrapped in an 'on' block for the dsl to recognize it
 
-You may only have one 'with' block per call. If you need more than one env set, use the syntax at the end of an execute like this:
+You may only have one 'with' block per call. If you need more than one env set, use the syntax in the 'with' block arg like this (pass it a map):
 
 {% highlight ruby %}
   on roles :all do
