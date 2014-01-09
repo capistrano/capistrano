@@ -8,6 +8,21 @@ layout: default
 
 
   If you deploy Rails, you wil also need `capistrano-rails` and `capistrano-bundler` gems (Rails and Bundler integrations were moved out from Capistrano 3.x).
+  {% highlight ruby %}
+    group :development do
+      gem 'capistrano-rails',   '~> 1.1', require: false
+      gem 'capistrano-bundler', '~> 1.1', require: false
+    end
+  {% endhighlight %}
+
+  You can add idiomatic support for your preffered ruby version manager: rvm, rbenv, chruby.
+  {% highlight ruby %}
+    group :development do
+      gem 'capistrano-rvm',   '~> 0.1', require: false
+      gem 'capistrano-rbenv', '~> 2.0', require: false
+      gem 'capistrano-chruby', github: 'capistrano/chruby', require: false
+    end
+  {% endhighlight %}
 
 2.
   We recommend to capify the project from scratch and move definitions from old to new configs then.
@@ -27,7 +42,7 @@ layout: default
 
 3.
   Capistrano 3.x is multistage by default, so you will have `config/deploy/production.rb` and `config/deploy/staging.rb` right after capifying.
-  If you need only one stage, remove these files and declare stage (for example `production`) and servers in `Capfile`.
+  If you need only one stage, remove these files and declare stage (for example `production`) and servers in `config/deploy.rb`.
 
 4.
   Update `config/deploy/production.rb` and `config/deploy/staging.rb` to have relevant data there. You may also want to add more stages from old configs (`old_cap/deploy/`).
@@ -46,7 +61,7 @@ layout: default
 6.
   Now you need to refactor your old `deploy.rb` (also `Capfile`, but in most of cases developers didn't change it in Capistrano 2.x). Move parameters (like `set :deploy_to, "/home/deploy/#{application}"` or `set :keep_releases, 4`) to `config/deploy.rb` and tasks to `Capfile`.
 
-  *Important: `repository` option was renamed to `repo_url`.*
+  *Important: `repository` option was renamed to `repo_url`; `default_environment` option was renamed to `default_env`.*
 
 
   Notice that some parameters are not necessary anymore: `use_sudo`, `normalize_asset_timestamps`.
@@ -62,6 +77,11 @@ layout: default
 
 8.
   Keep editing Capfile and uncomment addons you need, such as rbenv/rvm, bundler or rails.
+  {% highlight ruby %}
+    require 'capistrano/rails'
+    require 'capistrano/bundler'
+    require 'capistrano/rbenv'
+  {% endhighlight %}
 
 9.
   Yay! Try to deploy with your new config set. If you discover any missing info in this upgrade guide, you're welcome to contribute to it.
