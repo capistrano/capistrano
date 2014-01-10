@@ -61,6 +61,41 @@ module Capistrano
         end
       end
 
+      context 'value is a lambda' do
+        subject { config.fetch(:key, lambda { :lambda } ) }
+        it 'calls the lambda' do
+          expect(subject).to eq :lambda
+        end
+      end
+
+      context 'value inside proc inside a proc' do
+        subject { config.fetch(:key, Proc.new { Proc.new { "some value" } } ) }
+        it 'calls all procs and lambdas' do
+          expect(subject).to eq "some value"
+        end
+      end
+
+      context 'value inside lambda inside a lambda' do
+        subject { config.fetch(:key, lambda { lambda { "some value" } } ) }
+        it 'calls all procs and lambdas' do
+          expect(subject).to eq "some value"
+        end
+      end
+
+      context 'value inside lambda inside a proc' do
+        subject { config.fetch(:key, Proc.new { lambda { "some value" } } ) }
+        it 'calls all procs and lambdas' do
+          expect(subject).to eq "some value"
+        end
+      end
+
+      context 'value inside proc inside a lambda' do
+        subject { config.fetch(:key, lambda { Proc.new { "some value" } } ) }
+        it 'calls all procs and lambdas' do
+          expect(subject).to eq "some value"
+        end
+      end
+
       context 'block is passed to fetch' do
         subject { config.fetch(:key, :default) { fail 'we need this!' } }
 

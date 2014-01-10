@@ -30,11 +30,10 @@ module Capistrano
 
     def fetch(key, default=nil, &block)
       value = fetch_for(key, default, &block)
-      if value.respond_to?(:call)
-        set(key, value.call)
-      else
-        value
+      while value.respond_to?(:call)
+        value = set(key, value.call)
       end
+      return value
     end
 
     def role(name, hosts, options={})
