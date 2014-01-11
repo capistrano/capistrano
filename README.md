@@ -159,6 +159,8 @@ require 'capistrano/github'
 set :github_access_token, '89c3be3d1f917b6ccf5e2c141dbc403f57bc140c'
 ```
 
+You can obtain your personal GH token [here](https://github.com/settings/applications)
+
 3. Now you have new command to show all deployments:
 
 ```bash
