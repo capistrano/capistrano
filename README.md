@@ -136,6 +136,38 @@ end
 Perfect, who needs telephones.
 
 
+## Github Deployments API
+
+In January 2014 Github Team accounced Deployments API and Capistrano can use it.
+
+To enable integration, you have to:
+
+1. Add the `octokit` gem:
+```ruby
+gem 'octokit', github: 'octokit/octokit.rb', branch: 'deployments-preview'
+```
+
+2. Declare `github_access_token` and include GH integration:
+
+```ruby
+# Capfile
+require 'capistrano/github'
+```
+
+```ruby
+# deploy.rb
+set :github_access_token, '89c3be3d1f917b6ccf5e2c141dbc403f57bc140c'
+```
+
+3. Now you have new command to show all deployments:
+
+```bash
+cap production github:deployments
+```
+
+New deployment record will be created automatically on each `cap deploy` run.
+
+
 ## Running local tasks
 
 Local tasks can be run by replacing `on` with `run_locally`
