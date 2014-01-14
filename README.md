@@ -1,4 +1,4 @@
-# Capistrano [![Build Status](https://travis-ci.org/capistrano/capistrano.png?branch=v3)](https://travis-ci.org/capistrano/capistrano)
+# Capistrano [![Build Status](https://travis-ci.org/capistrano/capistrano.png?branch=v3)](https://travis-ci.org/capistrano/capistrano) <a href="http://codersclan.net/?repo_id=325"><img src="http://www.codersclan.net/gs_button/?repo_id=325&size=small" width="69"></a>
 
 ## Requirements
 
