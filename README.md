@@ -4,7 +4,7 @@
 
 * Ruby >= 1.9 (JRuby and C-Ruby/YARV are supported)
 
-##Support
+## Support
 
 Need help with getting Capistrano up and running? Got a code problem you want to get solved quickly? 
 
