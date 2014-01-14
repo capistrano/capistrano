@@ -17,7 +17,7 @@ Get <a href="http://codersclan.net/?repo_id=325">Capistrano support on CodersCla
 Add this line to your application's Gemfile:
 
 ``` ruby
-gem 'capistrano', '~> 3.0.1'
+gem 'capistrano', '~> 3.1.0'
 ```
 
 And then execute:
