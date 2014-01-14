@@ -1,8 +1,16 @@
-# Capistrano [![Build Status](https://travis-ci.org/capistrano/capistrano.png?branch=v3)](https://travis-ci.org/capistrano/capistrano) [![Code Climate](https://codeclimate.com/github/capistrano/capistrano.png)](https://codeclimate.com/github/capistrano/capistrano)
+# Capistrano [![Build Status](https://travis-ci.org/capistrano/capistrano.png?branch=v3)](https://travis-ci.org/capistrano/capistrano) [![Code Climate](https://codeclimate.com/github/capistrano/capistrano.png)](https://codeclimate.com/github/capistrano/capistrano) <a href="http://codersclan.net/?repo_id=325"><img src="http://www.codersclan.net/gs_button/?repo_id=325&size=small" width="69"></a>
 
 ## Requirements
 
 * Ruby >= 1.9 (JRuby and C-Ruby/YARV are supported)
+
+##Support
+
+Need help with getting Capistrano up and running? Got a code problem you want to get solved quickly? 
+
+Get <a href="http://codersclan.net/?repo_id=325">Capistrano support on CodersClan.</a>
+
+<a href="http://codersclan.net/?repo_id=325"><img src="http://www.codersclan.net/gs_button/?repo_id=325" width="200"></a>
 
 ## Installation
 
