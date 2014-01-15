@@ -56,10 +56,9 @@ module Capistrano
 
         # Translates a tag to a changeset if needed or just returns changeset.
         def query_revision(changeset)
-          cmd = scm :log,
-                    verbose,
+          cmd = scm :id,
                     "-r #{changeset}",
-                    '--template "{node|short}"'
+                    repository
                     yield cmd
         end
 
