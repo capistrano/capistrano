@@ -1,9 +1,15 @@
 module Capistrano
   module DSL
     module Stages
+      @@stages = []
 
       def stages
-        Dir[stage_definitions].map { |f| File.basename(f, '.rb') }
+        @@stages | Dir[stage_definitions].map { |f| File.basename(f, '.rb') }
+      end
+
+      def stages=(args=[])
+        @@stages = []
+        @@stages = stages | Array(args)
       end
 
       def infer_stages_from_stage_files
