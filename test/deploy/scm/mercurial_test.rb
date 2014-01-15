@@ -39,7 +39,8 @@ class DeploySCMMercurialTest < Test::Unit::TestCase
   end
 
   def test_query_revision
-    assert_equal "hg log -r 8a8e00b8f11b --template \"{node|short}\"", @source.query_revision('8a8e00b8f11b') { |o| o }
+    @config[:repository] = "http://example.com/project-hg"
+    assert_equal "hg id -r 8a8e00b8f11b http://example.com/project-hg", @source.query_revision('8a8e00b8f11b') { |o| o }
   end
 
   def test_username_should_be_backwards_compatible
