@@ -1,5 +1,4 @@
 require 'rake'
-require 'sshkit'
 require 'sshkit/dsl'
 
 Rake.application.options.trace = true
