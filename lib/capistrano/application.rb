@@ -42,6 +42,16 @@ module Capistrano
 
     private
 
+    def load_imports
+      if options.show_tasks
+        invoke 'load:defaults'
+        set(:stage, '')
+        Dir[deploy_config_path, stage_definitions].each { |f| add_import f }
+      end
+
+      super
+    end
+
     # allows the `cap install` task to load without a capfile
     def capfile
       File.expand_path(File.join(File.dirname(__FILE__),'..','Capfile'))

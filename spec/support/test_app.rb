@@ -57,6 +57,12 @@ module TestApp
     end
   end
 
+  def append_to_deploy_file(config)
+    File.open(test_stage_path, 'a') do |file|
+      file.write config + "\n"
+    end
+  end
+
   def prepend_to_capfile(config)
     current_capfile = File.read(capfile)
     File.open(capfile, 'w') do |file|
@@ -78,10 +84,11 @@ module TestApp
   end
 
   def run(command)
+    output = nil
     Dir.chdir(test_app_path) do
-      %x[#{command}]
+      output = %x[#{command}]
     end
-    $?.success?
+    [$?.success?, output]
   end
 
   def stage

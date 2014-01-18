@@ -107,3 +107,7 @@ When(/^an error is raised$/) do
   error = TestApp.shared_path.join('fail')
   run_vagrant_command(test_file_exists(error))
 end
+
+Then(/contains "(.*?)" in the output/) do |expected|
+  expect(@output).to include(expected)
+end
