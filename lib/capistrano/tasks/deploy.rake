@@ -95,7 +95,7 @@ namespace :deploy do
     task :linked_dirs do
       next unless any? :linked_dirs
       on release_roles :all do
-        execute :mkdir, '-pv', linked_dir_parents(release_path)
+        execute :mkdir, '-pv', linked_dir_parents(release_path).uniq
 
         fetch(:linked_dirs).each do |dir|
           target = release_path.join(dir)
