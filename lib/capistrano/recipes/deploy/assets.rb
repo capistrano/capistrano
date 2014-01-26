@@ -173,7 +173,7 @@ namespace :deploy do
       to shared/assets/manifest, and finally recompiling or regenerating nondigest assets.
     DESC
     task :rollback, :roles => lambda { assets_role }, :except => { :no_release => true } do
-      previous_manifest = capture("ls #{previous_release.shellescape}/assets_manifest.*").strip
+      previous_manifest = capture("ls #{previous_release.shellescape}/assets_manifest.* || echo").strip
       if capture("[ -e #{previous_manifest.shellescape} ] && echo true || echo false").strip != 'true'
         puts "#{previous_manifest} is missing! Cannot roll back assets. " <<
              "Please run deploy:assets:precompile to update your assets when the rollback is finished."
