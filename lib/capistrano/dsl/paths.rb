@@ -24,6 +24,7 @@ module Capistrano
       end
 
       def set_release_path(timestamp=now)
+        set(:release_timestamp, timestamp)
         set(:release_path, releases_path.join(timestamp))
       end
 
