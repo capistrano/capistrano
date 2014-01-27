@@ -149,7 +149,7 @@ Perfect, who needs telephones.
 Local tasks can be run by replacing `on` with `run_locally`
 
 ``` ruby
-desc "Notify service of deployment"
+desc 'Notify service of deployment'
 task :notify do
   run_locally do
     with rails_env: :development do
@@ -159,6 +159,21 @@ task :notify do
 end
 ```
 
+Of course, you can always just use standard ruby syntax to run things locally
+``` ruby
+desc 'Notify service of deployment'
+task :notify do
+  %x('RAILS_ENV=development bundle exec rake "service:notify"')
+end
+```
+
+Alternatively you could use the rake syntax
+``` ruby
+desc "Notify service of deployment"
+task :notify do
+   sh 'RAILS_ENV=development bundle exec rake "service:notify"'
+end
+```
 ## Console
 
 **Note:** Here be dragons. The console is very immature, but it's much more
