@@ -4,10 +4,12 @@
 or improvements to the code.**
 
 If you have a user support query, or you suspect that you might just be holding
-it wrong, drop us a line at [the mailing list]() or on [StackOverflow](). The
+it wrong, drop us a line at [the mailing list](https://groups.google.com/forum/#!forum/capistrano), [StackOverflow](http://stackoverflow.com/questions/tagged/capistrano) or at [CodersClan](http://codersclan.net/?repo_id=325&source=contributing). The
 mailing list is moderated to cut down on spam, so please be patient, if you use
 StackOverflow, make sure to tag your post with "Capistrano". (Not forgetting
 any other tags which might relate, rvm, rbenv, Ubuntu, etc.)
+
+If you have an urgent problem you can use [CodersClan](http://codersclan.net/?repo_id=325&source=contributing) to solve your problem quickly. CodersClan has a community of Capistrano experts dedicated to solve code problems for bounties.
 
 Wherever you post please be sure to include the version of Capistrano you are
 using, which versions of any plugins (*capistrano-rvm*, *capistrano-bundler*,
