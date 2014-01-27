@@ -20,7 +20,7 @@ Given(/^the file does not exist$/) do
 end
 
 Given(/^a custom task to generate a file$/) do
-  TestApp.copy_task_to_test_app('spec/support/tasks/database.cap')
+  TestApp.copy_task_to_test_app('spec/support/tasks/database.rake')
 end
 
 Given(/^the configuration is in a custom location$/) do
@@ -29,10 +29,10 @@ end
 
 Given(/^a custom task that will simulate a failure$/) do
   safely_remove_file(TestApp.shared_path.join('failed'))
-  TestApp.copy_task_to_test_app('spec/support/tasks/fail.cap')
+  TestApp.copy_task_to_test_app('spec/support/tasks/fail.rake')
 end
 
 Given(/^a custom task to run in the event of a failure$/) do
   safely_remove_file(TestApp.shared_path.join('failed'))
-  TestApp.copy_task_to_test_app('spec/support/tasks/failed.cap')
+  TestApp.copy_task_to_test_app('spec/support/tasks/failed.rake')
 end
