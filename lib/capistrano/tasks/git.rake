@@ -57,7 +57,7 @@ namespace :git do
   end
 
   desc 'Copy repo to releases'
-  task create_release: :'git:update' do
+  task :create_release do
     on release_roles :all do
       with fetch(:git_environmental_variables) do
         within repo_path do
