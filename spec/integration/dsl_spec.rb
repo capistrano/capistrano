@@ -201,16 +201,18 @@ describe Capistrano::DSL do
     describe 'when defining a host using a combination of the `server` and `role` syntax' do
 
       before do
-        dsl.server 'example1.com:1234', roles: %w{web}, active: true
+        dsl.server 'db@example1.com:1234', roles: %w{db}, active: true
+        dsl.server 'root@example1.com:1234', roles: %w{web}, active: true
         dsl.server 'example1.com:5678', roles: %w{web}, active: true
+        dsl.role :app, %w{deployer@example1.com:1234}
         dsl.role :app, %w{example1.com:5678}
       end
 
       describe 'fetching all servers' do
-        subject { dsl.roles(:all).map { |server| "#{server.hostname}:#{server.port}" } }
+        subject { dsl.roles(:all).map { |server| "#{server.user}@#{server.hostname}:#{server.port}" } }
 
-        it 'creates a server instance for each unique host:port combination' do
-          expect(subject).to eq %w{example1.com:1234 example1.com:5678}
+        it 'creates a server instance for each unique user@host:port combination' do
+          expect(subject).to eq %w{db@example1.com:1234 root@example1.com:1234 @example1.com:5678 deployer@example1.com:1234}
         end
       end
 
@@ -220,7 +222,7 @@ describe Capistrano::DSL do
         end
 
         it 'roles defined using the `role` syntax are included' do
-          expect(dsl.roles(:app)).to have(1).items
+          expect(dsl.roles(:app)).to have(2).items
         end
       end
 

@@ -3,7 +3,7 @@ require 'spec_helper'
 module Capistrano
   class Configuration
     describe Server do
-      let(:server) { Server.new('hostname:1234') }
+      let(:server) { Server.new('root@hostname:1234') }
 
       describe 'adding a role' do
         subject { server.add_role(:test) }
@@ -35,23 +35,23 @@ module Capistrano
       describe 'comparing identity' do
         subject { server.matches? Server[hostname] }
 
-        context 'with the same hostname' do
-          let(:hostname) { 'hostname:1234' }
+        context 'with the same user, hostname and port' do
+          let(:hostname) { 'root@hostname:1234' }
           it { should be_true }
         end
 
-        context 'with the same hostname and a user' do
-          let(:hostname) { 'user@hostname:1234' }
-          it { should be_true }
+        context 'with a different user' do
+          let(:hostname) { 'deployer@hostname:1234' }
+          it { should be_false }
         end
 
-        context 'with the same hostname but different port' do
-          let(:hostname) { 'hostname:5678' }
+        context 'with a different port' do
+          let(:hostname) { 'root@hostname:5678' }
           it { should be_false }
         end
 
         context 'with a different hostname' do
-          let(:hostname) { 'otherserver' }
+          let(:hostname) { 'root@otherserver:1234' }
           it { should be_false }
         end
       end

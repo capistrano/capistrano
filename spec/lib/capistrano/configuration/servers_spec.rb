@@ -106,10 +106,15 @@ module Capistrano
           expect(servers.roles_for([:all]).first.properties.test).to eq :value
         end
 
-        it 'can accept multiple servers with the same hostname but different ports' do
-          servers.add_host('2', roles: [:app, 'web'], test: :value, port: 12)
-          servers.add_host('2', roles: [:app, 'web'], test: :value, port: 34)
-          expect(servers.count { |server| server.hostname == '2' }).to eq 2
+        it 'can accept multiple servers with the same hostname but different ports or users' do
+          servers.add_host('1', roles: [:app, 'web'], test: :value, port: 12)
+          servers.add_host('1', roles: [:app, 'web'], test: :value, port: 34)
+          servers.add_host('1', roles: [:app, 'web'], test: :value, user: 'root')
+          servers.add_host('1', roles: [:app, 'web'], test: :value, user: 'deployer')
+          servers.add_host('1', roles: [:app, 'web'], test: :value, user: 'root', port: 34)
+          servers.add_host('1', roles: [:app, 'web'], test: :value, user: 'deployer', port: 34)
+          servers.add_host('1', roles: [:app, 'web'], test: :value, user: 'deployer', port: 56)
+          servers.should have(8).items
         end
       end
 
