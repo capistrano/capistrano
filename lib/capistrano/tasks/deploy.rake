@@ -5,7 +5,7 @@ namespace :deploy do
   end
 
   task :updating => :new_release_path do
-    invoke "#{scm}:create_release"
+    invoke 'deploy:create_release'
     invoke 'deploy:symlink:shared'
   end
 
@@ -31,7 +31,7 @@ namespace :deploy do
 
   desc 'Check required files and directories exist'
   task :check do
-    invoke "#{scm}:check"
+    invoke 'deploy:check:scm'
     invoke 'deploy:check:directories'
     invoke 'deploy:check:linked_dirs'
     invoke 'deploy:check:make_linked_dirs'
@@ -73,6 +73,11 @@ namespace :deploy do
           end
         end
       end
+    end
+
+    desc 'Check that the repository is reachable'
+    task :scm do
+      invoke "#{scm}:check"
     end
   end
 
@@ -163,6 +168,11 @@ namespace :deploy do
         debug 'Last release is the current release, skip cleanup_rollback.'
       end
     end
+  end
+
+  desc 'Copy data to releases'
+  task :create_release do
+    invoke "#{scm}:create_release"
   end
 
   desc 'Log details of the deploy'
