@@ -15,7 +15,7 @@ layout: default
     end
   {% endhighlight %}
 
-  You can add idiomatic support for your preffered ruby version manager: rvm, rbenv, chruby.
+  You can add idiomatic support for your preferred ruby version manager: rvm, rbenv, chruby.
   {% highlight ruby %}
     group :development do
       gem 'capistrano-rvm',   '~> 0.1', require: false
