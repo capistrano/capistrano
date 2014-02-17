@@ -56,7 +56,7 @@ module Capistrano
 
     private
     def fetch_revision
-      capture("cd #{repo_path} && git rev-parse --short HEAD")
+      capture("cd #{repo_path} && git rev-parse --short #{fetch(:branch)}")
     end
   end
 end
