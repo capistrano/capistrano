@@ -112,5 +112,17 @@ module Capistrano
         "Your SCM strategy module should provide a #release method"
       )
     end
+
+    # @abstract
+    #
+    # Identify the SHA of the commit that will be deployed.  This will most likely involve SshKit's capture method.
+    #
+    # @return void
+    #
+    def fetch_revision
+      raise NotImplementedError.new(
+        "Your SCM strategy module should provide a #fetch_revision method"
+      )
+    end
   end
 end

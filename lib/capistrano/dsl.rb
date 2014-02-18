@@ -26,12 +26,6 @@ module Capistrano
       execute :sudo, *args
     end
 
-    def capturing_revisions(&block)
-      set :previous_revision, fetch_revision
-      block.call
-      set :current_revision, fetch_revision
-    end
-
     def revision_log_message
       fetch(:revision_log_message,
         t(:revision_log_message,
@@ -52,11 +46,6 @@ module Capistrano
 
     def lock(locked_version)
       VersionValidator.new(locked_version).verify
-    end
-
-    private
-    def fetch_revision
-      capture("cd #{repo_path} && git rev-parse --short HEAD")
     end
   end
 end

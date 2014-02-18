@@ -32,5 +32,9 @@ class Capistrano::Git < Capistrano::SCM
     def release
       git :archive, fetch(:branch), '| tar -x -C', release_path
     end
+
+    def fetch_revision
+      context.capture(:git, "rev-parse #{fetch(:branch)}")
+    end
   end
 end
