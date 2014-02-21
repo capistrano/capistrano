@@ -12,8 +12,8 @@ role :db,  %w{deploy@example.com}
 # Extended Server Syntax
 # ======================
 # This can be used to drop a more detailed server definition into the
-# server list. The second argument something that quacks like a hash can
-# be used to set extended properties on the server.
+# server list. The second argument is a, or duck-types, Hash and is
+# used to set extended properties on the server.
 
 server 'example.com', user: 'deploy', roles: %w{web app}, my_property: :my_value
 
