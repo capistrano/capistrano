@@ -2,6 +2,7 @@ namespace :deploy do
 
   task :starting do
     invoke 'deploy:check'
+    invoke 'deploy:set_previous_revision'
   end
 
   task :updating => :new_release_path do
@@ -201,12 +202,21 @@ namespace :deploy do
     end
   end
 
-  desc "Place a REVISION file with the current revison SHA in the current release path"
+  desc "Place a REVISION file with the current revision SHA in the current release path"
   task :set_current_revision  do
     invoke "#{scm}:set_current_revision"
     on release_roles(:all) do
       within release_path do
         execute :echo, "\"#{fetch(:current_revision)}\" >> REVISION"
+      end
+    end
+  end
+
+  task :set_previous_revision do
+    on release_roles(:all) do
+      target = release_path.join('REVISION')
+      if test "[ -f #{target} ]"
+        set(:previous_revision, capture(:cat, target, '2>/dev/null'))
       end
     end
   end
