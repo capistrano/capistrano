@@ -70,7 +70,7 @@ module Capistrano
       ['--roles ROLES', '-r',
        "Filter command to only apply to these roles (separate multiple roles with a comma)",
        lambda { |value|
-         Configuration.env.set(:filter, :roles => value.split(","))
+         Configuration.env.set(:filter, roles: value.split(","))
        }
       ]
     end
@@ -79,7 +79,7 @@ module Capistrano
       ['--hosts HOSTS', '-z',
        "Filter command to only apply to these hosts (separate multiple hosts with a comma)",
        lambda { |value|
-         Configuration.env.set(:filter, :hosts => value.split(","))
+         Configuration.env.set(:filter, hosts: value.split(","))
        }
       ]
     end
