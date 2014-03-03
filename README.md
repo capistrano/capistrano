@@ -6,7 +6,7 @@
 
 ## Support
 
-Need help with getting Capistrano up and running? Got a code problem you want to get solved quickly? 
+Need help with getting Capistrano up and running? Got a code problem you want to get solved quickly?
 
 Get <a href="http://codersclan.net/?repo_id=325&source=link">Capistrano support on CodersClan.</a>
 
@@ -126,12 +126,14 @@ end
 The final way to call out to other tasks is to simply `invoke()` them:
 
 ``` ruby
-task :one do
-  on roles(:all) { info "One" }
-end
-task :two do
-  invoke :one
-  on roles(:all) { info "Two" }
+namespace :example do
+  task :one do
+    on roles(:all) { info "One" }
+  end
+  task :two do
+    invoke "example:one"
+    on roles(:all) { info "Two" }
+  end
 end
 ```
 
