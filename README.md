@@ -258,9 +258,9 @@ connections behind the scenes in Capistrano. Depending on how deep you dig, you
 might run into interfaces that come directly from SSHKit (the configuration is
 a good example).
 
-## Licence
+## License
 
-The MIT License (MIT)
+MIT License (MIT)
 
 Copyright (c) 2012-2013 Tom Clements, Lee Hambley
 
