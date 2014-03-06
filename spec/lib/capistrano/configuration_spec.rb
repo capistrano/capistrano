@@ -112,6 +112,19 @@ module Capistrano
       end
     end
 
+    describe 'keys' do
+      subject { config.keys }
+
+      before do
+        config.set(:key1, :value1)
+        config.set(:key2, :value2)
+      end
+
+      it 'returns all set keys' do
+        expect(subject).to match_array [:key1, :key2]
+      end
+    end
+
     describe 'deleting' do
       before do
         config.set(:key, :value)
