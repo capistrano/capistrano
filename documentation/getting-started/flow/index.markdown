@@ -75,7 +75,6 @@ deploy
     [after]
       deploy:migrate
       deploy:compile_assets
-      deploy:cleanup_assets
       deploy:normalise_assets
   deploy:publishing
     deploy:symlink:release
