@@ -2,6 +2,10 @@
 
 Reverse Chronological Order:
 
+## master
+
+* Expose a `keys` method on `env` to allow configuration dumps ([#957](https://github.com/capistrano/capistrano/issues/957), [#958](https://github.com/capistrano/capistrano/issues/958))
+
 ## `3.1.0`
 
 Breaking changes:
