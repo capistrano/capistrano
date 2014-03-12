@@ -45,11 +45,8 @@ module Capistrano
 
       def release_roles(*names)
         options = { exclude: :no_release }
-        if names.last.is_a? Hash
-          names.last.merge(options)
-        else
-          names << options
-        end
+        options.merge! names.pop if names.last.is_a? Hash
+        names << options
         roles(*names)
       end
 
