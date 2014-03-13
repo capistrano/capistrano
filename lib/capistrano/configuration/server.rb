@@ -86,6 +86,10 @@ module Capistrano
           @roles ||= Set.new
         end
 
+        def keys
+          @properties.keys
+        end
+
         def method_missing(key, value=nil)
           if value
             set(lvalue(key), value)

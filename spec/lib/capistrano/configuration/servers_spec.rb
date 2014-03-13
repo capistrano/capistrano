@@ -104,6 +104,7 @@ module Capistrano
           expect(servers.roles_for([:app]).first.hostname).to eq '1'
           expect(servers.roles_for([:web]).first.hostname).to eq '1'
           expect(servers.roles_for([:all]).first.properties.test).to eq :value
+          expect(servers.roles_for([:all]).first.properties.keys).to eq [:test]
         end
 
         it 'can accept multiple servers with the same hostname but different ports or users' do

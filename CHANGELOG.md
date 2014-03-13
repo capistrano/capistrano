@@ -2,6 +2,12 @@
 
 Reverse Chronological Order:
 
+## master
+
+* Minor changes:
+  * Added `keys` method to Server properties to allow introspection of automatically added
+    properties.
+
 ## `3.1.0`
 
 Breaking changes:
