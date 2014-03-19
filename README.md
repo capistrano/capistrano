@@ -217,7 +217,7 @@ DEBUG [9ce34809]  leehambley pts/0        2013-06-13 17:11 (port-11262.pppoe.wtn
 
 There is a configuration option which asks the backend driver to ask the remote host
 to assign the connection a *pty*. A *pty* is a pseudo-terminal, which in effect means
-*tell the backend that this is an **interactive** session*. This is normally a bad idea.
+*tell the backend that this is an __interactive__ session*. This is normally a bad idea.
 
 Most of the differences are best explained by [this page](https://github.com/sstephenson/rbenv/wiki/Unix-shell-initialization) from the author of *rbenv*.
 
