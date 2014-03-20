@@ -26,7 +26,7 @@ Breaking changes:
   * Config location can now be changed with `deploy_config_path` and `stage_config_path` options (@seenmyfate)
   * `no_release` option is now available (@seenmyfate)
   * Raise an error if developer tries to define `:all` role, which is reserved (@kirs)
-  * `deploy:fallback` hook was added to add some custom behaviour on failed deploy (@seenmyfate)
+  * `deploy:failed` hook was added to add some custom behaviour on failed deploy (@seenmyfate)
   * Correctly infer namespace in task enhancements (@seenmyfate)
   * Add SHA to revision log (@blackxored)
   * Allow configuration of multiple servers with same hostname but different ports (@rsslldnphy)
