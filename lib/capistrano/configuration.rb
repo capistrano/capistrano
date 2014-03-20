@@ -24,6 +24,10 @@ module Capistrano
       config[key] = value
     end
 
+    def set_default(key, value)
+      set(key, value) unless config.has_key?(key)
+    end
+
     def delete(key)
       config.delete(key)
     end

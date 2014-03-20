@@ -105,6 +105,26 @@ module Capistrano
       end
     end
 
+    describe '#set_default' do
+      context 'value is set' do
+        before do
+          config.set(:key, :value)
+        end
+
+        it 'does not call #set' do
+          config.expects(:set).with(:key, :value).never
+          config.set_default(:key, :value)
+        end
+      end
+
+      context 'value is not set' do
+        it 'calls #set' do
+          config.expects(:set).with(:key, :value)
+          config.set_default(:key, :value)
+        end
+      end
+    end
+
     describe 'deleting' do
       before do
         config.set(:key, :value)
