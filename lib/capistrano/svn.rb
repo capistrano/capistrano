@@ -4,7 +4,7 @@ require 'capistrano/scm'
 
 class Capistrano::Svn < Capistrano::SCM
   
-  # execute hg in context with arguments
+  # execute svn in context with arguments
   def svn(*args)
     args.unshift(:svn)
     context.execute *args
