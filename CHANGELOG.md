@@ -85,7 +85,7 @@ extension the trusted contributors and IRC regulars) were able to test for.
 There's a more extensive post about my failure to be able to keep up with the
 demands of maintaining v2 whilst trying to build something which is appropriate
 for the current landscape. If you are affected by the unsupported 2 branch,
-please contact me (Lee Hambley) to dicsuss how my company can help support you.
+please contact me (Lee Hambley) to discuss how my company can help support you.
 Otherwise, please try v3, we're sure you'll like it, and the code is designed
 to be so simple that anyone can work on it.
 

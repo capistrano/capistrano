@@ -28,17 +28,17 @@ module Capistrano
       context.test *args
     end
 
-    # The repository URL accoriding to the context
+    # The repository URL according to the context
     def repo_url
       context.repo_url
     end
 
-    # The repository path accoriding to the context
+    # The repository path according to the context
     def repo_path
       context.repo_path
     end
 
-    # The release path accoriding to the context
+    # The release path according to the context
     def release_path
       context.release_path
     end
@@ -53,7 +53,7 @@ module Capistrano
 
     # @abstract
     #
-    # Your implementation should check the existance of a cache repository on
+    # Your implementation should check the existence of a cache repository on
     # the deployment target
     #
     # @return [Boolean]
