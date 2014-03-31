@@ -55,8 +55,8 @@ module Capistrano
     end
 
     private
-    def fetch_revision
-      capture("cd #{repo_path} && git rev-parse --short HEAD")
+    def fetch_revision(branch = fetch(:branch, 'HEAD'))
+      capture("cd #{repo_path.to_s.shellescape} && git rev-parse --short #{branch.to_s.shellescape}")
     end
   end
 end
