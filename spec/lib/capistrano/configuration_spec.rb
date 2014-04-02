@@ -96,6 +96,13 @@ module Capistrano
         end
       end
 
+      context 'lambda with parameters' do
+        subject { config.fetch(:key, lambda { |c| c }).call(42) }
+        it 'is returned as a lambda' do
+          expect(subject).to eq 42
+        end
+      end
+
       context 'block is passed to fetch' do
         subject { config.fetch(:key, :default) { fail 'we need this!' } }
 

@@ -30,7 +30,7 @@ module Capistrano
 
     def fetch(key, default=nil, &block)
       value = fetch_for(key, default, &block)
-      while value.respond_to?(:call)
+      while callable_without_parameters?(value)
         value = set(key, value.call)
       end
       return value
@@ -98,5 +98,8 @@ module Capistrano
       end
     end
 
+    def callable_without_parameters?(x)
+      x.respond_to?(:call) && ( !x.respond_to?(:arity) || x.arity == 0)
+    end
   end
 end
