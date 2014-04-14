@@ -152,6 +152,15 @@ end
 Perfect, who needs telephones.
 
 
+## Using password authentication
+
+Password authentication can be done via `set` and `ask` in your deploy environment file (e.g.: config/environments/production.rb)
+
+```ruby
+set :password, ask('Server password:', nil)
+server 'server.domain.com', user: 'ssh_user_name', port: 22, password: fetch(:password), roles: %w{web app db}
+```
+
 ## Running local tasks
 
 Local tasks can be run by replacing `on` with `run_locally`
