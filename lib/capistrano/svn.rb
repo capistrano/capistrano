@@ -16,20 +16,32 @@ class Capistrano::Svn < Capistrano::SCM
     end
     
     def check
-      test! :svn, :info, repo_url
+      test! :svn, :info, repo_url, authentication
     end
     
     def clone
-      svn :checkout, repo_url, repo_path
+      svn :checkout, repo_url, repo_path, authentication
     end
     
     def update
-      svn :update
+      svn :update, authentication
     end
     
     def release
-      svn :export, '.', release_path
+      svn :export, '.', release_path, authentication
     end
+
+    private
+
+      def authentication
+        username = fetch(:scm_username)
+        password = fetch(:scm_password)
+        return "" unless username && password
+        result = %(--username "#{username}" )
+        result << %(--password "#{password}" )
+        result << "--no-auth-cache "
+        result.strip
+      end
     
   end
 end
