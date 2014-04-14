@@ -24,7 +24,7 @@ module Capistrano
       if tasks_without_stage_dependency.include?(@top_level_tasks.first)
         @top_level_tasks
       else
-        @top_level_tasks.unshift(ensure_stage)
+        @top_level_tasks.unshift(ensure_stage.to_s)
       end
     end
 
