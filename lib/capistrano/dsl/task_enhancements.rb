@@ -17,13 +17,14 @@ module Capistrano
 
     def remote_file(task)
       target_roles = task.delete(:roles) { :all }
-      define_remote_file_task(task, target_roles)
+      remote_path = task.delete(:within) { shared_path }
+      define_remote_file_task(task, target_roles, remote_path)
     end
 
-    def define_remote_file_task(task, target_roles)
+    def define_remote_file_task(task, target_roles, remote_path = shared_path)
       Rake::Task.define_task(task) do |t|
         prerequisite_file = t.prerequisites.first
-        file = shared_path.join(t.name)
+        file = remote_path.join(t.name)
 
         on roles(target_roles) do
           unless test "[ -f #{file} ]"
