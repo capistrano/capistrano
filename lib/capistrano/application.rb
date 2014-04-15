@@ -29,7 +29,7 @@ module Capistrano
     end
 
     def exit_because_of_exception(ex)
-      if deploying?
+      if respond_to?(:deploying?) && deploying?
         exit_deploy_because_of_exception(ex)
       else
         super
