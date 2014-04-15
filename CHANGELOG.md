@@ -6,6 +6,9 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
+* Minor Changes
+  * Added tests for after/before hooks features (@juanibiapina, @miry)
+
 ## `3.2.1`
 
 https://github.com/capistrano/capistrano/compare/v3.2.0...v3.2.1
