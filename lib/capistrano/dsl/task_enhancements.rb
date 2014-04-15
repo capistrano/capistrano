@@ -1,3 +1,6 @@
+require 'tmpdir'
+require 'pathname'
+
 module Capistrano
   module TaskEnhancements
     def before(task, prerequisite, *args, &block)
@@ -23,7 +26,16 @@ module Capistrano
     def define_remote_file_task(task, target_roles)
       Rake::Task.define_task(task) do |t|
         prerequisite_file = t.prerequisites.first
-        file = shared_path.join(t.name)
+
+        # Extract the task name; ignore any
+        # scope a user may have accidentally
+        # attached that could be in `t.name`
+        task_name = task.keys.first
+        if Pathname.new(task_name).absolute?
+          file = task_name
+        else
+          file = File.join((fetch(:shared_path) || Dir.tmpdir), task_name)
+        end
 
         on roles(target_roles) do
           unless test "[ -f #{file} ]"
