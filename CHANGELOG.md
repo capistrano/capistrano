@@ -7,6 +7,7 @@ Reverse Chronological Order:
 * Minor changes:
   * Added `keys` method to Server properties to allow introspection of automatically added
     properties.
+  * Amended the git check command, "ls-remote", to use "-h", limiting the list to refs/heads
 
 ## `3.1.0`
 
