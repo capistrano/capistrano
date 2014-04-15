@@ -15,7 +15,7 @@ module Capistrano
       attr_reader :env, :key, :default
 
       def ask_question
-        $stdout.puts question
+        $stdout.print question
       end
 
       def save_response

@@ -23,7 +23,7 @@ module Capistrano
           let(:branch) { 'branch' }
 
           before do
-            $stdout.expects(:puts).with('Please enter branch: |default|')
+            $stdout.expects(:print).with('Please enter branch (default): ')
             $stdin.expects(:gets).returns(branch)
           end
 
@@ -37,7 +37,7 @@ module Capistrano
           let(:branch) { default }
 
           before do
-            $stdout.expects(:puts).with('Please enter branch: |default|')
+            $stdout.expects(:print).with('Please enter branch (default): ')
             $stdin.expects(:gets).returns('')
           end
 
