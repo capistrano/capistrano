@@ -156,10 +156,10 @@ Perfect, who needs telephones.
 
 ## Using password authentication
 
-Password authentication can be done via `set` and `ask` in your deploy environment file (e.g.: config/environments/production.rb)
+Password authentication can be done via `set` and `ask` in your deploy environment file (e.g.: config/deploy/production.rb)
 
 ```ruby
-set :password, ask('Server password:', nil)
+set :password, ask('Server password', nil)
 server 'server.domain.com', user: 'ssh_user_name', port: 22, password: fetch(:password), roles: %w{web app db}
 ```
 
