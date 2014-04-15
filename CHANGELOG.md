@@ -6,6 +6,13 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.2.0...HEAD
 
+## `3.2.0``
+
+The changelog entries here are incomplete, because many authors choose not to
+be credited for their work, check the tag comparison link for Github.
+
+https://github.com/capistrano/capistrano/compare/v3.1.0...v3.2.0
+
 * Minor changes:
   * Added `keys` method to Server properties to allow introspection of automatically added
     properties.
