@@ -36,6 +36,10 @@ module Capistrano
       return value
     end
 
+    def keys
+      config.keys
+    end
+
     def role(name, hosts, options={})
       if name == :all
         raise ArgumentError.new("#{name} reserved name for role. Please choose another name")
