@@ -4,6 +4,8 @@ Reverse Chronological Order:
 
 ## master
 
+https://github.com/capistrano/capistrano/compare/v3.2.0...HEAD
+
 * Minor changes:
   * Added `keys` method to Server properties to allow introspection of automatically added
     properties.
@@ -11,6 +13,8 @@ Reverse Chronological Order:
   * Amended the git check command, "ls-remote", to use "-h", limiting the list to refs/heads
 
 ## `3.1.0`
+
+https://github.com/capistrano/capistrano/compare/v3.0.1...v3.1.0
 
 Breaking changes:
 
@@ -45,11 +49,15 @@ Big thanks to @Kriechi for his help.
 
 ## `3.0.1`
 
+https://github.com/capistrano/capistrano/compare/v3.0.0...v3.0.1
+
   * `capify` not listed as executable (@leehambley)
   * Confirm license as MIT (@leehambley)
   * Move the git ssh helper to application path (@mpapis)
 
 ## `3.0.0`
+
+https://github.com/capistrano/capistrano/compare/2.15.5...v3.0.0
 
 If you are coming here to wonder why your Capfile doesn't work anymore, please
 vendor lock your Capistrano at 2.x, whichever version was working for you
