@@ -62,7 +62,7 @@ module Capistrano
       end
 
       def release_timestamp
-        env.timestamp.strftime("%Y%m%d%H%M%S")
+        fetch(:release_timestamp)
       end
 
       def asset_timestamp
