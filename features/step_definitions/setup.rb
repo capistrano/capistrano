@@ -3,7 +3,7 @@ Given(/^a test app with the default configuration$/) do
 end
 
 Given(/^servers with the roles app and web$/) do
-  vagrant_cli_command('up')
+  vagrant_cli_command('up') rescue nil
 end
 
 Given(/^a required file$/) do
@@ -21,6 +21,10 @@ end
 
 Given(/^a custom task to generate a file$/) do
   TestApp.copy_task_to_test_app('spec/support/tasks/database.rake')
+end
+
+Given(/config stage file has line "(.*?)"/) do |line|
+  TestApp.append_to_deploy_file(line)
 end
 
 Given(/^the configuration is in a custom location$/) do

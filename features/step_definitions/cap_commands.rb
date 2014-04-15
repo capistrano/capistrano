@@ -7,6 +7,6 @@ When(/^I run cap "(.*?)" as part of a release$/) do |task|
 end
 
 When(/^I run "(.*?)"$/) do |command|
-  @success = TestApp.run(command)
+  @success, @output = TestApp.run(command)
 end
 
