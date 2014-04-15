@@ -49,10 +49,8 @@ namespace :git do
   task update: :'git:clone' do
     on release_roles :all do
       within repo_path do
-        capturing_revisions do
-          with fetch(:git_environmental_variables) do
-            strategy.update
-          end
+        with fetch(:git_environmental_variables) do
+          strategy.update
         end
       end
     end
@@ -69,5 +67,15 @@ namespace :git do
       end
     end
   end
-end
 
+  desc 'Determine the revision that will be deployed'
+  task :set_current_revision do
+    on release_roles :all do
+      within repo_path do
+        with fetch(:git_environmental_variables) do
+          set :current_revision, strategy.fetch_revision
+        end
+      end
+    end
+  end
+end

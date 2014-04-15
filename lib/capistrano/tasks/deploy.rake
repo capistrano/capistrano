@@ -2,10 +2,12 @@ namespace :deploy do
 
   task :starting do
     invoke 'deploy:check'
+    invoke 'deploy:set_previous_revision'
   end
 
   task :updating => :new_release_path do
     invoke "#{scm}:create_release"
+    invoke "deploy:set_current_revision"
     invoke 'deploy:symlink:shared'
   end
 
@@ -197,6 +199,25 @@ namespace :deploy do
       last_release = capture(:ls, '-xr', releases_path).split[1]
       set_release_path(last_release)
       set(:rollback_timestamp, last_release)
+    end
+  end
+
+  desc "Place a REVISION file with the current revision SHA in the current release path"
+  task :set_current_revision  do
+    invoke "#{scm}:set_current_revision"
+    on release_roles(:all) do
+      within release_path do
+        execute :echo, "\"#{fetch(:current_revision)}\" >> REVISION"
+      end
+    end
+  end
+
+  task :set_previous_revision do
+    on release_roles(:all) do
+      target = release_path.join('REVISION')
+      if test "[ -f #{target} ]"
+        set(:previous_revision, capture(:cat, target, '2>/dev/null'))
+      end
     end
   end
 

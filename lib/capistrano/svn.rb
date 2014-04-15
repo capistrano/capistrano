@@ -9,27 +9,30 @@ class Capistrano::Svn < Capistrano::SCM
     args.unshift(:svn)
     context.execute *args
   end
-  
+
   module DefaultStrategy
     def test
       test! " [ -d #{repo_path}/.svn ] "
     end
-    
+
     def check
       test! :svn, :info, repo_url
     end
-    
+
     def clone
       svn :checkout, repo_url, repo_path
     end
-    
+
     def update
       svn :update
     end
-    
+
     def release
       svn :export, '.', release_path
     end
-    
+
+    def fetch_revision
+      context.capture(:svn, "log -r HEAD -q | tail -n 2 | head -n 1 | sed s/\ \|.*/''/")
+    end
   end
 end
