@@ -283,7 +283,7 @@ describe Capistrano::DSL do
   describe 'asking for a variable' do
     before do
       dsl.ask(:scm, :svn)
-      $stdout.stubs(:puts)
+      $stdout.stubs(:print)
     end
 
     context 'variable is provided' do
