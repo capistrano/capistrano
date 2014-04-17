@@ -28,7 +28,7 @@ class Capistrano::Svn < Capistrano::SCM
     end
 
     def release
-      svn :export, '.', release_path
+      svn :export, '--force', '.', release_path
     end
 
     def fetch_revision
