@@ -11,6 +11,7 @@ https://github.com/capistrano/capistrano/compare/v3.2.0...HEAD
   * Changed asking question to more standard format (like common unix commandline tools) (@sponomarev)
   * Fixed typos in the README. (@sponomarev)
   * Added `keys` method to Configuration to allow introspection of configuration options. (@juanibiapina)
+  * Improve error message when git:check fails (raise instead of silently `exit 1`) (@mbrictson)
 
 ## `3.2.0`
 
