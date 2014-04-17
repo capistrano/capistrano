@@ -28,11 +28,11 @@ class Capistrano::Svn < Capistrano::SCM
     end
 
     def release
-      svn :export, '.', release_path
+      svn :export, '--force', '.', release_path
     end
 
     def fetch_revision
-      context.capture(:svn, "log -r HEAD -q | tail -n 2 | head -n 1 | sed s/\ \|.*/''/")
+      context.capture(:svnversion, repo_path)
     end
   end
 end
