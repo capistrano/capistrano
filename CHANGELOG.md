@@ -10,6 +10,8 @@ https://github.com/capistrano/capistrano/compare/v3.2.0...HEAD
   * Changed asking question to more standard format (like common unix commandline tools) (@sponomarev)
   * Fixed typos in the README. (@sponomarev)
   * Added `keys` method to Configuration to allow introspection of configuration options. (@juanibiapina)
+  * Added `--force` flag to `svn export` command to fix errors when the release
+    directory already exists.
 
 ## `3.2.0`
 
