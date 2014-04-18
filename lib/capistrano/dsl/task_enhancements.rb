@@ -1,17 +1,25 @@
 module Capistrano
   module TaskEnhancements
     def before(task, prerequisite, *args, &block)
-      prerequisite = Rake::Task.define_task(prerequisite, *args, &block) if block_given?
-      Rake::Task[task].enhance do
-        Rake::Task[prerequisite].invoke(*args)
+      if block_given?
+        prerequisite_task = Rake::Task.define_task(prerequisite, *args, &block)
+      else
+        prerequisite_task = Rake::Task.define_task("before_#{task}_run_#{prerequisite}") do
+          Rake::Task[prerequisite].invoke(*args)
+        end
       end
+      Rake::Task[task].enhance [prerequisite_task]
     end
 
-    def after(task, post_task, *args, &block)
-      Rake::Task.define_task(post_task, *args, &block) if block_given?
+    def after(task, post_task, *formal_args, &block)
+      Rake::Task.define_task(post_task, *formal_args, &block) if block_given?
       post_task = Rake::Task[post_task]
-      Rake::Task[task].enhance do
-        post_task.invoke(args)
+      Rake::Task[task].enhance do |t, real_args|
+        if block_given?
+          post_task.invoke(*real_args)
+        else
+          post_task.invoke(*formal_args)
+        end
       end
     end
 
