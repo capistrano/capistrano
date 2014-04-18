@@ -46,7 +46,6 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
   * See the documentation in the README.md file
 
-* Pushing again to trigger another build (I have a seemingly random build fail) (@townsen)
 * Enhancements (@townsen)
   * Added set_if_empty method to DSL to allow conditional setting
   * Altered standard Capistrano defaults so that they are not set
@@ -70,6 +69,7 @@ Breaking Changes:
   * Remove -v flag from mkdir call. (@caligo-mentis)
   * Capistrano now allows to customize `local_user` for revision log. (@sauliusgrigaitis)
   * Added tests for after/before hooks features (@juanibiapina, @miry)
+  * Added `--force` flag to `svn export` command to fix errors when the release directory already exists.
   * Improved the output of `cap --help`. (@mbrictson)
   * Cucumber suite now runs on the latest version of Vagrant (@tpett)
   * The `ask` method now supports the `echo: false` option. (@mbrictson, @kaikuchn)

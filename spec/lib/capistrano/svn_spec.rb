@@ -60,7 +60,7 @@ module Capistrano
       it "should run svn export" do        
         context.expects(:release_path).returns(:path)
         
-        context.expects(:execute).with(:svn, :export, '.', :path)
+        context.expects(:execute).with(:svn, :export, '--force', '.', :path)
 
         subject.release
       end
