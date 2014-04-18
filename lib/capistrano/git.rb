@@ -34,7 +34,7 @@ class Capistrano::Git < Capistrano::SCM
     end
 
     def fetch_revision
-      context.capture(:git, "rev-parse #{fetch(:branch)}")
+      context.capture(:git, "rev-parse --short #{fetch(:branch)}")
     end
   end
 end
