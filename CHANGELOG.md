@@ -7,6 +7,7 @@ Reverse Chronological Order:
 https://github.com/capistrano/capistrano/compare/v3.2.0...HEAD
 
 * Minor changes:
+  * Update dsl#local_user method and add test for it. (@bruno-)
   * Revert short sha1 revision with git. (@blaugueux)
   * Changed asking question to more standard format (like common unix commandline tools) (@sponomarev)
   * Fixed typos in the README. (@sponomarev)
