@@ -30,7 +30,7 @@ class Capistrano::Git < Capistrano::SCM
     end
 
     def release
-      git :archive, fetch(:branch), '| tar -x -C', release_path
+      git :archive, fetch(:branch), '| tar -x -f - -C', release_path
     end
 
     def fetch_revision
