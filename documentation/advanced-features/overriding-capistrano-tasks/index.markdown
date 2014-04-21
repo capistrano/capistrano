@@ -19,9 +19,9 @@ Will print both `foo` and `bar`.
 
 But it is also possible to completely clear a task and then re-defining it from scratch. A `Rake::Task` provides the `clear` method for this, which internally performs three separate actions:
 
-* `clear_prerequisites`
-* `clear_actions`
-* `clear_comments`
+- `clear_prerequisites`
+- `clear_actions`
+- `clear_comments`
 
 Clearing the prerequisites (i.e. any dependencies that may have been defined for a task) is probably not what you want, though. Let's say, for example, that you want to re-define the `deploy:revert_release` task, which is defined as follows:
 
@@ -45,7 +45,7 @@ task :foo => :init do
 end
 
 Rake::Task["foo"].clear_actions
-task :bar do
+task :foo do
     puts "bar"
 end
 {% endhighlight %}
