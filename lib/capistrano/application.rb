@@ -16,9 +16,43 @@ module Capistrano
     end
 
     def sort_options(options)
+      not_applicable_to_capistrano = %w(quiet silent verbose)
+      options.reject! do |(switch, *)|
+        switch =~ /--#{Regexp.union(not_applicable_to_capistrano)}/
+      end
+
       options.push(version, roles, dry_run, hostfilter)
       super
     end
+
+    def handle_options
+      options.rakelib = ['rakelib']
+      options.trace_output = $stderr
+
+      OptionParser.new do |opts|
+        opts.banner = "See full documentation at http://capistranorb.com/."
+        opts.separator ""
+        opts.separator "Install capistrano in a project:"
+        opts.separator "    bundle exec cap install [STAGES=qa,staging,production,...]"
+        opts.separator ""
+        opts.separator "Show available tasks:"
+        opts.separator "    bundle exec cap -T"
+        opts.separator ""
+        opts.separator "Invoke (or simulate invoking) a task:"
+        opts.separator "    bundle exec cap [--dry-run] STAGE TASK"
+        opts.separator ""
+        opts.separator "Advanced options:"
+
+        opts.on_tail("-h", "--help", "-H", "Display this help message.") do
+          puts opts
+          exit
+        end
+
+        standard_rake_options.each { |args| opts.on(*args) }
+        opts.environment('RAKEOPT')
+      end.parse!
+    end
+
 
     def top_level_tasks
       if tasks_without_stage_dependency.include?(@top_level_tasks.first)

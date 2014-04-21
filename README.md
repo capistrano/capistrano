@@ -55,7 +55,7 @@ $ bundle exec cap install STAGES=local,sandbox,qa,production
 ## Usage
 
 ``` sh
-$ bundle exec cap -vT
+$ bundle exec cap -T
 
 $ bundle exec cap staging deploy
 $ bundle exec cap production deploy
