@@ -138,14 +138,15 @@ module Capistrano
 
     describe 'asking' do
       let(:question) { stub }
+      let(:options) { Hash.new }
 
       before do
-        Configuration::Question.expects(:new).with(config, :branch, :default).
+        Configuration::Question.expects(:new).with(config, :branch, :default, options).
           returns(question)
       end
 
       it 'prompts for the value when fetching' do
-        config.ask(:branch, :default)
+        config.ask(:branch, :default, options)
         expect(config.fetch(:branch)).to eq question
       end
     end

@@ -5,13 +5,14 @@ module Capistrano
 
     describe Question do
 
-      let(:question) { Question.new(env, key, default) }
+      let(:question) { Question.new(env, key, default, options) }
       let(:default) { :default }
       let(:key) { :branch }
       let(:env) { stub }
+      let(:options) { nil }
 
       describe '.new' do
-        it 'takes a key, default' do
+        it 'takes a key, default, options' do
           question
         end
       end
@@ -46,6 +47,33 @@ module Capistrano
             question.call
           end
 
+        end
+
+        describe 'highline behavior' do
+          let(:highline) { stub }
+
+          before do
+            question.expects(:highline_ask).yields(highline).returns("answer")
+            env.expects(:set).with(key, "answer")
+          end
+
+          context 'with no options' do
+            let(:options) { nil }
+
+            it 'passes echo: true to HighLine' do
+              highline.expects(:"echo=").with(true)
+              question.call
+            end
+          end
+
+          context 'with echo: false' do
+            let(:options) { { echo: false } }
+
+            it 'passes echo: false to HighLine' do
+              highline.expects(:"echo=").with(false)
+              question.call
+            end
+          end
         end
       end
     end

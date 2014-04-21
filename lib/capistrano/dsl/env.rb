@@ -27,8 +27,8 @@ module Capistrano
         env.delete(key)
       end
 
-      def ask(key, value)
-        env.ask(key, value)
+      def ask(key, value, options={})
+        env.ask(key, value, options)
       end
 
       def role(name, servers, options={})
