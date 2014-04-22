@@ -6,6 +6,13 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.2.0...HEAD
 
+## `3.2.1`
+
+* Bug Fixes:
+  * 3.2.0 introduced some behaviour to modify the way before/after hooks were called, to allow the optional
+    preservation of arguments to be passed to tasks. This release reverts that commit in order to restore
+    original functionality, and fix (fairly serious) bugs introduced by the refactoring.
+
 * Minor changes:
   * Update dsl#local_user method and add test for it. (@bruno-)
   * Revert short sha1 revision with git. (@blaugueux)
