@@ -4,9 +4,11 @@ Reverse Chronological Order:
 
 ## master
 
-https://github.com/capistrano/capistrano/compare/v3.2.0...HEAD
+https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
 ## `3.2.1`
+
+https://github.com/capistrano/capistrano/compare/v3.2.0...v3.2.1
 
 * Bug Fixes:
   * 3.2.0 introduced some behaviour to modify the way before/after hooks were called, to allow the optional
