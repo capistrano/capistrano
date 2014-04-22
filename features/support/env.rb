@@ -1,12 +1,11 @@
-require 'kuroko'
+PROJECT_ROOT = File.expand_path('../../../', __FILE__)
+VAGRANT_ROOT = File.join(PROJECT_ROOT, 'spec/support')
+VAGRANT_BIN = ENV['VAGRANT_BIN'] || "vagrant"
 
-project_root = File.expand_path('../../../', __FILE__)
-vagrant_root = File.join(project_root, 'spec/support')
-
-Kuroko.configure do |config|
-  config.vagrant_root = 'spec/support'
+at_exit do
+  if ENV['KEEP_RUNNING']
+    VagrantHelpers.run_vagrant_command("rm -rf /home/vagrant/var")
+  end
 end
-
-puts vagrant_root.inspect
 
 require_relative '../../spec/support/test_app'

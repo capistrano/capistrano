@@ -7,4 +7,3 @@ rvm:
   - rbx
 script: bundle exec rake spec
 cache: bundler
-bundler_args: --without cucumber

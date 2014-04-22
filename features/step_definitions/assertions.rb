@@ -100,7 +100,8 @@ end
 
 Then(/^the failure task will not run$/) do
   failed = TestApp.shared_path.join('failed')
-  !run_vagrant_command(test_file_exists(failed))
+  expect { run_vagrant_command(test_file_exists(failed)) }
+    .to raise_error(VagrantHelpers::VagrantSSHCommandError)
 end
 
 When(/^an error is raised$/) do

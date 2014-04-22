@@ -1,4 +1,6 @@
 require 'fileutils'
+require 'pathname'
+
 module TestApp
   extend self
 

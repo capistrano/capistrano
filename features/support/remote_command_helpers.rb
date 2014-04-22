@@ -1,5 +1,4 @@
 module RemoteCommandHelpers
-
   def test_dir_exists(path)
     exists?('d', path)
   end
@@ -13,11 +12,11 @@ module RemoteCommandHelpers
   end
 
   def exists?(type, path)
-    %{[ -#{type} "#{path}" ] && echo "#{path} exists." || echo "Error: #{path} does not exist."}
+    %{[ -#{type} "#{path}" ]}
   end
 
   def safely_remove_file(path)
-    run_vagrant_command("rm #{test_file}") rescue Vagrant::Errors::VagrantError
+    run_vagrant_command("rm #{test_file}") rescue VagrantHelpers::VagrantSSHCommandError
   end
 end
 

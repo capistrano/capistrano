@@ -12,6 +12,7 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 * Minor Changes
   * Added tests for after/before hooks features (@juanibiapina, @miry)
   * Improved the output of `cap --help`. (@mbrictson)
+  * Cucumber suite now runs on the latest version of Vagrant (@tpett)
 
 ## `3.2.1`
 
