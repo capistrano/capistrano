@@ -13,6 +13,7 @@ Breaking Changes:
   * Fixed compatibility with FreeBSD tar (@robbertkl)
 
 * Minor Changes
+  * Remove -v flag from mkdir call. (@caligo-mentis)
   * Capistrano now allows to customize `local_user` for revision log. (@sauliusgrigaitis)
   * Added tests for after/before hooks features (@juanibiapina, @miry)
   * Improved the output of `cap --help`. (@mbrictson)
