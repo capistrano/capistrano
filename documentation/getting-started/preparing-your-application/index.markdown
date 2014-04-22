@@ -67,7 +67,7 @@ This will create a bunch of files, the important ones are:
               └── tasks
 {% endhighlight %}
 
-Your new Capfile will automatically include any tasks from any *.cap files in lib/capistrano/tasks.
+Your new Capfile will automatically include any tasks from any `*.cap` files in `lib/capistrano/tasks`.
 
 ### 4. Configure your server addresses in the generated files.
 
