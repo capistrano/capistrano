@@ -1,3 +1,4 @@
+require 'etc'
 require 'capistrano/dsl/task_enhancements'
 require 'capistrano/dsl/paths'
 require 'capistrano/dsl/stages'
@@ -41,7 +42,7 @@ module Capistrano
     end
 
     def local_user
-      `whoami`
+      Etc.getlogin
     end
 
     def lock(locked_version)

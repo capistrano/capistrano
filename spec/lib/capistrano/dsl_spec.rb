@@ -48,5 +48,16 @@ module Capistrano
         dsl.sudo(:my, :command)
       end
     end
+
+    describe '#local_user' do
+
+      before do
+        Etc.expects(:getlogin)
+      end
+
+      it 'delegates to Etc#getlogin' do
+        dsl.local_user
+      end
+    end
   end
 end
