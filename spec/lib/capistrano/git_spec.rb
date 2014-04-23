@@ -61,7 +61,7 @@ module Capistrano
         context.expects(:fetch).returns(:branch)
         context.expects(:release_path).returns(:path)
 
-        context.expects(:execute).with(:git, :archive, :branch, '| tar -x -C', :path)
+        context.expects(:execute).with(:git, :archive, :branch, '| tar -x -f - -C', :path)
 
         subject.release
       end
