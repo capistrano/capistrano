@@ -274,6 +274,27 @@ connections behind the scenes in Capistrano. Depending on how deep you dig, you
 might run into interfaces that come directly from SSHKit (the configuration is
 a good example).
 
+## Testing
+
+Capistrano has two test suites: an RSpec suite and a Cucumber suite. The
+RSpec suite handles quick feedback unit specs. The Cucumber features are
+an integration suite that uses Vagrant to deploy to a real virtual
+server. In order to run the Cucumber suite you will need to install
+[Vagrant](http://www.vagrantup.com/) and Vagrant supported
+virtualization software like
+[VirtualBox](https://www.virtualbox.org/wiki/Downloads).
+
+```
+# To run the RSpec suite
+$ rake spec
+
+# To run the Cucumber suite
+$ rake features
+
+# To run the Cucumber suite and leave the VM running (faster for subsequent runs)
+$ rake features KEEP_RUNNING=1
+```
+
 ## License
 
 MIT License (MIT)

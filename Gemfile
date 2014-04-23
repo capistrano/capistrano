@@ -4,7 +4,6 @@ source 'https://rubygems.org'
 gemspec
 
 group :cucumber do
-  gem 'kuroko'
   gem 'cucumber'
 end
 
