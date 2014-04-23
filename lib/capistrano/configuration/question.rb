@@ -2,7 +2,7 @@ module Capistrano
   class Configuration
     class Question
 
-      def initialize(env, key, default, options)
+      def initialize(env, key, default, options = {})
         @env, @key, @default, @options = env, key, default, options
       end
 
