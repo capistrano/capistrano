@@ -153,6 +153,11 @@ end
 
 Perfect, who needs telephones.
 
+When using `ask` to get user input, you can pass `echo: false` to prevent the input from being displayed:
+
+```ruby
+ask(:database_passsword, "default", echo: false)
+```
 
 ## Using password authentication
 

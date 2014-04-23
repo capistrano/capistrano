@@ -28,6 +28,7 @@ eos
   gem.add_dependency 'sshkit', '~> 1.3'
   gem.add_dependency 'rake', '>= 10.0.0'
   gem.add_dependency 'i18n'
+  gem.add_dependency 'highline'
 
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'mocha'

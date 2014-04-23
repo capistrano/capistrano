@@ -1,6 +1,7 @@
 require 'rake'
 require 'sshkit'
 require 'sshkit/dsl'
+require 'highline'
 
 Rake.application.options.trace = true
 

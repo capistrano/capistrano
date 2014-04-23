@@ -15,8 +15,8 @@ module Capistrano
       end
     end
 
-    def ask(key, default=nil)
-      question = Question.new(self, key, default)
+    def ask(key, default=nil, options={})
+      question = Question.new(self, key, default, options)
       set(key, question)
     end
 
