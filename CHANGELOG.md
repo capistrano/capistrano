@@ -11,6 +11,7 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
 * Minor Changes
   * Added tests for after/before hooks features (@juanibiapina, @miry)
+  * Improved the output of `cap --help`. (@mbrictson)
 
 ## `3.2.1`
 

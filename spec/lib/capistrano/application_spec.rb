@@ -6,11 +6,21 @@ describe Capistrano::Application do
 
   it "provides a --format option which enables the choice of output formatting"
 
-  it "identifies itself as cap and not rake" do
+  let(:help_output) do
     out, _ = capture_io do
       flags '--help', '-h'
     end
-    out.lines.first.should match(/cap \[-f rakefile\]/)
+    out
+  end
+
+  it "displays documentation URL as help banner" do
+    help_output.lines.first.should match(/capistranorb.com/)
+  end
+
+  %w(quiet silent verbose).each do |switch|
+    it "doesn't include --#{switch} in help" do
+      help_output.should_not match(/--#{switch}/)
+    end
   end
 
   it "overrides the rake method, but still prints the rake version" do
