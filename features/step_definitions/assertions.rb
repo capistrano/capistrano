@@ -23,10 +23,6 @@ Then(/^directories referenced in :linked_files are created in shared$/) do
   end
 end
 
-Then(/^the task will be successful$/) do
-end
-
-
 Then(/^the task will exit$/) do
 end
 
