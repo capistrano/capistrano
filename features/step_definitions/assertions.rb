@@ -1,4 +1,5 @@
 Then(/^references in the remote repo are listed$/) do
+  expect(@output).to include('refs/heads/master')
 end
 
 Then(/^the shared path is created$/) do
