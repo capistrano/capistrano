@@ -32,7 +32,7 @@ Feature: Deploy
     Given a required file
     And that file exists
     When I run cap "deploy:check:linked_files"
-    Then the task will be successful
+    Then the task is successful
 
   Scenario: Creating a release
     Given I run cap "deploy:check:directories"
