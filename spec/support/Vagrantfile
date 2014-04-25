@@ -6,7 +6,7 @@ Vagrant::Config.run do |config|
       config.vm.box = 'precise64'
       config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
       config.vm.forward_port 22, "222#{i}".to_i
-      config.vm.provision :shell, inline: 'yes | sudo apt-get install git-core'
+      config.vm.provision :shell, inline: 'sudo apt-get -y install git-core'
     end
   end
 
