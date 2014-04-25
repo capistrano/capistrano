@@ -42,7 +42,7 @@ module Capistrano
     end
 
     def local_user
-      Etc.getlogin
+      fetch(:local_user)
     end
 
     def lock(locked_version)

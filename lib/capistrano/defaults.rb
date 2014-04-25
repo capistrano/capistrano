@@ -10,3 +10,5 @@ set :format, :pretty
 set :log_level, :debug
 
 set :pty, false
+
+set :local_user, -> { Etc.getlogin }
