@@ -1,5 +1,5 @@
 When(/^I run cap "(.*?)"$/) do |task|
-  @success = TestApp.cap(task)
+  @success, @output = TestApp.cap(task)
 end
 
 When(/^I run cap "(.*?)" as part of a release$/) do |task|
