@@ -6,7 +6,8 @@ Feature: Deploy
 
   Scenario: Creating the repo
     When I run cap "git:check"
-    Then references in the remote repo are listed
+    Then the task is successful
+    And references in the remote repo are listed
 
   Scenario: Creating the directory structure
     When I run cap "deploy:check:directories"
