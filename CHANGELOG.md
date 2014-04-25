@@ -73,6 +73,7 @@ Breaking Changes:
   * Improved the output of `cap --help`. (@mbrictson)
   * Cucumber suite now runs on the latest version of Vagrant (@tpett)
   * The `ask` method now supports the `echo: false` option. (@mbrictson, @kaikuchn)
+  * Cucumber scenario improvements (@bruno-)
   * Added suggestion to Capfile to use 'capistrano-passenger' gem, replacing suggestion in config/deploy.rb to re-implement 'deploy:restart' (@betesh)
   * Updated svn fetch_revision method to use `svnversion`
 
