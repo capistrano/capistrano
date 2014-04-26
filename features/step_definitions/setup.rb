@@ -6,17 +6,21 @@ Given(/^servers with the roles app and web$/) do
   vagrant_cli_command('up') rescue nil
 end
 
-Given(/^a required file$/) do
+Given(/^a linked file "(.*?)"$/) do |file|
+  # ignoring other linked files
+  TestApp.append_to_deploy_file("set :linked_files, ['#{file}']")
 end
 
-Given(/^that file exists$/) do
-  run_vagrant_command("touch #{TestApp.linked_file}")
+Given(/^file "(.*?)" exists in shared path$/) do |file|
+  file_shared_path = TestApp.shared_path.join(file)
+  run_vagrant_command("mkdir -p #{TestApp.shared_path}")
+  run_vagrant_command("touch #{file_shared_path}")
 end
 
-Given(/^the file does not exist$/) do
-  pending
-  file = TestApp.linked_file
-  run_vagrant_command("[ -f #{file} ] && rm #{file}")
+Given(/^file "(.*?)" does not exist in shared path$/) do |file|
+  file_shared_path = TestApp.shared_path.join(file)
+  run_vagrant_command("mkdir -p #{TestApp.shared_path}")
+  run_vagrant_command("touch #{file_shared_path} && rm #{file_shared_path}")
 end
 
 Given(/^a custom task to generate a file$/) do

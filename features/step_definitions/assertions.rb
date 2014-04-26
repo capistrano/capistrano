@@ -23,9 +23,6 @@ Then(/^directories referenced in :linked_files are created in shared$/) do
   end
 end
 
-Then(/^the task will exit$/) do
-end
-
 Then(/^the repo is cloned$/) do
   run_vagrant_command(test_dir_exists(TestApp.repo_path))
 end
@@ -88,6 +85,10 @@ end
 
 Then(/^the task is successful$/) do
   expect(@success).to be true
+end
+
+Then(/^the task fails$/) do
+  expect(@success).to be_false
 end
 
 Then(/^the failure task will run$/) do
