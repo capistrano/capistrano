@@ -41,7 +41,7 @@ Feature: Deploy
     And the release is created
 
   Scenario: Symlink linked files
-    When I run cap "deploy:symlink:linked_files" as part of a release
+    When I run cap "deploy:symlink:linked_files deploy:symlink:release" as part of a release
     Then file symlinks are created in the new release
 
   Scenario: Symlink linked dirs

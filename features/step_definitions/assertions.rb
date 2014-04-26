@@ -32,9 +32,8 @@ Then(/^the release is created$/) do
 end
 
 Then(/^file symlinks are created in the new release$/) do
-  pending
   TestApp.linked_files.each do |file|
-    run_vagrant_command(test_symlink_exists(TestApp.release_path.join(file)))
+    run_vagrant_command(test_symlink_exists(TestApp.current_path.join(file)))
   end
 end
 
