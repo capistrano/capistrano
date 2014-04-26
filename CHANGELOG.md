@@ -13,6 +13,8 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
   * Added tests for after/before hooks features (@juanibiapina, @miry)
   * Improved the output of `cap --help`. (@mbrictson)
   * Cucumber suite now runs on the latest version of Vagrant (@tpett)
+  * The `ask` method now supports the `echo: false` option. (@mbrictson)
+  * Capistrano now depends on the `highline` gem.
 
 ## `3.2.1`
 
@@ -29,8 +31,6 @@ https://github.com/capistrano/capistrano/compare/v3.2.0...v3.2.1
   * Changed asking question to more standard format (like common unix commandline tools) (@sponomarev)
   * Fixed typos in the README. (@sponomarev)
   * Added `keys` method to Configuration to allow introspection of configuration options. (@juanibiapina)
-  * The `ask` method now supports the `echo: false` option. (@mbrictson)
-  * Capistrano now depends on the `highline` gem.
 
 ## `3.2.0`
 
