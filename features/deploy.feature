@@ -23,14 +23,14 @@ Feature: Deploy
     Then directories referenced in :linked_files are created in shared
 
   Scenario: Checking linked files - missing file
-    Given a required file
-    But the file does not exist
+    Given a linked file "missing_file.txt"
+    But file "missing_file.txt" does not exist in shared path
     When I run cap "deploy:check:linked_files"
-    Then the task will exit
+    Then the task fails
 
   Scenario: Checking linked files - file exists
-    Given a required file
-    And that file exists
+    Given a linked file "existing_file.txt"
+    And file "existing_file.txt" exists in shared path
     When I run cap "deploy:check:linked_files"
     Then the task is successful
 
