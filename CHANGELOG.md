@@ -8,6 +8,7 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
 * Bug Fixes:
   * Fixed compatibility with FreeBSD tar (@robbertkl)
+  * Fixed error in Capistrano::Svn fetch_revision, #1035 (@il-santo)
 
 * Minor Changes
   * Added tests for after/before hooks features (@juanibiapina, @miry)

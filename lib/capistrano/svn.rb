@@ -1,13 +1,13 @@
-load File.expand_path("../tasks/svn.rake", __FILE__)
+load File.expand_path('../tasks/svn.rake', __FILE__)
 
 require 'capistrano/scm'
 
 class Capistrano::Svn < Capistrano::SCM
-  
+
   # execute svn in context with arguments
   def svn(*args)
     args.unshift(:svn)
-    context.execute *args
+    context.execute(*args)
   end
 
   module DefaultStrategy
@@ -32,7 +32,7 @@ class Capistrano::Svn < Capistrano::SCM
     end
 
     def fetch_revision
-      context.capture(:svn, "log -r HEAD -q | tail -n 2 | head -n 1 | sed s/\ \|.*/''/")
+      context.capture(:svn, %(log -r HEAD -q | tail -n 2 | head -n 1 | sed "s/ |.*//"))
     end
   end
 end
