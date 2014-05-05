@@ -30,8 +30,9 @@ module Capistrano
 
     describe "#check" do
       it "should test the repo url" do
+        subject.expects(:authentication).returns("")
         context.expects(:repo_url).returns(:url)
-        context.expects(:test).with(:svn, :info, :url).returns(true)
+        context.expects(:test).with(:svn, :info, :url, "").returns(true)
 
         subject.check
       end
@@ -39,10 +40,11 @@ module Capistrano
 
     describe "#clone" do
       it "should run svn checkout" do
+        subject.expects(:authentication).returns("")
         context.expects(:repo_url).returns(:url)
         context.expects(:repo_path).returns(:path)
  
-        context.expects(:execute).with(:svn, :checkout, :url, :path)
+        context.expects(:execute).with(:svn, :checkout, :url, :path, "")
 
         subject.clone
       end
@@ -50,19 +52,44 @@ module Capistrano
 
     describe "#update" do
       it "should run svn update" do
-        context.expects(:execute).with(:svn, :update)
+        subject.expects(:authentication).returns("")
+        context.expects(:execute).with(:svn, :update, "")
 
         subject.update
       end
     end
 
     describe "#release" do
-      it "should run svn export" do        
+      it "should run svn export" do
+        subject.expects(:authentication).returns("")
         context.expects(:release_path).returns(:path)
         
-        context.expects(:execute).with(:svn, :export, '.', :path)
+        context.expects(:execute).with(:svn, :export, '.', :path, "")
 
         subject.release
+      end
+    end
+
+    describe "#authentication" do
+      before do
+        subject.stubs(:fetch).with(:svn_username).returns("username")
+        subject.stubs(:fetch).with(:svn_password).returns("password")
+      end
+
+      it "should skip if no username" do
+        subject.stubs(:fetch).with(:svn_username).returns(nil)
+
+        expect(subject.send(:authentication)).to eq("")
+      end
+
+      it "should skip if no password" do
+        subject.stubs(:fetch).with(:svn_password).returns(nil)
+
+        expect(subject.send(:authentication)).to eq("")
+      end
+
+      it "should build the authentication options" do
+        expect(subject.send(:authentication)).to eq('--username "username" --password "password" --no-auth-cache')
       end
     end
   end
