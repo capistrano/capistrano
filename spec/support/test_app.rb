@@ -11,9 +11,9 @@ module TestApp
   def default_config
     %{
       set :deploy_to, '#{deploy_to}'
-      set :repo_url, 'git://github.com/capistrano/capistrano.git'
+      set :repo_url, 'git@github.com:capistrano/capistrano.git'
       set :branch, 'master'
-      set :ssh_options, { keys: "\#{ENV['HOME']}/.vagrant.d/insecure_private_key" }
+      set :ssh_options, { keys: "\#{ENV['HOME']}/.vagrant.d/insecure_private_key" , :forward_agent => true}
       server 'vagrant@localhost:2220', roles: %w{web app}
       set :linked_files, #{linked_files}
       set :linked_dirs, #{linked_dirs}
@@ -82,7 +82,7 @@ module TestApp
   end
 
   def cap(task)
-    run "bundle exec cap #{stage} #{task}"
+    run "bundle exec cap #{stage} #{task} #{"--trace" if ENV['ENABLE_TRACE']}"
   end
 
   def run(command)
