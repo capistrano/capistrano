@@ -13,6 +13,32 @@ describe Capistrano::Application do
     out
   end
 
+  context '.load_rakefile_once' do
+    before :each do
+      Capistrano::Application.reset_loaded_rakefiles!
+      @my_file = 'my_file.rake'
+      @my_load_provider=mock()
+    end
+
+    it 'loads a file with full path' do
+      @my_load_provider.expects(:load).once.with(File.join(Dir.pwd, @my_file))
+
+      Capistrano::Application.load_rakefile_once(@my_file, @my_load_provider)
+    end
+
+    it 'loads a file only once' do
+
+      @my_load_provider.expects(:load).once.with(File.join(Dir.pwd, @my_file))
+
+      Capistrano::Application.load_rakefile_once(@my_file, @my_load_provider)
+      Capistrano::Application.load_rakefile_once(@my_file, @my_load_provider)
+    end
+  end
+
+  it "loads rakefiles only once" do
+
+  end
+
   it "displays documentation URL as help banner" do
     help_output.lines.first.should match(/capistranorb.com/)
   end
