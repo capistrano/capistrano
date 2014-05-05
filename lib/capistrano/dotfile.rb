@@ -1,3 +1,3 @@
 dotfile = Pathname.new(File.join(Dir.home, '.capfile'))
-load dotfile if dotfile.file?
+Capistrano::Application.load_rakefile_once dotfile if dotfile.file?
 

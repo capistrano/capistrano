@@ -1,6 +1,30 @@
 module Capistrano
   class Application < Rake::Application
 
+    def self.reset_loaded_rakefiles!
+      @loaded_rakefile = []
+    end
+
+    def self.loaded_rakefiles
+      @loaded_rakefile ||= []
+    end
+
+    def self.rakefile_loaded?(file_path)
+      loaded_rakefiles.include? file_path
+    end
+
+    def self.add_loaded_rakefiles(file_path)
+      loaded_rakefiles << file_path
+    end
+
+    def self.load_rakefile_once(file, load_provider=Kernel)
+      file_path = File.expand_path(file)
+      unless rakefile_loaded?(file_path)
+        load_provider.load file_path
+        add_loaded_rakefiles(file_path)
+      end
+    end
+
     def initialize
       super
       @rakefiles = %w{capfile Capfile capfile.rb Capfile.rb} << capfile
