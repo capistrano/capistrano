@@ -15,7 +15,7 @@ Instead of building a config folder and deploy, you may want to programmatically
 
   require 'capistrano/setup'
   require 'capistrano/deploy'
-  Dir.glob('capistrano/tasks/*.cap').each { |r| import r }
+  Dir.glob('capistrano/tasks/*.rake').each { |r| import r }
 
   Capistrano::Application.invoke("production")
   Capistrano::Application.invoke("deploy")

@@ -67,7 +67,7 @@ library that forms the foundation of the Capistrano task system, the other
 methods are part of our sub-project
 [**SSHKit**](https://github.com/capistrano/sshkit). We'll dive into those more
 later, but add those lines to a file in `./lib/capistrano/tasks`, call it
-something like `access_check.cap`, and run `cap -T` from the top directory and
+something like `access_check.rake`, and run `cap -T` from the top directory and
 we'll be able to see the task listed:
 
 {% highlight bash %}
@@ -160,7 +160,7 @@ working by writing a tiny Cap task, or simply using SSH to do it for us, the
 choice is yours:
 
 {% highlight ruby %}
-    # lib/capistrano/tasks/agent_forwarding.cap
+    # lib/capistrano/tasks/agent_forwarding.rake
     desc "Check if agent forwarding is working"
     task :forwarding do
       on roles(:all) do |h|
