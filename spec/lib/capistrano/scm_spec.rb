@@ -50,21 +50,21 @@ module Capistrano
       describe "#repo_url" do
         it "should return the repo url according to the context" do
           context.expects(:repo_url).returns(:url)
-          subject.repo_url.should == :url
+          expect(subject.repo_url).to eq(:url)
         end
       end
 
       describe "#repo_path" do
         it "should return the repo path according to the context" do
           context.expects(:repo_path).returns(:path)
-          subject.repo_path.should == :path
+          expect(subject.repo_path).to eq(:path)
         end
       end
 
       describe "#release_path" do
         it "should return the release path according to the context" do
           context.expects(:release_path).returns('/path/to/nowhere')
-          subject.release_path.should == '/path/to/nowhere'
+          expect(subject.release_path).to eq('/path/to/nowhere')
         end
       end
 
