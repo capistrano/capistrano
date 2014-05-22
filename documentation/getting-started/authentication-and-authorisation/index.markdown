@@ -286,12 +286,12 @@ Tokens](https://github.com/blog/1509-personal-api-tokens) which allow you to
 do something like this:
 
 {% highlight bash %}
-    me@localhost $ git ls-remote https://.....................@github.com/capistrano/rails3-bootstrap-devise-cancan.git
+    me@localhost $ git ls-remote https://XXXX:@github.com/capistrano/rails3-bootstrap-devise-cancan.git
     3419812c9f146d9a84b44bcc2c3caef94da54758HEAD
     3419812c9f146d9a84b44bcc2c3caef94da54758HEADrefs/heads/master
 {% endhighlight %}
 
-Where `....` is a personal API token, as such:
+Where `XXXX` is a personal API token, as such:
 
 ![Github Personal API Token Page](/images/github-personal-api-token-page.png)
 
