@@ -82,12 +82,13 @@ module TestApp
   end
 
   def cap(task)
-    run "bundle exec cap #{stage} #{task} #{"--trace" if ENV['ENABLE_TRACE']}"
+    run "bundle exec cap #{stage} #{task} #{"--trace" if ENV['ENABLE_TRACE']}", in_path
   end
 
-  def run(command)
+  def run(command, in_path=test_app_path)
     output = nil
-    Dir.chdir(test_app_path) do
+    Dir.chdir(in_path) do
+      puts %x[pwd; echo #{command}]
       output = %x[#{command}]
     end
     [$?.success?, output]
@@ -101,8 +102,12 @@ module TestApp
     test_app_path.join('config/deploy/test.rb')
   end
 
+  def test_app_path=(new_path)
+    @test_app_path = new_path.nil? ? nil : Pathname.new(new_path)
+  end
+
   def test_app_path
-    Pathname.new('/tmp/test_app')
+    @test_app_path ||= Pathname.new('/tmp/test_app')
   end
 
   def deploy_to
