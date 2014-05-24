@@ -4,7 +4,8 @@ require 'pathname'
 module TestApp
   extend self
 
-  def install
+  def install(in_path=test_app_path)
+    self.test_app_path = in_path
     install_test_app_with(default_config)
   end
 

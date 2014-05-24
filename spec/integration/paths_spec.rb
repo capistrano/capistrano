@@ -9,8 +9,7 @@ describe Capistrano::DSL::Paths do
   before :each do
     FileUtils.mkpath tmp_folder
 
-    TestApp.test_app_path=tmp_folder
-    TestApp.install
+    TestApp.install(tmp_folder)
 
   end
 
