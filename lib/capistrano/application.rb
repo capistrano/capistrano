@@ -1,5 +1,6 @@
 module Capistrano
   class Application < Rake::Application
+    include Capistrano::DSL
 
     def self.reset_loaded_rakefiles!
       @loaded_rakefile = []

@@ -1,4 +1,4 @@
-include Capistrano::DSL
+require 'capistrano/dsl'
 
 namespace :load do
   task :defaults do
