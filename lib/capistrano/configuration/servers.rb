@@ -23,8 +23,9 @@ module Capistrano
       end
 
       def fetch_primary(role)
-        hosts = roles_for([role])
-        hosts.find(&:primary) || hosts.first
+        hosts = fetch([role])
+        primary_host = hosts.find(&:primary) || hosts.first
+        HostFilter.for([primary_host]).first
       end
 
       def each
