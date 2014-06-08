@@ -5,6 +5,7 @@ gemspec
 
 group :cucumber do
   gem 'cucumber'
+  gem 'rspec', '~>2.14.1'
 end
 
 platforms :rbx do
