@@ -23,8 +23,16 @@ class Capistrano::Svn < Capistrano::SCM
       svn :checkout, repo_url, repo_path
     end
 
+	def switch
+		svn :switch, repo_url, repo_path
+	end
+
     def update
-      svn :update
+	  if repo_url != fetch_repo_url	
+	    switch
+	  else
+	    svn :update
+	  end
     end
 
     def release
@@ -32,7 +40,12 @@ class Capistrano::Svn < Capistrano::SCM
     end
 
     def fetch_revision
-      context.capture(:svn, "log -r HEAD -q | tail -n 2 | head -n 1 | sed s/\ \|.*/''/")
+      context.capture(:svn, "log -r HEAD -q |tail -n 2 |head -n 1 |sed 's/\ \|.*/\'\'/'")
     end
+		
+	def fetch_repo_url
+	  context.capture(:svn, "info |grep 'URL: ' |awk '{print $2}'")
+	end
   end
+
 end
