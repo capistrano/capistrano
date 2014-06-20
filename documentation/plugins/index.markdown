@@ -13,3 +13,5 @@ Here are some Capistrano plugins you might find useful.
 
 <div class="github-widget" data-repo="bruno-/capistrano-safe-deploy-to"></div>
 
+<div class="github-widget" data-repo="scottsuch/capistrano-graphite"></div>
+
