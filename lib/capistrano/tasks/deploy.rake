@@ -82,8 +82,9 @@ namespace :deploy do
     desc 'Symlink release to current'
     task :release do
       on release_roles :all do
-        execute :rm, '-rf', current_path
-        execute :ln, '-s', release_path, current_path
+        tmp_symlink = Pathname.new("#{current_path}_#{release_timestamp}")
+        execute :ln, '-s', release_path, tmp_symlink
+        execute :mv, '-Tf', tmp_symlink, current_path
       end
     end
 
