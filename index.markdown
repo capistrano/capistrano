@@ -7,8 +7,8 @@ title: A remote server automation and deployment tool written in Ruby.
 
 {% highlight ruby %}
 role :demo, %w{example.com example.org example.net}
-task :uptime do |host|
-  on roles(:demo), in: :parallel do
+task :uptime do
+  on roles(:demo), in: :parallel do |host|
     uptime = capture(:uptime)
     puts "#{host.hostname} reports: #{uptime}"
   end
