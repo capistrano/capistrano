@@ -16,6 +16,7 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
   * Cucumber suite now runs on the latest version of Vagrant (@tpett)
   * The `ask` method now supports the `echo: false` option. (@mbrictson)
   * Capistrano now depends on the `highline` gem.
+  * Added HTTP authentication options for Subversion (@synewaves)
 
 ## `3.2.1`
 

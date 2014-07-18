@@ -260,6 +260,8 @@ The following variables are settable:
 | `:branch`             | The branch you wish to deploy                                        | This only has meaning for git and hg repos, to specify the branch of an svn repo, set `:repo_url` to the branch location. |
 | `:scm`                | The source control system used                                       | `:git`, `:hg`, `:svn` are currently supported                   |
 | `:tmp_dir`            | The (optional) temp directory that will be used (default: /tmp)      | if you have a shared web host, this setting may need to be set (i.e. /home/user/tmp/capistrano). |
+| `:svn_username`       | Subversion username                                                  | Use if you access Subversion over HTTP and use HTTP authentication. |
+| `:svn_password`       | Subversion password                                                  | Use if you access Subversion over HTTP and use HTTP authentication. Useful with [using password authentication](#using-password-authentication) |
 
 __Support removed__ for following variables:
 
