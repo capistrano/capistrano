@@ -218,11 +218,11 @@ describe Capistrano::DSL do
 
       describe 'fetching servers for a role' do
         it 'roles defined using the `server` syntax are included' do
-          expect(dsl.roles(:web)).to have(2).items
+          expect(dsl.roles(:web).size).to eq(2)
         end
 
         it 'roles defined using the `role` syntax are included' do
-          expect(dsl.roles(:app)).to have(2).items
+          expect(dsl.roles(:app).size).to eq(2)
         end
       end
 
