@@ -8,4 +8,6 @@ module Capistrano
       "#{MAJOR}.#{MINOR}.#{PATCH}"
     end
   end
+
+  VERSION = Version.to_s
 end
