@@ -9,5 +9,10 @@ gemspec
 #
 group :development do
   gem "rake"
-  gem "pry"
+
+  unless RUBY_VERSION >= "1.9"
+    gem "pry", "0.9"
+  else
+    gem "pry"
+  end
 end
