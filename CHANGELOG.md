@@ -76,6 +76,7 @@ Breaking Changes:
   * Cucumber scenario improvements (@bruno-)
   * Added suggestion to Capfile to use 'capistrano-passenger' gem, replacing suggestion in config/deploy.rb to re-implement 'deploy:restart' (@betesh)
   * Updated svn fetch_revision method to use `svnversion`
+  * `cap install` no longer overwrites existing files. (@dmarkow)
 
 ## `3.2.1`
 
