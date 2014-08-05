@@ -6,6 +6,7 @@ module Capistrano
     describe Question do
 
       let(:question) { Question.new(env, key, default, options) }
+      let(:question_without_echo) { Question.new(env, key, default, echo: false) }
       let(:default) { :default }
       let(:key) { :branch }
       let(:env) { stub }
@@ -18,19 +19,26 @@ module Capistrano
       end
 
       describe '#call' do
-        subject { question.call }
-
         context 'value is entered' do
           let(:branch) { 'branch' }
 
           before do
             $stdout.expects(:print).with('Please enter branch (default): ')
-            $stdin.expects(:gets).returns(branch)
           end
 
-          it 'sets the value' do
+          it 'sets the echoed value' do
+            $stdin.expects(:gets).returns(branch)
+            $stdin.expects(:noecho).never
             env.expects(:set).with(key, branch)
+
             question.call
+          end
+
+          it 'sets the value but does not echo it' do
+            $stdin.expects(:noecho).returns(branch)
+            env.expects(:set).with(key, branch)
+
+            question_without_echo.call
           end
         end
 
