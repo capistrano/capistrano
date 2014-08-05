@@ -46,34 +46,6 @@ module Capistrano
             env.expects(:set).with(key, branch)
             question.call
           end
-
-        end
-
-        describe 'highline behavior' do
-          let(:highline) { stub }
-
-          before do
-            question.expects(:highline_ask).yields(highline).returns("answer")
-            env.expects(:set).with(key, "answer")
-          end
-
-          context 'with no options' do
-            let(:options) { nil }
-
-            it 'passes echo: true to HighLine' do
-              highline.expects(:"echo=").with(true)
-              question.call
-            end
-          end
-
-          context 'with echo: false' do
-            let(:options) { { echo: false } }
-
-            it 'passes echo: false to HighLine' do
-              highline.expects(:"echo=").with(false)
-              question.call
-            end
-          end
         end
       end
     end
