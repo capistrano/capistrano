@@ -14,8 +14,7 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
   * Added tests for after/before hooks features (@juanibiapina, @miry)
   * Improved the output of `cap --help`. (@mbrictson)
   * Cucumber suite now runs on the latest version of Vagrant (@tpett)
-  * The `ask` method now supports the `echo: false` option. (@mbrictson)
-  * Capistrano now depends on the `highline` gem.
+  * The `ask` method now supports the `echo: false` option. (@mbrictson, @kaikuchn)
 
 ## `3.2.1`
 
