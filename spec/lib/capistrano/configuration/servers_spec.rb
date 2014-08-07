@@ -28,6 +28,15 @@ module Capistrano
           expect(servers.roles_for([:app]).count).to eq 1
         end
 
+        it 'creates distinct server properties' do
+          servers.add_role(:db, %w{1 2}, db: { port: 1234 } )
+          servers.add_host('1', db: { master: true })
+          expect(servers.count).to eq(2)
+          expect(servers.roles_for([:db]).count).to eq 2
+          expect(servers.find(){|s| s.hostname == '1'}.properties.db).to eq({ port: 1234, master: true })
+          expect(servers.find(){|s| s.hostname == '2'}.properties.db).to eq({ port: 1234 })
+        end
+
       end
 
       describe 'adding a role to an existing server' do
@@ -117,6 +126,34 @@ module Capistrano
           servers.add_host('1', roles: [:app, 'web'], test: :value, user: 'deployer', port: 56)
           expect(servers.count).to eq(8)
         end
+
+        it 'overwrites the value of a previously defined scalar property' do
+          servers.add_host('1', roles: [:app, 'web'], test: :volatile)
+          expect(servers.count).to eq(1)
+          expect(servers.roles_for([:all]).first.properties.test).to eq :volatile
+        end
+
+        it 'merges previously defined hash properties' do
+          servers.add_host('1', roles: [:b], db: { port: 1234 })
+          servers.add_host('1', roles: [:b], db: { master: true })
+          expect(servers.count).to eq(1)
+          expect(servers.roles_for([:b]).first.properties.db).to eq({ port: 1234, master: true })
+        end
+
+        it 'concatenates previously defined array properties' do
+          servers.add_host('1', roles: [:b], steps: [1,3,5])
+          servers.add_host('1', roles: [:b], steps: [1,9])
+          expect(servers.count).to eq(1)
+          expect(servers.roles_for([:b]).first.properties.steps).to eq([1,3,5,1,9])
+        end
+
+        it 'merges previously defined set properties' do
+          servers.add_host('1', roles: [:b], endpoints: Set[123,333])
+          servers.add_host('1', roles: [:b], endpoints: Set[222,333])
+          expect(servers.count).to eq(1)
+          expect(servers.roles_for([:b]).first.properties.endpoints).to eq(Set[123,222,333])
+        end
+
       end
 
       describe 'selecting roles' do

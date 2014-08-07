@@ -6,6 +6,14 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
+* Enhancements (@townsen)
+  * Deep copy properties added using the 'roles' keyword
+  * If a property exists on a server when another definition is
+    encountered and is an Array, Set or Hash then add the new values
+
+    This allows roles to specify properties common to all servers and
+    then for individual servers to modify them, keeping things DRY
+
 * Bug Fixes:
   * Fixed compatibility with FreeBSD tar (@robbertkl)
 
