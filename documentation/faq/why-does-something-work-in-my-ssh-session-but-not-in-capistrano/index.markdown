@@ -35,7 +35,7 @@ Read more about this:
  * [In the "Bash Startup Files" section of the Bash
    manual](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html)
  * [At Sam Stephenson's excellent *Unix shell initialization* wiki
-   page](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html)
+   page](https://github.com/sstephenson/rbenv/wiki/Unix-shell-initialization)
  * [Interactive and non-interactive shells and scripts
    documentation](http://www.tldp.org/LDP/abs/html/intandnonint.html)
 
