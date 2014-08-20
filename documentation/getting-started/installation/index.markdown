@@ -57,8 +57,8 @@ Capfile, after the `require 'capistrano/deploy'` line:
     require 'capistrano/rails'
 {% endhighlight %}
 
-<div class="alert alert-info">
-<h5>Help! I was using Capistrano `v2.x` and I didn't want to upgrade!</h5>
+
+##### Help! I was using Capistrano `v2.x` and I didn't want to upgrade!
 
 If you are using Capistrano `v2.x.x` and have also installed Capistrano `v3`
 by mistake, then you can lock your Gem version for Capistrano at something
@@ -72,7 +72,7 @@ This is the [pessimistic operator][rubygems-pessimistic-operator] which
 installs the closest matching version, at the time of writing this would
 install `2.15.4`, and any other point-release in the `2.15.x` family without
 the risk of accidentally upgrading to `v3`.
-</div>
+
 
 --
 [rubygems]:                                    http://rubygems.org/
