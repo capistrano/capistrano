@@ -347,6 +347,7 @@ access that you may or may not need depending how well your servers are setup:
     root@remote $ umask 0002
     root@remote $ chmod g+s ${deploy_to}
     root@remote $ mkdir ${deploy_to}/{releases,shared}
+    root@remote $ chown deploy ${deploy_to}/{releases,shared}
 {% endhighlight %}
 
 **Note:** The `chmod g+s` is a really handy, and little known Unix feature, it
