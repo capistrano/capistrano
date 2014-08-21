@@ -28,7 +28,7 @@ module Capistrano
         end
 
         it 'adds the role' do
-          expect{subject}.to be_true
+          expect(subject).to be_truthy
         end
       end
 
@@ -37,22 +37,22 @@ module Capistrano
 
         context 'with the same user, hostname and port' do
           let(:hostname) { 'root@hostname:1234' }
-          it { should be_true }
+          it { expect(subject).to be_truthy }
         end
 
         context 'with a different user' do
           let(:hostname) { 'deployer@hostname:1234' }
-          it { should be_false }
+          it { expect(subject).to be_falsey }
         end
 
         context 'with a different port' do
           let(:hostname) { 'root@hostname:5678' }
-          it { should be_false }
+          it { expect(subject).to be_falsey }
         end
 
         context 'with a different hostname' do
           let(:hostname) { 'root@otherserver:1234' }
-          it { should be_false }
+          it { expect(subject).to be_falsey }
         end
       end
 
@@ -69,7 +69,7 @@ module Capistrano
 
         context 'server is not primary' do
           it 'is falesy' do
-            expect(subject).to be_false
+            expect(subject).to be_falsey
           end
         end
       end
@@ -149,7 +149,7 @@ module Capistrano
         end
 
         context 'options are empty' do
-          it { should be_true }
+          it { expect(subject).to be_truthy }
         end
 
         context 'value is a symbol' do
@@ -157,34 +157,34 @@ module Capistrano
 
             context 'with :filter' do
               let(:options) { { filter: :active }}
-              it { should be_true }
+              it { expect(subject).to be_truthy }
             end
 
             context 'with :select' do
               let(:options) { { select: :active }}
-              it { should be_true }
+              it { expect(subject).to be_truthy }
             end
 
             context 'with :exclude' do
               let(:options) { { exclude: :active }}
-              it { should be_false }
+              it { expect(subject).to be_falsey }
             end
           end
 
           context 'value does not match server properly' do
             context 'with :filter' do
               let(:options) { { filter: :inactive }}
-              it { should be_false }
+              it { expect(subject).to be_falsey }
             end
 
             context 'with :select' do
               let(:options) { { select: :inactive }}
-              it { should be_false }
+              it { expect(subject).to be_falsey }
             end
 
             context 'with :exclude' do
               let(:options) { { exclude: :inactive }}
-              it { should be_true }
+              it { expect(subject).to be_truthy }
             end
           end
         end
@@ -194,17 +194,17 @@ module Capistrano
 
             context 'with :filter' do
               let(:options) { { filter: ->(s) { s.properties.active } } }
-              it { should be_true }
+              it { expect(subject).to be_truthy }
             end
 
             context 'with :select' do
               let(:options) { { select: ->(s) { s.properties.active } } }
-              it { should be_true }
+              it { expect(subject).to be_truthy }
             end
 
             context 'with :exclude' do
               let(:options) { { exclude: ->(s) { s.properties.active } } }
-              it { should be_false }
+              it { expect(subject).to be_falsey }
             end
 
           end
@@ -212,17 +212,17 @@ module Capistrano
           context 'value does not match server properly' do
             context 'with :filter' do
               let(:options) { { filter: ->(s) { s.properties.inactive } } }
-              it { should be_false }
+              it { expect(subject).to be_falsey }
             end
 
             context 'with :select' do
               let(:options) { { select: ->(s) { s.properties.inactive } } }
-              it { should be_false }
+              it { expect(subject).to be_falsey }
             end
 
             context 'with :exclude' do
               let(:options) { { exclude: ->(s) { s.properties.inactive } } }
-              it { should be_true }
+              it { expect(subject).to be_truthy }
             end
 
           end

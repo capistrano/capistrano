@@ -317,22 +317,22 @@ describe Capistrano::DSL do
     context 'variable is an non-empty array' do
       let(:linked_files) { %w{1} }
 
-      it { should be_true }
+      it { expect(subject).to be_truthy }
     end
 
     context 'variable is an empty array' do
       let(:linked_files) { [] }
-      it { should be_false }
+      it { expect(subject).to be_falsey }
     end
 
     context 'variable exists, is not an array' do
       let(:linked_files) { stub }
-      it { should be_true }
+      it { expect(subject).to be_truthy }
     end
 
     context 'variable is nil' do
       let(:linked_files) { nil }
-      it { should be_false }
+      it { expect(subject).to be_falsey }
     end
   end
 
@@ -368,7 +368,7 @@ describe Capistrano::DSL do
     end
 
     it 'sets the backend pty' do
-      expect(backend.pty).to be_true
+      expect(backend.pty).to be_truthy
     end
 
     it 'sets the backend connection timeout' do
