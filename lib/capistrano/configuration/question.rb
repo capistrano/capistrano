@@ -33,7 +33,7 @@ module Capistrano
       def response
         return @response if defined? @response
         return @response = $stdin.gets.chomp if echo?
-        @response = $stdin.noecho(&:gets).chomp
+        @response = $stdin.noecho(&:gets).chomp.tap{$stdout.print "\n"}
       end
 
       def question

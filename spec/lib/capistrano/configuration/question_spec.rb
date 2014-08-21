@@ -36,6 +36,7 @@ module Capistrano
 
           it 'sets the value but does not echo it' do
             $stdin.expects(:noecho).returns(branch)
+            $stdout.expects(:print).with("\n")
             env.expects(:set).with(key, branch)
 
             question_without_echo.call
