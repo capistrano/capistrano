@@ -202,7 +202,7 @@ Other modes for parallelism include:
 
 {% highlight ruby %}
     # Capistrano 3.0.x
-    on :all, in: :groups, max: 3, wait: 5 do
+    on :all, in: :groups, limit: 3, wait: 5 do
       # Take all servers, in groups of three which execute in parallel
       # wait five seconds between groups of servers.
       # This is perfect for rolling restarts
