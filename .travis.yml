@@ -6,3 +6,6 @@ rvm:
   - rbx-2
 script: bundle exec rake spec
 cache: bundler
+branches:
+  except:
+    - legacy-v2
