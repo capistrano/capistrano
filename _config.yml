@@ -1,5 +1,5 @@
 name: Capistrano
-pygments: true
+highlighter: pygments
 safe: true
 lsi: false
 markdown: redcarpet
