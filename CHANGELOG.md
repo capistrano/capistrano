@@ -14,6 +14,9 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
     This allows roles to specify properties common to all servers and
     then for individual servers to modify them, keeping things DRY
 
+Breaking Changes:
+  * By using Ruby's noecho method introduced in Ruby version 1.9.3, we dropped support for Ruby versions prior to 1.9.3. See [issue #878](https://github.com/capistrano/capistrano/issues/878) and [PR #1112](https://github.com/capistrano/capistrano/pull/1112) for more information. (@kaikuchn)
+
 * Bug Fixes:
   * Fixed compatibility with FreeBSD tar (@robbertkl)
 

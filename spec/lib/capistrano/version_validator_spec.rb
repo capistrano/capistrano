@@ -24,7 +24,7 @@ module Capistrano
       context 'with exact version' do
         context 'valid' do
           let(:version) { '3.0.1' }
-          it { should be_true }
+          it { expect(subject).to be_truthy }
         end
 
         context 'invalid - lower' do
@@ -48,7 +48,7 @@ module Capistrano
       context 'with optimistic versioning' do
         context 'valid' do
           let(:version) { '>= 3.0.0' }
-          it { should be_true }
+          it { expect(subject).to be_truthy }
         end
 
         context 'invalid - lower' do
@@ -66,7 +66,7 @@ module Capistrano
         context '2 decimal places' do
           context 'valid' do
             let(:version) { '~> 3.0.0' }
-            it { should be_true }
+            it { expect(subject).to be_truthy }
           end
 
           context 'invalid' do
@@ -83,7 +83,7 @@ module Capistrano
 
           context 'valid' do
             let(:version) { '~> 3.1' }
-            it { should be_true }
+            it { expect(subject).to be_truthy }
           end
 
           context 'invalid' do

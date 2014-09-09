@@ -8,7 +8,7 @@ module Capistrano
     describe '.env' do
       it 'is a global accessor to a single instance' do
         Configuration.env.set(:test, true)
-        expect(Configuration.env.fetch(:test)).to be_true
+        expect(Configuration.env.fetch(:test)).to be_truthy
       end
     end
 
