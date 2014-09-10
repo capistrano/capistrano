@@ -33,6 +33,14 @@ describe Capistrano::Application do
     expect(out).to match(/\b#{RAKEVERSION}\b/)
   end
 
+  it "overrides the rake method, and sets the sshkit_backend to SSHKit::Backend::Printer" do
+    out, _ = capture_io do
+      flags '--dry-run', '-n'
+    end
+    sshkit_backend = Capistrano::Configuration.fetch(:sshkit_backend)
+    expect(sshkit_backend).to eq(SSHKit::Backend::Printer)
+  end
+
   def flags(*sets)
     sets.each do |set|
       ARGV.clear

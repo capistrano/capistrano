@@ -21,8 +21,7 @@ module Capistrano
         switch =~ /--#{Regexp.union(not_applicable_to_capistrano)}/
       end
 
-      options.push(version, roles, dry_run, hostfilter)
-      super
+      super.push(version, roles, dry_run, hostfilter)
     end
 
     def handle_options
