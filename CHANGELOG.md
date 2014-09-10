@@ -8,6 +8,10 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
 * Pushing again to trigger another build (I have a seemingly random build fail) (@townsen)
 * Enhancements (@townsen)
+  * Added set_if_empty method to DSL to allow conditional setting
+  * Altered standard Capistrano defaults so that they are not set
+    at the start of a stage if they have been previously set. This
+    allows variables like :default_env to be set in deploy.rb.
   * Deep copy properties added using the 'roles' keyword
   * If a property exists on a server when another definition is
     encountered and is an Array, Set or Hash then add the new values
