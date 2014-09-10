@@ -44,7 +44,7 @@ namespace :deploy do
     desc 'Check shared and release directories exist'
     task :directories do
       on release_roles :all do
-        execute :mkdir, '-pv', shared_path, releases_path
+        execute :mkdir, '-p', shared_path, releases_path
       end
     end
 
@@ -52,7 +52,7 @@ namespace :deploy do
     task :linked_dirs do
       next unless any? :linked_dirs
       on release_roles :all do
-        execute :mkdir, '-pv', linked_dirs(shared_path)
+        execute :mkdir, '-p', linked_dirs(shared_path)
       end
     end
 
@@ -60,7 +60,7 @@ namespace :deploy do
     task :make_linked_dirs do
       next unless any? :linked_files
       on release_roles :all do |host|
-        execute :mkdir, '-pv', linked_file_dirs(shared_path)
+        execute :mkdir, '-p', linked_file_dirs(shared_path)
       end
     end
 
@@ -97,7 +97,7 @@ namespace :deploy do
     task :linked_dirs do
       next unless any? :linked_dirs
       on release_roles :all do
-        execute :mkdir, '-pv', linked_dir_parents(release_path)
+        execute :mkdir, '-p', linked_dir_parents(release_path)
 
         fetch(:linked_dirs).each do |dir|
           target = release_path.join(dir)
@@ -116,7 +116,7 @@ namespace :deploy do
     task :linked_files do
       next unless any? :linked_files
       on release_roles :all do
-        execute :mkdir, '-pv', linked_file_dirs(release_path)
+        execute :mkdir, '-p', linked_file_dirs(release_path)
 
         fetch(:linked_files).each do |file|
           target = release_path.join(file)
