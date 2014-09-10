@@ -6,6 +6,12 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
+* Enhancements (@townsen)
+  * Added set_if_empty method to DSL to allow conditional setting
+  * Altered standard Capistrano defaults so that they are not set
+    at the start of a stage if they have been previously set. This
+    allows variables like :default_env to be set in deploy.rb.
+
 Breaking Changes:
   * By using Ruby's noecho method introduced in Ruby version 1.9.3, we dropped support for Ruby versions prior to 1.9.3. See [issue #878](https://github.com/capistrano/capistrano/issues/878) and [PR #1112](https://github.com/capistrano/capistrano/pull/1112) for more information. (@kaikuchn)
 
