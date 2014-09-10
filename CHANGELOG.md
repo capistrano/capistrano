@@ -24,6 +24,7 @@ Breaking Changes:
 
 * Bug Fixes:
   * Fixed compatibility with FreeBSD tar (@robbertkl)
+  * Fixed error in Capistrano::Svn fetch_revision, #1035 (@il-santo)
 
 * Minor Changes
   * Remove -v flag from mkdir call. (@caligo-mentis)
