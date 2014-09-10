@@ -78,7 +78,6 @@ deploy
       deploy:normalize_assets
   deploy:publishing
     deploy:symlink:release
-    deploy:restart
   deploy:published
   deploy:finishing
     deploy:cleanup
@@ -103,7 +102,6 @@ deploy
       deploy:rollback_assets
   deploy:publishing
     deploy:symlink:release
-    deploy:restart
   deploy:published
   deploy:finishing_rollback
     deploy:cleanup_rollback
