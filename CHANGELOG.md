@@ -32,6 +32,7 @@ Breaking Changes:
   * Improved the output of `cap --help`. (@mbrictson)
   * Cucumber suite now runs on the latest version of Vagrant (@tpett)
   * The `ask` method now supports the `echo: false` option. (@mbrictson, @kaikuchn)
+  * Added suggestion to Capfile to use 'capistrano-passenger' gem, replacing suggestion in config/deploy.rb to re-implement 'deploy:restart' (@betesh)
 
 ## `3.2.1`
 
@@ -69,7 +70,8 @@ https://github.com/capistrano/capistrano/compare/v3.0.1...v3.1.0
 Breaking changes:
 
   * `deploy:restart` task **is no longer run by default**.
-    From this version, developers who restart the app on each deploy need to declare it in their deploy flow (eg `after 'deploy:publishing', 'deploy:restart'`).
+    From this version, developers who restart the app on each deploy need to declare it in their deploy flow (eg `after 'deploy:publishing', 'deploy:restart'`)
+    or, for passenger applications, use the capistrano-passenger gem.
 
     Please, check https://github.com/capistrano/capistrano/commit/4e6523e1f50707499cf75eb53dce37a89528a9b0 for more information. (@kirs)
 

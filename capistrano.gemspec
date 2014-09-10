@@ -20,9 +20,11 @@ Gem::Specification.new do |gem|
   gem.licenses      = ['MIT']
 
   gem.post_install_message = <<eos
-Capistrano 3.1 has some breaking changes, like `deploy:restart` callback should be added manually to your deploy.rb. Please, check the CHANGELOG: http://goo.gl/SxB0lr
+Capistrano 3.1 has some breaking changes. Please check the CHANGELOG: http://goo.gl/SxB0lr
 
 If you're upgrading Capistrano from 2.x, we recommend to read the upgrade guide: http://goo.gl/4536kB
+
+The `deploy:restart` hook for passenger applications is now in a separate gem called capistrano-passenger.  Just add it to your Gemfile and require it in your Capfile.
 eos
 
   gem.required_ruby_version = '>= 1.9.3'
