@@ -71,7 +71,16 @@ module Capistrano
         end
 
         def set(key, value)
-          @properties[key] = value
+          pval = @properties[key]
+          if pval.is_a? Hash and value.is_a? Hash
+            pval.merge!(value)
+          elsif pval.is_a? Set and value.is_a? Set
+            pval.merge(value)
+          elsif pval.is_a? Array and value.is_a? Array
+            pval.concat value
+          else
+            @properties[key] = value
+          end
         end
 
         def fetch(key)

@@ -11,7 +11,8 @@ module Capistrano
       end
 
       def add_role(role, hosts, options={})
-        Array(hosts).each { |host| add_host(host, options.merge(roles: role)) }
+        options_deepcopy = Marshal.dump(options.merge(roles: role))
+        Array(hosts).each { |host| add_host(host, Marshal.load(options_deepcopy)) }
       end
 
       def roles_for(names)
