@@ -23,6 +23,10 @@ module Capistrano
         env.set(key, value)
       end
 
+      def set_if_empty(key, value)
+        env.set_if_empty(key, value)
+      end
+
       def delete(key)
         env.delete(key)
       end

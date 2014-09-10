@@ -48,6 +48,19 @@ module Capistrano
         end
       end
 
+      context 'set_if_empty' do
+        it 'sets the value when none is present' do
+          config.set_if_empty(:key, :value)
+          expect(subject).to eq :value
+        end
+
+        it 'does not overwrite the value' do
+          config.set(:key, :value)
+          config.set_if_empty(:key, :update)
+          expect(subject).to eq :value
+        end
+      end
+
       context 'value is not set' do
         it 'returns the default value' do
           expect(subject).to eq :default
