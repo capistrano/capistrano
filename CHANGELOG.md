@@ -6,6 +6,14 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
+* Enhancements (@townsen)
+  * _External_ Host and Role filtering now affects only `on()` commands
+    and not the `roles()`, `release_roles()` and `primary()` methods.
+  * _Internal_ Host and Role filtering affects the `roles()`, `release_roles()`
+    and `primary()` methods.
+  * Host and Role filtering now supports Regular expressions
+  * See the README.md file for a comprehensive discussion of these changes
+
 * Pushing again to trigger another build (I have a seemingly random build fail) (@townsen)
 * Enhancements (@townsen)
   * Added set_if_empty method to DSL to allow conditional setting

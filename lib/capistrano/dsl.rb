@@ -48,6 +48,12 @@ module Capistrano
     def lock(locked_version)
       VersionValidator.new(locked_version).verify
     end
+
+    # Having intercepted the SSHKit on() method we can filter externally
+    def on(hosts, options={}, &block)
+      sshkit_on(Configuration.env.filter(hosts), options, &block)
+    end
+
   end
 end
 self.extend Capistrano::DSL

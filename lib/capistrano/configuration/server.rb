@@ -11,11 +11,13 @@ module Capistrano
 
       def add_roles(roles)
         Array(roles).each { |role| add_role(role) }
+        self
       end
       alias roles= add_roles
 
       def add_role(role)
         roles.add role.to_sym
+        self
       end
 
       def has_role?(role)

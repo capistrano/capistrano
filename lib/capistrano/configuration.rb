@@ -1,6 +1,7 @@
+require_relative 'configuration/filter'
 require_relative 'configuration/question'
-require_relative 'configuration/servers'
 require_relative 'configuration/server'
+require_relative 'configuration/servers'
 
 module Capistrano
   class Configuration
@@ -86,6 +87,14 @@ module Capistrano
       @timestamp ||= Time.now.utc
     end
 
+    def add_external_filter(type, values)
+      external_filters << Filter.new(type, values)
+    end
+
+    def filter list
+      external_filters.reduce(list){|l,f| f.filter list}
+    end
+
     private
 
     def servers
@@ -94,6 +103,10 @@ module Capistrano
 
     def config
       @config ||= Hash.new
+    end
+
+    def external_filters
+      @external_filters ||= []
     end
 
     def fetch_for(key, default, &block)

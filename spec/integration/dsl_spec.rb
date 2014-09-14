@@ -100,6 +100,37 @@ describe Capistrano::DSL do
         end
       end
 
+      describe 'setting an internal host filter' do
+        subject { dsl.roles(:app) }
+        it 'returns one' do
+          dsl.set :filter, { host: 'example3.com' }
+          expect(subject.map(&:hostname)).to eq(['example3.com'])
+        end
+      end
+
+      describe 'setting an internal role filter' do
+        subject { dsl.roles(:app) }
+        it 'returns one' do
+          dsl.set :filter, { role: :web }
+          expect(subject.map(&:hostname)).to eq(['example3.com'])
+        end
+      end
+
+      describe 'setting an internal host and role filter' do
+        subject { dsl.roles(:app) }
+        it 'returns one' do
+          dsl.set :filter, { role: :web, host: 'example1.com' }
+          expect(subject.map(&:hostname)).to be_empty
+        end
+      end
+
+      describe 'setting an internal regexp host filter' do
+        subject { dsl.roles(:all) }
+        it 'works' do
+          dsl.set :filter, { host: /1/ }
+          expect(subject.map(&:hostname)).to eq(['example1.com'])
+        end
+      end
     end
 
     describe 'when defining role with reserved name' do

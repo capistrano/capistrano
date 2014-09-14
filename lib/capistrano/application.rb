@@ -21,7 +21,7 @@ module Capistrano
         switch =~ /--#{Regexp.union(not_applicable_to_capistrano)}/
       end
 
-      super.push(version, roles, dry_run, hostfilter)
+      super.push(version, dry_run, roles, hostfilter)
     end
 
     def handle_options
@@ -39,6 +39,11 @@ module Capistrano
         opts.separator ""
         opts.separator "Invoke (or simulate invoking) a task:"
         opts.separator "    bundle exec cap [--dry-run] STAGE TASK"
+        opts.separator ""
+        opts.separator "Host and Role Filters:"
+        opts.separator "    Host and role patterns may be specified as a comma separated list"
+        opts.separator "    each item of which is treated either as a literal match (if it contains"
+        opts.separator "    just the characters A-Za-z0-9-_.) or a regular expression (otherwise)."
         opts.separator ""
         opts.separator "Advanced options:"
 
@@ -107,18 +112,18 @@ module Capistrano
 
     def roles
       ['--roles ROLES', '-r',
-       "Filter command to only apply to these roles (separate multiple roles with a comma)",
+       "Run SSH commands only on hosts matching these roles (see syntax above)",
        lambda { |value|
-         Configuration.env.set(:filter, roles: value.split(","))
+         Configuration.env.add_external_filter(:role, value.split(","))
        }
       ]
     end
 
     def hostfilter
       ['--hosts HOSTS', '-z',
-       "Filter command to only apply to these hosts (separate multiple hosts with a comma)",
+       "Run SSH commands only on matching hosts (see syntax above)",
        lambda { |value|
-         Configuration.env.set(:filter, hosts: value.split(","))
+         Configuration.env.add_external_filter(:host, value.split(","))
        }
       ]
     end

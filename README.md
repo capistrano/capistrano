@@ -267,6 +267,64 @@ __Support removed__ for following variables:
 |:---------------------:|---------------------------------------------------------------------|-----------------------------------------------------------------|
 | `:copy_exclude`       | The (optional) array of files and/or folders excluded from deploy | Replaced by Git's native `.gitattributes`, see [#515](https://github.com/capistrano/capistrano/issues/515) for more info. |
 
+## Host and Role Filtering
+
+Capistrano enables the declaration of servers and roles, each of which may have properties
+associated with them.  Tasks are then able to use these definitions in two distinct ways:
+
+* To execute commands on remote hosts: using the `on()` method (provided by SSHKit), and
+* To determine configurations: typically by using the `roles()` method (and relatives) outside the scope of `on()`
+
+An example of the latter would be to create a list of available web servers in order to
+automate the setup of an F5 pool.
+
+A problem with this arises when _filters_ are used. Filters are designed to limit the
+actual set of hosts that are used to a subset of those in the overall stage, but how
+should that apply to the above?
+
+If the filter applies to both the _command_ and _configuration_ aspects, any configuration
+files deployed will not be the same as those on the hosts excluded by the filters. On the
+other hand if the filter applies only to the _command_ aspect, then any configuration
+files deployed will be identical across the stage.
+
+Consider also the different ways in which filters may be specified. Externally:
+* Via environment variables HOSTS and ROLES
+* Via command line options `--hosts` and `--roles`
+And internally:
+* Via the `:filter` variable
+* Via options passed to the `roles()` method (and implicitly in methods like `release_roles()`)
+
+Currently, when a filter is applied via __any__ of the current methods, it
+affects __both__ the _command_ and the _configuration_ aspects.
+
+For practical uses this behaviour needs refining.  A core principle of Capistrano is that
+the stage file is the complete embodiment of the configuration (possibly including
+settings from deploy.rb and Capfile), and therefore any filtering of the configuration
+should be declared there. Put the other way, an external filter, done for the purposes of
+limiting which hosts commands are executed on, should not affect the overall
+configuration.
+
+So this fix makes the external filters only apply to commands issued: ie. they restrict
+the hosts that an `on()` method will use, the will not affect the `roles()` method. On the
+other hand internal filters will always apply
+
+By making this distinction two distinct usage models can be catered for. When a subset of
+servers and/or roles are deployed to:
+
+* With a configuration that reflects only that subset. This can be achieved by
+  using the `set :filter, hosts: [a,b], roles: [:web,:app]` approach.
+
+* With a configuration that reflects the entire stage. This is useful when deploying a new
+  server to an existing configuration. This can be achieved by using either of the
+  external filtering methods.
+
+The former corresponds to the existing behaviour, although done slightly differently.
+The latter is new behaviour which is a more common use case.
+
+We also change external filters so that they can use regular expressions. If either
+a host or role name in a filter doesn't match `/^[-\w.]*$/` then it's assumed to be
+a regular expression.
+
 ## SSHKit
 
 [SSHKit](https://github.com/leehambley/sshkit) is the driver for SSH
