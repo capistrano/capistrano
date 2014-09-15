@@ -5,14 +5,12 @@ require_relative 'configuration/server'
 module Capistrano
   class Configuration
 
-    class << self
-      def env
-        @env ||= new
-      end
+    def self.env
+      @env ||= new
+    end
 
-      def reset!
-        @env = new
-      end
+    def self.reset!
+      @env = new
     end
 
     def ask(key, default=nil, options={})
