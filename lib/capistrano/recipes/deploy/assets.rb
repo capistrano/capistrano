@@ -77,7 +77,7 @@ namespace :deploy do
 
       # Copy manifest to release root (for clean_expired task)
       run <<-CMD.compact
-        cp -- #{shared_manifest_path.shellescape} #{current_release.to_s.shellescape}/assets_manifest#{File.extname(shared_manifest_path)}
+        cp -- #{shared_manifest_path.shellescape} #{latest_release.to_s.shellescape}/assets_manifest#{File.extname(shared_manifest_path)}
       CMD
     end
 
