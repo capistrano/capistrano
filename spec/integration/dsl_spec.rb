@@ -15,7 +15,7 @@ describe Capistrano::DSL do
         dsl.server 'example2.com', roles: %w{web}
         dsl.server 'example3.com', roles: %w{app web}, active: true
         dsl.server 'example4.com', roles: %w{app}, primary: true
-        dsl.server 'example5.com', roles: %w{db}, no_release: true
+        dsl.server 'example5.com', roles: %w{db}, no_release: true, active:true
       end
 
       describe 'fetching all servers' do
