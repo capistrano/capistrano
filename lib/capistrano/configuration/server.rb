@@ -98,6 +98,15 @@ module Capistrano
         def keys
           @properties.keys
         end
+        
+        def has?(properties)
+          properties.keys.each do |key|
+            unless @properties.has_key?(key) && (@properties[key] == properties[key])
+              return false
+            end
+          end
+          true
+        end
 
         def method_missing(key, value=nil)
           if value
