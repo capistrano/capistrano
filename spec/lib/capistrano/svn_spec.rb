@@ -68,16 +68,9 @@ module Capistrano
 
     describe "#fetch_revision" do
       it "should run fetch revision" do
-        require 'open3'
-        parse_revision = "tail -n 2 | head -n 1 | sed s/\\ \\|.*/''/"
-        Open3.popen2(parse_revision) do |stdin, stdout, wait_thr|
-          stdin.puts("---\nr12345 | xxxxxxx\n---") # output of svn log
-          stdin.close
-          expect(stdout.gets).to eq "r12345\n"
-          expect(wait_thr.value).to eq 0
-        end
+        context.expects(:repo_path).returns(:path)
 
-        context.expects(:capture).with(:svn, "log -l 1 -q | " + parse_revision)
+        context.expects(:capture).with(:svnversion, :path)
 
         subject.fetch_revision
       end
