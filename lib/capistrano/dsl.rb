@@ -33,7 +33,7 @@ module Capistrano
           branch: fetch(:branch),
           user: local_user,
           sha: fetch(:current_revision),
-          release: release_timestamp)
+          release: fetch(:release_timestamp))
        )
     end
 
