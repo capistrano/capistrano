@@ -324,6 +324,21 @@ The latter is new behaviour which is a more common use case.
 We also change external filters so that they can use regular expressions. If either
 a host or role name in a filter doesn't match `/^[-\w.]*$/` then it's assumed to be
 a regular expression.
+To increase the utility of On-Filters they can use regular expressions:
+* If the host name in a filter doesn't match `/^[-A-Za-z0-9.]+$/` (the set of valid characters
+    for a DNS name) then it's assumed to be a regular expression.
+* Since role names are Ruby symbols they can legitimately contain any characters. To allow multiple
+    of them to be specified on one line we use the comma. To use a regexp for a role filter begin
+    and end the string with '/'. These may not contain a comma.
+
+When multiple filters are specified in the same declaration, the final filter is the
+_union_ of all of the components, so an implicit OR is between each one. However when
+multiple filters are declared, they are evaluated in the order declared and so are ANDed
+together. The order of processing is:
+
+* Environment variables,
+* Command line options,
+* The `:filter` variable value in effect at the time of the `on()` call
 
 ## SSHKit
 
