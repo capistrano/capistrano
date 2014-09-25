@@ -87,15 +87,29 @@ module Capistrano
       @timestamp ||= Time.now.utc
     end
 
-    def add_external_filter(type, values)
-      external_filters << Filter.new(type, values)
+    def setup_filters
+      @filters = cmdline_filters.clone
+      @filters << Filter.new(:role, ENV['ROLES']) if ENV['ROLES']
+      @filters << Filter.new(:host, ENV['HOSTS']) if ENV['HOSTS']
+      fh = fetch_for(:filter,{})
+      @filters << Filter.new(:host, fh[:host]) if fh[:host]
+      @filters << Filter.new(:role, fh[:role]) if fh[:role]
+    end
+
+    def add_cmdline_filter(type, values)
+      cmdline_filters << Filter.new(type, values)
     end
 
     def filter list
-      external_filters.reduce(list){|l,f| f.filter list}
+      setup_filters if @filters.nil?
+      @filters.reduce(list) { |l,f| f.filter l }
     end
 
     private
+
+    def cmdline_filters
+      @cmdline_filters ||= []
+    end
 
     def servers
       @servers ||= Servers.new
@@ -103,10 +117,6 @@ module Capistrano
 
     def config
       @config ||= Hash.new
-    end
-
-    def external_filters
-      @external_filters ||= []
     end
 
     def fetch_for(key, default, &block)

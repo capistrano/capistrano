@@ -40,11 +40,6 @@ module Capistrano
         opts.separator "Invoke (or simulate invoking) a task:"
         opts.separator "    bundle exec cap [--dry-run] STAGE TASK"
         opts.separator ""
-        opts.separator "Host and Role Filters:"
-        opts.separator "    Host and role patterns may be specified as a comma separated list"
-        opts.separator "    each item of which is treated either as a literal match (if it contains"
-        opts.separator "    just the characters A-Za-z0-9-_.) or a regular expression (otherwise)."
-        opts.separator ""
         opts.separator "Advanced options:"
 
         opts.on_tail("-h", "--help", "-H", "Display this help message.") do
@@ -112,18 +107,18 @@ module Capistrano
 
     def roles
       ['--roles ROLES', '-r',
-       "Run SSH commands only on hosts matching these roles (see syntax above)",
+       "Run SSH commands only on hosts matching these roles",
        lambda { |value|
-         Configuration.env.add_external_filter(:role, value.split(","))
+         Configuration.env.add_cmdline_filter(:role, value)
        }
       ]
     end
 
     def hostfilter
       ['--hosts HOSTS', '-z',
-       "Run SSH commands only on matching hosts (see syntax above)",
+       "Run SSH commands only on matching hosts",
        lambda { |value|
-         Configuration.env.add_external_filter(:host, value.split(","))
+         Configuration.env.add_cmdline_filter(:host, value)
        }
       ]
     end

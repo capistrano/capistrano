@@ -18,11 +18,7 @@ module Capistrano
 
       def roles_for(names)
         options = extract_options(names)
-        fia = Array(Filter.new(:role, names))
-        fs = Configuration.env.fetch(:filter,{})
-        fia << Filter.new(:host, fs[:host]) if fs[:host]
-        fia << Filter.new(:role, fs[:role]) if fs[:role]
-        s = fia.reduce(servers){|m,o| o.filter m}
+        s = Filter.new(:role, names).filter(servers)
         s.select { |server| server.select?(options) }
       end
 

@@ -1,12 +1,5 @@
 require 'rake'
 require 'sshkit'
-require 'sshkit/dsl'
-
-module SSHKit
-  module DSL
-    alias_method :sshkit_on, :on
-  end
-end
 
 require 'io/console'
 

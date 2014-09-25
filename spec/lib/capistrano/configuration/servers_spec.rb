@@ -82,11 +82,11 @@ module Capistrano
           expect(servers.fetch_primary(:app).hostname).to eq('2')
         end
 
-        it 'honours any internal filters' do
+        it 'ignores any on_filters' do
           Configuration.env.set :filter, { host: '1'}
           servers.add_role(:app, %w{1 2})
           servers.add_host('2', primary: true)
-          expect(servers.fetch_primary(:app).hostname).to eq('1')
+          expect(servers.fetch_primary(:app).hostname).to eq('2')
         end
       end
 

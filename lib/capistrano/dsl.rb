@@ -3,6 +3,7 @@ require 'capistrano/dsl/task_enhancements'
 require 'capistrano/dsl/paths'
 require 'capistrano/dsl/stages'
 require 'capistrano/dsl/env'
+require 'capistrano/configuration/filter'
 
 module Capistrano
   module DSL
@@ -49,9 +50,13 @@ module Capistrano
       VersionValidator.new(locked_version).verify
     end
 
-    # Having intercepted the SSHKit on() method we can filter externally
     def on(hosts, options={}, &block)
-      sshkit_on(Configuration.env.filter(hosts), options, &block)
+      subset = Configuration.env.filter hosts
+      SSHKit::Coordinator.new(subset).each(options, &block)
+    end
+
+    def run_locally(&block)
+      SSHKit::Backend::Local.new(&block).run
     end
 
   end

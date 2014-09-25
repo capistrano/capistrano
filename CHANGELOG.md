@@ -7,12 +7,27 @@ Reverse Chronological Order:
 https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
 * Enhancements (@townsen)
-  * _External_ Host and Role filtering now affects only `on()` commands
+  * Previously filtering would affect any generated configuration files so that
+    files newly deployed would not be the same as those on the hosts previously
+    deployed (and now excluded by filters). This is almost certainly not what is
+    wanted: the filters should apply only to the on() method and thus any
+    configuration files deployed will be identical across the set of servers
+    making up the stage.
+  * Host and Role filtering now affects only `on()` commands
     and not the `roles()`, `release_roles()` and `primary()` methods.
-  * _Internal_ Host and Role filtering affects the `roles()`, `release_roles()`
-    and `primary()` methods.
-  * Host and Role filtering now supports Regular expressions
-  * See the README.md file for a comprehensive discussion of these changes
+  * This applies to filters defined via the command line, the environment
+    and the :filter variable.
+  * Filtering now supports Regular expressions
+  * This change _could_ cause existing scripts that use filtering and depend on
+    the old behaviour to fail, though it is unlikely. Users who rely on
+    filtering should check that generated configuration files are correct, and
+    where not introduce server properties to do the filtering. For example, if a
+    filter was used to specify an active subset of servers (by hostname), it should
+    be removed and replaced with an 'active' property (set to true or false) on the
+    server definitions. This keeps the stage file as the canonical model of the
+    deployment environment.
+
+  * See the documentation in the README.md file
 
 * Pushing again to trigger another build (I have a seemingly random build fail) (@townsen)
 * Enhancements (@townsen)
