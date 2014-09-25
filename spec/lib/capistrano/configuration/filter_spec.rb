@@ -35,6 +35,10 @@ module Capistrano
       end
 
       describe 'host filter' do
+        it 'works with a single server' do
+          set = Filter.new(:host, 'server1').filter(available.first)
+          expect(set.map(&:hostname)).to eq(%w{server1})
+        end
         it 'returns all hosts matching a string' do
           set = Filter.new(:host, 'server1').filter(available)
           expect(set.map(&:hostname)).to eq(%w{server1})

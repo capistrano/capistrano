@@ -38,13 +38,14 @@ module Capistrano
         @rex = Regexp.union av
       end
       def filter servers
+        as = Array(servers)
         case @mode
         when :none then return []
         when :all  then return servers
         when :host
-          servers.select {|s| @rex.match s.hostname}
+          as.select {|s| @rex.match s.hostname}
         when :role
-          servers.select {|s| s.roles.any? {|r| @rex.match r} }
+          as.select {|s| s.roles.any? {|r| @rex.match r} }
         end
       end
     end
