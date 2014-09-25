@@ -42,11 +42,9 @@ module Capistrano
         @properties ||= Properties.new
       end
 
-      def netssh_options_with_options
-        @netssh_options ||= netssh_options_without_options.merge( fetch(:ssh_options) || {} )
+      def netssh_options
+        @netssh_options ||= super.merge( fetch(:ssh_options) || {} )
       end
-      alias_method :netssh_options_without_options, :netssh_options
-      alias_method :netssh_options, :netssh_options_with_options
 
       def roles_array
         roles.to_a
