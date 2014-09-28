@@ -135,7 +135,7 @@ namespace :deploy do
   desc 'Clean up old releases'
   task :cleanup do
     on release_roles :all do |host|
-      releases = capture(:ls, '-x', releases_path).split
+      releases = capture(:ls, '-xtr', releases_path).split
       if releases.count >= fetch(:keep_releases)
         info t(:keeping_releases, host: host.to_s, keep_releases: fetch(:keep_releases), releases: releases.count)
         directories = (releases - releases.last(fetch(:keep_releases)))
@@ -154,7 +154,7 @@ namespace :deploy do
   desc 'Remove and archive rolled-back release.'
   task :cleanup_rollback do
     on release_roles(:all) do
-      last_release = capture(:ls, '-xr', releases_path).split.first
+      last_release = capture(:ls, '-xt', releases_path).split.first
       last_release_path = releases_path.join(last_release)
       if test "[ `readlink #{current_path}` != #{last_release_path} ]"
         execute :tar, '-czf',
@@ -189,7 +189,7 @@ namespace :deploy do
 
   task :rollback_release_path do
     on release_roles(:all) do
-      releases = capture(:ls, '-xr', releases_path).split
+      releases = capture(:ls, '-xt', releases_path).split
       if releases.count < 2
         error t(:cannot_rollback)
         exit 1
