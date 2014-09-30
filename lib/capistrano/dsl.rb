@@ -3,6 +3,7 @@ require 'capistrano/dsl/task_enhancements'
 require 'capistrano/dsl/paths'
 require 'capistrano/dsl/stages'
 require 'capistrano/dsl/env'
+require 'capistrano/configuration/filter'
 
 module Capistrano
   module DSL
@@ -48,6 +49,16 @@ module Capistrano
     def lock(locked_version)
       VersionValidator.new(locked_version).verify
     end
+
+    def on(hosts, options={}, &block)
+      subset = Configuration.env.filter hosts
+      SSHKit::Coordinator.new(subset).each(options, &block)
+    end
+
+    def run_locally(&block)
+      SSHKit::Backend::Local.new(&block).run
+    end
+
   end
 end
 self.extend Capistrano::DSL

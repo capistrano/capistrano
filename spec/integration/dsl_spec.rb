@@ -36,10 +36,10 @@ describe Capistrano::DSL do
           end
         end
 
-        context 'with filter options' do
+        context 'with property filter options' do
           subject { dsl.release_roles(:all, filter: :active) }
 
-          it 'returns all release servers that match the filter' do
+          it 'returns all release servers that match the property filter' do
             expect(subject.map(&:hostname)).to eq %w{example1.com example3.com}
           end
         end
@@ -92,11 +92,43 @@ describe Capistrano::DSL do
           end
         end
 
-        context 'when the attribute `primary` is explicity set' do
+        context 'when the attribute `primary` is explicitly set' do
           subject { dsl.primary(:app) }
           it 'returns the servers' do
             expect(subject.hostname).to eq 'example4.com'
           end
+        end
+      end
+
+      describe 'setting an internal host filter' do
+        subject { dsl.roles(:app) }
+        it 'is ignored' do
+          dsl.set :filter, { host: 'example3.com' }
+          expect(subject.map(&:hostname)).to eq(['example3.com', 'example4.com'])
+        end
+      end
+
+      describe 'setting an internal role filter' do
+        subject { dsl.roles(:app) }
+        it 'ignores it' do
+          dsl.set :filter, { role: :web }
+          expect(subject.map(&:hostname)).to eq(['example3.com','example4.com'])
+        end
+      end
+
+      describe 'setting an internal host and role filter' do
+        subject { dsl.roles(:app) }
+        it 'ignores it' do
+          dsl.set :filter, { role: :web, host: 'example1.com' }
+          expect(subject.map(&:hostname)).to eq(['example3.com','example4.com'])
+        end
+      end
+
+      describe 'setting an internal regexp host filter' do
+        subject { dsl.roles(:all) }
+        it 'is ignored' do
+          dsl.set :filter, { host: /1/ }
+          expect(subject.map(&:hostname)).to eq(%w{example1.com example2.com example3.com example4.com example5.com})
         end
       end
 
@@ -518,4 +550,61 @@ describe Capistrano::DSL do
       end
     end
   end
+
+  describe 'on()' do
+
+    before do
+      dsl.server 'example1.com', roles: %w{web}, active: true
+      dsl.server 'example2.com', roles: %w{web}
+      dsl.server 'example3.com', roles: %w{app web}, active: true
+      dsl.server 'example4.com', roles: %w{app}, primary: true
+      dsl.server 'example5.com', roles: %w{db}, no_release: true
+      @coordinator = mock('coordinator')
+      @coordinator.expects(:each).returns(nil)
+      ENV.delete 'ROLES'
+      ENV.delete 'HOSTS'
+
+    end
+
+    it 'filters by role from the :filter variable' do
+      hosts = dsl.roles(:web)
+      all = dsl.roles(:all)
+      SSHKit::Coordinator.expects(:new).with(hosts).returns(@coordinator)
+      dsl.set :filter, { role: 'web' }
+      dsl.on(all)
+    end
+
+    it 'filters by host and role from the :filter variable' do
+      all = dsl.roles(:all)
+      SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
+      dsl.set :filter, { role: 'db', host: 'example3.com' }
+      dsl.on(all)
+    end
+
+    it 'filters from ENV[ROLES]' do
+      hosts = dsl.roles(:db)
+      all = dsl.roles(:all)
+      SSHKit::Coordinator.expects(:new).with(hosts).returns(@coordinator)
+      ENV['ROLES'] = 'db'
+      dsl.on(all)
+    end
+
+    it 'filters from ENV[HOSTS]' do
+      hosts = dsl.roles(:db)
+      all = dsl.roles(:all)
+      SSHKit::Coordinator.expects(:new).with(hosts).returns(@coordinator)
+      ENV['HOSTS'] = 'example5.com'
+      dsl.on(all)
+    end
+
+    it 'filters by ENV[HOSTS] && ENV[ROLES]' do
+      all = dsl.roles(:all)
+      SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
+      ENV['HOSTS'] = 'example5.com'
+      ENV['ROLES'] = 'web'
+      dsl.on(all)
+    end
+
+  end
+
 end

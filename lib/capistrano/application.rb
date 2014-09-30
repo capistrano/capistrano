@@ -21,7 +21,7 @@ module Capistrano
         switch =~ /--#{Regexp.union(not_applicable_to_capistrano)}/
       end
 
-      super.push(version, roles, dry_run, hostfilter)
+      super.push(version, dry_run, roles, hostfilter)
     end
 
     def handle_options
@@ -107,18 +107,18 @@ module Capistrano
 
     def roles
       ['--roles ROLES', '-r',
-       "Filter command to only apply to these roles (separate multiple roles with a comma)",
+       "Run SSH commands only on hosts matching these roles",
        lambda { |value|
-         Configuration.env.set(:filter, roles: value.split(","))
+         Configuration.env.add_cmdline_filter(:role, value)
        }
       ]
     end
 
     def hostfilter
       ['--hosts HOSTS', '-z',
-       "Filter command to only apply to these hosts (separate multiple hosts with a comma)",
+       "Run SSH commands only on matching hosts",
        lambda { |value|
-         Configuration.env.set(:filter, hosts: value.split(","))
+         Configuration.env.add_cmdline_filter(:host, value)
        }
       ]
     end

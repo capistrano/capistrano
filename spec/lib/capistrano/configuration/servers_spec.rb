@@ -68,12 +68,22 @@ module Capistrano
       end
 
       describe 'finding the primary server' do
+        after do
+          Configuration.reset!
+        end
         it 'takes the first server if none have the primary property' do
           servers.add_role(:app, %w{1 2})
           expect(servers.fetch_primary(:app).hostname).to eq('1')
         end
 
         it 'takes the first server with the primary have the primary flag' do
+          servers.add_role(:app, %w{1 2})
+          servers.add_host('2', primary: true)
+          expect(servers.fetch_primary(:app).hostname).to eq('2')
+        end
+
+        it 'ignores any on_filters' do
+          Configuration.env.set :filter, { host: '1'}
           servers.add_role(:app, %w{1 2})
           servers.add_host('2', primary: true)
           expect(servers.fetch_primary(:app).hostname).to eq('2')
@@ -218,11 +228,9 @@ module Capistrano
 
       end
 
-      describe 'filtering roles' do
+      describe 'filtering roles internally' do
 
         before do
-          ENV.stubs(:[]).with('ROLES').returns('web,db')
-          ENV.stubs(:[]).with('HOSTS').returns(nil)
           servers.add_host('1', roles: :app, active: true)
           servers.add_host('2', roles: :app)
           servers.add_host('3', roles: :web)
@@ -232,31 +240,67 @@ module Capistrano
 
         subject { servers.roles_for(roles).map(&:hostname) }
 
-        context 'when selecting all roles' do
-          let(:roles) { [:all] }
+        context 'with the ROLES environment variable set' do
 
-          it 'returns the roles specified by ROLE' do
-            expect(subject).to eq %w{3 4 5}
+          before do
+            ENV.stubs(:[]).with('ROLES').returns('web,db')
+            ENV.stubs(:[]).with('HOSTS').returns(nil)
           end
+
+          context 'when selecting all roles' do
+            let(:roles) { [:all] }
+            it 'ignores it' do
+              expect(subject).to eq %w{1 2 3 4 5}
+            end
+          end
+
+          context 'when selecting specific roles' do
+            let(:roles) { [:app, :web] }
+            it 'ignores it' do
+              expect(subject).to eq %w{1 2 3 4}
+            end
+          end
+
+          context 'when selecting roles not included in ROLE' do
+            let(:roles) { [:app] }
+            it 'ignores it' do
+              expect(subject).to eq %w{1 2}
+            end
+          end
+
         end
 
-        context 'when selecting roles included in ROLE' do
-          let(:roles) { [:app, :web] }
+        context 'with the HOSTS environment variable set' do
 
-          it 'returns only roles that match ROLE' do
-            expect(subject).to eq %w{3 4}
+          before do
+            ENV.stubs(:[]).with('ROLES').returns(nil)
+            ENV.stubs(:[]).with('HOSTS').returns('3,5')
           end
+
+          context 'when selecting all roles' do
+            let(:roles) { [:all] }
+            it 'ignores it' do
+              expect(subject).to eq %w{1 2 3 4 5}
+            end
+          end
+
+          context 'when selecting specific roles' do
+            let(:roles) { [:app, :web] }
+            it 'ignores it' do
+              expect(subject).to eq %w{1 2 3 4}
+            end
+          end
+
+          context 'when selecting no roles' do
+            let(:roles) { [] }
+            it 'ignores it' do
+              expect(subject).to be_empty
+            end
+          end
+
         end
 
-        context 'when selecting roles not included in ROLE' do
-          let(:roles) { [:app] }
-
-          it 'is empty' do
-            expect(subject).to be_empty
-          end
-        end
       end
-
     end
   end
 end
