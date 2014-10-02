@@ -1,6 +1,7 @@
 module Capistrano
   module DSL
     module Env
+      UNKNOWN = Object.new.freeze
 
       def configure_backend
         env.configure_backend
@@ -19,7 +20,15 @@ module Capistrano
         end
       end
 
-      def set(key, value)
+      def set(key, value = UNKNOWN, &block)
+        if UNKNOWN.equal?(value)
+          if block_given?
+            value = block
+          else
+            fail ArgumentError, 'wrong number of arguments (1 for 2)'
+          end
+        end
+
         env.set(key, value)
       end
 
