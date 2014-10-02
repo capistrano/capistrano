@@ -1,3 +1,5 @@
+require 'capistrano/upload_task'
+
 module Capistrano
   module TaskEnhancements
     def before(task, prerequisite, *args, &block)
@@ -19,7 +21,7 @@ module Capistrano
     end
 
     def define_remote_file_task(task, target_roles)
-      Rake::Task.define_task(task) do |t|
+      Capistrano::UploadTask.define_task(task) do |t|
         prerequisite_file = t.prerequisites.first
         file = shared_path.join(t.name)
 

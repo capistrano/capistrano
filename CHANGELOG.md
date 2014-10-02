@@ -47,6 +47,7 @@ Breaking Changes:
 
 * Bug Fixes:
   * Fixed compatibility with FreeBSD tar (@robbertkl)
+  * remote_file can be used inside a namespace (@mikz)
 
 * Minor Changes
   * Remove -v flag from mkdir call. (@caligo-mentis)
