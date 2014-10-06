@@ -69,5 +69,20 @@ module Capistrano
       end
 
     end
+
+    describe 'remote_file' do
+      subject(:remote_file) { task_enhancements.remote_file('source' => 'destination') }
+
+      it { expect(remote_file.name).to eq('source') }
+      it { is_expected.to be_a(Capistrano::UploadTask) }
+
+      describe 'namespaced' do
+        let(:app) { Rake.application }
+        around { |ex| app.in_namespace('namespace', &ex) }
+
+        it { expect(remote_file.name).to eq('source') }
+        it { is_expected.to be_a(Capistrano::UploadTask) }
+      end
+    end
   end
 end
