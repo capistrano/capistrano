@@ -317,7 +317,7 @@ to work in the deployment directory, on the server. That means we need to be
 able to work, ideally without `sudo` (none of the default Capistrano recipes
 expect `sudo` to be available), or for your custom recipes, you will need to
 have configured *passwordless* `sudo`. Configuring `sudo` to give some users
-access to come commands under some circumstances is beyond the scope of this
+access to some commands under some circumstances is beyond the scope of this
 documentation, but sufficed to say something like:
 
 {% highlight bash %}
