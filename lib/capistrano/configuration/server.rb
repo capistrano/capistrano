@@ -148,7 +148,7 @@ module Capistrano
         end
 
         def all
-          ->(server) { :all }
+          ->(_server) { :all }
         end
 
         class Exclusive < Selector

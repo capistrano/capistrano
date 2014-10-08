@@ -89,7 +89,7 @@ module Capistrano
     def version
       ['--version', '-V',
        "Display the program version.",
-       lambda { |value|
+       lambda { |_value|
          puts "Capistrano Version: #{Capistrano::VERSION} (Rake Version: #{RAKEVERSION})"
          exit
        }
@@ -99,7 +99,7 @@ module Capistrano
     def dry_run
       ['--dry-run', '-n',
        "Do a dry run without executing actions",
-       lambda { |value|
+       lambda { |_value|
          Configuration.env.set(:sshkit_backend, SSHKit::Backend::Printer)
        }
       ]
