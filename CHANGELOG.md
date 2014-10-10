@@ -6,6 +6,14 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
+* Enhancement (@townsen)
+  * Added the variable `:repo_tree` which allows the specification of a sub-tree that
+    will be extracted from the repository. This is useful when deploying a project
+    that lives in a subdirectory of a larger repository.
+    Implemented only for git and hg.
+    If not defined then the behaviour is as previously and the whole repository is
+    extracted (subject to git-archive `.gitattributes` of course).
+
 * Enhancements (@townsen)
   * Previously filtering would affect any generated configuration files so that
     files newly deployed would not be the same as those on the hosts previously
