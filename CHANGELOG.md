@@ -7,6 +7,7 @@ Reverse Chronological Order:
 https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
 * Enhancements (@townsen)
+  * Fix matching on hosts with custom ports or users set
   * Previously filtering would affect any generated configuration files so that
     files newly deployed would not be the same as those on the hosts previously
     deployed (and now excluded by filters). This is almost certainly not what is
