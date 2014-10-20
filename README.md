@@ -277,7 +277,7 @@ associated with them.  Tasks are then able to use these definitions in two disti
 
 * To _interact_ with remote hosts using the `on()` method
 
-An example of the two would be to create a `/etc/krb5.conf' file containing the list of
+An example of the two would be to create a `/etc/krb5.conf` file containing the list of
 available KDC's by using the list of servers returned by `roles(:kdc)` and then uploading
 it to all client machines using `on(roles(:all)) do upload!(file) end`
 
