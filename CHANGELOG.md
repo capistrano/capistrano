@@ -6,6 +6,7 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
+* Disable loading stages configs on `cap -T`
 * Enhancements (@townsen)
   * Fix matching on hosts with custom ports or users set
   * Previously filtering would affect any generated configuration files so that

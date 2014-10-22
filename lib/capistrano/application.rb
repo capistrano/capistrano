@@ -75,7 +75,7 @@ module Capistrano
       if options.show_tasks
         invoke 'load:defaults'
         set(:stage, '')
-        Dir[deploy_config_path, stage_definitions].each { |f| add_import f }
+        Dir[deploy_config_path].each { |f| add_import f }
       end
 
       super
