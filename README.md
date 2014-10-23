@@ -1,4 +1,4 @@
-# Capistrano [![Build Status](https://travis-ci.org/capistrano/capistrano.svg?branch=master)](https://travis-ci.org/capistrano/capistrano) [![Code Climate](http://img.shields.io/codeclimate/github/capistrano/capistrano.svg)](https://codeclimate.com/github/capistrano/capistrano) <a href="http://codersclan.net/?repo_id=325&source=small"><img src="http://img.shields.io/badge/get-support-blue.svg"></a>
+# Capistrano [![Build Status](https://travis-ci.org/capistrano/capistrano.svg?branch=master)](https://travis-ci.org/capistrano/capistrano) [![Code Climate](http://img.shields.io/codeclimate/github/capistrano/capistrano.svg)](https://codeclimate.com/github/capistrano/capistrano) [![Support](http://img.shields.io/badge/get-support-blue.svg)](http://codersclan.net/?repo_id=325&source=small) [![Security](https://hakiri.io/github/capistrano/capistrano/master.svg)](https://hakiri.io/github/capistrano/capistrano/master)
 
 ## Requirements
 
