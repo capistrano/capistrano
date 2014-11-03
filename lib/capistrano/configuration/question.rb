@@ -32,10 +32,20 @@ module Capistrano
 
       def response
         return @response if defined? @response
-        return @response = $stdin.gets.chomp if echo?
-        @response = $stdin.noecho(&:gets).chomp.tap{$stdout.print "\n"}
+        
+        @response = (gets || "").chomp
       end
-
+      
+      def gets
+        if echo?
+          $stdin.gets
+        else
+          $stdin.noecho(&:gets).tap{ $stdout.print "\n" }
+        end
+      rescue Errno::EIO
+        # when stdio gets closed
+      end
+        
       def question
         I18n.t(:question, key: key, default_value: default, scope: :capistrano)
       end
