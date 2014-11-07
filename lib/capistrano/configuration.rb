@@ -15,7 +15,7 @@ module Capistrano
     end
 
     def ask(key, default=nil, options={})
-      question = Question.new(self, key, default, options)
+      question = Question.new(key, default, options)
       set(key, question)
     end
 
