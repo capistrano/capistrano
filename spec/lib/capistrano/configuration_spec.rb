@@ -5,6 +5,13 @@ module Capistrano
     let(:config) { Configuration.new }
     let(:servers) { stub }
 
+    describe '.new' do
+      it 'accepts initial hash' do
+        configuration = described_class.new(custom: 'value')
+        expect(configuration.fetch(:custom)).to eq('value')
+      end
+    end
+
     describe '.env' do
       it 'is a global accessor to a single instance' do
         Configuration.env.set(:test, true)
