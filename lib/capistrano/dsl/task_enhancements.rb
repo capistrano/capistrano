@@ -26,7 +26,7 @@ module Capistrano
         file = shared_path.join(t.name)
 
         on roles(target_roles) do
-          unless test "[ -f #{file} ]"
+          unless test "[ -f #{file.to_s.shellescape} ]"
             info "Uploading #{prerequisite_file} to #{file}"
             upload! File.open(prerequisite_file), file
           end
