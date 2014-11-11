@@ -2,24 +2,20 @@ module Capistrano
   class Configuration
     class Question
 
-      def initialize(env, key, default, options = {})
-        @env, @key, @default, @options = env, key, default, options
+      def initialize(key, default, options = {})
+        @key, @default, @options = key, default, options
       end
 
       def call
         ask_question
-        save_response
+        value_or_default
       end
 
       private
-      attr_reader :env, :key, :default, :options
+      attr_reader :key, :default, :options
 
       def ask_question
         $stdout.print question
-      end
-
-      def save_response
-        env.set(key, value_or_default)
       end
 
       def value_or_default
