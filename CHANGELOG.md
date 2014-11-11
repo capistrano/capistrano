@@ -6,6 +6,21 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
+* Enhancement (@townsen): Remove unnecessary entries from default backtrace
+
+    When the `--backtrace` (or `--trace`) command line option is not supplied
+    Rake lowers the noise level in exception backtraces by building
+    a regular expression containing all the system library paths and
+    using it to exclude backtrace entries that match.
+
+    This does not always go far enough, particularly in RVM environments when
+    many gem paths are added. This commit reverses that approach and _only_
+    include backtrace entries that fall within the Capfile and list of tasks
+    imported thereafter. This makes reading exceptions much easier on the eye.
+
+    If the full unexpurgated backtrace is required then the --backtrace
+    and --trace options supply it as before.
+
 * Disable loading stages configs on `cap -T`
 * Enhancements (@townsen)
   * Fix matching on hosts with custom ports or users set
