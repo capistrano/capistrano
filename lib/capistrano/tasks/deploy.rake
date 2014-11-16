@@ -83,7 +83,7 @@ namespace :deploy do
     task :release do
       on release_roles :all do
         execute :rm, '-rf', current_path
-        execute :ln, '-s', release_path, current_path
+        execute :ln, '-s', release_path.relative_path_from(current_path.dirname), current_path
       end
     end
 
@@ -106,7 +106,7 @@ namespace :deploy do
             if test "[ -d #{target} ]"
               execute :rm, '-rf', target
             end
-            execute :ln, '-s', source, target
+            execute :ln, '-s', source.relative_path_from(target.dirname), target
           end
         end
       end
@@ -125,7 +125,7 @@ namespace :deploy do
             if test "[ -f #{target} ]"
               execute :rm, target
             end
-            execute :ln, '-s', source, target
+            execute :ln, '-s', source.relative_path_from(target.dirname), target
           end
         end
       end
