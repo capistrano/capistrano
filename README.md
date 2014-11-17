@@ -159,6 +159,24 @@ When using `ask` to get user input, you can pass `echo: false` to prevent the in
 ask(:database_password, "default", echo: false)
 ```
 
+## Validation of variables
+
+To validate a variable, each time before it is set, define a validation:
+
+```ruby
+validate :some_key do |key, value|
+  if value.length < 5
+    raise Capistrano::ValidationError, "Length of #{key} is too short!"
+  end
+end
+```
+
+Multiple validation can be assigned to a single key. Validations will be executed
+in the order of registration.
+
+Validations can be used to ensure certain properties of user-supplied values,
+e.g. from `ask` or `ENV`.
+
 ## Using password authentication
 
 Password authentication can be done via `set` and `ask` in your deploy environment file (e.g.: config/deploy/production.rb)
