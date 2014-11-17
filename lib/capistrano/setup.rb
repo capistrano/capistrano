@@ -2,7 +2,7 @@ include Capistrano::DSL
 
 namespace :load do
   task :defaults do
-    load 'capistrano/defaults.rb'
+    require 'capistrano/defaults'
   end
 end
 
