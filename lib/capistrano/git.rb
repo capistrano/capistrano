@@ -18,7 +18,7 @@ class Capistrano::Git < Capistrano::SCM
     end
 
     def check
-      test! :git, :'ls-remote -h', repo_url
+      git :'ls-remote -h', repo_url
     end
 
     def clone
