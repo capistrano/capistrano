@@ -45,6 +45,8 @@ documented with code)
 
 ## When Requesting a Feature:
 
+Head on over to the [Capistrano features](https://github.com/capistrano/capistrano-features) project, or any of the lists or channels listed above.
+
 We can't make everyone happy all of the time, and we've been around the block
 well enough to know when something doesn't work well, or when your proposed fix
 might impact other things.
