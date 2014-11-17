@@ -27,7 +27,13 @@ class Capistrano::Hg < Capistrano::SCM
     end
 
     def release
-      hg "archive", release_path, "--rev", fetch(:branch)
+      if tree = fetch(:repo_tree)
+        tree = tree.slice %r#^/?(.*?)/?$#, 1
+        components = tree.split('/').size
+        hg "archive --type tgz -p . -I", tree, "--rev", fetch(:branch), "| tar -x --strip-components #{components} -f - -C", release_path
+      else
+        hg "archive", release_path, "--rev", fetch(:branch)
+      end
     end
 
     def fetch_revision

@@ -6,6 +6,14 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
+* Enhancement (@townsen)
+  * Added the variable `:repo_tree` which allows the specification of a sub-tree that
+    will be extracted from the repository. This is useful when deploying a project
+    that lives in a subdirectory of a larger repository.
+    Implemented only for git and hg.
+    If not defined then the behaviour is as previously and the whole repository is
+    extracted (subject to git-archive `.gitattributes` of course).
+
 * Enhancement (@townsen): Remove unnecessary entries from default backtrace
 
     When the `--backtrace` (or `--trace`) command line option is not supplied
@@ -22,6 +30,7 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
     and --trace options supply it as before.
 
 * Disable loading stages configs on `cap -T`
+
 * Enhancements (@townsen)
   * Fix matching on hosts with custom ports or users set
   * Previously filtering would affect any generated configuration files so that
