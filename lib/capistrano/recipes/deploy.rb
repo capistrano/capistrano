@@ -249,7 +249,7 @@ namespace :deploy do
     defaults to :checkout).
   DESC
   task :update_code, :except => { :no_release => true } do
-    on_rollback { run "rm -rf #{release_path}; true" }
+    on_rollback { run "#{try_sudo} rm -rf #{release_path}; true" }
     strategy.deploy!
     finalize_update
   end
