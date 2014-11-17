@@ -35,7 +35,7 @@ module Capistrano
             end
           end
         end
-        @rex = Regexp.union av
+        @rex = Regexp.union av.collect { |avi| avi.class == Symbol ? avi.to_s : avi }
       end
       def filter servers
         as = Array(servers)
