@@ -11,31 +11,34 @@ module Capistrano
                 when av.include?(:all) then :all
                 else type
                 end
-        case @mode
-        when :host
-          av.map!{|v| (v.is_a?(String) && v =~ /^(?<name>[-A-Za-z0-9.]+)(,\g<name>)*$/) ? v.split(',') : v }
-          av.flatten!
-          av.map! do |v|
-            case v
-            when Regexp then v
-            else
-              vs = v.to_s
-              vs =~ /^[-A-Za-z0-9.]+$/ ? vs : Regexp.new(vs)
+        @rex = case @mode
+          when :host
+            av.map!{|v| (v.is_a?(String) && v =~ /^(?<name>[-A-Za-z0-9.]+)(,\g<name>)*$/) ? v.split(',') : v }
+            av.flatten!
+            av.map! do |v|
+              case v
+              when Regexp then v
+              else
+                vs = v.to_s
+                vs =~ /^[-A-Za-z0-9.]+$/ ? vs : Regexp.new(vs)
+              end
             end
-          end
-        when :role
-          av.map!{|v| v.is_a?(String) ? v.split(',') : v }
-          av.flatten!
-          av.map! do |v|
-            case v
-            when Regexp then v
-            else
-              vs = v.to_s
-              vs =~ %r{^/(.+)/$} ? Regexp.new($1) : vs
+            Regexp.union av
+          when :role
+            av.map!{|v| v.is_a?(String) ? v.split(',') : v }
+            av.flatten!
+            av.map! do |v|
+              case v
+              when Regexp then v
+              else
+                vs = v.to_s
+                vs =~ %r{^/(.+)/$} ? Regexp.new($1) : vs
+              end
             end
+            Regexp.union av
+          else
+            nil
           end
-        end
-        @rex = Regexp.union av.collect { |avi| avi.class == Symbol ? avi.to_s : avi }
       end
       def filter servers
         as = Array(servers)
