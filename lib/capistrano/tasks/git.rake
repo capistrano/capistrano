@@ -25,7 +25,7 @@ namespace :git do
     fetch(:branch)
     on release_roles :all do
       with fetch(:git_environmental_variables) do
-        exit 1 unless strategy.check
+        strategy.check
       end
     end
   end

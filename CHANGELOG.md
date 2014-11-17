@@ -14,6 +14,21 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
     If not defined then the behaviour is as previously and the whole repository is
     extracted (subject to git-archive `.gitattributes` of course).
 
+* Enhancement (@townsen): Remove unnecessary entries from default backtrace
+
+    When the `--backtrace` (or `--trace`) command line option is not supplied
+    Rake lowers the noise level in exception backtraces by building
+    a regular expression containing all the system library paths and
+    using it to exclude backtrace entries that match.
+
+    This does not always go far enough, particularly in RVM environments when
+    many gem paths are added. This commit reverses that approach and _only_
+    include backtrace entries that fall within the Capfile and list of tasks
+    imported thereafter. This makes reading exceptions much easier on the eye.
+
+    If the full unexpurgated backtrace is required then the --backtrace
+    and --trace options supply it as before.
+
 * Disable loading stages configs on `cap -T`
 
 * Enhancements (@townsen)
@@ -40,7 +55,6 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
 
   * See the documentation in the README.md file
 
-* Pushing again to trigger another build (I have a seemingly random build fail) (@townsen)
 * Enhancements (@townsen)
   * Added set_if_empty method to DSL to allow conditional setting
   * Altered standard Capistrano defaults so that they are not set
@@ -64,11 +78,14 @@ Breaking Changes:
   * Remove -v flag from mkdir call. (@caligo-mentis)
   * Capistrano now allows to customize `local_user` for revision log. (@sauliusgrigaitis)
   * Added tests for after/before hooks features (@juanibiapina, @miry)
+  * Added `--force` flag to `svn export` command to fix errors when the release directory already exists.
   * Improved the output of `cap --help`. (@mbrictson)
   * Cucumber suite now runs on the latest version of Vagrant (@tpett)
   * The `ask` method now supports the `echo: false` option. (@mbrictson, @kaikuchn)
+  * Cucumber scenario improvements (@bruno-)
   * Added suggestion to Capfile to use 'capistrano-passenger' gem, replacing suggestion in config/deploy.rb to re-implement 'deploy:restart' (@betesh)
   * Updated svn fetch_revision method to use `svnversion`
+  * `cap install` no longer overwrites existing files. (@dmarkow)
 
 ## `3.2.1`
 
@@ -85,6 +102,7 @@ https://github.com/capistrano/capistrano/compare/v3.2.0...v3.2.1
   * Changed asking question to more standard format (like common unix commandline tools) (@sponomarev)
   * Fixed typos in the README. (@sponomarev)
   * Added `keys` method to Configuration to allow introspection of configuration options. (@juanibiapina)
+  * Improve error message when git:check fails (raise instead of silently `exit 1`) (@mbrictson)
 
 ## `3.2.0`
 

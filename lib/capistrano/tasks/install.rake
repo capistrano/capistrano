@@ -14,25 +14,28 @@ task :install do
 
   mkdir_p deploy_dir
 
-  template = File.read(deploy_rb)
-  file = config_dir.join('deploy.rb')
-  File.open(file, 'w+') do |f|
-    f.write(ERB.new(template).result(binding))
-    puts I18n.t(:written_file, scope: :capistrano, file: file)
-  end
+  entries = [{template: deploy_rb, file: config_dir.join('deploy.rb')}]
+  entries += envs.split(',').map { |stage| {template: stage_rb, file: deploy_dir.join("#{stage}.rb")} }
 
-  template = File.read(stage_rb)
-  envs.split(',').each do |stage|
-    file = deploy_dir.join("#{stage}.rb")
-    File.open(file, 'w+') do |f|
-      f.write(ERB.new(template).result(binding))
-      puts I18n.t(:written_file, scope: :capistrano, file: file)
+  entries.each do |entry|
+    if File.exists?(entry[:file])
+      warn "[skip] #{entry[:file]} already exists"
+    else
+      File.open(entry[:file], 'w+') do |f|
+        f.write(ERB.new(File.read(entry[:template])).result(binding))
+        puts I18n.t(:written_file, scope: :capistrano, file: entry[:file])
+      end
     end
   end
 
   mkdir_p tasks_dir
 
-  FileUtils.cp(capfile, 'Capfile')
+  if File.exists?('Capfile')
+    warn "[skip] Capfile already exists"
+  else
+    FileUtils.cp(capfile, 'Capfile')
+    puts I18n.t(:written_file, scope: :capistrano, file: 'Capfile')
+  end
 
 
   puts I18n.t :capified, scope: :capistrano

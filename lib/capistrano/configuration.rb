@@ -6,6 +6,10 @@ require_relative 'configuration/servers'
 module Capistrano
   class Configuration
 
+    def initialize(config = nil)
+      @config ||= config
+    end
+
     def self.env
       @env ||= new
     end

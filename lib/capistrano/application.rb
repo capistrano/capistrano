@@ -61,6 +61,18 @@ module Capistrano
       end
     end
 
+    def display_error_message(ex)
+      unless options.backtrace
+        if loc = Rake.application.find_rakefile_location
+          whitelist = (@imported.dup << loc[0]).map{|f| File.absolute_path(f, loc[1])}
+          pattern = %r@^(?!#{whitelist.map{|p| Regexp.quote(p)}.join('|')})@
+          Rake.application.options.suppress_backtrace_pattern = pattern
+        end
+        trace "(Backtrace restricted to imported tasks)"
+      end
+      super
+    end
+
     def exit_because_of_exception(ex)
       if respond_to?(:deploying?) && deploying?
         exit_deploy_because_of_exception(ex)

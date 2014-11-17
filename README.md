@@ -229,6 +229,13 @@ DEBUG [9ce34809]  leehambley pts/0        2013-06-13 17:11 (port-11262.pppoe.wtn
  INFO [9ce34809] Finished in 0.420 seconds command successful.
 ```
 
+## VCS Requirements
+
+Capistano requires modern versions of Git, Mercurial and Subversion
+respectively (if you are using that particular VCS). Git Git requirement is at
+least version 1.8.x. Mercurial and Subversion, any modern version should
+suffice.
+
 ## A word about PTYs
 
 There is a configuration option which asks the backend driver to ask the remote host
@@ -278,7 +285,7 @@ associated with them.  Tasks are then able to use these definitions in two disti
 
 * To _interact_ with remote hosts using the `on()` method
 
-An example of the two would be to create a `/etc/krb5.conf' file containing the list of
+An example of the two would be to create a `/etc/krb5.conf` file containing the list of
 available KDC's by using the list of servers returned by `roles(:kdc)` and then uploading
 it to all client machines using `on(roles(:all)) do upload!(file) end`
 
@@ -313,7 +320,7 @@ To increase the utility of On-Filters they can use regular expressions:
 
 When filters are specified using comma separated lists, the final filter is the _union_ of
 all of the components. However when multiple filters are declared the result is the
-_intersection_. 
+_intersection_.
 
 ## SSHKit
 
