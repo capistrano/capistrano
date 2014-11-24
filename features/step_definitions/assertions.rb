@@ -87,7 +87,7 @@ Then(/^the task is successful$/) do
 end
 
 Then(/^the task fails$/) do
-  expect(@success).to be_false
+  expect(@success).to be_falsey
 end
 
 Then(/^the failure task will run$/) do
