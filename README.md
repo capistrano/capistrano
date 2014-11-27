@@ -350,6 +350,24 @@ $ rake features
 $ rake features KEEP_RUNNING=1
 ```
 
+## Metrics
+
+Since version 3.3.3 Capistrano includes anonymous metrics. The metric server,
+gem collection, and when it exists, the HTML/d3 page to view the metrics are
+all open-source and available for inspection and audit at
+https://github.com/capistrano/stats
+
+**Notes for CI**: If you commit the file `.capistrano/metrics` to your source
+control, you will not be prompted again, this is what we expect you to do, and
+it should also avoid breaking your CI server by blocking waiting for an answer
+on standard in.
+
+* The gem invites users to opt-into metrics collection when the task
+  `load:defaults` is called. A project-specific hash derived from the output of
+  `git config remote.origin.url` is written to a file `.capistrano/metrics` to
+  allow us to differentiate between many members of the same team deploying the
+  same project vs. many people on many projects.
+
 ## License
 
 MIT License (MIT)
