@@ -2,7 +2,7 @@
 
 ## Requirements
 
-* Ruby >= 1.9 (JRuby and C-Ruby/YARV are supported)
+* Ruby >= 1.9.3 (JRuby and C-Ruby/YARV are supported)
 
 ## Support
 
