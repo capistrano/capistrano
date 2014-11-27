@@ -4,7 +4,11 @@ Reverse Chronological Order:
 
 ## master
 
-https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
+https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.0
+
+## `3.3.3`
+
+https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.0
 
 * Enhancement (@townsen)
   * Added the variable `:repo_tree` which allows the specification of a sub-tree that
@@ -30,6 +34,7 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...HEAD
     and --trace options supply it as before.
 
 * Disable loading stages configs on `cap -T`
+* Track (anonymous) statistics, see https://github.com/capistrano/stats
 
 * Enhancements (@townsen)
   * Fix matching on hosts with custom ports or users set
