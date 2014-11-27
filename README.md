@@ -360,7 +360,9 @@ https://github.com/capistrano/stats
 **Notes for CI**: If you commit the file `.capistrano/metrics` to your source
 control, you will not be prompted again, this is what we expect you to do, and
 it should also avoid breaking your CI server by blocking waiting for an answer
-on standard in.
+on standard in. The metric prompt is also [disabled when standard in is not a
+tty](https://github.com/capistrano/stats/blob/77c9993d3ee604520712261aa2a70c90f3b96a6f/gem/lib/capistrano-stats/metric-collector.rb#L53)
+(when using Capistrano from scripts, or from come well behaved CI services)
 
 * The gem invites users to opt-into metrics collection when the task
   `load:defaults` is called. A project-specific hash derived from the output of
