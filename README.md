@@ -159,6 +159,15 @@ When using `ask` to get user input, you can pass `echo: false` to prevent the in
 ask(:database_password, "default", echo: false)
 ```
 
+You also can use `confirm` if you just need a yes/no answer.
+
+```ruby
+confirm("Are you sure ? (y/N)", "n")
+if fetch(:confirm) == 'y'
+  # do something
+end
+```
+
 ## Using password authentication
 
 Password authentication can be done via `set` and `ask` in your deploy environment file (e.g.: config/deploy/production.rb)

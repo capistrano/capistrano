@@ -11,6 +11,7 @@ en = {
   stage_not_set:               'Stage not set, please call something such as `cap production deploy`, where production is a stage you have defined.',
   written_file:                'create %{file}',
   question:                    'Please enter %{key} (%{default_value}): ',
+  confirm:                     '%{message} ',
   keeping_releases:            'Keeping %{keep_releases} of %{releases} deployed releases on %{host}',
   no_old_releases:             'No old releases (keeping newest %{keep_releases}) on %{host}',
   linked_file_does_not_exist:  'linked file %{file} does not exist on %{host}',
