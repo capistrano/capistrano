@@ -4,11 +4,11 @@ Reverse Chronological Order:
 
 ## master
 
-https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.0
+https://github.com/capistrano/capistrano/compare/v3.3.3...HEAD
 
 ## `3.3.3`
 
-https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.0
+https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.3
 
 * Enhancement (@townsen)
   * Added the variable `:repo_tree` which allows the specification of a sub-tree that
