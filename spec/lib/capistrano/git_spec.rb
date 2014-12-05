@@ -31,7 +31,7 @@ module Capistrano
     describe "#check" do
       it "should test the repo url" do
         context.expects(:repo_url).returns(:url)
-        context.expects(:execute).with(:git, :'ls-remote -h', :url).returns(true)
+        context.expects(:execute).with(:git, :'ls-remote --heads', :url).returns(true)
 
         subject.check
       end
