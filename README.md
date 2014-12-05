@@ -232,7 +232,7 @@ DEBUG [9ce34809]  leehambley pts/0        2013-06-13 17:11 (port-11262.pppoe.wtn
 ## VCS Requirements
 
 Capistano requires modern versions of Git, Mercurial and Subversion
-respectively (if you are using that particular VCS). Git Git requirement is at
+respectively (if you are using that particular VCS). Git requirement is at
 least version 1.8.x. Mercurial and Subversion, any modern version should
 suffice.
 
