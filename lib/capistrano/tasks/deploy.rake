@@ -34,7 +34,6 @@ namespace :deploy do
 
   desc 'Check required files and directories exist'
   task :check do
-    invoke "#{scm}:check"
     invoke 'deploy:check:directories'
     invoke 'deploy:check:linked_dirs'
     invoke 'deploy:check:make_linked_dirs'
