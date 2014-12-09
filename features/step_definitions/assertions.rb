@@ -109,3 +109,7 @@ end
 Then(/contains "(.*?)" in the output/) do |expected|
   expect(@output).to include(expected)
 end
+
+Then(/doesn't contain "(.*?)" in the output/) do |expected|
+  expect(@output).not_to include(expected)
+end

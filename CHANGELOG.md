@@ -6,6 +6,9 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.3.3...HEAD
 
+* Minor changes:
+  * Fix cucumber spec for loading tasks from stage configs (@sponomarev)
+
 ## `3.3.3`
 
 https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.3
@@ -33,7 +36,7 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.3
     If the full unexpurgated backtrace is required then the --backtrace
     and --trace options supply it as before.
 
-* Disable loading stages configs on `cap -T`
+* Disable loading stages configs on `cap -T` (@sponomarev)
 * Track (anonymous) statistics, see https://github.com/capistrano/stats
 
 * Enhancements (@townsen)
