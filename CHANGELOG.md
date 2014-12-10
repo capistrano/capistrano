@@ -8,6 +8,8 @@ https://github.com/capistrano/capistrano/compare/v3.3.4...HEAD
 
 ## `3.3.4`
 
+https://github.com/capistrano/capistrano/compare/v3.3.3...v3.3.4
+
 * Minor changes:
   * Rely on a newer version of capistrano-stats with better privacy (@leehambley)
   * Fix cucumber spec for loading tasks from stage configs (@sponomarev)
