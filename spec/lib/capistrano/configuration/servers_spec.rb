@@ -164,6 +164,11 @@ module Capistrano
           expect(servers.roles_for([:b]).first.properties.endpoints).to eq(Set[123,222,333])
         end
 
+        it 'adds array property value only ones for a new host' do
+          servers.add_host('2', roles: [:array_test], array_property: [1,2])
+          expect(servers.roles_for([:array_test]).first.properties.array_property).to eq [1,2]
+        end
+
       end
 
       describe 'selecting roles' do
