@@ -3,9 +3,11 @@
 Reverse Chronological Order:
 
 ## master
-* Fixed setting properties twice when creating new server. See [issue #1214](https://github.com/capistrano/capistrano/issues/1214) (@ayastreb)
 
 https://github.com/capistrano/capistrano/compare/v3.3.4...HEAD
+
+* Fixed setting properties twice when creating new server. See [issue #1214](https://github.com/capistrano/capistrano/issues/1214) (@ayastreb)
+
 
 ## `3.3.4`
 
