@@ -283,7 +283,7 @@ actually more or less the actual implementation in the the new Gem):
     task :cleanup do
       keep_releases     = fetch(:releases_to_keep_on_cleanup)
       releases          = capture(:ls, fetch(:releases_directory))
-      release_to_delete = releases.sort_by { |r| rn.to_i }.slice(1..-(keep_releases + 1))
+      releases_to_delete = releases.sort_by { |r| r.to_i }.slice(1..-(keep_releases + 1))
       releases_to_delete.each do |r|
         execute :rm, fetch(:releases_directory).join(r)
       end
