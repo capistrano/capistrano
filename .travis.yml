@@ -10,3 +10,4 @@ cache: bundler
 branches:
   except:
     - legacy-v2
+sudo: false
