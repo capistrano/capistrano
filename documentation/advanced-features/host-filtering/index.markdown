@@ -46,7 +46,7 @@ You can set the host filter inside your deploy configuration. For example,
 you can set the following inside `config/deploy.rb`:
 
 {% highlight ruby %}
-    set :filter, :hosts => %w{server1 server2}
+    set :filter, :host => %w{server1 server2}
 {% endhighlight %}
 
 Note that you specify the filter as an array rather than as a comma-separated
