@@ -169,6 +169,20 @@ module Capistrano
           expect(servers.roles_for([:array_test]).first.properties.array_property).to eq [1,2]
         end
 
+        it 'updates roles when custom user defined' do
+          servers.add_host('1', roles: ['foo'], user: 'custom')
+          servers.add_host('1', roles: ['bar'], user: 'custom')
+          expect(servers.roles_for([:foo]).first.hostname).to eq '1'
+          expect(servers.roles_for([:bar]).first.hostname).to eq '1'
+        end
+
+        it 'updates roles when custom port defined' do
+          servers.add_host('1', roles: ['foo'], port: 1234)
+          servers.add_host('1', roles: ['bar'], port: 1234)
+          expect(servers.roles_for([:foo]).first.hostname).to eq '1'
+          expect(servers.roles_for([:bar]).first.hostname).to eq '1'
+        end
+
       end
 
       describe 'selecting roles' do

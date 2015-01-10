@@ -3,6 +3,7 @@
 Reverse Chronological Order:
 
 ## master
+* Fixed updating roles when custom user or port is specified. (@ayastreb)
 
 https://github.com/capistrano/capistrano/compare/v3.3.5...HEAD
 
