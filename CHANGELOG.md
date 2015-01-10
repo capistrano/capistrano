@@ -25,6 +25,9 @@ https://github.com/capistrano/capistrano/compare/v3.3.3...v3.3.4
   * Spec improvements (@dimitrid, @sponomarev)
   * Fix to CLI flags for git-ls-remote (@dimitrid)
 
+* Enhancement (@erichard)
+  * Added a new confirm method that work similar to ask but with greater flexibility in the message.
+
 ## `3.3.3`
 
 https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.3

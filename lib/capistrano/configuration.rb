@@ -1,5 +1,6 @@
 require_relative 'configuration/filter'
 require_relative 'configuration/question'
+require_relative 'configuration/confirm'
 require_relative 'configuration/server'
 require_relative 'configuration/servers'
 
@@ -21,6 +22,11 @@ module Capistrano
     def ask(key, default=nil, options={})
       question = Question.new(key, default, options)
       set(key, question)
+    end
+
+    def confirm(message, default='n', options={})
+      confirm = Confirm.new(message, default, options)
+      set(:confirm, confirm)
     end
 
     def set(key, value)

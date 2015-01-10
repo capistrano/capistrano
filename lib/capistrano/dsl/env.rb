@@ -35,6 +35,10 @@ module Capistrano
         env.ask(key, value, options)
       end
 
+      def confirm(message, default='n', options={})
+        env.confirm(message, default, options)
+      end
+
       def role(name, servers, options={})
         env.role(name, servers, options)
       end
