@@ -605,6 +605,23 @@ describe Capistrano::DSL do
       dsl.on(all)
     end
 
+    context 'primary' do
+      it 'with primary not filtered' do
+        all = dsl.roles(:app)
+        host = dsl.primary :app
+        SSHKit::Coordinator.expects(:new).with([host]).returns(@coordinator)
+        dsl.set :filter, { host: 'example4.com' }
+        dsl.on(all)
+      end
+
+      it 'with primary filtered out' do
+        all = dsl.primary(:app)
+        SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
+        dsl.set :filter, { host: 'example3.com' }
+        dsl.on(all)
+      end
+    end
+
   end
 
 end
