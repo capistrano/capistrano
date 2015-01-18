@@ -1,5 +1,5 @@
 ---
-title: Plugins
+title: 3rd Plugins
 layout: default
 ---
 

@@ -1,9 +1,9 @@
 ---
-title: Rbenv & RVM & Chruby
+title: rbenv & RVM & Chruby
 layout: default
 ---
 
-Capistrano 3.x comes with official support of most common ruby version managers: Rbenv, RVM and Chruby.
+Capistrano 3 comes with official support of most common ruby version managers: rbenv, RVM and Chruby.
 
 Basic installation includes `require 'capistrano/rbenv'` (or `capistrano/rvm` / `capistrano/chruby`) and defining `set :rbenv_ruby_version, '2.0.0-p247'`, or `rvm_ruby_version` / `chruby_ruby`.
 
