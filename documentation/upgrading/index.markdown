@@ -7,7 +7,7 @@ layout: default
   Update your Gemfile: `gem 'capistrano', '~> 3.0', require: false, group: :development`
 
 
-  If you deploy Rails, you wil also need `capistrano-rails` and `capistrano-bundler` gems (Rails and Bundler integrations were moved out from Capistrano 3.x).
+  If you deploy Rails, you wil also need `capistrano-rails` and `capistrano-bundler` gems (Rails and Bundler integrations were moved out from Capistrano 3).
   {% highlight ruby %}
     group :development do
       gem 'capistrano-rails',   '~> 1.1', require: false
@@ -41,7 +41,7 @@ layout: default
   {% endhighlight %}
 
 3.
-  Capistrano 3.x is multistage by default, so you will have `config/deploy/production.rb` and `config/deploy/staging.rb` right after capifying.
+  Capistrano 3 is multistage by default, so you will have `config/deploy/production.rb` and `config/deploy/staging.rb` right after capifying.
   If you need only one stage, remove these files and declare stage (for example `production`) and servers in `config/deploy.rb`.
 
 4.
