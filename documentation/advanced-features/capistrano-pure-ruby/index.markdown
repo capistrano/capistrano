@@ -3,6 +3,7 @@ title: Capistrano in ruby script
 layout: default
 ---
 Instead of building a config folder and deploy, you may want to programmatically set everything in a single ruby script. This could be done as follows:
+
 {% highlight ruby %}
   require 'capistrano/all'
 

@@ -5,7 +5,7 @@ layout: default
 
 Where calling on the same task name, executed in order of inclusion
 
-``` ruby
+{% highlight ruby %}
 # call an existing task
 before :starting, :ensure_user
 
@@ -20,12 +20,12 @@ end
 after :finishing, :notify do
   #
 end
-```
+{% endhighlight %}
 
 If it makes sense for your use case (often, that means *generating a file*)
 the Rake prerequisite mechanism can be used:
 
-``` ruby
+{% highlight ruby %}
 desc "Create Important File"
 file 'important.txt' do |t|
   sh "touch #{t.name}"
@@ -36,11 +36,11 @@ task :upload => 'important.txt' do |t|
     upload!(t.prerequisites.first, '/tmp')
   end
 end
-```
+{% endhighlight %}
 
 The final way to call out to other tasks is to simply `invoke()` them:
 
-``` ruby
+{% highlight ruby %}
 namespace :example do
   task :one do
     on roles(:all) { info "One" }
@@ -50,6 +50,6 @@ namespace :example do
     on roles(:all) { info "Two" }
   end
 end
-```
+{% endhighlight %}
 
 This method is widely used.

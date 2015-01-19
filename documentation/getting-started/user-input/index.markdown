@@ -3,7 +3,7 @@ title: User Input
 layout: default
 ---
 
-``` ruby
+{% highlight ruby %}
 desc "Ask about breakfast"
 task :breakfast do
   ask(:breakfast, "pancakes")
@@ -11,12 +11,12 @@ task :breakfast do
     execute "echo \"$(whoami) wants #{fetch(:breakfast)} for breakfast!\""
   end
 end
-```
+{% endhighlight %}
 
 Perfect, who needs telephones.
 
 When using `ask` to get user input, you can pass `echo: false` to prevent the input from being displayed:
 
-```ruby
+{% highlight ruby %}
 ask(:database_password, "default", echo: false)
-```
+{% endhighlight %}
