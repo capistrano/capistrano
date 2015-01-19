@@ -5,7 +5,7 @@ layout: default
 
 Local tasks can be run by replacing `on` with `run_locally`:
 
-```ruby
+{% highlight ruby %}
 desc 'Notify service of deployment'
 task :notify do
   run_locally do
@@ -14,22 +14,22 @@ task :notify do
     end
   end
 end
-```
+{% endhighlight %}
 
 Of course, you can always just use standard ruby syntax to run things locally:
 
-```ruby
+{% highlight ruby %}
 desc 'Notify service of deployment'
 task :notify do
   %x('RAILS_ENV=development bundle exec rake "service:notify"')
 end
-```
+{% endhighlight %}
 
 Alternatively you could use the rake syntax:
 
-```ruby
+{% highlight ruby %}
 desc "Notify service of deployment"
 task :notify do
    sh 'RAILS_ENV=development bundle exec rake "service:notify"'
 end
-```
+{% endhighlight %}

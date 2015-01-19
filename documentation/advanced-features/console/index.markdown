@@ -11,13 +11,13 @@ Execute arbitrary remote commands, to use this simply add
 `require 'capistrano/console'` which will add the necessary tasks to your
 environment:
 
-``` sh
+{% highlight bash %}
 $ bundle exec cap staging console
-```
+{% endhighlight %}
 
 Then, after setting up the server connections, this is how that might look:
 
-``` sh
+{% highlight bash %}
 $ bundle exec cap production console
 capistrano console - enter command to execute on production
 production> uptime
@@ -30,4 +30,4 @@ production> who
 DEBUG [9ce34809] Command: /usr/bin/env who
 DEBUG [9ce34809]  leehambley pts/0        2013-06-13 17:11 (port-11262.pppoe.wtnet.de)
  INFO [9ce34809] Finished in 0.420 seconds command successful.
-```
+{% endhighlight %}
