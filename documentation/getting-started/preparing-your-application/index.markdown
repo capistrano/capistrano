@@ -125,6 +125,10 @@ comprehensively from something like the *EC2* command line tools, and want to
 use the extended properties for something that makes sense in their
 environment.
 
+<div class="alert-box alert">
+Only use one syntax to define your server and roles. Do NOT use both for the same server+role. It will break your deployment.
+</div>
+
 Servers can be defined in a bunch of ways, the following shows defining two
 servers, one where we set the username, and another where we set the port.
 These host strings are parsed and expanded out in to the equivalent of the
