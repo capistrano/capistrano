@@ -5,6 +5,10 @@ Reverse Chronological Order:
 ## master
 * Fixed updating roles when custom user or port is specified. (@ayastreb)
 
+* `bin/` is not suggested to be in `linked_dirs` anymore (@kirs)
+  * bin/ is often checked out into repo
+  * https://github.com/capistrano/bundler/issues/45#issuecomment-69349237
+
 https://github.com/capistrano/capistrano/compare/v3.3.5...HEAD
 
 ## `3.3.5`
