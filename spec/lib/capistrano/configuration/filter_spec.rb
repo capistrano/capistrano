@@ -7,7 +7,8 @@ module Capistrano
       let(:available) { [ Server.new('server1').add_roles([:web,:db]),
                           Server.new('server2').add_role(:web),
                           Server.new('server3').add_role(:redis),
-                          Server.new('server4').add_role(:db) ] }
+                          Server.new('server4').add_role(:db),
+                          Server.new('server5').add_role(:stageweb) ] }
 
       describe '#new' do
         it "won't create an invalid type of filter" do
@@ -57,7 +58,7 @@ module Capistrano
         end
         it 'correctly identifies a regex with a comma in' do
           set = Filter.new(:host, 'server\d{1,3}$').filter(available)
-          expect(set.map(&:hostname)).to eq(%w{server1 server2 server3 server4})
+          expect(set.map(&:hostname)).to eq(%w{server1 server2 server3 server4 server5})
         end
       end
 
@@ -87,13 +88,18 @@ module Capistrano
           expect(set.size).to eq(3)
           expect(set.map(&:hostname)).to eq(%w{server1 server2 server4})
         end
+        it 'returns only hosts for explicit roles' do
+          set = Filter.new(:role, [:web]).filter(available)
+          expect(set.size).to eq(2)
+          expect(set.map(&:hostname)).to eq(%w{server1 server2})
+        end
         it 'returns hosts with regex role selection' do
           set = Filter.new(:role, /red/).filter(available)
           expect(set.map(&:hostname)).to eq(%w{server3})
         end
         it 'returns hosts with regex role selection using a string' do
           set = Filter.new(:role, '/red|web/').filter(available)
-          expect(set.map(&:hostname)).to eq(%w{server1 server2 server3})
+          expect(set.map(&:hostname)).to eq(%w{server1 server2 server3 server5})
         end
         it 'returns hosts with combination of string role and regex' do
           set = Filter.new(:role, 'db,/red/').filter(available)
