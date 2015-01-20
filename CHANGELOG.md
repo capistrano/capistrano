@@ -3,6 +3,7 @@
 Reverse Chronological Order:
 
 ## master
+* Fixed fetch revision for annotated git tags. (@igorsokolov)
 * Fixed updating roles when custom user or port is specified. (@ayastreb)
 
 * `bin/` is not suggested to be in `linked_dirs` anymore (@kirs)
