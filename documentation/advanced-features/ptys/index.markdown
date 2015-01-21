@@ -1,3 +1,7 @@
+---
+title: PTYs
+layout: default
+---
 
 There is a configuration option which asks the backend driver to ask the remote host
 to assign the connection a *pty*. A *pty* is a pseudo-terminal, which in effect means
