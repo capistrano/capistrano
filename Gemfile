@@ -1,5 +1,8 @@
 source "https://rubygems.org"
 
-gem "jekyll"
-gem "unindent"
-gem 'github-pages', github: 'github/pages-gem'
+# keep versions up-to-date with the actual GitHub Pages setup
+# https://pages.github.com/versions/
+
+# just do `bundle update` to get the latest version.
+
+gem 'github-pages'
