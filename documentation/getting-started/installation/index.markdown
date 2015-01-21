@@ -3,7 +3,7 @@ title: Installation
 layout: default
 ---
 
-Capistrano is bundled as a Ruby Gem. **It requires Ruby 1.9 or newer.**
+Capistrano is bundled as a Ruby Gem. **It requires Ruby 1.9.3 or newer.**
 
 Capistrano can be installed as a standalone Gem, or bundled into your
 application.
