@@ -13,12 +13,8 @@ layout: default
 If you are not doing so already, you should host your code somewhere with a
 provider such as Github, BitBucket, Codeplane, or repositoryhosting.com.
 
-<div class="alert-box radius">
-At present Capistrano v3.0.x only supports Git. It's just a matter of time
-until we support Subversion, Mecurial, Darcs and friends again. Please
-contribute if you know these tools well, we do not and don't want to force our
-miscomprehended notions upon anyone.
-</div>
+Capistrano currently supports Git, Mercurial, and SVN out of the box.
+There might be 3<sup>rd</sup> party plugins adding support for various other systems.
 
 ### 2. Move secrets out of the repository.
 
