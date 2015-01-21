@@ -13,20 +13,16 @@ layout: default
 If you are not doing so already, you should host your code somewhere with a
 provider such as Github, BitBucket, Codeplane, or repositoryhosting.com.
 
-<div class="alert-box radius">
-At present Capistrano v3.0.x only supports Git. It's just a matter of time
-until we support Subversion, Mecurial, Darcs and friends again. Please
-contribute if you know these tools well, we do not and don't want to force our
-miscomprehended notions upon anyone.
-</div>
+Capistrano currently supports Git, Mercurial, and SVN out of the box.
+There might be 3<sup>rd</sup> party plugins adding support for various other systems.
 
 ### 2. Move secrets out of the repository.
 
 <div class="alert-box alert">
 If you've accidentally committed state secrets to the repository, you might
-want to take <a
-href="https://help.github.com/articles/remove-sensitive-data">special
-steps</a> to erase them from the repository history for all time.
+want to take
+<a href="https://help.github.com/articles/remove-sensitive-data">special steps</a>
+to erase them from the repository history for all time.
 </div>
 
 Ideally one should remove `config/database.yml` to something like
@@ -67,7 +63,8 @@ This will create a bunch of files, the important ones are:
               └── tasks
 {% endhighlight %}
 
-Your new Capfile will automatically include any tasks from any `*.rake` files in `lib/capistrano/tasks`.
+Your new Capfile will automatically include any tasks from any `*.rake` files
+in `lib/capistrano/tasks`.
 
 ### 4. Configure your server addresses in the generated files.
 
@@ -126,7 +123,8 @@ use the extended properties for something that makes sense in their
 environment.
 
 <div class="alert-box alert">
-Only use one syntax to define your server and roles. Do NOT use both for the same server+role. It will break your deployment.
+Only use one syntax to define your server and roles. Do NOT use both for the
+same server+role. It will break your deployment.
 </div>
 
 Servers can be defined in a bunch of ways, the following shows defining two
