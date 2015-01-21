@@ -3,20 +3,109 @@ title: Configuration
 layout: default
 ---
 
-## Configuration
+## Location
+
+Configuration variables can be either global or specific to your stage.
+
+* global
+  * `config/deploy.rb`
+* stage specific
+  * `config/deploy/<stage_name>.rb`
+
+## Access
+
+Each variable can be set to a specific value:
+
+{% highlight ruby %}
+set :application, 'MyLittleApplication'
+
+# use a lambda to delay evaluation
+set :application, -> { "SomeThing_#{fetch :other_config}" }
+{% endhighlight %}
+
+
+A value can be retrieved from the configuration at any time:
+
+{% highlight ruby %}
+fetch :application
+# => "MyLittleApplication"
+
+fetch(:special_thing, 'some_default_value')
+# will return the value if set, or the second argument as default value
+{% endhighlight %}
+
+## Variables
 
 The following variables are settable:
 
-| Variable Name         | Description                                                          | Notes                                                           |
-|:---------------------:|----------------------------------------------------------------------|-----------------------------------------------------------------|
-| `:repo_url`           | The URL of your scm repository (git, hg, svn)                        | file://, https://, ssh://, or svn+ssh:// are all supported      |
-| `:repo_tree`          | The subtree of the scm repository to deploy (git, hg)                | Only implemented for git and hg repos. Extract just this tree   |
-| `:branch`             | The branch you wish to deploy                                        | This only has meaning for git and hg repos, to specify the branch of an svn repo, set `:repo_url` to the branch location. |
-| `:scm`                | The source control system used                                       | `:git`, `:hg`, `:svn` are currently supported                   |
-| `:tmp_dir`            | The (optional) temp directory that will be used (default: /tmp)      | if you have a shared web host, this setting may need to be set (i.e. /home/user/tmp/capistrano). |
+* `:application`
+  * The name of the application.
 
-__Support removed__ for following variables:
+* `:deploy_to`
+  * **default:** `-> { "/var/www/#{fetch(:application)}" }`
+  * The path on the remote server where the application should be deployed.
+  * If application contains whitespace or such this path might be invalid. See Structure for the exact directorys used.
 
-| Variable Name         | Description                                                         | Notes                                                           |
-|:---------------------:|---------------------------------------------------------------------|-----------------------------------------------------------------|
-| `:copy_exclude`       | The (optional) array of files and/or folders excluded from deploy | Replaced by Git's native `.gitattributes`, see [#515](https://github.com/capistrano/capistrano/issues/515) for more info. |
+* `:scm`
+  * **default:** `:git`
+  * The Source Control Management used.
+  * Currently :git, :hg and :svn are supported. Plugins might add additional ones.
+
+* `:repo_url`
+  * URL to the repository.
+  * Must be a valid URL for the used SCM.
+
+* `:repo_tree`
+  * The subtree of the repository to deploy.
+  * Currently only implemented for Git and Hg.
+
+* `:linked_files`
+  * **default:** `[]`
+  * Listed files will be symlinked into each release directory during deployment.
+  * Can be used for persistent configuration files like `database.yml`. See Structure for the exact directorys.
+
+* `:linked_dirs`
+  * **default:** `[]`
+  * Listed directories will be symlinked into the release directory during deployment.
+  * Can be used for persistent directories like uploads or other data. See Structure for the exact directorys.
+
+* `:default_env`
+  * **default:** `{}`
+  * Default shell environment used during command execution.
+  * Can be used to set or manipulate specific environment variables (e.g. `$PATH` and such).
+
+* `:branch`
+  * **default:** `'master'`
+  * The branch name to be deployed from SCM.
+
+* `:keep_releases`
+  * **default:** `5`
+  * The last `n` releases are kept for possible rollbacks.
+  * The cleanup task detects outdated release folders and removes them if needed.
+
+* `:tmp_dir`
+  * **default:** `'/tmp'`
+  * Temporary directory used during deployments to store data.
+  * If you have a shared web host, this setting may need to be set (e.g. /home/user/tmp/capistrano).
+
+* `:local_user`
+  * **default:** `-> { Etc.getlogin }`
+  * Username of the local machine used to update the revision log.
+
+* `:pty`
+  * **default:** `false`
+  * Used in SSHKit.
+
+* `:log_level`
+  * **default:** `:debug`
+  * Used in SSHKit.
+
+* `:format`
+  * **default:** `:pretty`
+  * Used in SSHKit.
+
+
+Capistrano plugins can provide their own configuration variables. Please refer
+to the plugin documentation for the specifics. Plugins are allowed to add or
+manipulate default values as well as already user-defined values after the
+plugin is loaded.
