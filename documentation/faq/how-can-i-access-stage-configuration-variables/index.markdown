@@ -5,7 +5,7 @@ layout: default
 
 Configuration variables are access with the fetch method, like so:
 {% highlight ruby %}
-	local = fetch(:configuration_variable, _default_value_)
+local = fetch(:configuration_variable, _default_value_)
 {% endhighlight %}
 
 This works fine when accessing configuration variables defined within the same file.  For example accessing a previously set configuration variable defined in deploy.rb or accessing a set configuration variable in a stage file.

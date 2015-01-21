@@ -18,16 +18,16 @@ therefore recommended to use an appropriate bundler.
 The following command will install the latest released capistrano `v3` revision:
 
 {% highlight bash %}
-    $ gem install capistrano
+$ gem install capistrano
 {% endhighlight %}
 
 Or grab the bleeding edge head from:
 
 {% highlight bash %}
-    $ git clone https://github.com/capistrano/capistrano.git
-    $ cd capistrano
-    $ gem build *.gemspec
-    $ gem install *.gem
+$ git clone https://github.com/capistrano/capistrano.git
+$ cd capistrano
+$ gem build *.gemspec
+$ gem install *.gem
 {% endhighlight %}
 
 ### Usage in a Rails project
@@ -35,9 +35,9 @@ Or grab the bleeding edge head from:
 Add the following lines to the Gemfile:
 
 {% highlight ruby %}
-    group :development do
-      gem 'capistrano-rails', '~> 1.1.1'
-    end
+group :development do
+  gem 'capistrano-rails', '~> 1.1.1'
+end
 {% endhighlight %}
 
 The `capistrano-rails` gem includes extras specifically designed for Ruby on
@@ -54,7 +54,7 @@ part, to get the best, and most sensible results, simply `require` in
 Capfile, after the `require 'capistrano/deploy'` line:
 
 {% highlight ruby %}
-    require 'capistrano/rails'
+require 'capistrano/rails'
 {% endhighlight %}
 
 
@@ -65,7 +65,7 @@ by mistake, then you can lock your Gem version for Capistrano at something
 like:
 
 {% highlight ruby %}
-    gem 'capistrano', '~> 2.15' # Or whatever patch release you are using
+gem 'capistrano', '~> 2.15' # Or whatever patch release you are using
 {% endhighlight %}
 
 This is the [pessimistic operator][rubygems-pessimistic-operator] which

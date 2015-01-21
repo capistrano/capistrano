@@ -9,16 +9,15 @@ As an example, this task can be used to ensure that files to be linked exist
 before running the check:linked_files task:
 
 {% highlight ruby %}
-  namespace :deploy do
-    namespace :check do
-      task :linked_files => 'config/newrelic.yml'
-    end
+namespace :deploy do
+  namespace :check do
+    task :linked_files => 'config/newrelic.yml'
   end
+end
 
-  remote_file 'config/newrelic.yml' => '/tmp/newrelic.yml', roles: :app
+remote_file 'config/newrelic.yml' => '/tmp/newrelic.yml', roles: :app
 
-  file '/tmp/newrelic.yml' do |t|
-    sh "curl -o #{t.name} https://rpm.newrelic.com/accounts/xx/newrelic.yml"
-  end
-
+file '/tmp/newrelic.yml' do |t|
+  sh "curl -o #{t.name} https://rpm.newrelic.com/accounts/xx/newrelic.yml"
+end
 {% endhighlight %}
