@@ -76,7 +76,7 @@ the risk of accidentally upgrading to `v3`.
 
 --
 [rubygems]:                                    http://rubygems.org/
-[rubygems-pessimistic-operator]:               http://docs.rubygems.org/read/chapter/16#page74
+[rubygems-pessimistic-operator]:               http://guides.rubygems.org/patterns/#pessimistic-version-constraint
 [capistrano-rails-asset-pipeline-readme]:      https://github.com/capistrano/rails/blob/master/README.md
 [capistrano-rails-database-migrations-readme]: https://github.com/capistrano/rails/blob/master/README.md
 [capistrano-rails-gem-bundler-readme]:         https://github.com/capistrano/bundler/blob/master/README.md

@@ -102,14 +102,12 @@ simply call:
   me@localhost $ cap staging git:check
 {% endhighlight %}
 
-This task is defined
-[here](https://github.com/capistrano/capistrano/blob/master/lib/capistrano/tasks/git.rake)
-in the source code, and looks a lot like what we wrote above to check the file
-permissions, however the Git check recipe is a bit more complicated, having to
-potentially deal with three different authentication schemes, which need to be
-worked around differently. This task expresses a *dependency* on the
-`git:git-wrapper` task which is resolved first for us by Capistrano. (This is
-one of the pieces we inherit from Rake)
+This task is defined in the default Git SCM-strategy and looks a lot like what
+we wrote above to check the file permissions, however the Git check recipe is
+a bit more complicated, having to potentially deal with three different
+authentication schemes, which need to be worked around differently. This task
+expresses a *dependency* on the `git:git-wrapper` task which is resolved first
+for us by Capistrano. (This is one of the pieces we inherit from Rake)
 
 If this fails we'll see:
 
@@ -145,10 +143,8 @@ To run through that shortly, what did we do:
 2. Capistrano recognised that in order to fulfil this request, it had to first
 execute the task `git:wrapper`, a *prerequisite*.
 3. Capistrano executed the `git:wrapper` task, and uploaded the
-   `/tmp/git-ssh.sh` file, and made it executable. This satisfies the
-   `git:wrapper` task defined
-   [here](https://github.com/capistrano/capistrano/blob/v3/lib/capistrano/tasks/git.rake#L9)
-   in the source code. This script is actually processed as a template.
+   `/tmp/git-ssh.sh` file, and made it executable.
+   This script is actually processed as a template.
 4. With the git wrapper in place, we can safely script against Git without it
    prompting us for input, so we ask git to `ls-remote` on the repository we
    defined. As this exited with an [unclean

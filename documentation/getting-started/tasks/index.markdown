@@ -1,3 +1,8 @@
+---
+title: Tasks
+layout: default
+---
+
 {% highlight ruby %}
 server 'example.com', roles: [:web, :app]
 server 'example.org', roles: [:db, :workers]
