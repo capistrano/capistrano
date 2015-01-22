@@ -103,10 +103,7 @@ essentially a dependency resolution system, it offers a lot of nice ways to,
 for example build a tarball as a dependency of uploading it and deploying it.
 
 This has allowed us to do away with the *copy* strategy all together, as it
-can now be implemented from scratch in fewer than ten lines of code. You can
-check out the [replicating the copy
-strategy](/screencasts/replicating_the_copy_strategy) screencast and
-acompanying documentation if you want to explore that any further.
+can now be implemented from scratch in fewer than ten lines of code.
 
 The guiding principle is dependency resolution, and interoperability with
 other tools, for example:
