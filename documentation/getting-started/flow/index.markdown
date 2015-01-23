@@ -40,7 +40,8 @@ deploy:finishing_rollback  - finish the rollback, clean up everything
 deploy:finished
 {% endhighlight %}
 
-As you can see, rollback flow shares many tasks with deploy flow. But note that, rollback flow runs its own `:finishing_rollback` task because its
+As you can see, rollback flow shares many tasks with deploy flow. But note
+that, rollback flow runs  its own `:finishing_rollback` task because its
 cleanup process is usually different from deploy flow.
 
 ### Flow examples
@@ -108,4 +109,3 @@ deploy
   deploy:finished
     deploy:log_revision
 {% endhighlight %}
-

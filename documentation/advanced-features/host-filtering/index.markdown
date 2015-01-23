@@ -35,7 +35,7 @@ Capistrano will read the host filter from the environment variable `HOSTS`
 if it is set. You can set it inline:
 
 {% highlight bash %}
-    HOSTS=server1,server2 cap production deploy
+HOSTS=server1,server2 cap production deploy
 {% endhighlight %}
 
 Specify multiple hosts by separating them with a comma.
@@ -46,7 +46,7 @@ You can set the host filter inside your deploy configuration. For example,
 you can set the following inside `config/deploy.rb`:
 
 {% highlight ruby %}
-    set :filter, :host => %w{server1 server2}
+set :filter, :host => %w{server1 server2}
 {% endhighlight %}
 
 Note that you specify the filter as an array rather than as a comma-separated
@@ -58,7 +58,7 @@ In a similar way to using the environment variable, you can set the role
 filter by specifying it as a command line argument to `cap`:
 
 {% highlight bash %}
-    cap --hosts=server1,server2 production deploy
+cap --hosts=server1,server2 production deploy
 {% endhighlight %}
 
 Like the environment variable method, specify multiple servers by separating

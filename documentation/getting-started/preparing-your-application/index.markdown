@@ -35,8 +35,8 @@ The original `database.yml` should be added to the `.gitignore` (or your SCM's
 parallel concept of ignored files)
 
 {% highlight bash %}
-    $ cp config/database.yml{,.example}
-    $ echo config/database.yml >> .gitignore
+$ cp config/database.yml{,.example}
+$ echo config/database.yml >> .gitignore
 {% endhighlight %}
 
 This should be done for any other secret files, we'll create the production
@@ -45,22 +45,22 @@ version of the file when we deploy, and symlink it into place.
 ### 3. Initialize Capistrano in your application.
 
 {% highlight bash %}
-    $ cd my-project
-    $ cap install
+$ cd my-project
+$ cap install
 {% endhighlight %}
 
 This will create a bunch of files, the important ones are:
 
 {% highlight bash %}
-  ├── Capfile
-  ├── config
-  │   ├── deploy
-  │   │   ├── production.rb
-  │   │   └── staging.rb
-  │   └── deploy.rb
-  └── lib
-      └── capistrano
-              └── tasks
+├── Capfile
+├── config
+│   ├── deploy
+│   │   ├── production.rb
+│   │   └── staging.rb
+│   └── deploy.rb
+└── lib
+    └── capistrano
+            └── tasks
 {% endhighlight %}
 
 Your new Capfile will automatically include any tasks from any `*.rake` files
@@ -88,26 +88,26 @@ common.
 The example file generated will look something like this:
 
 {% highlight ruby %}
-    set :stage, :staging
+set :stage, :staging
 
-    # Simple Role Syntax
-    # ==================
-    # Supports bulk-adding hosts to roles, the primary
-    # server in each group is considered to be the first
-    # unless any hosts have the primary property set.
-    role :app, %w{example.com}
-    role :web, %w{example.com}
-    role :db,  %w{example.com}
+# Simple Role Syntax
+# ==================
+# Supports bulk-adding hosts to roles, the primary
+# server in each group is considered to be the first
+# unless any hosts have the primary property set.
+role :app, %w{example.com}
+role :web, %w{example.com}
+role :db,  %w{example.com}
 
-    # Extended Server Syntax
-    # ======================
-    # This can be used to drop a more detailed server
-    # definition into the server list. The second argument
-    # is something that quacks like a hash and can be used
-    # to set extended properties on the server.
-    server 'example.com', roles: %w{web app}, my_property: :my_value
+# Extended Server Syntax
+# ======================
+# This can be used to drop a more detailed server
+# definition into the server list. The second argument
+# is something that quacks like a hash and can be used
+# to set extended properties on the server.
+server 'example.com', roles: %w{web app}, my_property: :my_value
 
-    # set :rails_env, :staging
+# set :rails_env, :staging
 {% endhighlight %}
 
 Both the simple role, and extended server syntaxes result in one or more
@@ -133,10 +133,12 @@ These host strings are parsed and expanded out in to the equivalent of the
 server line after the comment:
 
 {% highlight ruby %}
-  role :web, %w{hello@world.com example.com:1234}
-  # ...is the same as doing...
-  server 'world.com', roles: [:web], user: 'hello'
-  server 'example.com', roles: [:web], port: 1234
+# using simple syntax
+role :web, %w{hello@world.com example.com:1234}
+
+# using extended syntax (which is equivalent)
+server 'world.com', roles: [:web], user: 'hello'
+server 'example.com', roles: [:web], port: 1234
 {% endhighlight %}
 
 ### 5. Set the shared information in `deploy.rb`.
@@ -150,9 +152,9 @@ self-documenting, commented-out configuration options, feel free to play with
 them a little:
 
 {% highlight ruby %}
-    set :application, 'my app name'
-    set :repo_url, 'git@example.com:me/my_repo.git'
-    ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
+  set :application, 'my app name'
+  set :repo_url, 'git@example.com:me/my_repo.git'
+  ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 {% endhighlight %}
 
 Here we'd set the name of the application, ideally in a way that's safe for
@@ -173,9 +175,9 @@ forked to the Capistrano repository, but you can find the (unchanged) original
 [here](https://github.com/RailsApps/rails3-bootstrap-devise-cancan).
 
 {% highlight ruby %}
-    set :application, 'rails3-bootstrap-devise-cancan-demo'
-    set :repo_url, 'https://github.com/capistrano/rails3-bootstrap-devise-cancan'
-    set :branch, 'master'
+  set :application, 'rails3-bootstrap-devise-cancan-demo'
+  set :repo_url, 'https://github.com/capistrano/rails3-bootstrap-devise-cancan'
+  set :branch, 'master'
 {% endhighlight %}
 
 I've simplified the `:branch` variable to simply be a `set` variable, not a

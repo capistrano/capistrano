@@ -61,21 +61,21 @@ First, we'll try a *real* SSH session, logging in via our terminal, and seeing
 what happens:
 
 {% highlight bash %}
-    me@localhost $ ssh me@remote
-    me@remote $ [[ $- == *i* ]] && echo 'Interactive' || echo 'Not interactive'
-    Interactive
-    me@remote $ shopt -q login_shell && echo 'Login shell' || echo 'Not login shell'
-    Login shell
+me@localhost $ ssh me@remote
+me@remote $ [[ $- == *i* ]] && echo 'Interactive' || echo 'Not interactive'
+Interactive
+me@remote $ shopt -q login_shell && echo 'Login shell' || echo 'Not login shell'
+Login shell
 {% endhighlight %}
 
 Contrast that with what happens when we hand the command to run to the SSH
 command line without logging in first...
 
 {% highlight bash %}
-    me@localhost $ ssh me@remote "[[ $- == *i* ]] && echo 'Interactive' || echo 'Not interactive'"
-    Interactive
-    me@localhost $ ssh me@remote "shopt -q login_shell && echo 'Login shell' || echo 'Not login shell'"
-    Not login shell
+me@localhost $ ssh me@remote "[[ $- == *i* ]] && echo 'Interactive' || echo 'Not interactive'"
+Interactive
+me@localhost $ ssh me@remote "shopt -q login_shell && echo 'Login shell' || echo 'Not login shell'"
+Not login shell
 {% endhighlight %}
 
 Here we can see that Bash is still starting in **interactive** mode when we're
@@ -87,26 +87,26 @@ can have a very simple, Capfile, we don't even need to load the default
 recipes to test this:
 
 {% highlight ruby %}
-    # Capistrano 3.0.x
-    task :query_interactive do
-      on 'me@remote' do
-        info capture("[[ $- == *i* ]] && echo 'Interactive' || echo 'Not interactive'")
-      end
-    end
-    task :query_login do
-      on 'me@remote' do
-        info capture("shopt -q login_shell && echo 'Login shell' || echo 'Not login shell'")
-      end
-    end
+# Capistrano 3
+task :query_interactive do
+  on 'me@remote' do
+    info capture("[[ $- == *i* ]] && echo 'Interactive' || echo 'Not interactive'")
+  end
+end
+task :query_login do
+  on 'me@remote' do
+    info capture("shopt -q login_shell && echo 'Login shell' || echo 'Not login shell'")
+  end
+end
 {% endhighlight %}
 
 Gives us the following:
 
 {% highlight bash %}
-    me@localhost $ cap query_login
-    INFO Not login shell
-    me@localhost $ cap query_interactive
-    INFO Not interactive
+me@localhost $ cap query_login
+INFO Not login shell
+me@localhost $ cap query_interactive
+INFO Not interactive
 {% endhighlight %}
 
 ## <a id="which_startup_files_loaded"></a>Which shell startup files do get loaded?
