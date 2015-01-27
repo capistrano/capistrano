@@ -19,6 +19,8 @@ Reverse Chronological Order:
   * Add documentation regarding property filtering (@townsen)
   * Clarify wording and recommendation in stage template. (@Kriechi)
     * Both available syntaxes provide similar functionality, do not use both for the same server+role combination.
+  * Allow specification of repo_path using stage variable
+    default is as before (@townsen)
 
 https://github.com/capistrano/capistrano/compare/v3.3.5...HEAD
 
