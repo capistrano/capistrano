@@ -58,7 +58,6 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.3
     and --trace options supply it as before.
 
 * Disable loading stages configs on `cap -T` (@sponomarev)
-* Track (anonymous) statistics, see https://github.com/capistrano/stats
 
 * Enhancements (@townsen)
   * Fix matching on hosts with custom ports or users set
@@ -98,6 +97,7 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.3
 
 Breaking Changes:
   * By using Ruby's noecho method introduced in Ruby version 1.9.3, we dropped support for Ruby versions prior to 1.9.3. See [issue #878](https://github.com/capistrano/capistrano/issues/878) and [PR #1112](https://github.com/capistrano/capistrano/pull/1112) for more information. (@kaikuchn)
+  * Track (anonymous) statistics, see https://github.com/capistrano/stats. This breaks automated deployment on continuous integration servers until the `.capistrano/metrics` file is created (with content `full` to simulate a "yes") via the interactive prompt or manually.
 
 * Bug Fixes:
   * Fixed compatibility with FreeBSD tar (@robbertkl)
