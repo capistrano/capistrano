@@ -10,6 +10,14 @@ Reverse Chronological Order:
   * bin/ is often checked out into repo
   * https://github.com/capistrano/bundler/issues/45#issuecomment-69349237
 
+* Bugfix:
+  * release_roles did not honour additional property filtering (@townsen)
+  * Refactored and simplified property filtering code (@townsen)
+
+* Minor changes
+  * Add equality syntax ( eg. port: 1234) for property filtering (@townsen)
+  * Add documentation regarding property filtering (@townsen)
+
 https://github.com/capistrano/capistrano/compare/v3.3.5...HEAD
 
 ## `3.3.5`
