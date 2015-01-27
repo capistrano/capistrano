@@ -88,7 +88,7 @@ module Capistrano
         end
 
         def respond_to?(method)
-          @properties.has_key?(method)
+          @properties.key?(method)
         end
 
         def roles
@@ -121,7 +121,7 @@ module Capistrano
         end
 
         def self.for(options)
-          if options.has_key?(:exclude)
+          if options.key?(:exclude)
             Exclusive
           else
             self
