@@ -6,6 +6,14 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.3.5...HEAD
 
+* Bugfix:
+  * release_roles did not honour additional property filtering (@townsen)
+  * Refactored and simplified property filtering code (@townsen)
+
+* Minor changes
+  * Add equality syntax ( eg. port: 1234) for property filtering (@townsen)
+  * Add documentation regarding property filtering (@townsen)
+
 ## `3.3.5`
 
 https://github.com/capistrano/capistrano/compare/v3.3.4...v3.3.5

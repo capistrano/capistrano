@@ -172,6 +172,18 @@ module Capistrano
           end
 
           context 'value does not match server properly' do
+            context 'with :active true' do
+              let(:options) { { active: true }}
+              it { expect(subject).to be_truthy }
+            end
+
+            context 'with :active false' do
+              let(:options) { { active: false }}
+              it { expect(subject).to be_falsey }
+            end
+          end
+
+          context 'value does not match server properly' do
             context 'with :filter' do
               let(:options) { { filter: :inactive }}
               it { expect(subject).to be_falsey }
@@ -186,6 +198,18 @@ module Capistrano
               let(:options) { { exclude: :inactive }}
               it { expect(subject).to be_truthy }
             end
+          end
+        end
+
+        context 'key is a property' do
+          context 'with :active true' do
+            let(:options) { { active: true }}
+            it { expect(subject).to be_truthy }
+          end
+
+          context 'with :active false' do
+            let(:options) { { active: false }}
+            it { expect(subject).to be_falsey }
           end
         end
 
