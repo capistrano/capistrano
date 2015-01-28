@@ -25,8 +25,19 @@ module Capistrano
       end
 
       def select?(options)
-        selector = Selector.for(options)
-        selector.call(self)
+        options.each do |k,v|
+          callable = v.respond_to?(:call) ? v: ->(server){server.fetch(v)}
+          result = case k
+          when :filter, :select
+            callable.call(self)
+          when :exclude
+            !callable.call(self)
+          else
+            self.fetch(k) == v
+          end
+          return false unless result
+        end
+        return true
       end
 
       def primary
@@ -111,55 +122,6 @@ module Capistrano
 
         def lvalue(key)
           key.to_s.chomp('=').to_sym
-        end
-
-      end
-
-      class Selector
-        def initialize(options)
-          @options = options
-        end
-
-        def self.for(options)
-          if options.has_key?(:exclude)
-            Exclusive
-          else
-            self
-          end.new(options)
-        end
-
-        def callable
-          if key.respond_to?(:call)
-            key
-          else
-            ->(server) { server.fetch(key) }
-          end
-        end
-
-        def call(server)
-          callable.call(server)
-        end
-
-        private
-        attr_reader :options
-
-        def key
-          options[:filter] || options[:select] || all
-        end
-
-        def all
-          ->(server) { :all }
-        end
-
-        class Exclusive < Selector
-
-          def key
-            options[:exclude]
-          end
-
-          def call(server)
-            !callable.call(server)
-          end
         end
 
       end
