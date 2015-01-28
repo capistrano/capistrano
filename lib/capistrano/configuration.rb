@@ -63,6 +63,10 @@ module Capistrano
       servers.roles_for(names)
     end
 
+    def role_properties_for(names, &block)
+      servers.role_properties_for(names, &block)
+    end
+
     def primary(role)
       servers.fetch_primary(role)
     end

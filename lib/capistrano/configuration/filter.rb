@@ -5,7 +5,7 @@ module Capistrano
     class Filter
       def initialize type, values = nil
         raise "Invalid filter type #{type}" unless [:host,:role].include? type
-        av = Array(values)
+        av = Array(values).dup
         @mode = case
                 when av.size == 0 then :none
                 when av.include?(:all) then :all

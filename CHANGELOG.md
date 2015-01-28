@@ -15,6 +15,7 @@ Reverse Chronological Order:
   * Refactored and simplified property filtering code (@townsen)
 
 * Minor changes
+  * Add role_properties() method (see capistrano.github.io PR for doc) (@townsen)
   * Add equality syntax ( eg. port: 1234) for property filtering (@townsen)
   * Add documentation regarding property filtering (@townsen)
   * Clarify wording and recommendation in stage template. (@Kriechi)

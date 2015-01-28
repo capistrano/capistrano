@@ -22,6 +22,23 @@ module Capistrano
         s.select { |server| server.select?(options) }
       end
 
+      def role_properties_for(rolenames)
+        roles = rolenames.to_set
+        rps = Set.new unless block_given?
+        roles_for(rolenames).each do |host|
+          host.roles.intersection(roles).each do |role|
+            [host.properties.fetch(role)].flatten(1).each do |props|
+              if block_given?
+                yield host, role, props
+              else
+                rps << (props || {}).merge( role: role, hostname: host.hostname )
+              end
+            end
+          end
+        end
+        block_given? ? nil: rps
+      end
+
       def fetch_primary(role)
         hosts = roles_for([role])
         hosts.find(&:primary) || hosts.first
