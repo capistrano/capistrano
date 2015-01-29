@@ -480,7 +480,7 @@ describe Capistrano::DSL do
         end
 
         it 'returns "config/deploy.rb"' do
-          expect(subject).to eq 'config/deploy.rb'
+          expect(subject).to eq dsl.cap_relative_path('config/deploy.rb').to_s
         end
       end
 
@@ -505,7 +505,7 @@ describe Capistrano::DSL do
         end
 
         it 'returns "config/deploy"' do
-          expect(subject).to eq 'config/deploy'
+          expect(subject).to eq dsl.cap_relative_path('config/deploy').to_s
         end
       end
 

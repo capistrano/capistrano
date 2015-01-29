@@ -4,16 +4,17 @@ require 'pathname'
 module TestApp
   extend self
 
-  def install
+  def install(in_path=test_app_path)
+    self.test_app_path = in_path
     install_test_app_with(default_config)
   end
 
   def default_config
     %{
       set :deploy_to, '#{deploy_to}'
-      set :repo_url, 'git://github.com/capistrano/capistrano.git'
+      set :repo_url, 'git@github.com:capistrano/capistrano.git'
       set :branch, 'master'
-      set :ssh_options, { keys: "\#{ENV['HOME']}/.vagrant.d/insecure_private_key" }
+      set :ssh_options, { keys: "\#{ENV['HOME']}/.vagrant.d/insecure_private_key" , :forward_agent => true}
       server 'vagrant@localhost:2220', roles: %w{web app}
       set :linked_files, #{linked_files}
       set :linked_dirs, #{linked_dirs}
@@ -82,12 +83,13 @@ module TestApp
   end
 
   def cap(task)
-    run "bundle exec cap #{stage} #{task}"
+    run "bundle exec cap #{stage} #{task} #{"--trace" if ENV['ENABLE_TRACE']}", in_path
   end
 
-  def run(command)
+  def run(command, in_path=test_app_path)
     output = nil
-    Dir.chdir(test_app_path) do
+    Dir.chdir(in_path) do
+      puts %x[pwd; echo #{command}]
       output = %x[#{command}]
     end
     [$?.success?, output]
@@ -101,8 +103,12 @@ module TestApp
     test_app_path.join('config/deploy/test.rb')
   end
 
+  def test_app_path=(new_path)
+    @test_app_path = new_path.nil? ? nil : Pathname.new(new_path)
+  end
+
   def test_app_path
-    Pathname.new('/tmp/test_app')
+    @test_app_path ||= Pathname.new('/tmp/test_app')
   end
 
   def deploy_to

@@ -1,4 +1,4 @@
-load File.expand_path("../tasks/hg.rake", __FILE__)
+Capistrano::Application.load_rakefile_once File.expand_path("../tasks/hg.rake", __FILE__)
 
 require 'capistrano/scm'
 

@@ -1,9 +1,34 @@
 module Capistrano
   class Application < Rake::Application
+    include Capistrano::DSL
+
+    def self.reset_loaded_rakefiles!
+      @loaded_rakefile = []
+    end
+
+    def self.loaded_rakefiles
+      @loaded_rakefile ||= []
+    end
+
+    def self.rakefile_loaded?(file_path)
+      loaded_rakefiles.include? file_path
+    end
+
+    def self.add_loaded_rakefiles(file_path)
+      loaded_rakefiles << file_path
+    end
+
+    def self.load_rakefile_once(file, load_provider=Kernel)
+      file_path = File.expand_path(file)
+      unless rakefile_loaded?(file_path)
+        load_provider.load file_path
+        add_loaded_rakefiles(file_path)
+      end
+    end
 
     def initialize
       super
-      @rakefiles = %w{capfile Capfile capfile.rb Capfile.rb} << capfile
+      @rakefiles = %w{capfile Capfile capfile.rb Capfile.rb}
     end
 
     def name
@@ -81,6 +106,19 @@ module Capistrano
       end
     end
 
+    # Override original method
+    def find_rakefile_location
+      (fn, where) = super
+
+      if ! fn
+        fn = File.join(default_capfile_dir, 'Capfile')
+        where = default_capfile_dir
+      end
+
+      [fn, where]
+    end
+
+
     private
 
     def load_imports
@@ -94,8 +132,8 @@ module Capistrano
     end
 
     # allows the `cap install` task to load without a capfile
-    def capfile
-      File.expand_path(File.join(File.dirname(__FILE__),'..','Capfile'))
+    def default_capfile_dir
+      File.expand_path(File.join(File.dirname(__FILE__),'..'))
     end
 
     def version
