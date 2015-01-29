@@ -17,6 +17,8 @@ Reverse Chronological Order:
 * Minor changes
   * Add equality syntax ( eg. port: 1234) for property filtering (@townsen)
   * Add documentation regarding property filtering (@townsen)
+  * Clarify wording and recommendation in stage template. (@Kriechi)
+    * Both available syntaxes provide similar functionality, do not use both for the same server+role combination.
 
 https://github.com/capistrano/capistrano/compare/v3.3.5...HEAD
 
