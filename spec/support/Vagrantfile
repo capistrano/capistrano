@@ -1,13 +1,13 @@
-Vagrant::Config.run do |config|
+Vagrant.configure("2") do |config|
+
+  config.ssh.insert_key = false
 
   [:app].each_with_index do |role, i|
     config.vm.define(role, primary: true) do |config|
-      config.vm.box = role
-      config.vm.box = 'precise64'
-      config.vm.box_url = 'http://files.vagrantup.com/precise64.box'
-      config.vm.forward_port 22, "222#{i}".to_i
+      config.vm.define role
+      config.vm.box = 'hashicorp/precise64'
+      config.vm.network "forwarded_port", guest: 22, host: "222#{i}".to_i
       config.vm.provision :shell, inline: 'sudo apt-get -y install git-core'
     end
   end
-
 end
