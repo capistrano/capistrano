@@ -44,7 +44,7 @@ The following variables are settable:
 * `:deploy_to`
   * **default:** `-> { "/var/www/#{fetch(:application)}" }`
   * The path on the remote server where the application should be deployed.
-  * If application contains whitespace or such this path might be invalid. See Structure for the exact directorys used.
+  * If application contains whitespace or such this path might be invalid. See Structure for the exact directories used.
 
 * `:scm`
   * **default:** `:git`
@@ -55,7 +55,13 @@ The following variables are settable:
   * URL to the repository.
   * Must be a valid URL for the used SCM.
 
+* `:repo_path`
+  * **default:** `-> { "#{fetch(:deploy_to)}/repo" }`
+  * The path on the remote server where the repository should be placed.
+  * This does not normally need to be set
+
 * `:repo_tree`
+  * **default:** None. The whole repository is normally deployed.
   * The subtree of the repository to deploy.
   * Currently only implemented for Git and Hg.
 
