@@ -1,7 +1,6 @@
 namespace :deploy do
 
   task :starting do
-    invoke 'metrics:collect'
     invoke 'deploy:check'
     invoke 'deploy:set_previous_revision'
   end
