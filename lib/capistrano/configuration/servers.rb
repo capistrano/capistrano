@@ -8,7 +8,14 @@ module Capistrano
       include Enumerable
 
       def add_host(host, properties={})
-        servers.add server(host, properties).with(properties)
+        new_host = Server[host]
+        if server = servers.find { |s| s.matches? new_host }
+          server.user = new_host.user if new_host.user
+          server.port = new_host.port if new_host.port
+          server.with(properties)
+        else
+          servers << new_host.with(properties)
+        end
       end
 
       def add_role(role, hosts, options={})
@@ -50,15 +57,8 @@ module Capistrano
 
       private
 
-      def server(host, properties)
-        new_host = Server[host]
-        new_host.with({user: properties[:user]}) unless properties[:user].nil?
-        new_host.with({port: properties[:port]}) unless properties[:port].nil?
-        servers.find { |server| server.matches? new_host } || new_host
-      end
-
       def servers
-        @servers ||= Set.new
+        @servers ||= []
       end
 
       def extract_options(array)

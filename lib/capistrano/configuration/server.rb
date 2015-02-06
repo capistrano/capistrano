@@ -62,7 +62,7 @@ module Capistrano
       end
 
       def matches?(other)
-        user == other.user && hostname == other.hostname && port == other.port
+        hostname == other.hostname
       end
 
       private
