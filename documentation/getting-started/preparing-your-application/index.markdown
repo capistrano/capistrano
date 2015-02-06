@@ -34,24 +34,24 @@ configuration into place at deploy time.
 The original `database.yml` should be added to the `.gitignore` (or your SCM's
 parallel concept of ignored files)
 
-{% highlight bash %}
+```bash 
 $ cp config/database.yml{,.example}
 $ echo config/database.yml >> .gitignore
-{% endhighlight %}
+```
 
 This should be done for any other secret files, we'll create the production
 version of the file when we deploy, and symlink it into place.
 
 ### 3. Initialize Capistrano in your application.
 
-{% highlight bash %}
+```bash
 $ cd my-project
 $ cap install
-{% endhighlight %}
+```
 
 This will create a bunch of files, the important ones are:
 
-{% highlight bash %}
+```bash
 ├── Capfile
 ├── config
 │   ├── deploy
@@ -61,10 +61,11 @@ This will create a bunch of files, the important ones are:
 └── lib
     └── capistrano
             └── tasks
-{% endhighlight %}
+```
 
 Your new Capfile will automatically include any tasks from any `*.rake` files
 in `lib/capistrano/tasks`.
+
 
 ### 4. Configure your server addresses in the generated files.
 
@@ -87,7 +88,7 @@ common.
 
 The example file generated will look something like this:
 
-{% highlight ruby %}
+```ruby
 set :stage, :staging
 
 # Simple Role Syntax
@@ -108,38 +109,43 @@ role :db,  %w{example.com}
 server 'example.com', roles: %w{web app}, my_property: :my_value
 
 # set :rails_env, :staging
-{% endhighlight %}
+```
 
-Both the simple role, and extended server syntaxes result in one or more
-servers for each role being defined. The `app` and `db` roles are just
-placeholders, if you are using the `capistrano/rails-*` addons (more on
-that later) then they have a meaning, but if you are deploying something
-simpler, feel free to delete them if they're meaningless to you.
+Servers can be defined in two ways, implicitly using the simple `role` syntax and
+explicitly using the extended `server` syntax.  Both result in one or more servers for
+each role being defined. The `app` and `db` roles are just placeholders, if you are using
+the `capistrano/rails-*` addons (more on that later) then they have a meaning, but if you
+are deploying something simpler, feel free to delete them if they're meaningless to you.
 
-The extended server syntax exists to allow the definition of arbitrary server
-properties; it's there incase people want to build the server list more
-comprehensively from something like the *EC2* command line tools, and want to
-use the extended properties for something that makes sense in their
-environment.
+Both types can specify optional _properties_ to be associated with a server or role. These
+properties include Capistrano-required ones such as the SSH options (username, port, keys
+etc.) and also arbitrary custom properties.  The are there incase people want to build the
+server list more comprehensively from something like the *EC2* command line tools, and
+want to use the extended properties for something that makes sense in their environment.
 
-<div class="alert-box alert">
-Only use one syntax to define your server and roles. Do NOT use both for the
-same server+role. It will break your deployment.
-</div>
+The following shows defining two servers, one where we set the
+username, and another where we set the port.  These host strings are parsed and expanded
+out in to the equivalent of the server line after the comment:
 
-Servers can be defined in a bunch of ways, the following shows defining two
-servers, one where we set the username, and another where we set the port.
-These host strings are parsed and expanded out in to the equivalent of the
-server line after the comment:
-
-{% highlight ruby %}
+```ruby
 # using simple syntax
 role :web, %w{hello@world.com example.com:1234}
 
 # using extended syntax (which is equivalent)
 server 'world.com', roles: [:web], user: 'hello'
 server 'example.com', roles: [:web], port: 1234
-{% endhighlight %}
+```
+
+<div class="alert-box radius"> You can define a server or role using both syntaxes and the
+properties will be merged. See the Properties Documentation for details
+</div>
+
+<div class="alert-box alert"> If you define servers with either the simple or the extended
+syntax and explicitly specify a user or a port number <b>multiple</b> servers will be created
+and the merging will be ill-defined. This may break your deployment! If you wish to merge
+properties then specify the user and port in the variable :ssh_config. This behaviour is
+currently under review and may be changed in future.
+</div>
 
 ### 5. Set the shared information in `deploy.rb`.
 
@@ -151,11 +157,11 @@ The generated sample file starts with the following, and is followed by a few
 self-documenting, commented-out configuration options, feel free to play with
 them a little:
 
-{% highlight ruby %}
+```ruby
   set :application, 'my app name'
   set :repo_url, 'git@example.com:me/my_repo.git'
   ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
-{% endhighlight %}
+```
 
 Here we'd set the name of the application, ideally in a way that's safe for
 filenames on your target operating system.
@@ -174,11 +180,11 @@ Cancan (for authorisation) along side Twitter Bootstrap for assets has been
 forked to the Capistrano repository, but you can find the (unchanged) original
 [here](https://github.com/RailsApps/rails3-bootstrap-devise-cancan).
 
-{% highlight ruby %}
+```ruby
   set :application, 'rails3-bootstrap-devise-cancan-demo'
   set :repo_url, 'https://github.com/capistrano/rails3-bootstrap-devise-cancan'
   set :branch, 'master'
-{% endhighlight %}
+```
 
 I've simplified the `:branch` variable to simply be a `set` variable, not a
 question prompt, as this repository only has a master branch.
