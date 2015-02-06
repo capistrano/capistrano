@@ -10,16 +10,18 @@ hash are evaluated in the sequence they are declared and if all are true for a s
 server then the server will be returned. The keys must always be symbols which have the
 following meaning:
 
-* `:filter`, or `:select`: The value must return true for the server to be included,
-* `:exclude`: The value must return false for the server to be included, and
+* `:filter`, or `:select`: The value is either a property keyname or a lambda which is
+  called with the server as parameter.  The value must return true for the server to be
+  included.
+
+* `:exclude`: As above but the value must return false for the server to be included.
+
 * Any other symbol is taken as a server property name whose value must equal the given value.
+  A lambda will not be called if one is supplied!
 
-In the first two cases the values themselves can be a lambda that will be evaluated with the
-current server. In the last case the value may be anything and is just tested for
-equality.
+### Examples
 
-Examples
-{% highlight ruby %}
+```ruby
 server 'example1.com', roles: %w{web}, active: true
 server 'example2.com', roles: %w{web}
 server 'example3.com', roles: %w{app web}, active: true
@@ -52,4 +54,4 @@ task :demo do
     puts "#{r.hostname}"
   end
 end
-{% endhighlight %}
+```

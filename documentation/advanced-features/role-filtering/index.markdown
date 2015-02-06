@@ -56,3 +56,11 @@ cap --roles=app,web production deploy
 
 Like the environment variable method, specify multiple roles by separating them
 with a comma.
+
+### Using Regular Expressions
+
+Since role names are Ruby symbols they can legitimately contain any characters. However to
+allow multiple of them to be specified on one line we use the comma as a separator.
+
+To use a regular expression for a role filter begin and end the string with '/'. Because
+of the above these regular expressions may not contain a comma.
