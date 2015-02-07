@@ -27,9 +27,9 @@ There are three ways to specify the role filter.
 Capistrano will read the role filter from the environment variable `ROLES`
 if it is set. You can set it inline:
 
-{% highlight bash %}
+```bash
 ROLES=app,web cap production deploy
-{% endhighlight %}
+```
 
 Specify multiple roles by separating them with a comma.
 
@@ -38,9 +38,9 @@ Specify multiple roles by separating them with a comma.
 You can set the role filter inside your deploy configuration. For example,
 you can set the following inside `config/deploy.rb`:
 
-{% highlight ruby %}
+```ruby
 set :filter, :roles => %w{app web}
-{% endhighlight %}
+```
 
 Note that you specify the filter as an array rather than as a comma-separated
 list of roles when using this method.
@@ -50,9 +50,9 @@ list of roles when using this method.
 In a similar way to using the environment variable, you can set the role
 filter by specifying it as a command line argument to `cap`:
 
-{% highlight bash %}
+```bash
 cap --roles=app,web production deploy
-{% endhighlight %}
+```
 
 Like the environment variable method, specify multiple roles by separating them
 with a comma.

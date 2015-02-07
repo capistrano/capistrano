@@ -17,28 +17,28 @@ therefore recommended to use an appropriate bundler.
 
 The following command will install the latest released capistrano `v3` revision:
 
-{% highlight bash %}
+```bash
 $ gem install capistrano
-{% endhighlight %}
+```
 
 Or grab the bleeding edge head from:
 
-{% highlight bash %}
+```bash
 $ git clone https://github.com/capistrano/capistrano.git
 $ cd capistrano
 $ gem build *.gemspec
 $ gem install *.gem
-{% endhighlight %}
+```
 
 ### Usage in a Rails project
 
 Add the following lines to the Gemfile:
 
-{% highlight ruby %}
+```ruby
 group :development do
   gem 'capistrano-rails', '~> 1.1.1'
 end
-{% endhighlight %}
+```
 
 The `capistrano-rails` gem includes extras specifically designed for Ruby on
 Rails, specifically:
@@ -53,9 +53,9 @@ The documentation for these components can be found in
 part, to get the best, and most sensible results, simply `require` in
 Capfile, after the `require 'capistrano/deploy'` line:
 
-{% highlight ruby %}
+```ruby
 require 'capistrano/rails'
-{% endhighlight %}
+```
 
 
 ##### Help! I was using Capistrano `v2.x` and I didn't want to upgrade!
@@ -64,9 +64,9 @@ If you are using Capistrano `v2.x.x` and have also installed Capistrano `v3`
 by mistake, then you can lock your Gem version for Capistrano at something
 like:
 
-{% highlight ruby %}
+```ruby
 gem 'capistrano', '~> 2.15' # Or whatever patch release you are using
-{% endhighlight %}
+```
 
 This is the [pessimistic operator][rubygems-pessimistic-operator] which
 installs the closest matching version, at the time of writing this would

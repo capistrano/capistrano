@@ -5,9 +5,9 @@ layout: default
 
 The `test` method is best used for file checking with bash conditionals
 
-{% highlight ruby %}
+```ruby
         if test("[ -f /tmp/foo ]")
             # do stuff
         end
-{% endhighlight %}
+```
 

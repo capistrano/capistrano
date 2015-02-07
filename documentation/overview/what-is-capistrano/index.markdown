@@ -22,9 +22,9 @@ Ruby software to form part of a larger tool.
 
 #### What does it look like?
 
-{% highlight bash %}
+```bash
 me@localhost $ cap staging deploy
-{% endhighlight %}
+```
 
 <div>
 <pre data-line class="language-capistrano"><code data-language="capistrano"><span style="color:white;">DEBUG</span> Uploading /tmp/git-ssh.sh 0%
@@ -98,7 +98,7 @@ There's lots of cool stuff in the Capistrano toy box:
 * Support for complex environments.
 * A sane, expressive API:
 
-{% highlight ruby %}
+```ruby
 desc "Show off the API"
 task :ditty do
 
@@ -143,4 +143,4 @@ task :ditty do
     end
   end
 end
-{% endhighlight %}
+```

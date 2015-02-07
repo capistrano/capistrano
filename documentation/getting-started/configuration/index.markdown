@@ -16,23 +16,23 @@ Configuration variables can be either global or specific to your stage.
 
 Each variable can be set to a specific value:
 
-{% highlight ruby %}
+```ruby
 set :application, 'MyLittleApplication'
 
 # use a lambda to delay evaluation
 set :application, -> { "SomeThing_#{fetch :other_config}" }
-{% endhighlight %}
+```
 
 
 A value can be retrieved from the configuration at any time:
 
-{% highlight ruby %}
+```ruby
 fetch :application
 # => "MyLittleApplication"
 
 fetch(:special_thing, 'some_default_value')
 # will return the value if set, or the second argument as default value
-{% endhighlight %}
+```
 
 ## Variables
 

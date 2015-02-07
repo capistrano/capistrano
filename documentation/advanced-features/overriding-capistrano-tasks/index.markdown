@@ -7,7 +7,7 @@ When re-defining a task in Capistrano v2, the original task was replaced. The
 Rake DSL on which Capistrano v3 is built is additive however, which means that
 given the following definitions
 
-{% highlight ruby %}
+```ruby
 task :foo do
     puts "foo"
 end
@@ -15,7 +15,7 @@ end
 task :foo do
     puts "bar"
 end
-{% endhighlight %}
+```
 
 Will print both `foo` and `bar`.
 
@@ -32,11 +32,11 @@ for a task) is probably not what you want, though. Let's say, for example,
 that you want to re-define the `deploy:revert_release` task, which is defined
 as follows:
 
-{% highlight ruby %}
+```ruby
 task :revert_release => :rollback_release_path do
     # ...
 end
-{% endhighlight %}
+```
 
 Calling `clear` on this task and then re-defining it results in
 `rollback_release_path` never being called, thus breaking rollback behavior.
@@ -45,7 +45,7 @@ Under most circumstances, you will simply want to use `clear_actions`, which
 removes the specified task's behaviour, but does not alter it's dependencies
 or comments:
 
-{% highlight ruby %}
+```ruby
 task :init do
     puts "init"
 end
@@ -58,13 +58,13 @@ Rake::Task["foo"].clear_actions
 task :foo do
     puts "bar"
 end
-{% endhighlight %}
+```
 
 Running the `foo` task will print
 
-{% highlight ruby %}
+```ruby
 init
 bar
-{% endhighlight %}
+```
 
 ---

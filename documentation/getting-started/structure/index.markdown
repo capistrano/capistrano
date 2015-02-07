@@ -7,14 +7,14 @@ Capistrano uses a strictly defined directory hierarchy on each remote server to 
 
 Assuming your `config/deploy.rb` contains this:
 
-{% highlight ruby %}
+```ruby
 set :deploy_to, '/var/www/my_app_name'
-{% endhighlight %}
+```
 
 
 Then inspecting the directories inside `/var/www/my_app_name` looks like this:
 
-{% highlight bash %}
+```bash
 ├── current -> /var/www/my_app_name/releases/20150120114500/
 ├── releases
 │   ├── 20150080072500
@@ -27,7 +27,7 @@ Then inspecting the directories inside `/var/www/my_app_name` looks like this:
 ├── revisions.log
 └── shared
     └── <linked_files and linked_dirs>
-{% endhighlight %}
+```
 
 
 * `current` is a symlink pointing to the latest release. This symlink is
