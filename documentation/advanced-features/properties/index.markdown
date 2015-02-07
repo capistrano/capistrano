@@ -56,7 +56,7 @@ To allow this properties can be set at both the _Server_ and _Role_ level. The g
 principle is that the properties are _merged_ and that __the last definition wins__.
 In practice we finesse this slightly depending on the type of the properties value:
 
-* _scalar_ values, such as the `:user` string will be overridden
+* _scalar_ values will be overridden
 * _hash_ values will have their keys merged with duplicate keys taking on
   the value of the last one.
 * _array_ values will have subsequent entries appended to the array
@@ -85,7 +85,7 @@ To solve this problem we adopt a convention for the use of server properties:
 * Multiple occurrences of a role on the same server should have the contents be an array,
   in which the successive elements denote each instance.
 
-The following example shows a configuration with multiple redis and sentinel roles on the
+The following example shows a configuration with multiple Redis and Sentinel roles on the
 same server:
 
 ```ruby
@@ -96,7 +96,7 @@ server 'dev.local', roles: %w{db web redis sentinel worker}, primary: true,
 ```
 
 These properties can be accessed in the ordinary way, but to assist in obtaining them you
-can use the `role_properties()` function.
+can use the `role_properties()` function (see below).
 
 ## Setting Properties
 
@@ -116,23 +116,25 @@ One of those properties must be `:role` and have a value which is an array of ro
 ### Accessing Properties
 
 #### The `roles()` Method
-The `roles()` method takes one or more role names (or an array of roles) and returns an array of `Capistrano::Configuration::Server` objects that belong to those roles. It yields a `host` variable which has the following:
+
+The `roles()` method takes one or more role names (or an array of roles) followed by an
+optional [Property Filter](/documentation/advanced-features/property-filtering)) and
+returns an array of `Capistrano::Configuration::Server` objects that belong to those
+roles. These have the following useful attributes:
 
 * `hostname` - a String
-* `properties` - the configuration hash-like object
-* `properties.keys` - the names of properties above
+* `properties.keys` - the names of the available properties
+* `properties` - a hash-like object that stores the properties.
+   It uses Ruby's 'method_missing' to provide a method for each valid key.
 * `roles` - a Set of role names as symbols
-* `primary` - the name of the host if it has the :primary property set to true
 
-Note that the `host.keys` property which seems to be an empty array!
-
-The servers produced by a roles() method are NOT filtered.
+The servers retrieved by this method are NOT filtered by any host or role filters.
 
 #### The `role_properties()` Method
 
 This takes a list of roles (followed by an optional [Property
 Filter](/documentation/advanced-features/property-filtering)) and returns an array of
-hosts and their properties:
+hashes containing the properties with the keys `:hostname` and `:role` added:
 
 ```ruby
 task :props do

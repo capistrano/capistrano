@@ -119,7 +119,7 @@ are deploying something simpler, feel free to delete them if they're meaningless
 
 Both types can specify optional _properties_ to be associated with a server or role. These
 properties include Capistrano-required ones such as the SSH options (username, port, keys
-etc.) and also arbitrary custom properties.  The are there incase people want to build the
+etc.) and also arbitrary custom properties.  They are there in case people want to build the
 server list more comprehensively from something like the *EC2* command line tools, and
 want to use the extended properties for something that makes sense in their environment.
 
