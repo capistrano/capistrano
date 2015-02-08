@@ -11,7 +11,7 @@ layout: default
 ### 1. Commit your application to some externally available source control hosting provider.
 
 If you are not doing so already, you should host your code somewhere with a
-provider such as Github, BitBucket, Codeplane, or repositoryhosting.com.
+provider such as GitHub, BitBucket, Codeplane, or repositoryhosting.com.
 
 Capistrano currently supports Git, Mercurial, and SVN out of the box.
 There might be 3<sup>rd</sup> party plugins adding support for various other systems.
