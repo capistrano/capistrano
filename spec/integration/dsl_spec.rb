@@ -501,4 +501,43 @@ describe Capistrano::DSL do
 
   end
 
+  describe 'role_properties()' do
+
+    before do
+      dsl.role :redis, %w[example1.com example2.com], redis: { port: 6379, type: :slave }
+      dsl.server 'example1.com', roles: %w{web}, active: true, web: { port: 80 }
+      dsl.server 'example2.com', roles: %w{web redis}, web: { port: 81 }, redis: { type: :master }
+      dsl.server 'example3.com', roles: %w{app}, primary: true
+    end
+
+    it 'retrieves properties for a single role as a set' do
+      rps = dsl.role_properties(:app)
+      expect(rps).to eq(Set[{ hostname: 'example3.com', role: :app}])
+    end
+
+    it 'retrieves properties for multiple roles as a set' do
+      rps = dsl.role_properties(:app, :web)
+      expect(rps).to eq(Set[{ hostname: 'example3.com', role: :app},{ hostname: 'example1.com', role: :web, port: 80},{ hostname: 'example2.com', role: :web, port: 81}])
+    end
+
+    it 'yields the properties for a single role' do
+      recipient = mock('recipient')
+      recipient.expects(:doit).with('example1.com', :redis, { port: 6379, type: :slave})
+      recipient.expects(:doit).with('example2.com', :redis, { port: 6379, type: :master})
+      dsl.role_properties(:redis) do |host, role, props|
+        recipient.doit(host, role, props)
+      end
+    end
+
+    it 'yields the properties for multiple roles' do
+      recipient = mock('recipient')
+      recipient.expects(:doit).with('example1.com', :redis, { port: 6379, type: :slave})
+      recipient.expects(:doit).with('example2.com', :redis, { port: 6379, type: :master})
+      recipient.expects(:doit).with('example3.com', :app, nil)
+      dsl.role_properties(:redis, :app) do |host, role, props|
+        recipient.doit(host, role, props)
+      end
+    end
+  end
+
 end
