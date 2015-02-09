@@ -4,9 +4,9 @@ layout: default
 ---
 
 Configuration variables are access with the fetch method, like so:
-{% highlight ruby %}
+```ruby
 local = fetch(:configuration_variable, _default_value_)
-{% endhighlight %}
+```
 
 This works fine when accessing configuration variables defined within the same file.  For example accessing a previously set configuration variable defined in deploy.rb or accessing a set configuration variable in a stage file.
 
@@ -15,27 +15,27 @@ The deploy.rb configuration is executed first and then the stage file(s) from co
 For example, let's create a configuration variable in the production and staging files and access the current one from deploy.rb.
 
 config/deploy/production.rb
-{% highlight ruby %}
+```ruby
 set :app_domain, "www.my_application.com"
-{% endhighlight %}
+```
 
 config/deploy/staging.rb
-{% highlight ruby %}
+```ruby
 set :app_domain, "stage.application_test.com"
-{% endhighlight %}
+```
 
 These variables are not available in deploy.rb using `fetch(:nginx_port)` or `fetch(:app_domain)` because they are not defined when deploy.rb is executed.  They can, however, be lazily loaded using a lambda in deploy.rb like this:
 
 config/deploy.rb
-{% highlight ruby %}
+```ruby
 set :nginx_server_name, ->{ fetch(:app_domain) }
 set :puma_bind, ->{ "unix:/tmp/#{fetch(:app_domain)}.sock" }
-{% endhighlight %}
+```
 
 Now the `:nginx_server_name` and `:puma_bind` variables will be lazily assigned the values set in which ever stage file was used to deploy.
 
 If you need to create nested hashes, you might find `do/end` syntax more readable:
-{% highlight ruby %}
+```ruby
 set :database_yml, -> do
   {
     production: {
@@ -43,4 +43,4 @@ set :database_yml, -> do
     }
   }
 end
-{% endhighlight %}
+```

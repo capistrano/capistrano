@@ -7,7 +7,7 @@ Instead of building a config folder and deploy, you may want to
 programmatically set everything in a single ruby script. This could be done as
 follows:
 
-{% highlight ruby %}
+```ruby
 require 'capistrano/all'
 
 stages = "production"
@@ -23,7 +23,7 @@ Dir.glob('capistrano/tasks/*.rake').each { |r| import r }
 
 Capistrano::Application.invoke("production")
 Capistrano::Application.invoke("deploy")
-{% endhighlight%}
+```
 
 Note that the require order is important as the stage needs to be set before
 you load setup and deploy.

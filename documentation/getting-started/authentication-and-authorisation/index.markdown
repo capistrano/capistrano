@@ -13,10 +13,10 @@ members)
 To create this deploy user we'll assume something like the following has been
 done:
 
-{% highlight bash %}
+```bash
 root@remote $ adduser deploy
 root@remote $ passwd -l deploy
-{% endhighlight %}
+```
 
 The first line creates a completely standard user, it has a home directory,
 which we'll need in a moment, and has a shell, so it may log in. This needs to
@@ -54,9 +54,9 @@ public key to the `deploy` user's `authorized_keys` file, that way if someone
 quits or gets fired, you can remove their key from that file, and the rest of
 you can keep on shipping!
 
-{% highlight bash %}
+```bash
 me@localhost $ ssh-keygen -t rsa -C 'me@my_email_address.com'
-{% endhighlight %}
+```
 
 You'll be prompted for a passphrase, that's fine. Type one and keep it safe.
 This passphrase ensures that if your computer is stolen, people still need a
@@ -72,17 +72,17 @@ minutes upwards.)
 
 We can see which keys are loaded in the SSH agent by running `ssh-add -l`
 
-{% highlight bash %}
+```bash
 me@localhost $ ssh-add -l
 2048 af:ce:7e:c5:93:18:39:ff:54:20:7a:2d:ec:05:7c:a5 /Users/me/.ssh/id_rsa (RSA)
-{% endhighlight %}
+```
 
 If you don't see any keys listed, you can simply run `ssh-add`:
 
-{% highlight bash %}
+```bash
 me@localhost $ ssh-add
 Identity added: /Users/me/.ssh/id_rsa (/Users/me/.ssh/id_rsa)
-{% endhighlight %}
+```
 
 Typically, ssh-add will ask you for the passphrase when you add a key.
 
@@ -98,10 +98,10 @@ At this point with the key loaded into the agent, we need to put the
 `/home/users/deploy/.ssh/authorized_keys`, to get the contents of that file,
 we can ask our local key agent for the public parts of the keys it has loaded:
 
-{% highlight bash %}
+```bash
 me@localhost $ ssh-add -L
 ssh-rsa jccXJ/JRfGxnkh/8iL........dbfCH/9cDiKa0Dw8XGAo01mU/w== /Users/me/.ssh/id_rsa
-{% endhighlight %}
+```
 
 This will be a lot longer when you run it, I snipped the output because it
 looked bad.
@@ -116,7 +116,7 @@ If you are on linux there often exists a command
 [`ssh-copy-id`](http://linux.die.net/man/1/ssh-copy-id) which streamlines this
 process, otherwise the workflow is something like:
 
-{% highlight bash %}
+```bash
 me@localhost $ ssh root@remote
 root@remote $ su - deploy
 deploy@remote $ cd ~
@@ -124,7 +124,7 @@ deploy@remote $ mkdir .ssh
 deploy@remote $ echo "ssh-rsa jccXJ/JRfGxnkh/8iL........dbfCH/9cDiKa0Dw8XGAo01mU/w== /Users/me/.ssh/id_rsa" >> .ssh/authorized_keys
 deploy@remote $ chmod 700 .ssh
 deploy@remote $ chmod 600 .ssh/authorized_keys
-{% endhighlight %}
+```
 
 **Remember:** This needs to be done on every server you want to use, you can
 use the same key for each one, but only one key per developer is recommended.
@@ -132,11 +132,11 @@ use the same key for each one, but only one key per developer is recommended.
 
 If we did all that correctly, we should now be able to do something like this:
 
-{% highlight bash %}
+```bash
 me@localhost $ ssh deploy@one-of-my-servers.com 'hostname; uptime'
 one-of-my-servers.com
 19:23:32 up 62 days, 44 min, 1 user, load average: 0.00, 0.01, 0.05
-{% endhighlight %}
+```
 
 That should happen without having to enter a passphrase for your SSH key, or
 prompting you for an SSH password (which the deploy user doesn't have anyway).
@@ -164,7 +164,7 @@ charset="utf-8"></script>
 If your server isn't accessible directly and you need to use the SSH
 ProxyCommand option, you should do
 
-{% highlight ruby %}
+```ruby
 require 'net/ssh/proxy/command'
 
 set :ssh_options, proxy: Net::SSH::Proxy::Command.new('ssh mygateway.com -W %h:%p')
@@ -175,7 +175,7 @@ server 'internal-hostname',
   ssh_options: {
     proxy: Net::SSH::Proxy::Command.new('ssh mygateway.com -W %h:%p'),
   }
-{% endhighlight %}
+```
 
 #### 1.2 From our servers to the repository host
 
@@ -192,10 +192,10 @@ Github.
 
 Here's how we can check if that works, first get the URL of the repository:
 
-{% highlight bash %}
+```bash
 me@localhost $ git config remote.origin.url
 git@github.com:capistrano/rails3-bootstrap-devise-cancan.git
-{% endhighlight %}
+```
 
 Here we're listing our private (for testing purposes) fork of the
 rails3-bootstrap-devise-cancan repository forked from the Rails Examples and
@@ -203,13 +203,13 @@ Tutorials project.
 
 We can try to access the repository via our server by doing the following:
 
-{% highlight bash %}
+```bash
 # List SSH keys that are loaded into the agent
 me@localhost $ ssh-add -l
 # Make sure they key is loaded if 'ssh-add -l' didn't show anything
 me@localhost $ ssh-add
 me@localhost $ ssh -A deploy@one-of-my-servers.com 'git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git
-{% endhighlight %}
+```
 
 We first check that the agent has the keys loaded. If not we simply load it
 and enter the passphrase when prompted.
@@ -225,7 +225,7 @@ to the list of known hosts.
 
 From the SSH documentation:
 
-{% highlight bash %}
+```bash
 -A  Enables forwarding of the authentication agent connection.  This can also be
    specified on a per-host basis in a configuration file.
 
@@ -235,7 +235,7 @@ From the SSH documentation:
    attacker cannot obtain key material from the agent, however they can perform
    operations on the keys that enable them to authenticate using the identities
    loaded into the agent.
-{% endhighlight %}
+```
 
 In layman's terms, you shouldn't use SSH agent forwarding to machines where you
 don't trust the administrators, as they can can override the permissions on
@@ -254,11 +254,11 @@ Github, we'll be prompted for a username and password:
 
 ##### 1.2.2.1 With a regular username/password
 
-{% highlight bash %}
+```bash
 me@localhost $ git ls-remote https://github.com/capistrano/rails3-bootstrap-devise-cancan.git
 Username for 'https://github.com': myownusername
 Password for 'https://capistrano@github.com':
-{% endhighlight %}
+```
 
 This challenge response prompt doesn't work well for automating things, so
 there are two ways to get around this depending on your server's host
@@ -269,11 +269,11 @@ The other mechanism, and the reason that its **very** important to always use
 HTTPS not plain ol' HTTP is to embed the username and password in the URL,
 note this won't work well if your password has special characters:
 
-{% highlight bash %}
+```bash
 me@localhost $ git ls-remote https://capistrano:ourverysecretpassword@github.com/capistrano/rails3-bootstrap-devise-cancan.git
 3419812c9f146d9a84b44bcc2c3caef94da54758HEAD
 3419812c9f146d9a84b44bcc2c3caef94da54758HEADrefs/heads/master
-{% endhighlight %}
+```
 
 The bigger problem with passwords, whether inlined into the URL, or entered
 into a `netrc` file, is that the password gives access to **your entire Github
@@ -286,11 +286,11 @@ at Github, they recently rolled out a feature called [Personal API
 Tokens](https://github.com/blog/1509-personal-api-tokens) which allow you to
 do something like this:
 
-{% highlight bash %}
+```bash
 me@localhost $ git ls-remote https://XXXX:@github.com/capistrano/rails3-bootstrap-devise-cancan.git
 3419812c9f146d9a84b44bcc2c3caef94da54758HEAD
 3419812c9f146d9a84b44bcc2c3caef94da54758HEADrefs/heads/master
-{% endhighlight %}
+```
 
 Where `XXXX` is a personal API token, as such:
 
@@ -321,9 +321,9 @@ have configured *passwordless* `sudo`. Configuring `sudo` to give some users
 access to some commands under some circumstances is beyond the scope of this
 documentation, but sufficed to say something like:
 
-{% highlight bash %}
+```bash
 deploy ALL=NOPASSWD:/etc/init.d/mysqld, /etc/init.d/apache2
-{% endhighlight %}
+```
 
 This example would give the user named `deploy` access to call `sudo
 /etc/init.d/mysql _________` and the same for the `apache2` control script.
@@ -338,7 +338,7 @@ notice a change.
 To configure this hierarchy, ignoring for the moment the passwordless `sudo`
 access that you may or may not need depending how well your servers are setup:
 
-{% highlight bash %}
+```bash
 me@localhost $ ssh root@remote
 # Capistrano will use /var/www/....... where ... is the value set in
 # :application, you can override this by setting the ':deploy_to' variable
@@ -349,7 +349,7 @@ root@remote $ umask 0002
 root@remote $ chmod g+s ${deploy_to}
 root@remote $ mkdir ${deploy_to}/{releases,shared}
 root@remote $ chown deploy ${deploy_to}/{releases,shared}
-{% endhighlight %}
+```
 
 **Note:** The `chmod g+s` is a really handy, and little known Unix feature, it
 means that at the operating system level, without having to pay much attention
@@ -362,12 +362,12 @@ group: read/write, other: none*. This means that we'll be able to read these
 files from Apache, or our web server by running the web server in the `deploy`
 group namespace.
 
-{% highlight bash %}
+```bash
 root@remote # stat -c "%A (%a) %n" ${deploy_to}/
 drwx--S--- (2700)  /var/www/rails3-bootstrap-devise-cancan-demo
 
 root@remote # stat -c "%A (%a) %n" ${deploy_to}/*
 drwxrwsr-x (2775)  /var/www/rails3-bootstrap-devise-cancan-demo/releases
 drwxrwsr-x (2775)  /var/www/rails3-bootstrap-devise-cancan-demo/shared
-{% endhighlight %}
+```
 

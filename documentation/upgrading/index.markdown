@@ -8,37 +8,37 @@ Update your Gemfile: `gem 'capistrano', '~> 3.0', require: false, group: :develo
 
 
 If you deploy Rails, you wil also need `capistrano-rails` and `capistrano-bundler` gems (Rails and Bundler integrations were moved out from Capistrano 3).
-{% highlight ruby %}
+```ruby
 group :development do
   gem 'capistrano-rails',   '~> 1.1', require: false
   gem 'capistrano-bundler', '~> 1.1', require: false
 end
-{% endhighlight %}
+```
 
   You can add idiomatic support for your preferred ruby version manager: rvm, rbenv, chruby.
-{% highlight ruby %}
+```ruby
 group :development do
   gem 'capistrano-rvm',   '~> 0.1', require: false
   gem 'capistrano-rbenv', '~> 2.0', require: false
   gem 'capistrano-chruby', github: 'capistrano/chruby', require: false
 end
-{% endhighlight %}
+```
 
 2.
 We recommend to capify the project from scratch and move definitions from old to new configs then.
 
-{% highlight bash %}
+```bash
 mkdir old_cap
 mv Capfile old_cap
 mv config/deploy.rb old_cap
 mv config/deploy/ old_cap # --> only for multistage setups
-{% endhighlight %}
+```
 
 It's time to capify:
 
-{% highlight bash %}
+```bash
 cap install
-{% endhighlight %}
+```
 
 3.
 Capistrano 3 is multistage by default, so you will have `config/deploy/production.rb` and `config/deploy/staging.rb` right after capifying.
@@ -50,11 +50,11 @@ Update `config/deploy/production.rb` and `config/deploy/staging.rb` to have rele
 5.
 If you had a gateway server set doing `set :gateway, "www.capify.org"` you should upgrade to
 
-{% highlight ruby %}
+```ruby
 require 'net/ssh/proxy/command'
 
 set :ssh_options, proxy: Net::SSH::Proxy::Command.new('ssh mygateway.com -W %h:%p')
-{% endhighlight %}
+```
 
 Or the per-server `ssh_options` equivalent.
 
@@ -68,19 +68,19 @@ Notice that some parameters are not necessary anymore: `use_sudo`, `normalize_as
 7.
 If you didn't use `deploy_to` before and deployed to `/u/apps/your_app_name`, you need one more change. Now default deploy path is `/var/www/app_name` and your config will be broken after upgrade. Just declare custom `deploy_to` option:
 
-{% highlight ruby %}
+```ruby
 set :deploy_to, "/u/apps/#{fetch(:application)}"
-{% endhighlight %}
+```
 
 But in advance, `/u/apps` is not the best place to store apps and we advice you to change it later.
 
 8.
 Keep editing Capfile and uncomment addons you need, such as rbenv/rvm, bundler or rails.
-{% highlight ruby %}
+```ruby
 require 'capistrano/rails'
 require 'capistrano/bundler'
 require 'capistrano/rbenv'
-{% endhighlight %}
+```
 
 9.
 Yay! Try to deploy with your new config set. If you discover any missing info in this upgrade guide, you're welcome to contribute to it.
@@ -91,16 +91,16 @@ Yay! Try to deploy with your new config set. If you discover any missing info in
 
 Instead of:
 
-{% highlight ruby %}
+```ruby
 run <<-CMD.compact
   cd -- #{latest_release} &&
   RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile
 CMD
-{% endhighlight %}
+```
 
 It's better to use:
 
-{% highlight ruby %}
+```ruby
 on roles :all do
   within fetch(:latest_release_directory) do
     with rails_env: fetch(:rails_env) do
@@ -108,13 +108,13 @@ on roles :all do
     end
   end
 end
-{% endhighlight %}
+```
 
 Note: 'within' blocks are required to be wrapped in an 'on' block for the dsl to recognize it
 
 You may only have one 'with' block per call. If you need more than one env set, use the syntax in the 'with' block arg like this (pass it a map):
 
-{% highlight ruby %}
+```ruby
 on roles :all do
   within fetch(:latest_release_directory) do
     with rails_env: fetch(:rails_env), rails_relative_url_root: '/home' do
@@ -122,4 +122,4 @@ on roles :all do
     end
   end
 end
-{% endhighlight %}
+```

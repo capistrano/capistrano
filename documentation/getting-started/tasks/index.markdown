@@ -3,7 +3,7 @@ title: Tasks
 layout: default
 ---
 
-{% highlight ruby %}
+```ruby
 server 'example.com', roles: [:web, :app]
 server 'example.org', roles: [:db, :workers]
 desc "Report Uptimes"
@@ -13,7 +13,7 @@ task :uptime do
     info "Host #{host} (#{host.roles.to_a.join(', ')}):\t#{capture(:uptime)}"
   end
 end
-{% endhighlight %}
+```
 
 **Note**:
 

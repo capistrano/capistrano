@@ -7,7 +7,7 @@ Capistrano executes commands on remote servers using [**SSHKit**](https://github
 
 An example setting a working directory, user and environment variable:
 
-{% highlight ruby %}
+```ruby
 on roles(:app), in: :sequence, wait: 5 do
   within "/opt/sites/example.com" do
     # commands in this block execute in the
@@ -23,7 +23,7 @@ on roles(:app), in: :sequence, wait: 5 do
     end
   end
 end
-{% endhighlight %}
+```
 
 For more examples, see the EXAMPLES.md file in the [**SSHKit**](https://github.com/capistrano/sshkit) project:
 
