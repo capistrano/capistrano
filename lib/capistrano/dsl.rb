@@ -51,8 +51,8 @@ module Capistrano
     end
 
     def on(hosts, options={}, &block)
-      subset = Configuration.env.filter hosts
-      SSHKit::Coordinator.new(subset).each(options, &block)
+      subset_copy = Marshal.dump(Configuration.env.filter(hosts))
+      SSHKit::Coordinator.new(Marshal.load(subset_copy)).each(options, &block)
     end
 
     def run_locally(&block)

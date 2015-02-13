@@ -27,6 +27,10 @@ Given(/^a custom task to generate a file$/) do
   TestApp.copy_task_to_test_app('spec/support/tasks/database.rake')
 end
 
+Given(/^a task which executes as root$/) do
+  TestApp.copy_task_to_test_app('spec/support/tasks/root.rake')
+end
+
 Given(/config stage file has line "(.*?)"/) do |line|
   TestApp.append_to_deploy_file(line)
 end

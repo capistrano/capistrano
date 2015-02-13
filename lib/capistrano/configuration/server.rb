@@ -98,7 +98,7 @@ module Capistrano
           @properties[key]
         end
 
-        def respond_to?(method)
+        def respond_to?(method, include_all=false)
           @properties.has_key?(method)
         end
 
