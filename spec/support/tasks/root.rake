@@ -4,4 +4,8 @@ task :am_i_root do
     ident = capture :id, '-a'
     info "I am #{ident}"
   end
+  on roles(:all) do |host|
+    ident = capture :id, '-a'
+    info "I am #{ident}"
+  end
 end

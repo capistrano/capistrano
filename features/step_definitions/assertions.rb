@@ -106,10 +106,14 @@ When(/^an error is raised$/) do
   run_vagrant_command(test_file_exists(error))
 end
 
-Then(/contains "(.*?)" in the output/) do |expected|
+Then(/contains "([^"]*)" in the output/) do |expected|
   expect(@output).to include(expected)
 end
 
-Then(/doesn't contain "(.*?)" in the output/) do |expected|
+Then(/the output matches "([^"]*)" followed by "([^"]*)"/) do |expected, followedby|
+  expect(@output).to match(/#{expected}.*#{followedby}/m)
+end
+
+Then(/doesn't contain "([^"]*)" in the output/) do |expected|
   expect(@output).not_to include(expected)
 end
