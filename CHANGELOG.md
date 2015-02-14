@@ -14,6 +14,15 @@ Reverse Chronological Order:
   * release_roles did not honour additional property filtering (@townsen)
   * Refactored and simplified property filtering code (@townsen)
 
+* Breaking Changes
+  * Hosts with the same name are now consolidated into one irrespective of the
+    user and port. This allows multiple declarations of a server to be made safely.
+    The last declared properties will win. See capistrnorb.com Properties documentation
+    for details.
+  * Inside the on() block the host variable is now a copy of the host, so changes can be
+    made within the block (such as dynamically overriding the user) that will not persist.
+    This is very convenient for switching the SSH user temporarily to 'root' for example.
+
 * Minor changes
   * Add role_properties() method (see capistrano.github.io PR for doc) (@townsen)
   * Add equality syntax ( eg. port: 1234) for property filtering (@townsen)

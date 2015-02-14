@@ -241,23 +241,43 @@ describe Capistrano::DSL do
       end
 
       describe 'fetching all servers' do
-        subject { dsl.roles(:all).map { |server| "#{server.user}@#{server.hostname}:#{server.port}" } }
-
-        it 'creates a server instance for each unique user@host:port combination' do
-          expect(subject).to eq %w{db@example1.com:1234 root@example1.com:1234 @example1.com:5678 deployer@example1.com:1234}
+        it 'creates one server per hostname, ignoring user and port combinations' do
+          expect(dsl.roles(:all).size).to eq(1)
         end
       end
 
       describe 'fetching servers for a role' do
         it 'roles defined using the `server` syntax are included' do
-          expect(dsl.roles(:web).size).to eq(2)
+          as = dsl.roles(:web).map { |server| "#{server.user}@#{server.hostname}:#{server.port}" }
+          expect(as.size).to eq(1)
+          expect(as[0]).to eq("deployer@example1.com:5678")
         end
 
         it 'roles defined using the `role` syntax are included' do
-          expect(dsl.roles(:app).size).to eq(2)
+          as = dsl.roles(:app).map { |server| "#{server.user}@#{server.hostname}:#{server.port}" }
+          expect(as.size).to eq(1)
+          expect(as[0]).to eq("deployer@example1.com:5678")
         end
       end
 
+    end
+
+    describe 'when setting user and port' do
+      subject { dsl.roles(:all).map { |server| "#{server.user}@#{server.hostname}:#{server.port}" }.first }
+
+      describe "using the :user property" do
+        it "takes precedence over in the host string" do
+          dsl.server 'db@example1.com:1234', roles: %w{db}, active: true, user: 'brian'
+          expect(subject).to eq("brian@example1.com:1234")
+        end
+      end
+
+      describe "using the :port property" do
+        it "takes precedence over in the host string" do
+          dsl.server 'db@example1.com:9090', roles: %w{db}, active: true, port: 1234
+          expect(subject).to eq("db@example1.com:1234")
+        end
+      end
     end
 
   end
@@ -535,6 +555,26 @@ describe Capistrano::DSL do
       recipient.expects(:doit).with('example2.com', :redis, { port: 6379, type: :master})
       recipient.expects(:doit).with('example3.com', :app, nil)
       dsl.role_properties(:redis, :app) do |host, role, props|
+        recipient.doit(host, role, props)
+      end
+    end
+
+    it 'yields the merged properties for multiple roles' do
+      recipient = mock('recipient')
+      recipient.expects(:doit).with('example1.com', :redis, { port: 6379, type: :slave})
+      recipient.expects(:doit).with('example2.com', :redis, { port: 6379, type: :master})
+      recipient.expects(:doit).with('example1.com', :web, { port: 80 })
+      recipient.expects(:doit).with('example2.com', :web, { port: 81 })
+      dsl.role_properties(:redis, :web) do |host, role, props|
+        recipient.doit(host, role, props)
+      end
+    end
+
+    it 'honours a property filter before yielding' do
+      recipient = mock('recipient')
+      recipient.expects(:doit).with('example1.com', :redis, { port: 6379, type: :slave})
+      recipient.expects(:doit).with('example1.com', :web, { port: 80 })
+      dsl.role_properties(:redis, :web, select: :active) do |host, role, props|
         recipient.doit(host, role, props)
       end
     end

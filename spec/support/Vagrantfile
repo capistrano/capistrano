@@ -1,3 +1,5 @@
+require 'open-uri'
+
 Vagrant.configure("2") do |config|
 
   config.ssh.insert_key = false
@@ -8,6 +10,15 @@ Vagrant.configure("2") do |config|
       config.vm.box = 'hashicorp/precise64'
       config.vm.network "forwarded_port", guest: 22, host: "222#{i}".to_i
       config.vm.provision :shell, inline: 'sudo apt-get -y install git-core'
+
+      vagrantkey = open("https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub", "r",&:read)
+
+      config.vm.provision :shell,
+        inline: <<-INLINE
+          install -d -m 700 /root/.ssh
+          echo -e "#{vagrantkey}" > /root/.ssh/authorized_keys
+          chmod 0600 /root/.ssh/authorized_keys
+      INLINE
     end
   end
 end

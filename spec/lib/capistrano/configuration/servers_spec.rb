@@ -18,6 +18,12 @@ module Capistrano
           expect(servers.count).to eq 1
         end
 
+        it 'handles de-duplification within roles with users' do
+          servers.add_role(:app, %w{1}, user: 'nick')
+          servers.add_role(:app, %w{1}, user: 'fred')
+          expect(servers.count).to eq 1
+        end
+
         it 'accepts instances of server objects' do
           servers.add_role(:app, [Capistrano::Configuration::Server.new('example.net'), 'example.com'])
           expect(servers.roles_for([:app]).length).to eq 2
@@ -134,7 +140,23 @@ module Capistrano
           servers.add_host('1', roles: [:app, 'web'], test: :value, user: 'root', port: 34)
           servers.add_host('1', roles: [:app, 'web'], test: :value, user: 'deployer', port: 34)
           servers.add_host('1', roles: [:app, 'web'], test: :value, user: 'deployer', port: 56)
-          expect(servers.count).to eq(8)
+          expect(servers.count).to eq(1)
+        end
+
+        describe "with a :user property" do
+
+          it 'sets the server ssh username' do
+            servers.add_host('1', roles: [:app, 'web'], user: 'nick')
+            expect(servers.count).to eq(1)
+            expect(servers.roles_for([:all]).first.user).to eq 'nick'
+          end
+
+          it 'overwrites the value of a user specified in the hostname' do
+            servers.add_host('brian@1', roles: [:app, 'web'], user: 'nick')
+            expect(servers.count).to eq(1)
+            expect(servers.roles_for([:all]).first.user).to eq 'nick'
+          end
+
         end
 
         it 'overwrites the value of a previously defined scalar property' do
