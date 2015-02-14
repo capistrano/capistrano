@@ -19,20 +19,26 @@ basic _role_ functionality. These are:
 * `:password` - for the SSH user
 * `:port`  - the port number of the SSH daemon on the server
 * `:roles` - an array of rolenames
+* `:ssh_config` - a hash of SSH parameters (see below)
 * `:primary` - a boolean that indicates whether the server should be considered primary or
   not.
 
-The values of `:user`, `:password` and `:port` if not specified will default to the same
-values contained in the `:ssh_options` global variable of the stage. If this is not
-specified then SSH will fallback to any settings in your local `~/.ssh/config`
+The `:user`, and `:port` may be specified in three ways:
+* As part of the hostname (user@host:port),
+* In the properties `:user` and `:port`, and
+* In the property `:ssh_config` with the same keys
 
-<div class="alert-box alert">The :user and :port properties are treated somewhat
-differently to the other properties: They are <b>not</b> merged as described below. If you
-define multiple servers with different users or ports then <b>multiple</b> instances of
-the server will be created. This is usually not what is expected.  It is recommended to
-specify the user and port for all servers in the stage variable :ssh_config.  This
-behaviour is currently under review and may be changed in future.  </div>
+The `:password` may only be specified in the properties or the `:ssh_config` and not in
+the hostname.
 
+#### Precedence
+
+Values specified in the hostname will be overridden by any property declarations. The last
+property declaration overrides all the previous server or role declarations.
+
+If no properties or hostname declarations are found then the `:ssh_options` property holds
+the defaults. These are in turn merged with any defaults in the stage global variable of
+the same name. Finally SSH will honour settings in your local `~/.ssh/config` file.
 
 ### Custom Properties
 
@@ -43,6 +49,32 @@ stage file (representing all the relationships between application components) i
 _Model_, the tasks (enabling model changes to be actioned) are the _Controllers_, and the
 actual physical embodiments (typically configuration files on running servers) are the
 _Views_.
+
+### Property Access from within Tasks
+
+The properties on Capistrano server are accessible programmatically from a Capistrano
+task. _Capistrano_ properties are available through methods on the host object itself and
+_Custom_ properties via methods on the `properties` attribute of the host.
+
+These methods have the expected names: `user`, `port` and so on. An exception is the
+`ssh_config` which is available via the `netssh_options` method.
+
+The following feature is new in Capistrano 3.3.6 and above.
+
+Within the scope of an `on()` block, the host that is yielded is a *copy* of the underlying
+host, which allows you to temporarily override any of the properties by calling the setter
+method. An example is:
+
+```ruby
+on roles(:all) do |host|
+  host.user = 'root'
+  host.password = 'supersecret'
+  execute :yum, 'makecache'
+end
+```
+
+This temporarily sets the SSH user to 'root' (with an appropriate password) without
+affecting the SSH user defined for the server in the configuration.
 
 ### Property setting in Complex Configurations
 

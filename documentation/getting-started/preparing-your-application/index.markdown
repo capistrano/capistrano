@@ -141,11 +141,9 @@ properties will be merged. See the Properties Documentation for details
 </div>
 
 <div class="alert-box alert"> If you define servers with either the simple or the extended
-syntax and explicitly specify a user or a port number <b>multiple</b> servers will be created
-and the merging will be ill-defined. This may break your deployment! If you wish to merge
-properties then specify the user and port in the variable :ssh_config. This behaviour is
-currently under review and may be changed in future.
-</div>
+syntax and explicitly specify a user or a port number the last definition will win. This
+is identical behaviour to scalar custom properties. In older versions of Capistrano
+<b>multiple</b> servers were created and the merging was ill-defined.  </div>
 
 ### 5. Set the shared information in `deploy.rb`.
 
