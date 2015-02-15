@@ -19,26 +19,31 @@ basic _role_ functionality. These are:
 * `:password` - for the SSH user
 * `:port`  - the port number of the SSH daemon on the server
 * `:roles` - an array of rolenames
-* `:ssh_config` - a hash of SSH parameters (see below)
+* `:ssh_options` - a hash of SSH parameters (see below)
 * `:primary` - a boolean that indicates whether the server should be considered primary or
   not.
 
-The `:user`, and `:port` may be specified in three ways:
-* As part of the hostname (user@host:port),
-* In the properties `:user` and `:port`, and
-* In the property `:ssh_config` with the same keys
+The `:user`, `:port` and `:password` may be specified as follows:
 
-The `:password` may only be specified in the properties or the `:ssh_config` and not in
-the hostname.
+* As part of the hostname in the form 'user@host:port' without a password,
+* In the properties `:user`, `:password` and `:port`, and
+* In the property `:ssh_options` (with the same keys)
 
 #### Precedence
 
-Values specified in the hostname will be overridden by any property declarations. The last
-property declaration overrides all the previous server or role declarations.
+The SSH related properties are set with the following precedence, beginning with the
+highest:
 
-If no properties or hostname declarations are found then the `:ssh_options` property holds
-the defaults. These are in turn merged with any defaults in the stage global variable of
-the same name. Finally SSH will honour settings in your local `~/.ssh/config` file.
+* Property declarations on the server or role. The last property declaration overrides all
+  the previous server or role declarations
+* Values specified in the hostname string
+* Values in the server or role `:ssh_options` property
+* The stage global variable `:ssh_options`
+* The SSHKit backend `ssh_options`
+* The settings in your local `~/.ssh/config` file
+
+Note however that defaults taken from these places will _not_ be reflected back into the
+server properties, so `host.user` will be nil if a lower precedence default is being used.
 
 ### Custom Properties
 
