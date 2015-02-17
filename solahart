@@ -1,0 +1,1 @@
+<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3966.9899188879267!2d106.871485!3d-6.1320559999999995!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e6a1fd67a583099%3A0x6724f9550475f8c4!2sService+Solahart+Jakarta+Utara!5e0!3m2!1sid!2sid!4v1424156186893" width="600" height="450" frameborder="0" style="border:0"></iframe>
