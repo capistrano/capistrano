@@ -3,8 +3,16 @@
 Reverse Chronological Order:
 
 ## master
+
+https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
+
+## `3.4.0`
+
+https://github.com/capistrano/capistrano/compare/v3.3.5...v3.4.0
+
 * Fixed fetch revision for annotated git tags. (@igorsokolov)
 * Fixed updating roles when custom user or port is specified. (@ayastreb)
+* Disables statistics collection.
 
 * `bin/` is not suggested to be in `linked_dirs` anymore (@kirs)
   * bin/ is often checked out into repo
@@ -31,8 +39,6 @@ Reverse Chronological Order:
     * Both available syntaxes provide similar functionality, do not use both for the same server+role combination.
   * Allow specification of repo_path using stage variable
     default is as before (@townsen)
-
-https://github.com/capistrano/capistrano/compare/v3.3.5...HEAD
 
 ## `3.3.5`
 
