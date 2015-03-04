@@ -46,9 +46,9 @@ module Capistrano
         when :none then return []
         when :all  then return servers
         when :host
-          as.select {|s| @rex.match s.hostname}
+          as.select {|s| @rex.match s.to_s}
         when :role
-          as.select {|s| s.roles.any? {|r| @rex.match r} }
+          as.select { |s| s.is_a?(String) ? false : s.roles.any? {|r| @rex.match r} }
         end
       end
     end
