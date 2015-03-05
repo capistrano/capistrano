@@ -467,56 +467,88 @@ describe Capistrano::DSL do
 
   describe 'on()' do
 
-    before do
-      dsl.server 'example1.com', roles: %w{web}, active: true
-      dsl.server 'example2.com', roles: %w{web}
-      dsl.server 'example3.com', roles: %w{app web}, active: true
-      dsl.server 'example4.com', roles: %w{app}, primary: true
-      dsl.server 'example5.com', roles: %w{db}, no_release: true
-      @coordinator = mock('coordinator')
-      @coordinator.expects(:each).returns(nil)
-      ENV.delete 'ROLES'
-      ENV.delete 'HOSTS'
+    describe "when passed server objects" do
+
+      before do
+        dsl.server 'example1.com', roles: %w{web}, active: true
+        dsl.server 'example2.com', roles: %w{web}
+        dsl.server 'example3.com', roles: %w{app web}, active: true
+        dsl.server 'example4.com', roles: %w{app}, primary: true
+        dsl.server 'example5.com', roles: %w{db}, no_release: true
+        @coordinator = mock('coordinator')
+        @coordinator.expects(:each).returns(nil)
+        ENV.delete 'ROLES'
+        ENV.delete 'HOSTS'
+      end
+
+      it 'filters by role from the :filter variable' do
+        hosts = dsl.roles(:web)
+        all = dsl.roles(:all)
+        SSHKit::Coordinator.expects(:new).with(hosts).returns(@coordinator)
+        dsl.set :filter, { role: 'web' }
+        dsl.on(all)
+      end
+
+      it 'filters by host and role from the :filter variable' do
+        all = dsl.roles(:all)
+        SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
+        dsl.set :filter, { role: 'db', host: 'example3.com' }
+        dsl.on(all)
+      end
+
+      it 'filters from ENV[ROLES]' do
+        hosts = dsl.roles(:db)
+        all = dsl.roles(:all)
+        SSHKit::Coordinator.expects(:new).with(hosts).returns(@coordinator)
+        ENV['ROLES'] = 'db'
+        dsl.on(all)
+      end
+
+      it 'filters from ENV[HOSTS]' do
+        hosts = dsl.roles(:db)
+        all = dsl.roles(:all)
+        SSHKit::Coordinator.expects(:new).with(hosts).returns(@coordinator)
+        ENV['HOSTS'] = 'example5.com'
+        dsl.on(all)
+      end
+
+      it 'filters by ENV[HOSTS] && ENV[ROLES]' do
+        all = dsl.roles(:all)
+        SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
+        ENV['HOSTS'] = 'example5.com'
+        ENV['ROLES'] = 'web'
+        dsl.on(all)
+      end
 
     end
 
-    it 'filters by role from the :filter variable' do
-      hosts = dsl.roles(:web)
-      all = dsl.roles(:all)
-      SSHKit::Coordinator.expects(:new).with(hosts).returns(@coordinator)
-      dsl.set :filter, { role: 'web' }
-      dsl.on(all)
-    end
+    describe "when passed server literal names" do
 
-    it 'filters by host and role from the :filter variable' do
-      all = dsl.roles(:all)
-      SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
-      dsl.set :filter, { role: 'db', host: 'example3.com' }
-      dsl.on(all)
-    end
+      before do
+        ENV.delete 'ROLES'
+        ENV.delete 'HOSTS'
+        @coordinator = mock('coordinator')
+        @coordinator.expects(:each).returns(nil)
+      end
 
-    it 'filters from ENV[ROLES]' do
-      hosts = dsl.roles(:db)
-      all = dsl.roles(:all)
-      SSHKit::Coordinator.expects(:new).with(hosts).returns(@coordinator)
-      ENV['ROLES'] = 'db'
-      dsl.on(all)
-    end
+      it "selects nothing when a role filter is present" do
+        dsl.set :filter, { role: 'web' }
+        SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
+        dsl.on('my.server')
+      end
 
-    it 'filters from ENV[HOSTS]' do
-      hosts = dsl.roles(:db)
-      all = dsl.roles(:all)
-      SSHKit::Coordinator.expects(:new).with(hosts).returns(@coordinator)
-      ENV['HOSTS'] = 'example5.com'
-      dsl.on(all)
-    end
+      it "selects using the string when a host filter is present" do
+        dsl.set :filter, { host: 'server.local' }
+        SSHKit::Coordinator.expects(:new).with(['server.local']).returns(@coordinator)
+        dsl.on('server.local')
+      end
 
-    it 'filters by ENV[HOSTS] && ENV[ROLES]' do
-      all = dsl.roles(:all)
-      SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
-      ENV['HOSTS'] = 'example5.com'
-      ENV['ROLES'] = 'web'
-      dsl.on(all)
+      it "doesn't select when a host filter is present that doesn't match" do
+        dsl.set :filter, { host: 'ruby.local' }
+        SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
+        dsl.on('server.local')
+      end
+
     end
 
   end

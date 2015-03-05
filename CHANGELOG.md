@@ -8,6 +8,9 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 
 * Removed the post-install message (@Kriechi)
 
+* Minor changes
+  * Fix filtering behaviour when using literal hostnames in on() block (@townsen)
+
 ## `3.4.0`
 
 https://github.com/capistrano/capistrano/compare/v3.3.5...v3.4.0
