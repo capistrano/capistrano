@@ -208,7 +208,7 @@ We can try to access the repository via our server by doing the following:
 me@localhost $ ssh-add -l
 # Make sure they key is loaded if 'ssh-add -l' didn't show anything
 me@localhost $ ssh-add
-me@localhost $ ssh -A deploy@one-of-my-servers.com 'git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git
+me@localhost $ ssh -A deploy@one-of-my-servers.com 'git ls-remote git@github.com:capistrano/rails3-bootstrap-devise-cancan.git'
 ```
 
 We first check that the agent has the keys loaded. If not we simply load it
