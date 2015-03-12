@@ -21,3 +21,5 @@ This list is neither complete nor audited in any way.
 <div class="github-widget" data-repo="dei79/capistrano-rails-collection"></div>
 
 <div class="github-widget" data-repo="qhwa/capistrano-hostmenu"></div>
+
+<div class="github-widget" data-repo="mattbrictson/airbrussh"></div>
