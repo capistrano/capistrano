@@ -7,6 +7,8 @@ class Capistrano::Svn < Capistrano::SCM
   # execute svn in context with arguments
   def svn(*args)
     args.unshift(:svn)
+    args.push "--username #{fetch(:svn_username)}" if fetch(:svn_username)
+    args.push "--password #{fetch(:svn_password)}" if fetch(:svn_password)
     context.execute *args
   end
 
