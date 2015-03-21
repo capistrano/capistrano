@@ -18,7 +18,9 @@ class Capistrano::Svn < Capistrano::SCM
     end
 
     def check
-      test! :svn, :info, repo_url
+      svn_username = fetch(:svn_username) ? "--username #{fetch(:svn_username)}" : ''
+      svn_password = fetch(:svn_password) ? "--password #{fetch(:svn_password)}" : ''
+      test! :svn, :info, repo_url, svn_username, svn_password
     end
 
     def clone
