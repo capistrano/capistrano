@@ -7,6 +7,8 @@ class Capistrano::Svn < Capistrano::SCM
   # execute svn in context with arguments
   def svn(*args)
     args.unshift(:svn)
+    args.push "--username #{fetch(:svn_username)}" if fetch(:svn_username)
+    args.push "--password #{fetch(:svn_password)}" if fetch(:svn_password)
     context.execute *args
   end
 
@@ -16,7 +18,9 @@ class Capistrano::Svn < Capistrano::SCM
     end
 
     def check
-      test! :svn, :info, repo_url
+      svn_username = fetch(:svn_username) ? "--username #{fetch(:svn_username)}" : ''
+      svn_password = fetch(:svn_password) ? "--password #{fetch(:svn_password)}" : ''
+      test! :svn, :info, repo_url, svn_username, svn_password
     end
 
     def clone
