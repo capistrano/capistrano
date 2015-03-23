@@ -6,9 +6,9 @@ layout: default
 **Note:** In the documentation we simply recommend creating a single
 deployment user, and sharing it between team members. If you know why this is
 a bad idea (or why this may be against regulations in your jurisdiction in
-some cases, we assume that you know well enough how to use groups, umasking
+some cases), we assume that you know well enough how to use groups, umasking
 and setgid bits to make this work reliably for unique logins across team
-members)
+members.
 
 To create this deploy user we'll assume something like the following has been
 done:
