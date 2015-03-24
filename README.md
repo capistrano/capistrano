@@ -88,7 +88,7 @@ $ bundle exec cap production deploy --trace
 ## Testing
 
 Capistrano has two test suites: an RSpec suite and a Cucumber suite. The
-RSpec suite handles quick feedback unit specs. The Cucumber features are
+RSpec suite handles quick feedback unit specs. The Cucumber suite features
 an integration suite that uses Vagrant to deploy to a real virtual
 server. In order to run the Cucumber suite you will need to install
 [Vagrant](http://www.vagrantup.com/) and Vagrant supported
