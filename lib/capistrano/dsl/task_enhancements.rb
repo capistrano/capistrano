@@ -9,9 +9,8 @@ module Capistrano
 
     def after(task, post_task, *args, &block)
       Rake::Task.define_task(post_task, *args, &block) if block_given?
-      post_task = Rake::Task[post_task]
       Rake::Task[task].enhance do
-        post_task.invoke
+        Rake::Task[post_task].invoke
       end
     end
 

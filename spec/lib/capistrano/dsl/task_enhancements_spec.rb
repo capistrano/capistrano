@@ -54,6 +54,18 @@ module Capistrano
         expect(order).to eq(['before_task', 'task', 'after_task'])
       end
 
+      it 'invokes in proper order when referring to as-yet undefined tasks' do
+        task_enhancements.after('task', 'not_loaded_task')
+
+        Rake::Task.define_task('not_loaded_task') do
+          order.push 'not_loaded_task'
+        end
+
+        Rake::Task['task'].invoke order
+
+        expect(order).to eq(['task', 'not_loaded_task'])
+      end
+
       it 'invokes in proper order and with arguments and block' do
         task_enhancements.after('task', 'after_task_custom', :order) do |t, args|
           order.push 'after_task'
