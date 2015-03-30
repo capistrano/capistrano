@@ -19,7 +19,7 @@ module Capistrano
 
       let(:order) { [] }
       let!(:task) do
-        Rake::Task.define_task('task', [:order]) do |_, args|
+        Rake::Task.define_task('task', [:order]) do |t, args|
           args['order'].push 'task'
         end
       end
@@ -67,11 +67,11 @@ module Capistrano
       end
 
       it 'invokes in proper order and with arguments and block' do
-        task_enhancements.after('task', 'after_task_custom', :order) do
+        task_enhancements.after('task', 'after_task_custom', :order) do |t, args|
           order.push 'after_task'
         end
 
-        task_enhancements.before('task', 'before_task_custom', :order) do
+        task_enhancements.before('task', 'before_task_custom', :order) do |t, args|
           order.push 'before_task'
         end
 

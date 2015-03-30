@@ -13,7 +13,7 @@ module Capistrano
       describe '#new' do
         it "won't create an invalid type of filter" do
           expect {
-            Filter.new(:zarg)
+            f = Filter.new(:zarg)
           }.to raise_error RuntimeError
         end
 

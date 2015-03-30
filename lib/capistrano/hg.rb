@@ -6,7 +6,7 @@ class Capistrano::Hg < Capistrano::SCM
   # execute hg in context with arguments
   def hg(*args)
     args.unshift(:hg)
-    context.execute(*args)
+    context.execute *args
   end
 
   module DefaultStrategy
@@ -27,8 +27,7 @@ class Capistrano::Hg < Capistrano::SCM
     end
 
     def release
-      tree = fetch(:repo_tree)
-      if tree
+      if tree = fetch(:repo_tree)
         tree = tree.slice %r#^/?(.*?)/?$#, 1
         components = tree.split('/').size
         hg "archive --type tgz -p . -I", tree, "--rev", fetch(:branch), "| tar -x --strip-components #{components} -f - -C", release_path

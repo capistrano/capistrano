@@ -34,7 +34,7 @@ describe Capistrano::Application do
   end
 
   it "overrides the rake method, and sets the sshkit_backend to SSHKit::Backend::Printer" do
-    _out, _ = capture_io do
+    out, _ = capture_io do
       flags '--dry-run', '-n'
     end
     sshkit_backend = Capistrano::Configuration.fetch(:sshkit_backend)
@@ -51,7 +51,7 @@ describe Capistrano::Application do
 
   def command_line(*options)
     options.each { |opt| ARGV << opt }
-    def subject.exit(*_args)
+    def subject.exit(*args)
       throw(:system_exit, :exit)
     end
     subject.run

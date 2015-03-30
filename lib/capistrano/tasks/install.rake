@@ -18,7 +18,7 @@ task :install do
   entries += envs.split(',').map { |stage| {template: stage_rb, file: deploy_dir.join("#{stage}.rb")} }
 
   entries.each do |entry|
-    if File.exist?(entry[:file])
+    if File.exists?(entry[:file])
       warn "[skip] #{entry[:file]} already exists"
     else
       File.open(entry[:file], 'w+') do |f|
@@ -30,7 +30,7 @@ task :install do
 
   mkdir_p tasks_dir
 
-  if File.exist?('Capfile')
+  if File.exists?('Capfile')
     warn "[skip] Capfile already exists"
   else
     FileUtils.cp(capfile, 'Capfile')
