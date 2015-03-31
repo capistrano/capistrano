@@ -32,7 +32,7 @@ https://github.com/capistrano/capistrano/compare/v3.3.5...v3.4.0
 * Breaking Changes
   * Hosts with the same name are now consolidated into one irrespective of the
     user and port. This allows multiple declarations of a server to be made safely.
-    The last declared properties will win. See capistrnorb.com Properties documentation
+    The last declared properties will win. See capistranorb.com Properties documentation
     for details.
   * Inside the on() block the host variable is now a copy of the host, so changes can be
     made within the block (such as dynamically overriding the user) that will not persist.
