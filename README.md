@@ -27,7 +27,7 @@ Binaries for these VCS might be required on the local and/or the remote systems.
 Add this line to your application's Gemfile:
 
 ``` ruby
-gem 'capistrano', '~> 3.3.0'
+gem 'capistrano', '~> 3.4.0'
 ```
 
 And then execute:
