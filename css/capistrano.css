@@ -2,6 +2,23 @@ body {
   font-family: "proxima-nova",sans-serif;
 }
 
+#carbonads img {
+  float: left;
+  margin-right: 1em;
+}
+
+#carbonads .carbon-text {
+  display: block;
+  font-size: 0.9em;
+  color: silver;
+}
+
+#carbonads .carbon-poweredby {
+  font-size: 0.75em;
+  display: block;
+  color: silver
+}
+
 .header {
   margin-bottom: 30px;
   padding-top: 20px;
