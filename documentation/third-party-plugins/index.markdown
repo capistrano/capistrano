@@ -23,3 +23,18 @@ This list is neither complete nor audited in any way.
 <div class="github-widget" data-repo="qhwa/capistrano-hostmenu"></div>
 
 <div class="github-widget" data-repo="mattbrictson/airbrussh"></div>
+
+<div class="github-widget" data-repo="capistrano-plugins/capistrano-faster-assets"></div>
+
+<div class="github-widget" data-repo="ydkn/capistrano-rails-console"></div>
+
+<div class="github-widget" data-repo="seuros/capistrano-sidekiq"></div>
+
+<div class="github-widget" data-repo="sgruhier/capistrano-db-tasks"></div>
+
+<div class="github-widget" data-repo="mydrive/capistrano-deploytags"></div>
+
+<div class="github-widget" data-repo="a2ikm/capistrano-pending"></div>
+
+<div class="github-widget" data-repo="seuros/capistrano-puma"></div>
+
