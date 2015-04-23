@@ -12,6 +12,7 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
   * Fix filtering behaviour when using literal hostnames in on() block (@townsen)
   * Added options to set username and password when using Subversion as SCM (@dsthode)
   * Allow after() to refer to tasks that have not been loaded yet (@jcoglan)
+  * Change "GIT\_SSH" to "GIT\_SSH\_COMMAND".  See [issue #1421](https://github.com/capistrano/capistrano/issues/1421) (@jakanapes)
 
 ## `3.4.0`
 
