@@ -77,12 +77,13 @@ module Capistrano
     end
 
     describe "#fetch_revision" do
-      it "should run fetch revision" do
+      it "should run fetch revision and strip trailing whitespace" do
         context.expects(:repo_path).returns(:path)
 
-        context.expects(:capture).with(:svnversion, :path)
+        context.expects(:capture).with(:svnversion, :path).returns("12345\n")
 
-        subject.fetch_revision
+        revision = subject.fetch_revision
+        expect(revision).to eq("12345")
       end
     end
   end

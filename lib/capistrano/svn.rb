@@ -36,7 +36,7 @@ class Capistrano::Svn < Capistrano::SCM
     end
 
     def fetch_revision
-      context.capture(:svnversion, repo_path)
+      context.capture(:svnversion, repo_path).strip
     end
   end
 end
