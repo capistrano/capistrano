@@ -68,12 +68,12 @@ The following variables are settable:
 * `:linked_files`
   * **default:** `[]`
   * Listed files will be symlinked into each release directory during deployment.
-  * Can be used for persistent configuration files like `database.yml`. See Structure for the exact directorys.
+  * Can be used for persistent configuration files like `database.yml`. See Structure for the exact directories.
 
 * `:linked_dirs`
   * **default:** `[]`
   * Listed directories will be symlinked into the release directory during deployment.
-  * Can be used for persistent directories like uploads or other data. See Structure for the exact directorys.
+  * Can be used for persistent directories like uploads or other data. See Structure for the exact directories.
 
 * `:default_env`
   * **default:** `{}`
