@@ -9,6 +9,7 @@ module Capistrano
         @mode = case
                 when av.size == 0 then :none
                 when av.include?(:all) then :all
+                when av.include?('all') then :all
                 else type
                 end
         @rex = case @mode
