@@ -68,6 +68,11 @@ module Capistrano
           expect(set.size).to eq(available.size)
           expect(set.first.hostname).to eq('server1')
         end
+        it 'return all hosts using all as string' do
+          set = Filter.new(:role, 'all').filter(available)
+          expect(set.size).to eq(available.size)
+          expect(set.first.hostname).to eq('server1')
+        end
         it 'returns hosts in a single string role' do
           set = Filter.new(:role, 'web').filter(available)
           expect(set.size).to eq(2)
