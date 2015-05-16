@@ -8,6 +8,9 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 
 * Removed the post-install message (@Kriechi)
 
+* Breaking Changes
+  * host filtering config key and role filtering config key are changed from "host" to "hosts" and "role" to "roles" (@ynojima)
+
 * Minor changes
   * Fix filtering behaviour when using literal hostnames in on() block (@townsen)
   * Added options to set username and password when using Subversion as SCM (@dsthode)
