@@ -8,6 +8,7 @@ Update your Gemfile: `gem 'capistrano', '~> 3.0', require: false, group: :develo
 
 
 If you deploy Rails, you wil also need `capistrano-rails` and `capistrano-bundler` gems (Rails and Bundler integrations were moved out from Capistrano 3).
+
 ```ruby
 group :development do
   gem 'capistrano-rails',   '~> 1.1', require: false
@@ -16,6 +17,7 @@ end
 ```
 
   You can add idiomatic support for your preferred ruby version manager: rvm, rbenv, chruby.
+
 ```ruby
 group :development do
   gem 'capistrano-rvm',   '~> 0.1', require: false
@@ -76,6 +78,7 @@ But in advance, `/u/apps` is not the best place to store apps and we advice you 
 
 8.
 Keep editing Capfile and uncomment addons you need, such as rbenv/rvm, bundler or rails.
+
 ```ruby
 require 'capistrano/rails'
 require 'capistrano/bundler'
