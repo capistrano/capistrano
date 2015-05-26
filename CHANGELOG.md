@@ -13,6 +13,7 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
   * Added options to set username and password when using Subversion as SCM (@dsthode)
   * Allow after() to refer to tasks that have not been loaded yet (@jcoglan)
   * Ensure scm fetch_revision methods strip trailing whitespace (@mattbrictson)
+    * Reverted - no longer needed due to [SSHKit PR249](https://github.com/capistrano/sshkit/pull/249) (@robd)
   * Allow use "all" as string for server filtering (@theist)
 
 ## `3.4.0`

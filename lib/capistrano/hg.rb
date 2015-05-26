@@ -37,7 +37,7 @@ class Capistrano::Hg < Capistrano::SCM
     end
 
     def fetch_revision
-      context.capture(:hg, "log --rev #{fetch(:branch)} --template \"{node}\n\"").strip
+      context.capture(:hg, "log --rev #{fetch(:branch)} --template \"{node}\n\"")
     end
   end
 end
