@@ -6,6 +6,7 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 
+* Remove 'vendor/bundle' from default :linked_dirs (@ojab)
 * Removed the post-install message (@Kriechi)
 
 * Minor changes
