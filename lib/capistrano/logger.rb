@@ -134,9 +134,9 @@ module Capistrano
         indent = "%*s" % [MAX_LEVEL, "*" * (MAX_LEVEL - level)]
         (RUBY_VERSION >= "1.9" ? message.lines : message).each do |line|
           if line_prefix
-            device.puts "#{indent} [#{line_prefix}] #{line.strip}\n"
+            device.puts "#{indent} [#{line_prefix}] #{line.strip}\n".force_encoding('UTF-8')
           else
-            device.puts "#{indent} #{line.strip}\n"
+            device.puts "#{indent} #{line.strip}\n".force_encoding('UTF-8')
           end
         end
       end
