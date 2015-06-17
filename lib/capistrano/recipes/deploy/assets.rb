@@ -7,6 +7,7 @@ _cset :assets_prefix, "assets"
 _cset :shared_assets_prefix, "assets"
 _cset :assets_role, [:web]
 _cset :expire_assets_after, (3600 * 24 * 7)
+_cset :asset_manifest_prefix, (`sprockets -v`.chomp < "3.0" ? "manifest" : ".sprockets-manifest") rescue "manifest"
 
 _cset :normalize_asset_timestamps, false
 
@@ -17,7 +18,7 @@ after  'deploy:cleanup',           'deploy:assets:clean_expired'
 after  'deploy:rollback:revision', 'deploy:assets:rollback'
 
 def shared_manifest_path
-  @shared_manifest_path ||= capture("ls #{shared_path.shellescape}/#{shared_assets_prefix}/manifest*").strip
+  @shared_manifest_path ||= capture("ls #{shared_path.shellescape}/#{shared_assets_prefix}/#{asset_manifest_prefix}*").strip
 end
 
 # Parses manifest and returns array of uncompressed and compressed asset filenames with and without digests
@@ -64,14 +65,14 @@ namespace :deploy do
         RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile
       CMD
 
-      if capture("ls -1 #{shared_path.shellescape}/#{shared_assets_prefix}/manifest* | wc -l").to_i > 1
+      if capture("ls -1 #{shared_path.shellescape}/#{shared_assets_prefix}/#{asset_manifest_prefix}* | wc -l").to_i > 1
         raise "More than one asset manifest file was found in '#{shared_path.shellescape}/#{shared_assets_prefix}'.  If you are upgrading a Rails 3 application to Rails 4, follow these instructions: http://github.com/capistrano/capistrano/wiki/Upgrading-to-Rails-4#asset-pipeline"
       end
 
       # Sync manifest filenames across servers if our manifest has a random filename
-      if shared_manifest_path =~ /manifest-.+\./
+      if shared_manifest_path =~ /#{asset_manifest_prefix}-.+\./
         run <<-CMD.compact
-          [ -e #{shared_manifest_path.shellescape} ] || mv -- #{shared_path.shellescape}/#{shared_assets_prefix}/manifest* #{shared_manifest_path.shellescape}
+          [ -e #{shared_manifest_path.shellescape} ] || mv -- #{shared_path.shellescape}/#{shared_assets_prefix}/#{asset_manifest_prefix}* #{shared_manifest_path.shellescape}
         CMD
       end
 
@@ -87,7 +88,7 @@ namespace :deploy do
     DESC
     task :update_asset_mtimes, :roles => lambda { assets_role }, :except => { :no_release => true } do
       # Fetch assets/manifest contents.
-      manifest_content = capture("[ -e '#{shared_path.shellescape}/#{shared_assets_prefix}/manifest*' ] && cat #{shared_path.shellescape}/#{shared_assets_prefix}/manifest* || echo").strip
+      manifest_content = capture("[ -e '#{shared_path.shellescape}/#{shared_assets_prefix}/#{asset_manifest_prefix}*' ] && cat #{shared_path.shellescape}/#{shared_assets_prefix}/#{asset_manifest_prefix}* || echo").strip
 
       if manifest_content != ""
         current_assets = parse_manifest(manifest_content)
