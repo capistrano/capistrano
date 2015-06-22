@@ -172,7 +172,7 @@ namespace :deploy do
   task :log_revision do
     on release_roles(:all) do
       within releases_path do
-        execute %{echo "#{revision_log_message}" >> #{revision_log}}
+        execute :echo, %{"#{revision_log_message}" >> #{revision_log}}
       end
     end
   end
