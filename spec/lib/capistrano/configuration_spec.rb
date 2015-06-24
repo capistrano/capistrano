@@ -158,6 +158,23 @@ module Capistrano
           expect{ config.set(:key, 'sho') }.to raise_error(Capistrano::ValidationError)
         end
       end
+
+      context 'appending' do
+        subject { config.append(:linked_dirs, 'vendor/bundle') }
+
+        it "returns appended value" do
+          expect(subject).to eq ['vendor/bundle']
+        end
+
+        context "on non-array variable" do
+          before { config.set(:linked_dirs, "string") }
+          subject { config.append(:linked_dirs, 'vendor/bundle') }
+
+          it "returns appended value" do
+            expect(subject).to eq ['string', 'vendor/bundle']
+          end
+        end
+      end
     end
 
     describe 'keys' do
