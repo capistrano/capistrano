@@ -14,6 +14,9 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
   * Allow after() to refer to tasks that have not been loaded yet (@jcoglan)
   * Ensure scm fetch_revision methods strip trailing whitespace (@mattbrictson)
   * Allow use "all" as string for server filtering (@theist)
+  * Print a warning and abort if "load:defaults" is erroneously invoked after
+    capistrano is already loaded, e.g. when a plugin is loaded in `deploy.rb`
+    instead of `Capfile`. (@mattbrictson)
 
 ## `3.4.0`
 
