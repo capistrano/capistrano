@@ -177,6 +177,15 @@ namespace :deploy do
     end
   end
 
+  desc 'Show revisions log of the last 10 deploys'
+  task :revisions_log do
+    on release_roles(:all) do
+      within releases_path do
+        execute %{tail -n10 "#{revision_log}}
+      end
+    end
+  end
+
   desc 'Revert to previous release timestamp'
   task :revert_release => :rollback_release_path do
     on release_roles(:all) do
