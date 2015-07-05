@@ -100,8 +100,8 @@ module Capistrano
       @filters << Filter.new(:role, ENV['ROLES']) if ENV['ROLES']
       @filters << Filter.new(:host, ENV['HOSTS']) if ENV['HOSTS']
       fh = fetch_for(:filter,{}) || {}
-      @filters << Filter.new(:host, fh[:host]) if fh[:host]
-      @filters << Filter.new(:role, fh[:role]) if fh[:role]
+      @filters << Filter.new(:host, fh[:hosts]) if fh[:hosts]
+      @filters << Filter.new(:role, fh[:roles]) if fh[:roles]
     end
 
     def add_cmdline_filter(type, values)
