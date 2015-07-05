@@ -5,8 +5,9 @@ namespace :deploy do
     invoke 'deploy:set_previous_revision'
   end
 
-  task :updating => :new_release_path do
-    invoke "#{scm}:create_release"
+  task :updating do
+    set :release_path, repo_path
+    invoke "#{scm}:update"
     invoke "deploy:set_current_revision"
     invoke 'deploy:symlink:shared'
   end
@@ -16,6 +17,8 @@ namespace :deploy do
   end
 
   task :publishing do
+    invoke 'deploy:new_release_path'
+    invoke "#{scm}:create_release"
     invoke 'deploy:symlink:release'
   end
 
