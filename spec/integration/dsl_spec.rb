@@ -132,6 +132,38 @@ describe Capistrano::DSL do
         end
       end
 
+      describe 'setting an internal hosts filter' do
+        subject { dsl.roles(:app) }
+        it 'is ignored' do
+          dsl.set :filter, { hosts: 'example3.com' }
+          expect(subject.map(&:hostname)).to eq(['example3.com', 'example4.com'])
+        end
+      end
+
+      describe 'setting an internal roles filter' do
+        subject { dsl.roles(:app) }
+        it 'ignores it' do
+          dsl.set :filter, { roles: :web }
+          expect(subject.map(&:hostname)).to eq(['example3.com','example4.com'])
+        end
+      end
+
+      describe 'setting an internal hosts and roles filter' do
+        subject { dsl.roles(:app) }
+        it 'ignores it' do
+          dsl.set :filter, { roles: :web, hosts: 'example1.com' }
+          expect(subject.map(&:hostname)).to eq(['example3.com','example4.com'])
+        end
+      end
+
+      describe 'setting an internal regexp hosts filter' do
+        subject { dsl.roles(:all) }
+        it 'is ignored' do
+          dsl.set :filter, { hosts: /1/ }
+          expect(subject.map(&:hostname)).to eq(%w{example1.com example2.com example3.com example4.com example5.com})
+        end
+      end
+
     end
 
     describe 'when defining role with reserved name' do
@@ -496,6 +528,21 @@ describe Capistrano::DSL do
         dsl.on(all)
       end
 
+      it 'filters by roles from the :filter variable' do
+        hosts = dsl.roles(:web)
+        all = dsl.roles(:all)
+        SSHKit::Coordinator.expects(:new).with(hosts).returns(@coordinator)
+        dsl.set :filter, { roles: 'web' }
+        dsl.on(all)
+      end
+
+      it 'filters by hosts and roles from the :filter variable' do
+        all = dsl.roles(:all)
+        SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
+        dsl.set :filter, { roles: 'db', hosts: 'example3.com' }
+        dsl.on(all)
+      end
+
       it 'filters from ENV[ROLES]' do
         hosts = dsl.roles(:db)
         all = dsl.roles(:all)
@@ -545,6 +592,24 @@ describe Capistrano::DSL do
 
       it "doesn't select when a host filter is present that doesn't match" do
         dsl.set :filter, { host: 'ruby.local' }
+        SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
+        dsl.on('server.local')
+      end
+
+      it "selects nothing when a roles filter is present" do
+        dsl.set :filter, { roles: 'web' }
+        SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
+        dsl.on('my.server')
+      end
+
+      it "selects using the string when a hosts filter is present" do
+        dsl.set :filter, { hosts: 'server.local' }
+        SSHKit::Coordinator.expects(:new).with(['server.local']).returns(@coordinator)
+        dsl.on('server.local')
+      end
+
+      it "doesn't select when a hosts filter is present that doesn't match" do
+        dsl.set :filter, { hosts: 'ruby.local' }
         SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
         dsl.on('server.local')
       end
