@@ -38,11 +38,13 @@ You can set the host filter inside your deploy configuration. For example,
 you can set the following inside `config/deploy.rb`:
 
 ```ruby
-set :filter, :host => %w{server1 server2}
+set :filter, :hosts => %w{server1 server2}
 ```
 
 Note that you specify the filter as an array rather than as a comma-separated
 list of servers when using this method.
+
+Note that the keyname `:host` is also supported.
 
 #### On the command line
 
