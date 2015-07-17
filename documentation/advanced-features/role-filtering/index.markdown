@@ -45,6 +45,8 @@ set :filter, :roles => %w{app web}
 Note that you specify the filter as an array rather than as a comma-separated
 list of roles when using this method.
 
+Note that the keyname `:role` is also supported.
+
 #### On the command line
 
 In a similar way to using the environment variable, you can set the role
