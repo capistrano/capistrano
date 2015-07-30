@@ -22,11 +22,19 @@ class Capistrano::Git < Capistrano::SCM
     end
 
     def clone
-      git :clone, '--mirror', repo_url, repo_path
+      if fetch(:git_shallow_clone)
+        git :clone, '--mirror', '--depth 1', repo_url, repo_path
+      else
+        git :clone, '--mirror', repo_url, repo_path
+      end
     end
 
     def update
-      git :remote, :update
+      if fetch(:git_shallow_clone)
+        git :fetch, '--depth 1', '--update-shallow', "origin #{fetch(:branch)}"
+      else
+        git :remote, :update
+      end
     end
 
     def release
