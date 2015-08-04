@@ -126,3 +126,13 @@ on roles :all do
   end
 end
 ```
+
+# Notable differences between 2.x and 3
+
+#### Cleanup
+
+Capistrano 3 now runs the `deploy:cleanup` task as part of the standard deploy workflow and keeps 5 releases by default. Previously this was left for you to add manually, if required. To change the number of releases kept set the `keep_releases` configuration variable:
+
+```ruby
+set :keep_releases, 10
+```
