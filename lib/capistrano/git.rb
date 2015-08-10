@@ -48,7 +48,7 @@ class Capistrano::Git < Capistrano::SCM
     end
 
     def fetch_revision
-      context.capture(:git, "rev-list --max-count=1 --abbrev-commit #{fetch(:branch)}").strip
+      context.capture(:git, "rev-list --max-count=1 --abbrev-commit --abbrev=12 #{fetch(:branch)}").strip
     end
   end
 end
