@@ -97,9 +97,9 @@ module Capistrano
     end
 
     describe "#fetch_revision" do
-      it "should strip trailing whitespace" do
+      it "should capture git rev-list" do
         context.expects(:fetch).with(:branch).returns(:branch)
-        context.expects(:capture).with(:git, "rev-list --max-count=1 --abbrev-commit branch").returns("01abcde\n")
+        context.expects(:capture).with(:git, "rev-list --max-count=1 --abbrev-commit branch").returns("01abcde")
         revision = subject.fetch_revision
         expect(revision).to eq("01abcde")
       end
