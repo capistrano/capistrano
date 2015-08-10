@@ -17,6 +17,7 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
   * Print a warning and abort if "load:defaults" is erroneously invoked after
     capistrano is already loaded, e.g. when a plugin is loaded in `deploy.rb`
     instead of `Capfile`. (@mattbrictson)
+  * Return first 12 characters (instead of 7) of SHA1 hash when determining current git revision (@sds)
 
 ## `3.4.0`
 
