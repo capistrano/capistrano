@@ -1,3 +1,12 @@
+validate :application do |key, value|
+  changed_value = value.gsub(/[^[[:alnum:]]]/, '_')
+  if value != changed_value
+    warn "Invalid value for :application detected! Try using this: "
+    warn "  set :application, '#{changed_value}'"
+    raise Capistrano::ValidationError
+  end
+end
+
 set_if_empty :scm, :git
 set_if_empty :branch, :master
 set_if_empty :deploy_to, -> { "/var/www/#{fetch(:application)}" }
