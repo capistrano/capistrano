@@ -20,3 +20,4 @@ tmp
 _site
 .rspec
 *.swp
+tags
