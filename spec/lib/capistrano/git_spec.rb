@@ -99,7 +99,7 @@ module Capistrano
     describe "#fetch_revision" do
       it "should capture git rev-list" do
         context.expects(:fetch).with(:branch).returns(:branch)
-        context.expects(:capture).with(:git, "rev-list --max-count=1 --abbrev-commit branch").returns("01abcde")
+        context.expects(:capture).with(:git, "rev-list --max-count=1 --abbrev-commit --abbrev=12 branch").returns("01abcde")
         revision = subject.fetch_revision
         expect(revision).to eq("01abcde")
       end
