@@ -47,7 +47,7 @@ module Capistrano
         subject.clone
       end
 
-      it "should run git clone in shallow mod" do
+      it "should run git clone in shallow mode" do
         context.expects(:fetch).with(:git_shallow_clone).returns('1')
         context.expects(:repo_url).returns(:url)
         context.expects(:repo_path).returns(:path)
