@@ -4,7 +4,7 @@ Reverse Chronological Order:
 
 ## master
 
-* Added support for git shallow cloneg https://github.com/capistrano/capistrano/pull/1454
+* Added support for git shallow clone https://github.com/capistrano/capistrano/pull/1454
 
 https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 
@@ -139,7 +139,7 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.3
 
     This allows roles to specify properties common to all servers and
     then for individual servers to modify them, keeping things DRY
-  
+
 * Enhancements (@Kriechi)
   * Added validate method to DSL to allow validation of certain values
     - validate values before assignment inside of `set(:key, value)`
