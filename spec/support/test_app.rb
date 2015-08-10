@@ -29,7 +29,7 @@ module TestApp
   end
 
   def linked_dirs
-    %w{bin log public/system vendor/bundle}
+    %w{bin log public/system}
   end
 
   def create_test_app
