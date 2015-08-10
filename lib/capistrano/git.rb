@@ -22,16 +22,17 @@ class Capistrano::Git < Capistrano::SCM
     end
 
     def clone
-      if fetch(:git_shallow_clone)
-        git :clone, '--mirror', '--depth 1', repo_url, repo_path
+      if depth = fetch(:git_shallow_clone)
+        git :clone, '--mirror', '--depth', depth, '--no-single-branch', repo_url, repo_path
       else
         git :clone, '--mirror', repo_url, repo_path
       end
     end
 
     def update
-      if fetch(:git_shallow_clone)
-        git :fetch, '--depth 1', '--update-shallow', "origin #{fetch(:branch)}"
+      # Note: Requires git version 1.9 or greater
+      if depth = fetch(:git_shallow_clone)
+        git :fetch, '--depth', depth, 'origin', fetch(:branch)
       else
         git :remote, :update
       end

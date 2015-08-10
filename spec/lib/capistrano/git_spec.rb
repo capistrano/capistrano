@@ -48,10 +48,11 @@ module Capistrano
       end
 
       it "should run git clone in shallow mode" do
-        context.expects(:fetch).with(:git_shallow_clone).returns(true)
+        context.expects(:fetch).with(:git_shallow_clone).returns('1')
         context.expects(:repo_url).returns(:url)
         context.expects(:repo_path).returns(:path)
-        context.expects(:execute).with(:git, :clone, '--mirror', '--depth 1', :url, :path)
+
+        context.expects(:execute).with(:git, :clone, '--mirror', "--depth", '1', '--no-single-branch', :url, :path)
 
         subject.clone
       end
@@ -66,9 +67,9 @@ module Capistrano
       end
 
       it "should run git update in shallow mode" do
-        context.expects(:fetch).with(:git_shallow_clone).returns(true)
+        context.expects(:fetch).with(:git_shallow_clone).returns('1')
         context.expects(:fetch).with(:branch).returns(:branch)
-        context.expects(:execute).with(:git, :fetch, '--depth 1', '--update-shallow', "origin branch")
+        context.expects(:execute).with(:git, :fetch, "--depth", '1', "origin",  :branch)
 
         subject.update
       end
