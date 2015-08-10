@@ -39,6 +39,7 @@ module Capistrano
 
     describe "#clone" do
       it "should run git clone" do
+        context.expects(:fetch).with(:git_shallow_clone).returns(nil)
         context.expects(:repo_url).returns(:url)
         context.expects(:repo_path).returns(:path)
 
@@ -46,11 +47,30 @@ module Capistrano
 
         subject.clone
       end
+
+      it "should run git clone with depth" do
+        context.expects(:fetch).with(:git_shallow_clone).returns('1')
+        context.expects(:repo_url).returns(:url)
+        context.expects(:repo_path).returns(:path)
+
+        context.expects(:execute).with(:git, :clone, '--mirror', "--depth", '1', '--no-single-branch', :url, :path)
+
+        subject.clone
+      end
     end
 
     describe "#update" do
       it "should run git update" do
+        context.expects(:fetch).with(:git_shallow_clone).returns(nil)
         context.expects(:execute).with(:git, :remote, :update)
+
+        subject.update
+      end
+
+      it "should run git fetch with shallow clone" do
+        context.expects(:fetch).with(:git_shallow_clone).returns('1')
+        context.expects(:fetch).with(:branch).returns(:branch)
+        context.expects(:execute).with(:git, :fetch, "--depth", '1', "origin",  :branch)
 
         subject.update
       end

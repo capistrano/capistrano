@@ -4,6 +4,8 @@ Reverse Chronological Order:
 
 ## master
 
+* Added support for git shallow cloneg https://github.com/capistrano/capistrano/pull/1454
+
 https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 
 * Removed the post-install message (@Kriechi)
