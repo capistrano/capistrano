@@ -8,6 +8,7 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 
+* Remove 'vendor/bundle' from default :linked_dirs (@ojab)
 * Removed the post-install message (@Kriechi)
 
 * Minor changes
@@ -15,7 +16,12 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
   * Added options to set username and password when using Subversion as SCM (@dsthode)
   * Allow after() to refer to tasks that have not been loaded yet (@jcoglan)
   * Ensure scm fetch_revision methods strip trailing whitespace (@mattbrictson)
+    * Reverted - no longer needed due to [SSHKit PR249](https://github.com/capistrano/sshkit/pull/249) (@robd)
   * Allow use "all" as string for server filtering (@theist)
+  * Print a warning and abort if "load:defaults" is erroneously invoked after
+    capistrano is already loaded, e.g. when a plugin is loaded in `deploy.rb`
+    instead of `Capfile`. (@mattbrictson)
+  * Return first 12 characters (instead of 7) of SHA1 hash when determining current git revision (@sds)
 
 ## `3.4.0`
 
@@ -133,6 +139,12 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.3
 
     This allows roles to specify properties common to all servers and
     then for individual servers to modify them, keeping things DRY
+  
+* Enhancements (@Kriechi)
+  * Added validate method to DSL to allow validation of certain values
+    - validate values before assignment inside of `set(:key, value)`
+    - should raise a `Capistrano::ValidationError` if invalid
+  * Added default validation for Capistrano-specific variables
 
 Breaking Changes:
   * By using Ruby's noecho method introduced in Ruby version 1.9.3, we dropped support for Ruby versions prior to 1.9.3. See [issue #878](https://github.com/capistrano/capistrano/issues/878) and [PR #1112](https://github.com/capistrano/capistrano/pull/1112) for more information. (@kaikuchn)

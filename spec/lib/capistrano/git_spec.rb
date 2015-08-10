@@ -42,13 +42,12 @@ module Capistrano
         context.expects(:fetch).with(:git_shallow_clone).returns(nil)
         context.expects(:repo_url).returns(:url)
         context.expects(:repo_path).returns(:path)
-
         context.expects(:execute).with(:git, :clone, '--mirror', :url, :path)
 
         subject.clone
       end
 
-      it "should run git clone with depth" do
+      it "should run git clone in shallow mod" do
         context.expects(:fetch).with(:git_shallow_clone).returns('1')
         context.expects(:repo_url).returns(:url)
         context.expects(:repo_path).returns(:path)
@@ -67,7 +66,7 @@ module Capistrano
         subject.update
       end
 
-      it "should run git fetch with shallow clone" do
+      it "should run git update in shallow mode" do
         context.expects(:fetch).with(:git_shallow_clone).returns('1')
         context.expects(:fetch).with(:branch).returns(:branch)
         context.expects(:execute).with(:git, :fetch, "--depth", '1', "origin",  :branch)
@@ -99,9 +98,9 @@ module Capistrano
     end
 
     describe "#fetch_revision" do
-      it "should strip trailing whitespace" do
+      it "should capture git rev-list" do
         context.expects(:fetch).with(:branch).returns(:branch)
-        context.expects(:capture).with(:git, "rev-list --max-count=1 --abbrev-commit branch").returns("01abcde\n")
+        context.expects(:capture).with(:git, "rev-list --max-count=1 --abbrev-commit --abbrev=12 branch").returns("01abcde")
         revision = subject.fetch_revision
         expect(revision).to eq("01abcde")
       end

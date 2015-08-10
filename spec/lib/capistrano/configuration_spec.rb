@@ -130,6 +130,22 @@ module Capistrano
           expect { subject }.to raise_error
         end
       end
+
+      context 'validations' do
+        before do
+          config.validate :key do |_, value|
+            raise Capistrano::ValidationError unless value.length > 3
+          end
+        end
+
+        it 'validates without error' do
+          expect{ config.set(:key, 'longer_value') }.not_to raise_error
+        end
+
+        it 'raises an exception' do
+          expect{ config.set(:key, 'sho') }.to raise_error(Capistrano::ValidationError)
+        end
+      end
     end
 
     describe 'keys' do

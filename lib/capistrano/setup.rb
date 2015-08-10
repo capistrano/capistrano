@@ -1,3 +1,4 @@
+require "capistrano/immutable_task"
 include Capistrano::DSL
 
 namespace :load do
@@ -11,6 +12,7 @@ stages.each do |stage|
     set(:stage, stage.to_sym)
 
     invoke 'load:defaults'
+    Rake.application["load:defaults"].extend(Capistrano::ImmutableTask)
     load deploy_config_path
     load stage_config_path.join("#{stage}.rb")
     load "capistrano/#{fetch(:scm)}.rb"

@@ -4,6 +4,8 @@ require_relative 'configuration/server'
 require_relative 'configuration/servers'
 
 module Capistrano
+  class ValidationError < Exception; end
+
   class Configuration
 
     def initialize(config = nil)
@@ -24,11 +26,15 @@ module Capistrano
     end
 
     def set(key, value)
+      invoke_validations key, value
       config[key] = value
     end
 
     def set_if_empty(key, value)
-      config[key] = value unless config.has_key? key
+      unless config.has_key? key
+        invoke_validations key, value
+        config[key] = value
+      end
     end
 
     def delete(key)
@@ -41,6 +47,12 @@ module Capistrano
         value = set(key, value.call)
       end
       return value
+    end
+
+    def validate(key, &validator)
+      vs = (validators[key] || [])
+      vs << validator
+      validators[key] = vs
     end
 
     def keys
@@ -100,6 +112,8 @@ module Capistrano
       @filters << Filter.new(:role, ENV['ROLES']) if ENV['ROLES']
       @filters << Filter.new(:host, ENV['HOSTS']) if ENV['HOSTS']
       fh = fetch_for(:filter,{}) || {}
+      @filters << Filter.new(:host, fh[:hosts]) if fh[:hosts]
+      @filters << Filter.new(:role, fh[:roles]) if fh[:roles]
       @filters << Filter.new(:host, fh[:host]) if fh[:host]
       @filters << Filter.new(:role, fh[:role]) if fh[:role]
     end
@@ -127,6 +141,10 @@ module Capistrano
       @config ||= Hash.new
     end
 
+    def validators
+      @validators ||= Hash.new
+    end
+
     def fetch_for(key, default, &block)
       if block_given?
         config.fetch(key, &block)
@@ -137,6 +155,14 @@ module Capistrano
 
     def callable_without_parameters?(x)
       x.respond_to?(:call) && ( !x.respond_to?(:arity) || x.arity == 0)
+    end
+
+    def invoke_validations(key, value)
+      return unless validators.has_key? key
+
+      validators[key].each do |validator|
+        validator.call(key, value)
+      end
     end
   end
 end
