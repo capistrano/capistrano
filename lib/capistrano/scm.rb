@@ -25,7 +25,7 @@ module Capistrano
 
     # Call test in context
     def test!(*args)
-      context.test *args
+      context.test(*args)
     end
 
     # The repository URL according to the context

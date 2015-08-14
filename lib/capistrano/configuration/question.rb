@@ -28,10 +28,10 @@ module Capistrano
 
       def response
         return @response if defined? @response
-        
+
         @response = (gets || "").chomp
       end
-      
+
       def gets
         if echo?
           $stdin.gets
@@ -40,8 +40,9 @@ module Capistrano
         end
       rescue Errno::EIO
         # when stdio gets closed
+        return
       end
-        
+
       def question
         I18n.t(:question, key: key, default_value: default, scope: :capistrano)
       end

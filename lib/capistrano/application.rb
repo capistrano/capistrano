@@ -63,7 +63,7 @@ module Capistrano
 
     def display_error_message(ex)
       unless options.backtrace
-        if loc = Rake.application.find_rakefile_location
+        if (loc = Rake.application.find_rakefile_location)
           whitelist = (@imported.dup << loc[0]).map{|f| File.absolute_path(f, loc[1])}
           pattern = %r@^(?!#{whitelist.map{|p| Regexp.quote(p)}.join('|')})@
           Rake.application.options.suppress_backtrace_pattern = pattern
@@ -101,7 +101,7 @@ module Capistrano
     def version
       ['--version', '-V',
        "Display the program version.",
-       lambda { |value|
+       lambda { |_value|
          puts "Capistrano Version: #{Capistrano::VERSION} (Rake Version: #{RAKEVERSION})"
          exit
        }
@@ -111,7 +111,7 @@ module Capistrano
     def dry_run
       ['--dry-run', '-n',
        "Do a dry run without executing actions",
-       lambda { |value|
+       lambda { |_value|
          Configuration.env.set(:sshkit_backend, SSHKit::Backend::Printer)
        }
       ]

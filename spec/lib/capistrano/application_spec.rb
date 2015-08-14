@@ -7,7 +7,7 @@ describe Capistrano::Application do
   it "provides a --format option which enables the choice of output formatting"
 
   let(:help_output) do
-    out, _ = capture_io do
+    out, _err = capture_io do
       flags '--help', '-h'
     end
     out
@@ -24,7 +24,7 @@ describe Capistrano::Application do
   end
 
   it "overrides the rake method, but still prints the rake version" do
-    out, _ = capture_io do
+    out, _err = capture_io do
       flags '--version', '-V'
     end
     expect(out).to match(/\bCapistrano Version\b/)
@@ -34,7 +34,7 @@ describe Capistrano::Application do
   end
 
   it "overrides the rake method, and sets the sshkit_backend to SSHKit::Backend::Printer" do
-    out, _ = capture_io do
+    capture_io do
       flags '--dry-run', '-n'
     end
     sshkit_backend = Capistrano::Configuration.fetch(:sshkit_backend)
@@ -51,7 +51,7 @@ describe Capistrano::Application do
 
   def command_line(*options)
     options.each { |opt| ARGV << opt }
-    def subject.exit(*args)
+    def subject.exit(*_args)
       throw(:system_exit, :exit)
     end
     subject.run

@@ -21,6 +21,7 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
     capistrano is already loaded, e.g. when a plugin is loaded in `deploy.rb`
     instead of `Capfile`. (@mattbrictson)
   * Return first 12 characters (instead of 7) of SHA1 hash when determining current git revision (@sds)
+  * Clean up rubocop lint warnings (@cshaffer)
 
 ## `3.4.0`
 
