@@ -3,13 +3,13 @@ load File.expand_path("../tasks/svn.rake", __FILE__)
 require 'capistrano/scm'
 
 class Capistrano::Svn < Capistrano::SCM
-  
+
   # execute svn in context with arguments
   def svn(*args)
     args.unshift(:svn)
     args.push "--username #{fetch(:svn_username)}" if fetch(:svn_username)
     args.push "--password #{fetch(:svn_password)}" if fetch(:svn_password)
-    context.execute *args
+    context.execute(*args)
   end
 
   module DefaultStrategy

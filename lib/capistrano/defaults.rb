@@ -1,4 +1,4 @@
-validate :application do |key, value|
+validate :application do |_key, value|
   changed_value = value.gsub(/[^[[:alnum:]]]/, '_')
   if value != changed_value
     warn "Invalid value for :application detected! Try using this: "

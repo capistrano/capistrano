@@ -50,26 +50,26 @@ end
 
 Then(/^the deploy\.rb file is created$/) do
   file = TestApp.test_app_path.join('config/deploy.rb')
-  expect(File.exists?(file)).to be true
+  expect(File.exist?(file)).to be true
 end
 
 Then(/^the default stage files are created$/) do
   staging = TestApp.test_app_path.join('config/deploy/staging.rb')
   production = TestApp.test_app_path.join('config/deploy/production.rb')
-  expect(File.exists?(staging)).to be true
-  expect(File.exists?(production)).to be true
+  expect(File.exist?(staging)).to be true
+  expect(File.exist?(production)).to be true
 end
 
 Then(/^the tasks folder is created$/) do
   path = TestApp.test_app_path.join('lib/capistrano/tasks')
-  expect(Dir.exists?(path)).to be true
+  expect(Dir.exist?(path)).to be true
 end
 
 Then(/^the specified stage files are created$/) do
   qa = TestApp.test_app_path.join('config/deploy/qa.rb')
   production = TestApp.test_app_path.join('config/deploy/production.rb')
-  expect(File.exists?(qa)).to be true
-  expect(File.exists?(production)).to be true
+  expect(File.exist?(qa)).to be true
+  expect(File.exist?(production)).to be true
 end
 
 Then(/^it creates the file with the remote_task prerequisite$/) do
