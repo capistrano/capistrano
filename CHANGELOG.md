@@ -9,6 +9,8 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 * Added support for git shallow clone
 * Remove 'vendor/bundle' from default :linked_dirs (@ojab)
 * Removed the post-install message (@Kriechi)
+* Refactor `Configuration::Filter` to use filtering strategies instead
+  of case statements (@cshaffer)
 
 * Minor changes
   * Fix filtering behaviour when using literal hostnames in on() block (@townsen)
