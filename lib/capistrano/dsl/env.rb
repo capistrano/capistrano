@@ -19,12 +19,12 @@ module Capistrano
         end
       end
 
-      def set(key, value)
-        env.set(key, value)
+      def set(key, value=nil, &block)
+        env.set(key, value, &block)
       end
 
-      def set_if_empty(key, value)
-        env.set_if_empty(key, value)
+      def set_if_empty(key, value=nil, &block)
+        env.set_if_empty(key, value, &block)
       end
 
       def delete(key)

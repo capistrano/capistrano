@@ -25,16 +25,13 @@ module Capistrano
       set(key, question)
     end
 
-    def set(key, value)
-      invoke_validations key, value
-      config[key] = value
+    def set(key, value=nil, &block)
+      invoke_validations(key, value, &block)
+      config[key] = block || value
     end
 
-    def set_if_empty(key, value)
-      unless config.has_key? key
-        invoke_validations key, value
-        config[key] = value
-      end
+    def set_if_empty(key, value=nil, &block)
+      set(key, value, &block) unless config.has_key? key
     end
 
     def delete(key)
@@ -157,11 +154,15 @@ module Capistrano
       x.respond_to?(:call) && ( !x.respond_to?(:arity) || x.arity == 0)
     end
 
-    def invoke_validations(key, value)
+    def invoke_validations(key, value, &block)
+      unless value.nil? or block.nil?
+        raise Capistrano::ValidationError.new("Value and block both passed to Configuration#set")
+      end
+      
       return unless validators.has_key? key
 
       validators[key].each do |validator|
-        validator.call(key, value)
+        validator.call(key, block || value)
       end
     end
   end

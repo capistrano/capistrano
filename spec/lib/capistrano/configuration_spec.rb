@@ -45,25 +45,37 @@ module Capistrano
     describe 'setting and fetching' do
       subject { config.fetch(:key, :default) }
 
-      context 'value is set' do
-        before do
+      context 'set' do
+        it 'sets by value' do
           config.set(:key, :value)
+          expect(subject).to eq :value
         end
 
-        it 'returns the set value' do
+        it 'sets by block' do
+          config.set(:key) { :value }
           expect(subject).to eq :value
+        end
+
+        it 'raises an exception when given both a value and block' do
+          expect{ config.set(:key, :value) { :value } }.to raise_error(Capistrano::ValidationError)
         end
       end
 
       context 'set_if_empty' do
-        it 'sets the value when none is present' do
+        it 'sets by value when none is present' do
           config.set_if_empty(:key, :value)
           expect(subject).to eq :value
         end
 
-        it 'does not overwrite the value' do
+        it 'sets by block when none is present' do
+          config.set_if_empty(:key) { :value }
+          expect(subject).to eq :value
+        end
+
+        it 'does not overwrite existing values' do
           config.set(:key, :value)
           config.set_if_empty(:key, :update)
+          config.set_if_empty(:key) { :update }
           expect(subject).to eq :value
         end
       end
