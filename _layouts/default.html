@@ -33,22 +33,27 @@
       </div>
     </div>
 
-    <!--<div class="container">                                     -->
-      <!--      <h1 class="title"><a href="/">{{ site.name }}</a></h1>-->
-      <!--      <a class="extra" href="/">home</a>                    -->
-      <!--    </div>                                                  -->
-
-    <!--    {{ content }}                                           -->
-
-    <!--</div> [> /container <]                                     -->
-
   {% include footer.html %}
 
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
-  <script>
-    if (!window.jQuery) {
-      document.write('<script src="/js/jquery-1.7.min"><\/script>');
+  <script src="/js/jquery-1.7.min.js"></script>
+  <script src="/js/jquery.cookie.js"></script>
+  <script type="text/javascript">
+  $(function(){
+    if ($.cookie('harrowBanner__dismissed') != '1') {
+      $('.harrowBanner').css('display', 'block');
+      ga('send', 'event', 'harrowBanner', 'shown');
+    } else {
+      ga('send', 'event', 'harrowBanner', 'alreadydismissed');
     }
+    $(".harrowBanner__ctaButton").on('click', function (e) {
+      ga('send', 'event', 'harrowBanner', 'clickthrough');
+    });
+    $(".harrowBanner__dismissLink").on('click', function (e) {
+      $.cookie('harrowBanner__dismissed', '1', { expires: 10});
+      $('.harrowBanner').hide();
+      ga('send', 'event', 'harrowBanner', 'dismiss');
+    });
+  });
   </script>
   <script src="/js/jquery.githubRepoWidget.min.js"></script>
   <script src="/js/prism.js"></script>

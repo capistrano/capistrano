@@ -23,8 +23,68 @@ body {
   margin-bottom: 30px;
   padding-top: 20px;
   background-color: #1C1B39;
-  height: 170px;
+  min-height: 170px;
 }
+
+.harrowBanner {
+  overflow: hidden;
+  position: absolute;
+  top: 140px;
+  max-width: 650px;
+  left:0;
+  right:0;
+  box-shadow: 5px 5px 15px rgba(0,0,0, 0.5);
+  max-width: 60%;
+  margin: auto;
+  /* outline: 1px dotted pink; */
+  text-align: center;
+  background-color: rgba(28, 25, 59, 0.95);
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  padding: 20px 40px;
+  z-index: 10000;
+  display: none;
+}
+
+.harrowBanner__newRibbon {
+  width: 200px;
+  background-color: #95b;
+  position: absolute;
+  top: 0px;
+  left: -65px;
+  text-align: center;
+  line-height: 50px;
+  letter-spacing: 1px;
+  color: #f0f0f0;
+  transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  font-weight: bold;
+}
+
+.harrowBanner__title {
+  color: #fff;
+}
+
+.harrowBanner__p {
+  color: #fff;
+}
+
+.harrowBanner__ctaButton {
+  background-color: #4CC1DD;
+  border-radius: 3px;
+  font-weight: bold;
+  padding: 10px 20px;
+  color: #fff;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.harrowBanner__dismissLink {
+  color: #fff;
+  font-size: 75%;
+  display: block;
+}
+
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 400;

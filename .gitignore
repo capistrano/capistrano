@@ -3,3 +3,4 @@ _site_site
 .bundle/
 /_site/
 *.swp
+vendor/
