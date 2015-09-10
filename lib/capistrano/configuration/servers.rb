@@ -11,7 +11,6 @@ module Capistrano
         new_host = Server[host]
         if (server = servers.find { |s| s.matches? new_host })
           server.user = new_host.user if new_host.user
-          server.port = new_host.port if new_host.port
           server.with(properties)
         else
           servers << new_host.with(properties)
