@@ -18,6 +18,7 @@ gem "capistrano", github: "capistrano/capistrano", require: false
 
 [master]: https://github.com/capistrano/capistrano/compare/v3.11.0...HEAD
 
+* Remove the static path to ssh in the git ssh wrapper to allow for greater platform flexibility - [@signe](https://github.com/signe)
 * Your contribution here!
 
 ## [`3.11.0`] (2018-06-02)
