@@ -24,6 +24,8 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
     instead of `Capfile`. (@mattbrictson)
   * Return first 12 characters (instead of 7) of SHA1 hash when determining current git revision (@sds)
   * Clean up rubocop lint warnings (@cshaffer)
+  * Remove the static path to ssh in the git ssh wrapper to allow for greater
+    platform flexibility
 
 ## `3.4.0`
 
