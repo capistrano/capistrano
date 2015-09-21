@@ -102,7 +102,11 @@ in the order of registration.
 
 Validations can be used to ensure certain properties of user-supplied values,
 e.g. from `ask` or `ENV`. ``
-
+  
+## Ignore Files when Deploying  
+Edit `.gitattributes` with file or directory names,   
+e.g. `Capfile export-ignore`  
+  
 ## Testing
 
 Capistrano has two test suites: an RSpec suite and a Cucumber suite. The
