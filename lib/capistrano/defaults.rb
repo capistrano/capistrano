@@ -8,7 +8,7 @@ validate :application do |_key, value|
 end
 
 set_if_empty :scm, :git
-set_if_empty :branch, :master
+set_if_empty :branch, 'master'
 set_if_empty :deploy_to, -> { "/var/www/#{fetch(:application)}" }
 set_if_empty :tmp_dir, "/tmp"
 
