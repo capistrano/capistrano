@@ -7,7 +7,7 @@ _cset :assets_prefix, "assets"
 _cset :shared_assets_prefix, "assets"
 _cset :assets_role, [:web]
 _cset :expire_assets_after, (3600 * 24 * 7)
-_cset :asset_manifest_prefix, (`sprockets -v`.chomp < "3.0" ? "manifest" : ".sprockets-manifest") rescue "manifest"
+_cset(:asset_manifest_prefix) { (`sprockets -v`.chomp < "3.0" ? "manifest" : ".sprockets-manifest") rescue "manifest" }
 
 _cset :normalize_asset_timestamps, false
 
