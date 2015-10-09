@@ -6,6 +6,8 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.5.0...HEAD
 
+  * Make path to git wrapper script configurable (@thickpaddy)
+
 ## `3.5.0`
 
 https://github.com/capistrano/capistrano/compare/v3.4.1...v3.5.0
