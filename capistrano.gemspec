@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
   gem.licenses      = ['MIT']
 
   gem.required_ruby_version = '>= 1.9.3'
-  gem.add_dependency 'sshkit', '~> 1.3'
+  gem.add_dependency 'sshkit', '>= 1.7.1'
   gem.add_dependency 'rake', '>= 10.0.0'
   gem.add_dependency 'i18n'
 
