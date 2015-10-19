@@ -11,6 +11,7 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 * Removed the post-install message (@Kriechi)
 * Refactor `Configuration::Filter` to use filtering strategies instead
   of case statements (@cshaffer)
+* Old versions of SSHKit (before 1.7.1) are no longer supported
 
 * Minor changes
   * Fix filtering behaviour when using literal hostnames in on() block (@townsen)
