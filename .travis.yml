@@ -2,8 +2,11 @@ language: ruby
 rvm:
   - 2.1.0
   - 2.0.0
-  - 1.9.3
   - rbx-2
+matrix:
+  include:
+    - rvm: 1.9.3
+      gemfile: ruby19.gemfile
 script: bundle exec rake spec
 install: bundle install --jobs=1
 cache: bundler
