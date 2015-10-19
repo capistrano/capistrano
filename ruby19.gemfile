@@ -1,0 +1,14 @@
+source 'https://rubygems.org'
+
+# Specify your gem's dependencies in capistrano.gemspec
+gemspec
+
+# Version 3 of net-ssh requires Ruby 2, and Bundler is not yet smart enough
+# to resolve to a lower version of net-ssh when running Ruby 1.9. So we have
+# to give Bundler a hint.
+gem 'net-ssh', '~> 2.8'
+
+group :cucumber do
+  gem 'cucumber'
+  gem 'rspec', '~> 3.0.0'
+end
