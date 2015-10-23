@@ -64,6 +64,10 @@ module Capistrano
         env.primary(role)
       end
 
+      def validate(key, &validator)
+        env.validate(key, &validator)
+      end
+
       def env
         Configuration.env
       end
