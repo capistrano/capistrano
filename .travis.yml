@@ -2,7 +2,6 @@ language: ruby
 rvm:
   - 2.1.0
   - 2.0.0
-  - 1.9.3
   - rbx-2
 script: bundle exec rake spec
 install: bundle install --jobs=1
