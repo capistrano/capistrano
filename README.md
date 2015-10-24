@@ -12,7 +12,7 @@ Get <a href="http://codersclan.net/?repo_id=325&source=link">Capistrano support 
 
 ## Requirements
 
-* Ruby >= 1.9.3 (JRuby and C-Ruby/YARV are supported)
+* Ruby >= 2.0.0 (JRuby and C-Ruby/YARV are supported)
 
 Capistrano support these source code version control systems out of the box:
 
