@@ -1,0 +1,5 @@
+Capfile           export-ignore
+config/deploy.rb  export-ignore
+config/deploy/    export-ignore
+lib/capistrano/   export-ignore
+.gitattributes    export-ignore
