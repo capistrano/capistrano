@@ -4,7 +4,10 @@ namespace :git do
   end
 
   set :git_wrapper_path, lambda {
-    "#{fetch(:tmp_dir)}/#{fetch(:application)}/git-ssh.sh"
+    # Try to avoid permissions issues when multiple users deploy the same app
+    # by using different file names in the same dir for each deployer and stage.
+    suffix = [:application, :stage, :local_user].map { |key| fetch(key).to_s }.join("-")
+    "#{fetch(:tmp_dir)}/git-ssh-#{suffix}.sh"
   }
 
   set :git_environmental_variables, lambda {
