@@ -80,6 +80,26 @@ module Capistrano
         expect(order).to eq(['before_task', 'task', 'after_task'])
       end
 
+      it "invokes using the correct namespace when defined within a namespace" do
+        Rake.application.in_namespace('namespace') {
+          Rake::Task.define_task('task') do |t|
+            order.push(t.name)
+          end
+          task_enhancements.before('task', 'before_task', :order) do |t|
+            order.push(t.name)
+          end
+          task_enhancements.after('task', 'after_task', :order) do |t|
+            order.push(t.name)
+          end
+        }
+
+        Rake::Task['namespace:task'].invoke
+
+        expect(order).to eq(
+          ['namespace:before_task', 'namespace:task', 'namespace:after_task']
+        )
+      end
+
     end
 
     describe 'remote_file' do
