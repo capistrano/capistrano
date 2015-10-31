@@ -21,4 +21,4 @@ set_if_empty :log_level, :debug
 
 set_if_empty :pty, false
 
-set_if_empty :local_user, -> { Etc.getlogin }
+set_if_empty :local_user, -> { ENV['USER'] || ENV['LOGNAME'] || ENV['USERNAME'] }
