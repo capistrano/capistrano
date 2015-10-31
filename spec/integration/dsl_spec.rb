@@ -467,36 +467,6 @@ describe Capistrano::DSL do
 
   end
 
-  describe 'local_user' do
-    before do
-      dsl.set :local_user, -> { Etc.getlogin }
-    end
-
-    describe 'fetching local_user' do
-      subject { dsl.local_user }
-
-      context 'where a local_user is not set' do
-        before do
-          Etc.expects(:getlogin).returns('login')
-        end
-
-        it 'returns the login name' do
-          expect(subject.to_s).to eq 'login'
-        end
-      end
-
-      context 'where a local_user is set' do
-        before do
-          dsl.set(:local_user, -> { 'custom login' })
-        end
-
-        it 'returns the custom name' do
-          expect(subject.to_s).to eq 'custom login'
-        end
-      end
-    end
-  end
-
   describe 'on()' do
 
     describe "when passed server objects" do
