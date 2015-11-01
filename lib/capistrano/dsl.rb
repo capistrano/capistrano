@@ -1,4 +1,3 @@
-require 'etc'
 require 'capistrano/dsl/task_enhancements'
 require 'capistrano/dsl/paths'
 require 'capistrano/dsl/stages'
