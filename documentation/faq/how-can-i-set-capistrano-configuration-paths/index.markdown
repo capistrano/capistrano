@@ -6,16 +6,18 @@ layout: default
 Capistrano `config` and `tasks` paths can be explicitly defined, like so:
 
 Capfile
+
 ```ruby
 # default deploy_config_path is 'config/deploy.rb'
 set :deploy_config_path, 'cap/deploy.rb'
 # default stage_config_path is 'config/deploy'
 set :stage_config_path, 'cap/stages'
 
-# deploy_config_path and stage_config_path variables must be set before 'capistrano/setup'
+# previous variables MUST be set before 'capistrano/setup'
 require 'capistrano/setup'
 
-# default tasks path is `lib/capistrano/tasks/*.rake` (note that you can also change the file extensions)
+# default tasks path is `lib/capistrano/tasks/*.rake` 
+# (note that you can also change the file extensions)
 Dir.glob('cap/tasks/*.rb').each { |r| import r }
 ```
 
