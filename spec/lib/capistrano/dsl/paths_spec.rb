@@ -7,7 +7,7 @@ describe Capistrano::DSL::Paths do
   let(:paths) { Class.new.extend Capistrano::DSL::Paths }
 
   let(:linked_dirs) { %w{log public/system} }
-  let(:linked_files) { %w{config/database.yml log/my.log} }
+  let(:linked_files) { %w{config/database.yml log/my.log log/access.log} }
 
   before do
     dsl.set(:deploy_to, '/var/www')
@@ -21,7 +21,10 @@ describe Capistrano::DSL::Paths do
     end
 
     it 'returns the full pathnames' do
-      expect(subject).to eq [Pathname.new('/var/shared/log'), Pathname.new('/var/shared/public/system')]
+      expect(subject).to eq [
+        Pathname.new('/var/shared/log'),
+        Pathname.new('/var/shared/public/system'),
+      ]
     end
   end
 
@@ -34,7 +37,11 @@ describe Capistrano::DSL::Paths do
     end
 
     it 'returns the full pathnames' do
-      expect(subject).to eq [Pathname.new('/var/shared/config/database.yml'), Pathname.new('/var/shared/log/my.log')]
+      expect(subject).to eq [
+        Pathname.new('/var/shared/config/database.yml'),
+        Pathname.new('/var/shared/log/my.log'),
+        Pathname.new('/var/shared/log/access.log'),
+      ]
     end
   end
 
@@ -46,7 +53,10 @@ describe Capistrano::DSL::Paths do
     end
 
     it 'returns the full paths names of the parent dirs' do
-      expect(subject).to eq [Pathname.new('/var/shared/config'), Pathname.new('/var/shared/log')]
+      expect(subject).to eq [
+        Pathname.new('/var/shared/config'),
+        Pathname.new('/var/shared/log'),
+      ]
     end
   end
 
@@ -58,7 +68,10 @@ describe Capistrano::DSL::Paths do
     end
 
     it 'returns the full paths names of the parent dirs' do
-      expect(subject).to eq [Pathname.new('/var/shared'), Pathname.new('/var/shared/public')]
+      expect(subject).to eq [
+        Pathname.new('/var/shared'),
+        Pathname.new('/var/shared/public'),
+      ]
     end
   end
 
