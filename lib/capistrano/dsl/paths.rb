@@ -96,7 +96,7 @@ module Capistrano
       end
 
       def map_dirnames(paths)
-        paths.map { |path| path.dirname }
+        paths.map { |path| path.dirname }.uniq
       end
     end
   end
