@@ -1,8 +1,8 @@
-# Capistrano [![Build Status](https://travis-ci.org/capistrano/capistrano.svg?branch=master)](https://travis-ci.org/capistrano/capistrano) [![Code Climate](http://img.shields.io/codeclimate/github/capistrano/capistrano.svg)](https://codeclimate.com/github/capistrano/capistrano) <a href="http://codersclan.net/?repo_id=325&source=small"><img src="http://img.shields.io/badge/get-support-blue.svg"></a>
+# Capistrano [![Build Status](https://travis-ci.org/capistrano/capistrano.svg?branch=master)](https://travis-ci.org/capistrano/capistrano) [![Code Climate](https://img.shields.io/codeclimate/github/capistrano/capistrano.svg)](https://codeclimate.com/github/capistrano/capistrano) <a href="http://codersclan.net/?repo_id=325&source=small"><img src="https://img.shields.io/badge/get-support-blue.svg"></a>
 
 ## Documentation
 
-Check out the [online documentation](http://capistranorb.com) of Capistrano 3 hosted via this [repository](https://github.com/capistrano/capistrano.github.io).
+Check out the [online documentation](http://capistranorb.com) of Capistrano 3 hosted via this [repository](https://github.com/capistrano/documentation).
 
 ## Support
 
@@ -109,7 +109,7 @@ Capistrano has two test suites: an RSpec suite and a Cucumber suite. The
 RSpec suite handles quick feedback unit specs. The Cucumber suite features
 an integration suite that uses Vagrant to deploy to a real virtual
 server. In order to run the Cucumber suite you will need to install
-[Vagrant](http://www.vagrantup.com/) and Vagrant supported
+[Vagrant](https://www.vagrantup.com/) and Vagrant supported
 virtualization software like
 [VirtualBox](https://www.virtualbox.org/wiki/Downloads).
 
@@ -126,7 +126,7 @@ $ rake features KEEP_RUNNING=1
 
 ## SSHKit
 
-[SSHKit](https://github.com/leehambley/sshkit) is the driver for SSH
+[SSHKit](https://github.com/capistrano/sshkit) is the driver for SSH
 connections behind the scenes in Capistrano. Depending on how deep you dig, you
 might run into interfaces that come directly from SSHKit (the configuration is
 a good example).
