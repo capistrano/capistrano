@@ -38,3 +38,5 @@ This list is neither complete nor audited in any way.
 
 <div class="github-widget" data-repo="seuros/capistrano-puma"></div>
 
+<div class="github-widget" data-repo="sambauers/capistrano-committed"></div>
+
