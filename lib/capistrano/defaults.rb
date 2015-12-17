@@ -1,8 +1,8 @@
 validate :application do |_key, value|
-  changed_value = value.gsub(/[^A-Z0-9\-]/i, '_')
+  changed_value = value.gsub(/[^A-Z0-9\.\-]/i, '_')
   if value != changed_value
     warn %(The :application value "#{value}" is invalid!)
-    warn "Use only letters, numbers, hyphens, and underscores. For example:"
+    warn "Use only letters, numbers, hyphens, dots, and underscores. For example:"
     warn "  set :application, '#{changed_value}'"
     raise Capistrano::ValidationError
   end
