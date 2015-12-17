@@ -29,6 +29,7 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
   * Clean up rubocop lint warnings (@cshaffer)
   * Ensure task invocation within after hooks is namespace aware (@thickpaddy)
   * Deduplicate list of linked directories
+  * Allow dot in :application name (@marcovtwout)
 
 ## `3.4.0`
 
