@@ -7,6 +7,15 @@ namespace :load do
   end
 end
 
+require "airbrussh/capistrano"
+# We don't need to show the "using Airbrussh" banner announcement since
+# Airbrussh is now the built-in formatter. Also enable command output by
+# default; hiding the output might be confusing to users new to Capistrano.
+Airbrussh.configure do |airbrussh|
+  airbrussh.banner = false
+  airbrussh.command_output = true
+end
+
 stages.each do |stage|
   Rake::Task.define_task(stage) do
     set(:stage, stage.to_sym)

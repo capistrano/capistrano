@@ -16,7 +16,7 @@ set_if_empty :tmp_dir, "/tmp"
 set_if_empty :default_env, {}
 set_if_empty :keep_releases, 5
 
-set_if_empty :format, :pretty
+set_if_empty :format, :airbrussh
 set_if_empty :log_level, :debug
 
 set_if_empty :pty, false

@@ -13,11 +13,12 @@ set :repo_url, 'git@example.com:me/my_repo.git'
 # Default value for :scm is :git
 # set :scm, :git
 
-# Default value for :format is :pretty
-# set :format, :pretty
+# Default value for :format is :airbrussh.
+# set :format, :airbrussh
 
-# Default value for :log_level is :debug
-# set :log_level, :debug
+# You can configure the Airbrussh format using :format_options.
+# These are the defaults.
+# set :format_options, command_output: true, log_file: 'log/capistrano.log', color: :auto, truncate: :auto
 
 # Default value for :pty is false
 # set :pty, true
