@@ -58,6 +58,15 @@ module Capistrano
       return value
     end
 
+    def any?(key)
+      value = fetch(key)
+      if value && value.respond_to?(:any?)
+        value.any?
+      else
+        !fetch(key).nil?
+      end
+    end
+
     def validate(key, &validator)
       vs = (validators[key] || [])
       vs << validator
