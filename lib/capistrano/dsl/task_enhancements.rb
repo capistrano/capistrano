@@ -3,15 +3,30 @@ require 'capistrano/upload_task'
 module Capistrano
   module TaskEnhancements
     def before(task, prerequisite, *args, &block)
-      prerequisite = Rake::Task.define_task(prerequisite, *args, &block) if block_given?
-      Rake::Task[task].enhance [prerequisite]
+      scoped_prereq = \
+        if block_given?
+          Rake::Task.define_task(prerequisite, *args, &block)
+        else
+          # If we are inside a `namespace` block, make sure the to include that
+          # implied scope in the name of the task.
+          Rake.application.current_scope.path_with_task_name(prerequisite)
+        end
+
+      # The rake: prefix forces Rake to resolve the prerequisite exactly as
+      # we declared it, rather than using the namespace of the enhanced task.
+      Rake::Task[task].enhance ["rake:#{scoped_prereq}"]
     end
 
     def after(task, post_task, *args, &block)
       Rake::Task.define_task(post_task, *args, &block) if block_given?
       task = Rake::Task[task]
+
+      # If we are in a `namespace` block, hold onto that implied scope and reuse
+      # it during invocation of the enhancement to ensure the correct behavior.
+      namespace = Rake.application.current_scope
+
       task.enhance do
-        Rake.application.lookup(post_task, task.scope).invoke
+        Rake.application.lookup(post_task, namespace).invoke
       end
     end
 

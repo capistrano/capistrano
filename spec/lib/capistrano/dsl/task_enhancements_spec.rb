@@ -100,6 +100,76 @@ module Capistrano
         )
       end
 
+      it "invokes using the correct namespace when referenced within a namespace" do
+        Rake.application.in_namespace('namespace') {
+          Rake::Task.define_task('task') do |t|
+            order.push(t.name)
+          end
+          Rake::Task.define_task('before_task') do |t|
+            order.push(t.name)
+          end
+          Rake::Task.define_task('after_task') do |t|
+            order.push(t.name)
+          end
+
+          task_enhancements.before('task', 'before_task')
+          task_enhancements.after('task', 'after_task')
+        }
+
+        Rake::Task['namespace:task'].invoke
+
+        expect(order).to eq(
+          ['namespace:before_task', 'namespace:task', 'namespace:after_task']
+        )
+      end
+
+      it 'invokes namespace-qualified enhancements' do
+        Rake.application.in_namespace('namespace') {
+          Rake::Task.define_task('before_task') do |t|
+            order.push(t.name)
+          end
+          Rake::Task.define_task('after_task') do |t|
+            order.push(t.name)
+          end
+        }
+        task_enhancements.before('task', 'namespace:before_task')
+        task_enhancements.after('task', 'namespace:after_task')
+        Rake::Task['task'].invoke(order)
+
+        expect(order).to eq(
+          ['namespace:before_task', 'task', 'namespace:after_task']
+        )
+      end
+
+      it 'does not use namespace when before/after used outside of namespace block' do
+        Rake.application.in_namespace('namespace') do
+          # Define a namespaced task that we will enhance
+          Rake::Task.define_task('task') do |t|
+            order.push(t.name)
+          end
+
+          # These tasks should never be invoked. They are only declared here
+          # to catch a bug where the task enhancement logic invokes namespaced
+          # tasks by mistake.
+          Rake::Task.define_task('before_task') do |t|
+            order.push("bug! #{t.name}")
+          end
+          Rake::Task.define_task('after_task') do |t|
+            order.push("bug! #{t.name}")
+          end
+        end
+
+        # These are the tasks we expect to be invoked (defined in `let` above).
+        task_enhancements.after('namespace:task', 'after_task')
+        task_enhancements.before('namespace:task', 'before_task')
+
+        Rake::Task['namespace:task'].invoke
+
+        expect(order).to eq(
+          ['before_task', 'namespace:task', 'after_task']
+        )
+      end
+
     end
 
     describe 'remote_file' do
