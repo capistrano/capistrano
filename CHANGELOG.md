@@ -15,10 +15,22 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 * Drop support for Ruby 1.9.3 (Capistrano may still work with 1.9.3, but it is
   no longer officially supported)
 
+* `before` and `after` hooks have changed slightly:
+  * Tasks created with a `before` or `after` block within a `namespace` are now
+    executed properly. In prior Capistrano versions, namespaced `after` tasks
+    would fail to be found. (@thickpaddy)
+  * Tasks attached with `before` or `after` outside of a `namespace` are
+    now invoked as root-level tasks. In prior Capistrano versions, a `before`
+    task hooked onto a namespaced task (e.g. `deploy:starting`) would inherit
+    that task's namespace. Note that this behavior is different from Rake's
+    prerequisites feature, where the namespace of the original task is always
+    searched when looking up prerequisites. Your `before` hooks may break if
+    you relied on the Rake-style behavior. (@mattbrictson)
+  * `after` can now refer to tasks that have not been loaded yet (@jcoglan)
+
 * Minor changes
   * Fix filtering behaviour when using literal hostnames in on() block (@townsen)
   * Added options to set username and password when using Subversion as SCM (@dsthode)
-  * Allow after() to refer to tasks that have not been loaded yet (@jcoglan)
   * Ensure scm fetch_revision methods strip trailing whitespace (@mattbrictson)
     * Reverted - no longer needed due to [SSHKit PR249](https://github.com/capistrano/sshkit/pull/249) (@robd)
   * Allow use "all" as string for server filtering (@theist)
@@ -27,7 +39,6 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
     instead of `Capfile`. (@mattbrictson)
   * Return first 12 characters (instead of 7) of SHA1 hash when determining current git revision (@sds)
   * Clean up rubocop lint warnings (@cshaffer)
-  * Ensure task invocation within after hooks is namespace aware (@thickpaddy)
   * Deduplicate list of linked directories
   * Allow dot in :application name (@marcovtwout)
 
