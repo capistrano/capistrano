@@ -31,6 +31,7 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
   * Deduplicate list of linked directories
   * Allow dot in :application name (@marcovtwout)
   * Fixed git-ssh permission error (@spight)
+  * Added option to set specific revision when using Subversion as SCM (@marcovtwout)
 
 ## `3.4.0`
 

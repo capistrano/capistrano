@@ -12,6 +12,7 @@ module Capistrano
         context.expects(:execute).with(:svn, :init, '--username someuser', '--password somepassword')
         context.expects(:fetch).twice.with(:svn_username).returns('someuser')
         context.expects(:fetch).twice.with(:svn_password).returns('somepassword')
+        context.expects(:fetch).once.with(:svn_revision).returns(nil)
         subject.svn(:init)
       end
     end
@@ -47,6 +48,7 @@ module Capistrano
         context.expects(:repo_path).returns(:path)
         context.expects(:fetch).twice.with(:svn_username).returns('someuser')
         context.expects(:fetch).twice.with(:svn_password).returns('somepassword')
+        context.expects(:fetch).once.with(:svn_revision).returns(nil)
  
         context.expects(:execute).with(:svn, :checkout, :url, :path, '--username someuser', '--password somepassword')
 
@@ -59,6 +61,18 @@ module Capistrano
         context.expects(:execute).with(:svn, :update, '--username someuser', '--password somepassword')
         context.expects(:fetch).twice.with(:svn_username).returns('someuser')
         context.expects(:fetch).twice.with(:svn_password).returns('somepassword')
+        context.expects(:fetch).once.with(:svn_revision).returns(nil)
+
+        subject.update
+      end
+    end
+    
+    describe "#update_specific_revision" do
+      it "should run svn update and update to a specific revision" do
+        context.expects(:execute).with(:svn, :update, '--username someuser', '--password somepassword', '--revision 12345')
+        context.expects(:fetch).twice.with(:svn_username).returns('someuser')
+        context.expects(:fetch).twice.with(:svn_password).returns('somepassword')
+        context.expects(:fetch).twice.with(:svn_revision).returns('12345')
 
         subject.update
       end
@@ -69,6 +83,7 @@ module Capistrano
         context.expects(:release_path).returns(:path)
         context.expects(:fetch).twice.with(:svn_username).returns('someuser')
         context.expects(:fetch).twice.with(:svn_password).returns('somepassword')
+        context.expects(:fetch).once.with(:svn_revision).returns(nil)
         
         context.expects(:execute).with(:svn, :export, '--force', '.', :path, '--username someuser', '--password somepassword')
 
