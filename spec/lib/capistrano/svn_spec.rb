@@ -37,7 +37,7 @@ module Capistrano
         context.expects(:test).with(:svn, :info, :url, '--username someuser', '--password somepassword').returns(true)
         context.expects(:fetch).twice.with(:svn_username).returns('someuser')
         context.expects(:fetch).twice.with(:svn_password).returns('somepassword')
-        context.expects(:fetch).twice.with(:svn_revision).returns(nil)
+        context.expects(:fetch).once.with(:svn_revision).returns(nil)
 
         subject.check
       end
@@ -49,7 +49,7 @@ module Capistrano
         context.expects(:repo_path).returns(:path)
         context.expects(:fetch).twice.with(:svn_username).returns('someuser')
         context.expects(:fetch).twice.with(:svn_password).returns('somepassword')
-        context.expects(:fetch).twice.with(:svn_revision).returns(nil)
+        context.expects(:fetch).once.with(:svn_revision).returns(nil)
  
         context.expects(:execute).with(:svn, :checkout, :url, :path, '--username someuser', '--password somepassword')
 
@@ -62,7 +62,7 @@ module Capistrano
         context.expects(:execute).with(:svn, :update, '--username someuser', '--password somepassword')
         context.expects(:fetch).twice.with(:svn_username).returns('someuser')
         context.expects(:fetch).twice.with(:svn_password).returns('somepassword')
-        context.expects(:fetch).twice.with(:svn_revision).returns(nil)
+        context.expects(:fetch).once.with(:svn_revision).returns(nil)
 
         subject.update
       end
@@ -73,7 +73,7 @@ module Capistrano
         context.expects(:release_path).returns(:path)
         context.expects(:fetch).twice.with(:svn_username).returns('someuser')
         context.expects(:fetch).twice.with(:svn_password).returns('somepassword')
-        context.expects(:fetch).twice.with(:svn_revision).returns(nil)
+        context.expects(:fetch).once.with(:svn_revision).returns(nil)
         
         context.expects(:execute).with(:svn, :export, '--force', '.', :path, '--username someuser', '--password somepassword')
 
