@@ -36,7 +36,7 @@ Add the following lines to the Gemfile:
 
 ```ruby
 group :development do
-  gem 'capistrano-rails', '~> 1.1.1'
+  gem 'capistrano-rails', '~> 1.1'
 end
 ```
 
