@@ -54,6 +54,7 @@ The following variables are settable:
 * `:repo_url`
   * URL to the repository.
   * Must be a valid URL for the used SCM.
+  * Hint: when using :svn and branches, declare the repo_url like this: `set :repo_url, -> { "svn://myhost/myrepo/#{fetch(:branch)}" }`
 
 * `:repo_path`
   * **default:** `-> { "#{fetch(:deploy_to)}/repo" }`
