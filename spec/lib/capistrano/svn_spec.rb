@@ -72,7 +72,7 @@ module Capistrano
         context.expects(:execute).with(:svn, :update, '--username someuser', '--password somepassword', '--revision 12345')
         context.expects(:fetch).twice.with(:svn_username).returns('someuser')
         context.expects(:fetch).twice.with(:svn_password).returns('somepassword')
-        context.expects(:fetch).once.with(:svn_revision).returns('12345')
+        context.expects(:fetch).twice.with(:svn_revision).returns('12345')
 
         subject.update
       end
