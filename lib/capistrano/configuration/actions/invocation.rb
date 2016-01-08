@@ -320,7 +320,7 @@ module Capistrano
               branches += server_branches
             end
             branches
-          end
+          end.compact.uniq
         end
 
       end

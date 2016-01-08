@@ -243,6 +243,12 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
 
   def test_parallel_command_execution_with_matching_servers
     @config.expects(:execute_on_servers)
+
+    logger = mock('logger')
+    logger.stubs(:debug).with("executing multiple commands in parallel").once
+    logger.stubs(:trace).twice
+    @config.stubs(:logger).returns(logger)
+
     assert_block("should not raise Argument error") do
       begin
         @config.servers = [:app, :db]
@@ -256,6 +262,18 @@ class ConfigurationActionsInvocationTest < Test::Unit::TestCase
         false
       end
     end
+  end
+
+  def test_run_only_logs_once
+    @config.servers = [:app, :db]
+
+    logger = mock('logger')
+    logger.stubs(:debug).with("executing \"ls\"")
+    @config.stubs(:logger).returns(logger)
+
+    @config.expects(:execute_on_servers)
+
+    @config.run("ls")
   end
 
   private
