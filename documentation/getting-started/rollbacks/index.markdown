@@ -5,6 +5,8 @@ layout: default
 
 In the majority of failed deployment situations, it probably makes more sense to revert the bad code and redeploy, rather than running deploy:rollback. Capistrano provides basic rollback support, but as each application and system handles rollbacks differently, it is up to the individual to test and validate that rollback behaves correctly for their use case. For example, capistrano-rails will run special tasks on rollback to fix the assets, but does nothing special with database migrations.
 
+Correctly rolling back a release is a complex process that depends on the specifics of your application and the Capistrano plugins you've assembled. *Be proactive and test your rollback procedure before trying it for the first time in a time of crisis.*
+
 When a deployment is run, Capistrano executes one task at a time on all servers and waits for that task to be done before moving on to the next one. If a task fails on a server, Capistrano exits without waiting for further tasks. In a multiple server situation, when a task fails on one server by exiting with a non-0 exit code Capistrano closes the SSH connection to any still in-progress servers and their tasks exit.
 
 If the error occurs during a deployment task which is prior to the final cutover, for example during creation of symlinks, the process will simply stop and the previously deployed application will continue to run. However if the failing deployment task is after `deploy:symlink:release`, during which the `current` symlink is moved to the newly deployed code, this may result in an inconsistent state which may be solved by executing `cap [stage] deploy:rollback`. Rollback can also be a solution for issues with failed deployments due to buggy code or other reasons.
