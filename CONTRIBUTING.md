@@ -1,93 +1,55 @@
-## CONTRIBUTING
+**Hello and welcome!** Please look over this document before opening an issue or submitting a pull request to Capistrano.
 
-**The issue tracker is intended exclusively for things that are genuine bugs,
-or improvements to the code.**
+* [If you’re looking for help or have a question](#if-youre-looking-for-help-or-have-a-question)
+* [Reporting bugs](#reporting-bugs)
+* [Requesting new features or improvements](#requesting-new-features-or-improvements)
+* [Contributing code or documentation](#contributing-code-or-documentation)
 
-If you have a user support query, or you suspect that you might just be holding
-it wrong, drop us a line at [the mailing list](https://groups.google.com/forum/#!forum/capistrano), [StackOverflow](http://stackoverflow.com/questions/tagged/capistrano) or at [CodersClan](http://codersclan.net/?repo_id=325&source=contributing). The
-mailing list is moderated to cut down on spam, so please be patient, if you use
-StackOverflow, make sure to tag your post with "Capistrano". (Not forgetting
-any other tags which might relate, rvm, rbenv, Ubuntu, etc.)
+## If you’re looking for help or have a question
 
-If you have an urgent problem you can use [CodersClan](http://codersclan.net/?repo_id=325&source=contributing) to solve your problem quickly. CodersClan has a community of Capistrano experts dedicated to solve code problems for bounties.
+**Check [Stack Overflow](http://stackoverflow.com/questions/tagged/capistrano) first if you need help using Capistrano.** You are more likely to get a quick response at Stack Overflow for common Capistrano topics. Make sure to tag your post with `capistrano` and/or `capistrano3` (not forgetting any other tags which might relate: rvm, rbenv, Ubuntu, etc.)
 
-Wherever you post please be sure to include the version of Capistrano you are
-using, which versions of any plugins (*capistrano-rvm*, *capistrano-bundler*,
-etc.). Proper logs are vital, if you need to redact them, go ahead, but be
-careful not to remove anything important. Please take care to format logs and
-code correctly, ideally wrapped to a sane line length, and in a mono spaced
-font. This all helps us to gather a clear understanding of what is going wrong.
+If you have an urgent problem you can also try [CodersClan](http://codersclan.net/?repo_id=325&source=contributing), which has a community of Capistrano experts dedicated to solve code problems for bounties.
 
-**If you really think that you found a bug, or want to enquire about a feature,
-or send us a patch to add a feature, or fix a bug, please keep a few things in
-mind:**
+When posting to Stack Overflow or CodersClan, be sure to include relevant information:
 
-## When Submitting An Issue:
+* Capistrano version
+* Plugins and versions (capistrano-rvm, capistrano-bundler, etc.)
+* Logs and backtraces
 
-If you think there's a bug, please make sure it's really a bug in Capistrano.
-As Capistrano sits on the (sometimes rough) edges between SSH, Git, the
-network, Ruby, RVM, rbenv, chruby, Bundler, your Linux distribution, countless
-shell configuration files on your end, and the server… there's a good chance
-the problem lies somewhere else.
+If you think you’ve found a bug in Capistrano itself, then…
 
-Please make sure you have reviewed the FAQs at http://www.capistranorb.com/.
+## Reporting bugs
 
-It's really important to include as much information as possible, versions of
-everything involved, anything weird you might be doing that might be having
-side effects, include as much as you can in a [GitHub
-Gist](https://gist.github.com/) and link that from the issue, with tools such
-as Gist, we can link to individual lines and help work out what is going wrong.
+As much the Capistrano community tries to write good, well-tested code, bugs still happen. Sorry about that!
 
-If you are an experienced Ruby programmer, take a few minutes to get our test
-suite running, and do what you can to get a test case written that fails, from
-there we can understand exactly what it takes to reproduce the issue (as it's
-documented with code)
+**In case you’ve run across an already-known issue, check the FAQs first on the [official Capistrano site](http://capistranorb.com).**
 
-## When Requesting a Feature:
+When opening a bug report, please include the following:
 
-We can't make everyone happy all of the time, and we've been around the block
-well enough to know when something doesn't work well, or when your proposed fix
-might impact other things.
+* Versions of Ruby, Capistrano, and any plugins you’re using
+* A description of the troubleshooting steps you’ve taken
+* Logs and backtraces
+* Sections of your `deploy.rb` that may be relevant
+* Any other unique aspects of your environment
 
-We prefer to [start with
-"no"](https://gettingreal.37signals.com/ch05_Start_With_No.php), and help you
-find a better way to solve your problem, sometimes the solution is to [build
-faster
-horses](http://blog.cauvin.org/2010/07/henry-fords-faster-horse-quote.html),
-sometimes the solution is to work around it in a neat way that you didn't know
-existed.
+If you are an experienced Ruby programmer, take a few minutes to get the Capistrano test suite running (see [DEVELOPMENT.md][]), and do what you can to get a test case written that fails. *This will be a huge help!*
 
-Please don't be offended if we say no, and don't be afraid to fight your
-corner, try and avoid being one of the [poisonous
-people](https://www.youtube.com/watch?v=Q52kFL8zVoM)
+## Requesting new features or improvements
 
-## Submitting A Pull Request:
+Capistrano continues to improve thanks to people like you! Feel free to open a GitHub issue for any or all of these ideas:
 
-Pull requests are awesome, and if they arrive with decent tests, and conform to
-the guidelines below, we'll merge them in as soon as possible, we'll let you
-know which release we're planning them for (we adhere to
-[semver](http://semver.org/) so please don't be upset if we plan your changes
-for a later release)
+* New features that would make Capistrano even better
+* Areas where documentation could be improved
+* Ways to improve developer happiness
 
- * The code is MIT licenced, your code will fall under the same license if we merge it.
- * We can't merge it without a [good commit
-   message](http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message).
-   If you do this right, Github will use the commit message as the body of your
-   pull request, double win.
- * If you are referencing an improvement to an existing issue (if we have not
-   yet merged it )
- * Add an entry to the `CHANGELOG` under the `### master` section, but please
-   don't mess with the version.
- * If you add a new feature, please make sure to document it, open a
-   corresponding pull request in [the
-   documentation](https://github.com/capistrano/documentation) and mention the
-   code change pull request over there, and Github will link everything up. If
-   it's a simple feature, or a new variable, or something changed, it may be
-   appropriate simply to document it in the generated `Capfile` or `deploy.rb`, or
-   in the `README`
- * Take care to squash your commit into one single commit with a good message, it
-   saves us a lot of work in maintaining the CHANGELOG if we can generate it from
-   the commit messages between the release tags!
- * Tests! It's tricky to test some parts of Capistrano, but do your best, it
-   might just serve as a starting point for us to build a reliable test on top of,
-   and help us understand where you are coming from.
+Generally speaking the maintainers are very conservative about adding new features, and we can’t guarantee that the community will agree with or implement your idea. Please don’t be offended if we say no! The Capistrano team will do our best to review all suggestions and at least weigh in with a comment or suggest a workaround, if applicable.
+
+**Your idea will have a much better chance of becoming reality if you contribute code for it (even if the code is incomplete!).**
+
+## Contributing code or documentation
+
+So you want to contribute to Capistrano? Awesome! We have a whole separate document just you. It explains our pull request workflow and walks you through setting up the development environment: [DEVELOPMENT.md][].
+
+
+[DEVELOPMENT.md]: https://github.com/capistrano/capistrano/blob/master/DEVELOPMENT.md
