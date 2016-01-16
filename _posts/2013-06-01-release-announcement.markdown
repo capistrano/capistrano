@@ -432,7 +432,7 @@ for example:
       if ! [ -e /tmp/somefile ]
         then touch /tmp/somefile
         chmod 0644 /tmp/somefile
-      end
+      fi
     EOBLOCK
 {% endhighlight %}
 
