@@ -5,7 +5,7 @@ layout: default
 
 Files commited to version control (i.e. not in .gitignore) can still be ignored when deploying.  To ignore these files or directories, simply add them to .gitattributes:
 
-```
+```bash
 config/deploy/deploy.rb   export-ignore
 config/deploy/            export-ignore
 ```
