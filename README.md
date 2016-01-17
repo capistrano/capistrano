@@ -12,12 +12,12 @@ $ cd my-capistrano-enabled-project
 $ cap production deploy
 ```
 
-When you run `cap`, Capistrano dutifully connects to your server(s) via SSH and executes the steps necessary to deploy your project. You can define those steps yourself by writing [Rake](https://github.com/ruby/rake) tasks , or by using pre-built task libraries provided by the Capistrano community.
+When you run `cap`, Capistrano dutifully connects to your server(s) via SSH and executes the steps necessary to deploy your project. You can define those steps yourself by writing [Rake](https://github.com/ruby/rake) tasks, or by using pre-built task libraries provided by the Capistrano community.
 
 Tasks are simple to make. Here's an example:
 
 ```ruby
-task :restart_sidekiq
+task :restart_sidekiq do
   on roles(:worker) do
     execute :service, "sidekiq restart"
   end
