@@ -1,0 +1,106 @@
+require "capistrano/all"
+require "capistrano/ext/sshkit/backend/thread_local"
+require "rake/tasklib"
+
+# Base class for Capistrano plugins. Makes building a Capistrano plugin as easy
+# as writing a `Capistrano::Plugin` subclass and overriding any or all of its
+# three template methods:
+#
+# * set_defaults
+# * register_hooks
+# * define_tasks
+#
+# Within the plugin you can use any methods of the Rake or Capistrano DSLs, like
+# `fetch`, `invoke`, etc. In cases when you need to use SSHKit's backend outside
+# of an `on` block, use the `backend` convenience method. E.g. `backend.test`,
+# `backend.execute`, or `backend.capture`.
+#
+# Package up and distribute your plugin class as a gem and you're good to go!
+#
+# To use a plugin, all a user has to do is instantiate it in the Capfile, like
+# this:
+#
+#   # Capfile
+#   require "capistrano/superfancy"
+#   Capistrano::Superfancy.new
+#
+# Or, to install the plugin without its hooks:
+#
+#   # Capfile
+#   require "capistrano/superfancy"
+#   Capistrano::Superfancy.new(hooks: false)
+#
+class Capistrano::Plugin < Rake::TaskLib
+  include Capistrano::DSL
+
+  # Constructing a plugin "installs" it into Capistrano by loading its tasks,
+  # hooks, and defaults at the appropriate time. The hooks in particular can be
+  # skipped, if you want full control over when and how the plugin's tasks are
+  # executed. Simply pass `hooks:false` to opt out.
+  #
+  def initialize(hooks:true)
+    define_tasks
+    register_hooks if hooks
+    task "load:defaults" do
+      set_defaults
+    end
+  end
+
+  private
+
+  # Implemented by subclasses to provide default values for settings needed by
+  # this plugin. Typically done using the `set_if_empty` Capistrano DSL method.
+  #
+  # Example:
+  #
+  #   def set_defaults
+  #     set_if_empty :my_plugin_option, true
+  #   end
+  #
+  def set_defaults; end
+
+  # Implemented by subclasses to hook into Capistrano's deployment flow using
+  # using the `before` and `after` DSL methods. Note that `register_hooks` will
+  # not be called if the user has opted-out of hooks when installing the plugin.
+  #
+  # Example:
+  #
+  #   def register_hooks
+  #     after "deploy:updated", "my_plugin:do_something"
+  #   end
+  #
+  def register_hooks; end
+
+  # Implemented by subclasses to define Rake tasks. Typically a plugin will call
+  # `eval_rakefile` to load Rake tasks from a separate .rake file.
+  #
+  # Example:
+  #
+  #   def define_tasks
+  #     eval_rakefile File.expand_path("../tasks.rake", __FILE__)
+  #   end
+  #
+  # For simple tasks, you can define them inline. No need for a separate file.
+  #
+  #   def define_tasks
+  #     desc "Do something fantastic."
+  #     task "my_plugin:fantastic" do
+  #       ...
+  #     end
+  #   end
+  #
+  def define_tasks; end
+
+  # Read and eval a .rake file in such a way that `self` within the .rake file
+  # refers to this plugin instance. This gives the tasks in the file access to
+  # helper methods defined by the plugin.
+  def eval_rakefile(path)
+    contents = IO.read(path)
+    instance_eval(contents, path, 1)
+  end
+
+  # Convenience to access the current SSHKit backend outside of an `on` block.
+  def backend
+    SSHKit::Backend.current
+  end
+end
