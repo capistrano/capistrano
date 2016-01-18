@@ -63,7 +63,7 @@ module Capistrano
 
     def display_error_message(ex)
       unless options.backtrace
-        Rake.application.options.suppress_backtrace_pattern = backtrace_pattern
+        Rake.application.options.suppress_backtrace_pattern = backtrace_pattern if backtrace_pattern
         trace '(Backtrace restricted to imported tasks)'
       end
 
