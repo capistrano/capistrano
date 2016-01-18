@@ -1,4 +1,7 @@
-## Validation of variables
+---
+layout: default
+title: Validation of variables
+---
 
 To validate a variable, each time before it is set, define a validation:
 
