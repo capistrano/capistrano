@@ -22,3 +22,15 @@ Once this has been set, the remaining standard deployment tasks flip the symlink
 ## `deploy:finishing_rollback`
 
 To finish the rollback, Capistrano creates a tarball of the failed release in the deploy path, and then deletes the release folder.
+
+## `deploy:failed`
+
+In a situation where `cap [stage] deploy` fails, the `deploy:failed` hook is invoked. You can add custom rollback tasks to this hook:
+
+```ruby
+after 'deploy:failed', :send_for_help do
+  #
+end
+```
+
+This is different from a specifically invoked rollback, and is application specific. *For reasons stated above, it can be dangerous to use this hook without careful testing.*
