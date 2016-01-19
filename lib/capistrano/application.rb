@@ -63,13 +63,10 @@ module Capistrano
 
     def display_error_message(ex)
       unless options.backtrace
-        if (loc = Rake.application.find_rakefile_location)
-          whitelist = (@imported.dup << loc[0]).map{|f| File.absolute_path(f, loc[1])}
-          pattern = %r@^(?!#{whitelist.map{|p| Regexp.quote(p)}.join('|')})@
-          Rake.application.options.suppress_backtrace_pattern = pattern
-        end
-        trace "(Backtrace restricted to imported tasks)"
+        Rake.application.options.suppress_backtrace_pattern = backtrace_pattern if backtrace_pattern
+        trace '(Backtrace restricted to imported tasks)'
       end
+
       super
     end
 
@@ -82,6 +79,14 @@ module Capistrano
     end
 
     private
+
+    def backtrace_pattern
+      loc = Rake.application.find_rakefile_location
+      return unless loc
+
+      whitelist = (@imported.dup << loc[0]).map { |f| File.absolute_path(f, loc[1]) }
+      /^(?!#{whitelist.map { |p| Regexp.quote(p) }.join('|')})/
+    end
 
     def load_imports
       if options.show_tasks
