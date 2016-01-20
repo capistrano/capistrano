@@ -273,22 +273,24 @@ describe Capistrano::DSL do
       end
 
       describe 'fetching all servers' do
-        it 'creates one server per hostname, ignoring user and port combinations' do
-          expect(dsl.roles(:all).size).to eq(1)
+        it 'creates one server per hostname, ignoring user combinations' do
+          expect(dsl.roles(:all).size).to eq(2)
         end
       end
 
       describe 'fetching servers for a role' do
         it 'roles defined using the `server` syntax are included' do
           as = dsl.roles(:web).map { |server| "#{server.user}@#{server.hostname}:#{server.port}" }
-          expect(as.size).to eq(1)
-          expect(as[0]).to eq("deployer@example1.com:5678")
+          expect(as.size).to eq(2)
+          expect(as[0]).to eq("deployer@example1.com:1234")
+          expect(as[1]).to eq("@example1.com:5678")
         end
 
         it 'roles defined using the `role` syntax are included' do
           as = dsl.roles(:app).map { |server| "#{server.user}@#{server.hostname}:#{server.port}" }
-          expect(as.size).to eq(1)
-          expect(as[0]).to eq("deployer@example1.com:5678")
+          expect(as.size).to eq(2)
+          expect(as[0]).to eq("deployer@example1.com:1234")
+          expect(as[1]).to eq("@example1.com:5678")
         end
       end
 

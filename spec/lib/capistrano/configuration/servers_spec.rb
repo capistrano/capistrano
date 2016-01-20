@@ -140,7 +140,7 @@ module Capistrano
           servers.add_host('1', roles: [:app, 'web'], test: :value, user: 'root', port: 34)
           servers.add_host('1', roles: [:app, 'web'], test: :value, user: 'deployer', port: 34)
           servers.add_host('1', roles: [:app, 'web'], test: :value, user: 'deployer', port: 56)
-          expect(servers.count).to eq(1)
+          expect(servers.count).to eq(5)
         end
 
         describe "with a :user property" do
