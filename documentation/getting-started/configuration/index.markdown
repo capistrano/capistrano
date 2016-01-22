@@ -56,6 +56,16 @@ The following variables are settable:
   * Must be a valid URL for the used SCM.
   * Hint: when using :svn and branches, declare the repo_url like this: `set :repo_url, -> { "svn://myhost/myrepo/#{fetch(:branch)}" }`
 
+* `:branch`
+  * **default:** `'master'`
+  * The branch name to be deployed from SCM.
+
+* `:svn_username`
+  * When using :svn, provides the username for authentication.
+
+* `:svn_password`
+  * When using :svn, provides the password for authentication.
+
 * `:repo_path`
   * **default:** `-> { "#{fetch(:deploy_to)}/repo" }`
   * The path on the remote server where the repository should be placed.
@@ -80,10 +90,6 @@ The following variables are settable:
   * **default:** `{}`
   * Default shell environment used during command execution.
   * Can be used to set or manipulate specific environment variables (e.g. `$PATH` and such).
-
-* `:branch`
-  * **default:** `'master'`
-  * The branch name to be deployed from SCM.
 
 * `:keep_releases`
   * **default:** `5`
