@@ -31,7 +31,7 @@ module Capistrano
           let(:version) { '3.0.0' }
 
           it 'fails' do
-            expect { subject }.to raise_error
+            expect { subject }.to raise_error(RuntimeError)
           end
         end
 
@@ -39,7 +39,7 @@ module Capistrano
           let(:version) { '3.0.2' }
 
           it 'fails' do
-            expect { subject }.to raise_error
+            expect { subject }.to raise_error(RuntimeError)
           end
         end
 
@@ -55,7 +55,7 @@ module Capistrano
           let(:version) { '<= 2.0.0' }
 
           it 'fails' do
-            expect { subject }.to raise_error
+            expect { subject }.to raise_error(RuntimeError)
           end
         end
       end
@@ -73,7 +73,7 @@ module Capistrano
             let(:version) { '~> 3.1.0' }
 
             it 'fails' do
-              expect { subject }.to raise_error
+              expect { subject }.to raise_error(RuntimeError)
             end
           end
         end
@@ -89,7 +89,7 @@ module Capistrano
           context 'invalid' do
             let(:version) { '~> 3.6' }
             it 'fails' do
-              expect { subject }.to raise_error
+              expect { subject }.to raise_error(RuntimeError)
             end
           end
         end
