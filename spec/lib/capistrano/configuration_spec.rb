@@ -139,7 +139,7 @@ module Capistrano
         subject { config.fetch(:key, :default) { fail 'we need this!' } }
 
         it 'returns the block value' do
-          expect { subject }.to raise_error
+          expect { subject }.to raise_error(RuntimeError)
         end
       end
 
@@ -151,7 +151,7 @@ module Capistrano
         end
 
         it 'validates without error' do
-          expect{ config.set(:key, 'longer_value') }.not_to raise_error
+          config.set(:key, 'longer_value')
         end
 
         it 'raises an exception' do
