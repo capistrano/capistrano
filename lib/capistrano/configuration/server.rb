@@ -27,14 +27,15 @@ module Capistrano
       def select?(options)
         options.each do |k,v|
           callable = v.respond_to?(:call) ? v: ->(server){server.fetch(v)}
-          result = case k
-          when :filter, :select
-            callable.call(self)
-          when :exclude
-            !callable.call(self)
-          else
-            self.fetch(k) == v
-          end
+          result = \
+            case k
+            when :filter, :select
+              callable.call(self)
+            when :exclude
+              !callable.call(self)
+            else
+              self.fetch(k) == v
+            end
           return false unless result
         end
         return true
