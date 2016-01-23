@@ -1,14 +1,12 @@
+require "forwardable"
+
 module Capistrano
   module DSL
     module Env
-
-      def configure_backend
-        env.configure_backend
-      end
-
-      def fetch(key, default=nil, &block)
-        env.fetch(key, default, &block)
-      end
+      extend Forwardable
+      def_delegators :env,
+                     :configure_backend, :fetch, :set, :set_if_empty, :delete,
+                     :ask, :role, :server, :primary, :validate
 
       def any?(key)
         value = fetch(key)
@@ -17,30 +15,6 @@ module Capistrano
         else
           !fetch(key).nil?
         end
-      end
-
-      def set(key, value=nil, &block)
-        env.set(key, value, &block)
-      end
-
-      def set_if_empty(key, value=nil, &block)
-        env.set_if_empty(key, value, &block)
-      end
-
-      def delete(key)
-        env.delete(key)
-      end
-
-      def ask(key, value, options={})
-        env.ask(key, value, options)
-      end
-
-      def role(name, servers, options={})
-        env.role(name, servers, options)
-      end
-
-      def server(name, properties={})
-        env.server(name, properties)
       end
 
       def roles(*names)
@@ -60,14 +34,6 @@ module Capistrano
         roles(*names)
       end
 
-      def primary(role)
-        env.primary(role)
-      end
-
-      def validate(key, &validator)
-        env.validate(key, &validator)
-      end
-
       def env
         Configuration.env
       end
@@ -79,7 +45,6 @@ module Capistrano
       def asset_timestamp
         env.timestamp.strftime("%Y%m%d%H%M.%S")
       end
-
     end
   end
 end
