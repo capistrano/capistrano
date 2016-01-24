@@ -2,6 +2,7 @@ Thanks for helping build Capistrano! Here are the development practices followed
 
 * [Who can help](#who-can-help)
 * [Setting up your development environment](#setting-up-your-development-environment)
+* [Coding guidelines](#coding-guidelines)
 * [Submitting a pull request](#submitting-a-pull-request)
 * [Managing GitHub issues](#managing-github-issues)
 * [Reviewing and merging pull requests](#reviewing-and-merging-pull-requests)
@@ -52,6 +53,13 @@ Currently, the Capistrano Travis build does *not* run the Cucumber suite. This m
 
 **If you come across a failing Cucumber feature, this is a bug.** Please report it by opening a GitHub issue. Or even better: do your best to fix the feature and submit a pull request!
 
+## Coding guidelines
+
+This project uses [RuboCop](https://github.com/bbatsov/rubocop) to enforce standard Ruby coding guidelines. Currently we run RuboCop's lint rules only, which check for readability issues like indentation, ambiguity, and useless/unreachable code.
+
+* Test that your contributions pass with `rake lint`
+* The linter is also run as part of the full test suite with `rake`
+* Note the Travis build will fail and your PR cannot be merged if the linter finds errors
 
 ## Submitting a pull request
 

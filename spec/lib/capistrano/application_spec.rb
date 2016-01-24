@@ -51,7 +51,7 @@ describe Capistrano::Application do
 
   def command_line(*options)
     options.each { |opt| ARGV << opt }
-    def subject.exit(*_args)
+    subject.define_singleton_method(:exit) do |*_args|
       throw(:system_exit, :exit)
     end
     subject.run
