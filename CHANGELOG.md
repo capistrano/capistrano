@@ -14,6 +14,7 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 * Old versions of SSHKit (before 1.7.1) are no longer supported
 * Drop support for Ruby 1.9.3 (Capistrano may still work with 1.9.3, but it is
   no longer officially supported)
+* Added new runtime option `--print-config-variables` that inspect all defined config variables in order to assist development of new capistrano tasks (@gerardo-navarro)
 
 * Minor changes
   * Fix filtering behaviour when using literal hostnames in on() block (@townsen)

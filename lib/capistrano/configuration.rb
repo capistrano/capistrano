@@ -28,6 +28,10 @@ module Capistrano
     def set(key, value=nil, &block)
       invoke_validations(key, value, &block)
       config[key] = block || value
+      
+      puts "Config variable set: #{key.inspect} => #{config[key].inspect}" if fetch(:print_config_variables, false)
+
+      config[key]
     end
 
     def set_if_empty(key, value=nil, &block)
@@ -54,6 +58,11 @@ module Capistrano
 
     def keys
       config.keys
+    end
+
+    def is_question?(key)
+      value = fetch_for(key, nil)
+      not value.nil? and value.is_a?(Question)
     end
 
     def role(name, hosts, options={})

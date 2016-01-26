@@ -10,6 +10,10 @@ module Capistrano
         env.fetch(key, default, &block)
       end
 
+      def is_question?(key)
+        env.is_question?(key)
+      end
+
       def any?(key)
         value = fetch(key)
         if value && value.respond_to?(:any?)
