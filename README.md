@@ -162,6 +162,9 @@ $ bundle exec cap production deploy --prereqs
 
 # trace through task invocations
 $ bundle exec cap production deploy --trace
+
+# lists all config variable before deployment tasks
+$ bundle exec cap production deploy --print-config-variables
 ```
 
 ## Finding help and documentation

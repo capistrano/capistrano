@@ -21,7 +21,7 @@ module Capistrano
         switch =~ /--#{Regexp.union(not_applicable_to_capistrano)}/
       end
 
-      super.push(version, dry_run, roles, hostfilter)
+      super.push(version, dry_run, roles, hostfilter, print_config_variables)
     end
 
     def handle_options
@@ -136,6 +136,15 @@ module Capistrano
        "Run SSH commands only on matching hosts",
        lambda { |value|
          Configuration.env.add_cmdline_filter(:host, value)
+       }
+      ]
+    end
+
+    def print_config_variables
+      ['--print-config-variables', '-p',
+       "Display the defined config variables before starting the deployment tasks.",
+       lambda { |_value|
+         Configuration.env.set(:print_config_variables, true)
        }
       ]
     end

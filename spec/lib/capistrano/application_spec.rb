@@ -41,6 +41,13 @@ describe Capistrano::Application do
     expect(sshkit_backend).to eq(SSHKit::Backend::Printer)
   end
 
+  it 'enables printing all config variables on command line parameter' do
+    capture_io do
+      flags '--print-config-variables', '-p'
+    end
+    expect(Capistrano::Configuration.fetch(:print_config_variables)).to be true
+  end
+
   def flags(*sets)
     sets.each do |set|
       ARGV.clear

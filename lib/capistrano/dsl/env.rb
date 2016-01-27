@@ -8,6 +8,10 @@ module Capistrano
                      :configure_backend, :fetch, :set, :set_if_empty, :delete,
                      :ask, :role, :server, :primary, :validate
 
+      def is_question?(key)
+        env.is_question?(key)
+      end
+
       def any?(key)
         value = fetch(key)
         if value && value.respond_to?(:any?)
