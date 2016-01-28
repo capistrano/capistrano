@@ -38,6 +38,10 @@ module Capistrano
       set(key, value, &block) unless config.has_key? key
     end
 
+    def append(key, value)
+      set(key, Array(fetch(key)) << value)
+    end
+
     def delete(key)
       config.delete(key)
     end
@@ -167,7 +171,7 @@ module Capistrano
       unless value.nil? or block.nil?
         raise Capistrano::ValidationError.new("Value and block both passed to Configuration#set")
       end
-      
+
       return unless validators.has_key? key
 
       validators[key].each do |validator|
