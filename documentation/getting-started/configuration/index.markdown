@@ -67,6 +67,7 @@ The following variables are settable:
   * When using :svn, provides the password for authentication.
 
 * `:svn_revision`
+  * **New in version 3.5**
   * When using :svn, set the specific revision number you want to deploy.
 
 * `:repo_path`
