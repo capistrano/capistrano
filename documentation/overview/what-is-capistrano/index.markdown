@@ -90,7 +90,7 @@ me@localhost $ cap staging deploy
 
 There's lots of cool stuff in the Capistrano toy box:
 
-* Interchangable output formatters (progress, pretty, html, etc)
+* Interchangeable output formatters (progress, pretty, html, etc)
 * Easy to add support for other source control management software.
 * A rudimentary multi-console for running Capistrano interactively.
 * Host and Role filters for partial deploys, or partial-cluster maintenance.
