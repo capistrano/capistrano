@@ -13,4 +13,4 @@ validate :some_key do |key, value|
 end
 ```
 
-Multiple validation can be assigned to a single key. Validations will be executed in the order of registration.
+Multiple validations can be assigned to a single key. Validations will be executed in the order of registration.
