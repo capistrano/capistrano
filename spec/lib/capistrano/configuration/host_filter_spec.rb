@@ -44,6 +44,11 @@ module Capistrano
           it_behaves_like 'it filters hosts correctly', %w{server1 server3}
         end
 
+        context 'with a regexp with line boundaries' do
+          let(:values) { '^server' }
+          it_behaves_like 'it filters hosts correctly', %w{server1 server2 server3 server4 server5}
+        end
+
         context 'with a regexp with a comma' do
           let(:values) { 'server\d{1,3}$' }
           it_behaves_like 'it filters hosts correctly', %w{server1 server2 server3 server4 server5}
