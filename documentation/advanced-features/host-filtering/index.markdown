@@ -63,3 +63,9 @@ them with a comma.
 If the host name in a filter doesn't match the set of valid characters for a DNS name
 (Given by the regular expression `/^[-A-Za-z0-9.]+$/`) then it's assumed to be a regular
 expression in standard Ruby syntax.
+
+For example, if you had three servers named localrubyserver1, localrubyserver2, and amazonrubyserver1, but only wanted to deploy to localrubyserver*, you call Capistrano with a regex:
+
+```bash
+cap --hosts=^localrubyserver production deploy
+```
