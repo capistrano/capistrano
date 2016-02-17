@@ -1,4 +1,4 @@
-**Important:** GitHub issues are for feature requests or bug reports. Since this is more of a how-to question, I am closing this issue. The Capistrano team recommends you use [Stack Overflow](http://stackoverflow.com/questions/tagged/capistrano) for general questions. For more details, please see our [contribution policy](https://github.com/capistrano/capistrano/blob/master/CONTRIBUTING.md).
+**Important:** GitHub issues are for feature requests or bug reports. The Capistrano team recommends you use [Stack Overflow](http://stackoverflow.com/questions/tagged/capistrano) for general questions. For more details, please see our [contribution policy](https://github.com/capistrano/capistrano/blob/master/CONTRIBUTING.md).
 
 ---
 
