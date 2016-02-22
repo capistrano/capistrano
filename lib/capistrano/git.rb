@@ -34,7 +34,7 @@ class Capistrano::Git < Capistrano::SCM
       if (depth = fetch(:git_shallow_clone))
         git :fetch, '--depth', depth, 'origin', fetch(:branch)
       else
-        git :remote, :update
+        git :remote, :update, '--prune'
       end
     end
 
