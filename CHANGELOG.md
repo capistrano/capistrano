@@ -18,6 +18,8 @@ https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 * Drop support for Ruby 1.9.3 (Capistrano may still work with 1.9.3, but it is
   no longer officially supported)
 * Added new runtime option `--print-config-variables` that inspect all defined config variables in order to assist development of new capistrano tasks (@gerardo-navarro)
+* Prune dead tracking branches from git repositories while updating
+  * Git version 1.6.3 or greater is now required
 
 * Minor changes
   * Fix filtering behaviour when using literal hostnames in on() block (@townsen)

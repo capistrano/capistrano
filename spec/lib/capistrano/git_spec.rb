@@ -61,7 +61,7 @@ module Capistrano
     describe "#update" do
       it "should run git update" do
         context.expects(:fetch).with(:git_shallow_clone).returns(nil)
-        context.expects(:execute).with(:git, :remote, :update)
+        context.expects(:execute).with(:git, :remote, :update, '--prune')
 
         subject.update
       end
