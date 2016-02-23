@@ -38,8 +38,8 @@ module Capistrano
       set(key, value, &block) unless config.has_key? key
     end
 
-    def append(key, value)
-      set(key, Array(fetch(key)) << value)
+    def append(key, *values)
+      set(key, Array(fetch(key)).concat(values))
     end
 
     def delete(key)

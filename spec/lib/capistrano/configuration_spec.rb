@@ -160,10 +160,10 @@ module Capistrano
       end
 
       context 'appending' do
-        subject { config.append(:linked_dirs, 'vendor/bundle') }
+        subject { config.append(:linked_dirs, 'vendor/bundle', 'tmp') }
 
         it "returns appended value" do
-          expect(subject).to eq ['vendor/bundle']
+          expect(subject).to eq ['vendor/bundle', 'tmp']
         end
 
         context "on non-array variable" do
