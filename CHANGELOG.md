@@ -7,6 +7,8 @@ Reverse Chronological Order:
 https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 
 * `append` DSL method for pushing values like `linked_dirs`
+  [#1447](https://github.com/capistrano/capistrano/pull/1447),
+  [#1586](https://github.com/capistrano/capistrano/pull/1586)
 * Added support for git shallow clone
 * Remove 'vendor/bundle' from default :linked_dirs (@ojab)
 * Removed the post-install message (@Kriechi)
