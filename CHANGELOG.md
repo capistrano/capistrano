@@ -6,6 +6,7 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 
+* `remove` DSL method for removing values like from arrays like `linked_dirs`
 * `append` DSL method for pushing values like `linked_dirs`
   [#1447](https://github.com/capistrano/capistrano/pull/1447),
   [#1586](https://github.com/capistrano/capistrano/pull/1586)
