@@ -39,6 +39,12 @@ fetch(:special_thing, 'some_default_value')
 append :linked_dirs, ".bundle", "tmp"
 ```
 
+The inverse is also available: `remove` will strive to drop an entry from an array. This comes in handy if you have a shared configuration which sets an array but a specific config doesn't need one of the elements.
+
+```ruby
+remove :linked_dirs, ".bundle", "tmp"
+```
+
 ## Variables
 
 The following variables are settable:
