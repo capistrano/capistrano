@@ -175,6 +175,38 @@ module Capistrano
           end
         end
       end
+
+      context 'removing' do
+        before :each do
+          config.set(:linked_dirs, ['vendor/bundle', 'tmp'])
+        end
+
+        subject { config.remove(:linked_dirs, 'vendor/bundle') }
+
+        it 'returns without removed value' do
+          expect(subject).to eq ['tmp']
+        end
+
+        context 'on non-array variable' do
+          before { config.set(:linked_dirs, 'string') }
+
+          context 'when removing same value' do
+            subject { config.remove(:linked_dirs, 'string') }
+
+            it 'returns without removed value' do
+              expect(subject).to eq []
+            end
+          end
+
+          context 'when removing different value' do
+            subject { config.remove(:linked_dirs, 'othervalue') }
+
+            it 'returns without removed value' do
+              expect(subject).to eq ['string']
+            end
+          end
+        end
+      end
     end
 
     describe 'keys' do

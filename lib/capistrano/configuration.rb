@@ -28,7 +28,7 @@ module Capistrano
     def set(key, value=nil, &block)
       invoke_validations(key, value, &block)
       config[key] = block || value
-      
+
       puts "Config variable set: #{key.inspect} => #{config[key].inspect}" if fetch(:print_config_variables, false)
 
       config[key]
@@ -40,6 +40,10 @@ module Capistrano
 
     def append(key, *values)
       set(key, Array(fetch(key)).concat(values))
+    end
+
+    def remove(key, *values)
+      set(key, Array(fetch(key)) - values)
     end
 
     def delete(key)
