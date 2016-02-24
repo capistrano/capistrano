@@ -23,7 +23,6 @@ set :application, 'MyLittleApplication'
 set :application, -> { "SomeThing_#{fetch :other_config}" }
 ```
 
-
 A value can be retrieved from the configuration at any time:
 
 ```ruby
@@ -32,6 +31,12 @@ fetch :application
 
 fetch(:special_thing, 'some_default_value')
 # will return the value if set, or the second argument as default value
+```
+
+**New in Capistrano 3.5:** for a variable that holds an Array, easily add values to it using `append`. This comes in especially handy for `:linked_dirs` and `:linked_files` (see Variables reference below).
+
+```ruby
+append :linked_dirs, ".bundle", "tmp"
 ```
 
 ## Variables
