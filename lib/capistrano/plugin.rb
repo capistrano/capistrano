@@ -1,5 +1,4 @@
 require "capistrano/all"
-require "capistrano/ext/sshkit/backend/thread_local"
 require "rake/tasklib"
 
 # Base class for Capistrano plugins. Makes building a Capistrano plugin as easy
