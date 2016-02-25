@@ -181,6 +181,7 @@ Related GitHub repositories:
 * [capistrano/sshkit](https://github.com/capistrano/sshkit) provides the SSH behavior that underlies Capistrano (when you use `execute` in a Capistrano task, you are using SSHKit)
 * [capistrano/documentation](https://github.com/capistrano/documentation) is what generates the official Capistrano website
 * [capistrano/rails](https://github.com/capistrano/rails) is a very popular gem that adds Ruby on Rails deployment tasks
+* [mattbrictson/airbrussh](https://github.com/mattbrictson/airbrussh) provides Capistrano's default log formatting
 
 GitHub issues are for bug reports and feature requests. Please refer to the [CONTRIBUTING](CONTRIBUTING.md) document for guidelines on submitting GitHub issues.
 
