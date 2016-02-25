@@ -13,12 +13,7 @@ module Capistrano
       end
 
       def any?(key)
-        value = fetch(key)
-        if value && value.respond_to?(:any?)
-          value.any?
-        else
-          !fetch(key).nil?
-        end
+        env.any?(key)
       end
 
       def roles(*names)

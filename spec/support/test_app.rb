@@ -17,6 +17,7 @@ module TestApp
       server 'vagrant@localhost:2220', roles: %w{web app}
       set :linked_files, #{linked_files}
       set :linked_dirs, #{linked_dirs}
+      set :format_options, log_file: nil
     }
   end
 

@@ -6,6 +6,17 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 
+**You'll notice a big cosmetic change in this release: the default logging
+format has been changed to
+[Airbrussh](https://github.com/mattbrictson/airbrussh).** For more details on
+what Airbrussh does
+and how to configure it, visit the
+[Airbrussh README](https://github.com/mattbrictson/airbrussh#readme). To opt out
+of the new format, simply add `set :format, :pretty` to switch to the old
+default of Capistrano 3.4.0 and earlier.
+
+Other changes:
+
 * `remove` DSL method for removing values like from arrays like `linked_dirs`
 * `append` DSL method for pushing values like `linked_dirs`
   [#1447](https://github.com/capistrano/capistrano/pull/1447),

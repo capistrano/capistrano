@@ -58,6 +58,15 @@ module Capistrano
       return value
     end
 
+    def any?(key)
+      value = fetch(key)
+      if value && value.respond_to?(:any?)
+        value.any?
+      else
+        !fetch(key).nil?
+      end
+    end
+
     def validate(key, &validator)
       vs = (validators[key] || [])
       vs << validator
@@ -105,7 +114,7 @@ module Capistrano
 
     def configure_backend
       backend.configure do |sshkit|
-        sshkit.format           = fetch(:format)
+        configure_sshkit_output(sshkit)
         sshkit.output_verbosity = fetch(:log_level)
         sshkit.default_env      = fetch(:default_env)
         sshkit.backend          = fetch(:sshkit_backend, SSHKit::Backend::Netssh)
@@ -181,6 +190,13 @@ module Capistrano
       validators[key].each do |validator|
         validator.call(key, block || value)
       end
+    end
+
+    def configure_sshkit_output(sshkit)
+      format_args = [fetch(:format)]
+      format_args.push(fetch(:format_options)) if any?(:format_options)
+
+      sshkit.use_format(*format_args)
     end
   end
 end
