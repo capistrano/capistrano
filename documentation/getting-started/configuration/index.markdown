@@ -77,6 +77,10 @@ The following variables are settable:
 * `:svn_password`
   * When using :svn, provides the password for authentication.
 
+* `:svn_revision`
+  * **New in version 3.5**
+  * When using :svn, set the specific revision number you want to deploy.
+
 * `:repo_path`
   * **default:** `-> { "#{fetch(:deploy_to)}/repo" }`
   * The path on the remote server where the repository should be placed.
