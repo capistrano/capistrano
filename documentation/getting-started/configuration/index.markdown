@@ -65,7 +65,9 @@ The following variables are settable:
 * `:repo_url`
   * URL to the repository.
   * Must be a valid URL for the used SCM.
-  * Hint: when using :svn and branches, declare the repo_url like this: `set :repo_url, -> { "svn://myhost/myrepo/#{fetch(:branch)}" }`
+  * Example: `set :repo_url, 'git@example.com:me/my_repo.git'` for a git repo located in /home/git/me
+  * Hint #1: to access a repo on a machine using a non-standard ssh port: `set :repo_url, 'ssh://git@example.com:30000/~/me/my_repo.git'`
+  * Hint #2: when using :svn and branches, declare the repo_url like this: `set :repo_url, -> { "svn://myhost/myrepo/#{fetch(:branch)}" }`
 
 * `:branch`
   * **default:** `'master'`
