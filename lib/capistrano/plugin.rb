@@ -20,36 +20,20 @@ require "rake/tasklib"
 #
 # Package up and distribute your plugin class as a gem and you're good to go!
 #
-# To use a plugin, all a user has to do is instantiate it in the Capfile, like
-# this:
+# To use a plugin, all a user has to do is install it in the Capfile, like this:
 #
 #   # Capfile
 #   require "capistrano/superfancy"
-#   Capistrano::Superfancy.new
+#   install_plugin Capistrano::Superfancy
 #
 # Or, to install the plugin without its hooks:
 #
 #   # Capfile
 #   require "capistrano/superfancy"
-#   Capistrano::Superfancy.new(hooks: false)
+#   install_plugin Capistrano::Superfancy, hooks: false
 #
 class Capistrano::Plugin < Rake::TaskLib
   include Capistrano::DSL
-
-  # Constructing a plugin "installs" it into Capistrano by loading its tasks,
-  # hooks, and defaults at the appropriate time. The hooks in particular can be
-  # skipped, if you want full control over when and how the plugin's tasks are
-  # executed. Simply pass `hooks:false` to opt out.
-  #
-  def initialize(hooks: true)
-    define_tasks
-    register_hooks if hooks
-    task "load:defaults" do
-      set_defaults
-    end
-  end
-
-  private
 
   # Implemented by subclasses to provide default values for settings needed by
   # this plugin. Typically done using the `set_if_empty` Capistrano DSL method.
@@ -93,6 +77,8 @@ class Capistrano::Plugin < Rake::TaskLib
   #   end
   #
   def define_tasks; end
+
+  private
 
   # Read and eval a .rake file in such a way that `self` within the .rake file
   # refers to this plugin instance. This gives the tasks in the file access to

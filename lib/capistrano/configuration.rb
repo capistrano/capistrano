@@ -1,5 +1,6 @@
 require_relative "configuration/filter"
 require_relative "configuration/question"
+require_relative "configuration/plugin_installer"
 require_relative "configuration/server"
 require_relative "configuration/servers"
 
@@ -151,6 +152,10 @@ module Capistrano
       fetch(:sshkit_backend) == SSHKit::Backend::Printer
     end
 
+    def install_plugin(plugin, hooks:true)
+      installer.install(plugin, hooks: hooks)
+    end
+
     private
 
     def cmdline_filters
@@ -167,6 +172,10 @@ module Capistrano
 
     def validators
       @validators ||= {}
+    end
+
+    def installer
+      @installer ||= PluginInstaller.new
     end
 
     def fetch_for(key, default, &block)
