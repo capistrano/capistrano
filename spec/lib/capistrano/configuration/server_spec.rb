@@ -79,7 +79,7 @@ module Capistrano
         end
 
         context "properties contains roles" do
-          let(:properties) { {:roles => [:clouds]} }
+          let(:properties) { { :roles => [:clouds] } }
 
           it "adds the roles" do
             expect(server.roles.first).to eq :clouds
@@ -87,7 +87,7 @@ module Capistrano
         end
 
         context "properties contains user" do
-          let(:properties) { {:user => "tomc"} }
+          let(:properties) { { :user => "tomc" } }
 
           it "sets the user" do
             expect(server.user).to eq "tomc"
@@ -99,7 +99,7 @@ module Capistrano
         end
 
         context "properties contains port" do
-          let(:properties) { {:port => 2222} }
+          let(:properties) { { :port => 2222 } }
 
           it "sets the port" do
             expect(server.port).to eq 2222
@@ -107,7 +107,7 @@ module Capistrano
         end
 
         context "properties contains key" do
-          let(:properties) { {:key => "/key"} }
+          let(:properties) { { :key => "/key" } }
 
           it "adds the key" do
             expect(server.keys).to include "/key"
@@ -115,7 +115,7 @@ module Capistrano
         end
 
         context "properties contains password" do
-          let(:properties) { {:password => "supersecret"} }
+          let(:properties) { { :password => "supersecret" } }
 
           it "adds the key" do
             expect(server.password).to eq "supersecret"

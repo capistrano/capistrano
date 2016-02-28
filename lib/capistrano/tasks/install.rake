@@ -14,8 +14,8 @@ task :install do
 
   mkdir_p deploy_dir
 
-  entries = [{:template => deploy_rb, :file => config_dir.join("deploy.rb")}]
-  entries += envs.split(",").map { |stage| {:template => stage_rb, :file => deploy_dir.join("#{stage}.rb")} }
+  entries = [{ :template => deploy_rb, :file => config_dir.join("deploy.rb") }]
+  entries += envs.split(",").map { |stage| { :template => stage_rb, :file => deploy_dir.join("#{stage}.rb") } }
 
   entries.each do |entry|
     if File.exist?(entry[:file])

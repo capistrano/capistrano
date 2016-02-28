@@ -580,12 +580,12 @@ describe Capistrano::DSL do
 
     it "retrieves properties for a single role as a set" do
       rps = dsl.role_properties(:app)
-      expect(rps).to eq(Set[{ :hostname => "example3.com", :role => :app}])
+      expect(rps).to eq(Set[{ :hostname => "example3.com", :role => :app }])
     end
 
     it "retrieves properties for multiple roles as a set" do
       rps = dsl.role_properties(:app, :web)
-      expect(rps).to eq(Set[{ :hostname => "example3.com", :role => :app},{ :hostname => "example1.com", :role => :web, :port => 80},{ :hostname => "example2.com", :role => :web, :port => 81}])
+      expect(rps).to eq(Set[{ :hostname => "example3.com", :role => :app },{ :hostname => "example1.com", :role => :web, :port => 80 },{ :hostname => "example2.com", :role => :web, :port => 81 }])
     end
 
     it "yields the properties for a single role" do
