@@ -1,7 +1,7 @@
 AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
-  TargetRubyVersion: 1.9
+  TargetRubyVersion: 2.0
 
 Style/ClassAndModuleChildren:
   Enabled: false
