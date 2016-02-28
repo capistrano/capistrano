@@ -39,8 +39,8 @@ module Capistrano
           servers.add_host("1", :db => { :master => true })
           expect(servers.count).to eq(2)
           expect(servers.roles_for([:db]).count).to eq 2
-          expect(servers.find() { |s| s.hostname == "1" }.properties.db).to eq({ :port => 1234, :master => true })
-          expect(servers.find() { |s| s.hostname == "2" }.properties.db).to eq({ :port => 1234 })
+          expect(servers.find() { |s| s.hostname == "1" }.properties.db).to eq(:port => 1234, :master => true)
+          expect(servers.find() { |s| s.hostname == "2" }.properties.db).to eq(:port => 1234)
         end
 
       end
@@ -89,7 +89,7 @@ module Capistrano
         end
 
         it "ignores any on_filters" do
-          Configuration.env.set :filter, { :host => "1"}
+          Configuration.env.set :filter, :host => "1"
           servers.add_role(:app, %w{1 2})
           servers.add_host("2", :primary => true)
           expect(servers.fetch_primary(:app).hostname).to eq("2")
@@ -169,7 +169,7 @@ module Capistrano
           servers.add_host("1", :roles => [:b], :db => { :port => 1234 })
           servers.add_host("1", :roles => [:b], :db => { :master => true })
           expect(servers.count).to eq(1)
-          expect(servers.roles_for([:b]).first.properties.db).to eq({ :port => 1234, :master => true })
+          expect(servers.roles_for([:b]).first.properties.db).to eq(:port => 1234, :master => true)
         end
 
         it "concatenates previously defined array properties" do
