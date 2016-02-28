@@ -15,3 +15,91 @@ Style/StringLiterals:
   EnforcedStyle: double_quotes
 Style/TrivialAccessors:
   AllowPredicates: true
+
+# Need discussion
+Style/AndOr:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/RedundantSelf:
+  Enabled: false
+Style/RedundantReturn:
+  Enabled: false
+Style/SpaceAfterComma:
+  Enabled: false
+Style/ParallelAssignment:
+  Enabled: false
+Style/RegexpLiteral:
+  Enabled: false
+Style/SignalException:
+  Enabled: false
+Style/AccessorMethodName:
+  Enabled: false
+Performance/RedundantMerge:
+  Enabled: false
+Style/PercentLiteralDelimiters:
+  Enabled: false
+Style/BlockDelimiters:
+  Enabled: false
+Style/ConditionalAssignment:
+  Enabled: false
+Style/AlignParameters:
+  Enabled: false
+Style/IfUnlessModifier:
+  Enabled: false
+Style/Next:
+  Enabled: false
+Style/Lambda:
+  Enabled: false
+Style/EmptyLiteral:
+  Enabled: false
+Style/RaiseArgs:
+  Enabled: false
+Style/SingleLineBlockParams:
+  Enabled: false
+Style/Not:
+  Enabled: false
+Style/WhileUntilModifier:
+  Enabled: false
+Style/RescueModifier:
+  Enabled: false
+Style/SpecialGlobalVars:
+  Enabled: false
+Style/ModuleFunction:
+  Enabled: false
+Style/DotPosition:
+  Enabled: false
+Style/BlockEndNewline:
+  Enabled: false
+Style/AlignArray:
+  Enabled: false
+Style/MultilineBlockLayout:
+  Enabled: false
+Style/TrailingCommaInLiteral:
+  Enabled: false
+Style/Proc:
+  Enabled: false
+Style/CommandLiteral:
+  Enabled: false
+Style/AlignHash:
+  Enabled: false
+
+# Needs refactors
+Metrics/PerceivedComplexity:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/MethodLength:
+  Enabled: false
+Style/PredicateName:
+  Enabled: false
+Metrics/LineLength:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Style/PerlBackrefs:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/ModuleLength:
+  Enabled: false
