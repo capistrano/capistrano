@@ -42,7 +42,7 @@ module Capistrano
             end
           end
         end
-        block_given? ? nil: rps
+        block_given? ? nil : rps
       end
 
       def fetch_primary(role)
