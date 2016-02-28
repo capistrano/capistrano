@@ -69,7 +69,7 @@ module Capistrano
       it "should run git update in shallow mode" do
         context.expects(:fetch).with(:git_shallow_clone).returns("1")
         context.expects(:fetch).with(:branch).returns(:branch)
-        context.expects(:execute).with(:git, :fetch, "--depth", "1", "origin",  :branch)
+        context.expects(:execute).with(:git, :fetch, "--depth", "1", "origin", :branch)
 
         subject.update
       end

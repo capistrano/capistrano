@@ -422,7 +422,7 @@ describe Capistrano::DSL do
       dsl.set(:default_env, default_env)
       dsl.set(:pty, true)
       dsl.set(:connection_timeout, 10)
-      dsl.set(:ssh_options,         :keys => %w(/home/user/.ssh/id_rsa),
+      dsl.set(:ssh_options, :keys => %w(/home/user/.ssh/id_rsa),
         :forward_agent => false,
         :auth_methods => %w(publickey password))
       dsl.configure_backend
