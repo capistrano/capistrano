@@ -41,7 +41,7 @@ module Capistrano
 
         Rake::Task["task"].invoke order
 
-        expect(order).to eq(["before_task", "task", "after_task"])
+        expect(order).to eq(%w(before_task task after_task))
       end
 
       it "invokes in proper order if define before than after" do
@@ -50,7 +50,7 @@ module Capistrano
 
         Rake::Task["task"].invoke order
 
-        expect(order).to eq(["before_task", "task", "after_task"])
+        expect(order).to eq(%w(before_task task after_task))
       end
 
       it "invokes in proper order when referring to as-yet undefined tasks" do
@@ -62,7 +62,7 @@ module Capistrano
 
         Rake::Task["task"].invoke order
 
-        expect(order).to eq(["task", "not_loaded_task"])
+        expect(order).to eq(%w(task not_loaded_task))
       end
 
       it "invokes in proper order and with arguments and block" do
@@ -76,7 +76,7 @@ module Capistrano
 
         Rake::Task["task"].invoke(order)
 
-        expect(order).to eq(["before_task", "task", "after_task"])
+        expect(order).to eq(%w(before_task task after_task))
       end
 
       it "invokes using the correct namespace when defined within a namespace" do
