@@ -18,7 +18,7 @@ module Capistrano
       end
 
       def add_role(role, hosts, options={})
-        options_deepcopy = Marshal.dump(options.merge(roles: role))
+        options_deepcopy = Marshal.dump(options.merge(:roles => role))
         Array(hosts).each { |host| add_host(host, Marshal.load(options_deepcopy)) }
       end
 
@@ -37,7 +37,7 @@ module Capistrano
               if block_given?
                 yield host, role, props
               else
-                rps << (props || {}).merge( role: role, hostname: host.hostname )
+                rps << (props || {}).merge( :role => role, :hostname => host.hostname )
               end
             end
           end

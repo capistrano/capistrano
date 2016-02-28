@@ -65,4 +65,4 @@ task :deploy do
     invoke "deploy:#{task}"
   end
 end
-task default: :deploy
+task :default => :deploy

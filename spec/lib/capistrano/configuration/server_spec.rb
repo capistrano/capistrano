@@ -81,7 +81,7 @@ module Capistrano
         end
 
         context 'properties contains roles' do
-          let(:properties) { {roles: [:clouds]} }
+          let(:properties) { {:roles => [:clouds]} }
 
           it 'adds the roles' do
             expect(server.roles.first).to eq :clouds
@@ -89,7 +89,7 @@ module Capistrano
         end
 
         context 'properties contains user' do
-          let(:properties) { {user: 'tomc'} }
+          let(:properties) { {:user => 'tomc'} }
 
           it 'sets the user' do
             expect(server.user).to eq 'tomc'
@@ -101,7 +101,7 @@ module Capistrano
         end
 
         context 'properties contains port' do
-          let(:properties) { {port: 2222} }
+          let(:properties) { {:port => 2222} }
 
           it 'sets the port' do
             expect(server.port).to eq 2222
@@ -109,7 +109,7 @@ module Capistrano
         end
 
         context 'properties contains key' do
-          let(:properties) { {key: '/key'} }
+          let(:properties) { {:key => '/key'} }
 
           it 'adds the key' do
             expect(server.keys).to include '/key'
@@ -117,7 +117,7 @@ module Capistrano
         end
 
         context 'properties contains password' do
-          let(:properties) { {password: 'supersecret'} }
+          let(:properties) { {:password => 'supersecret'} }
 
           it 'adds the key' do
             expect(server.password).to eq 'supersecret'
@@ -125,7 +125,7 @@ module Capistrano
         end
 
         context 'new properties' do
-          let(:properties) { { webscales: 5 } }
+          let(:properties) { { :webscales => 5 } }
 
           it 'adds the properties' do
             expect(server.properties.webscales).to eq 5
@@ -133,7 +133,7 @@ module Capistrano
         end
 
         context 'existing properties' do
-          let(:properties) { { webscales: 6 } }
+          let(:properties) { { :webscales => 6 } }
 
           it 'keeps the existing properties' do
             expect(server.properties.webscales).to eq 6
@@ -160,46 +160,46 @@ module Capistrano
           context 'value matches server property' do
 
             context 'with :filter' do
-              let(:options) { { filter: :active }}
+              let(:options) { { :filter => :active }}
               it { expect(subject).to be_truthy }
             end
 
             context 'with :select' do
-              let(:options) { { select: :active }}
+              let(:options) { { :select => :active }}
               it { expect(subject).to be_truthy }
             end
 
             context 'with :exclude' do
-              let(:options) { { exclude: :active }}
+              let(:options) { { :exclude => :active }}
               it { expect(subject).to be_falsey }
             end
           end
 
           context 'value does not match server properly' do
             context 'with :active true' do
-              let(:options) { { active: true }}
+              let(:options) { { :active => true }}
               it { expect(subject).to be_truthy }
             end
 
             context 'with :active false' do
-              let(:options) { { active: false }}
+              let(:options) { { :active => false }}
               it { expect(subject).to be_falsey }
             end
           end
 
           context 'value does not match server properly' do
             context 'with :filter' do
-              let(:options) { { filter: :inactive }}
+              let(:options) { { :filter => :inactive }}
               it { expect(subject).to be_falsey }
             end
 
             context 'with :select' do
-              let(:options) { { select: :inactive }}
+              let(:options) { { :select => :inactive }}
               it { expect(subject).to be_falsey }
             end
 
             context 'with :exclude' do
-              let(:options) { { exclude: :inactive }}
+              let(:options) { { :exclude => :inactive }}
               it { expect(subject).to be_truthy }
             end
           end
@@ -207,12 +207,12 @@ module Capistrano
 
         context 'key is a property' do
           context 'with :active true' do
-            let(:options) { { active: true }}
+            let(:options) { { :active => true }}
             it { expect(subject).to be_truthy }
           end
 
           context 'with :active false' do
-            let(:options) { { active: false }}
+            let(:options) { { :active => false }}
             it { expect(subject).to be_falsey }
           end
         end
@@ -221,17 +221,17 @@ module Capistrano
           context 'value matches server property' do
 
             context 'with :filter' do
-              let(:options) { { filter: ->(s) { s.properties.active } } }
+              let(:options) { { :filter => ->(s) { s.properties.active } } }
               it { expect(subject).to be_truthy }
             end
 
             context 'with :select' do
-              let(:options) { { select: ->(s) { s.properties.active } } }
+              let(:options) { { :select => ->(s) { s.properties.active } } }
               it { expect(subject).to be_truthy }
             end
 
             context 'with :exclude' do
-              let(:options) { { exclude: ->(s) { s.properties.active } } }
+              let(:options) { { :exclude => ->(s) { s.properties.active } } }
               it { expect(subject).to be_falsey }
             end
 
@@ -239,17 +239,17 @@ module Capistrano
 
           context 'value does not match server properly' do
             context 'with :filter' do
-              let(:options) { { filter: ->(s) { s.properties.inactive } } }
+              let(:options) { { :filter => ->(s) { s.properties.inactive } } }
               it { expect(subject).to be_falsey }
             end
 
             context 'with :select' do
-              let(:options) { { select: ->(s) { s.properties.inactive } } }
+              let(:options) { { :select => ->(s) { s.properties.inactive } } }
               it { expect(subject).to be_falsey }
             end
 
             context 'with :exclude' do
-              let(:options) { { exclude: ->(s) { s.properties.inactive } } }
+              let(:options) { { :exclude => ->(s) { s.properties.inactive } } }
               it { expect(subject).to be_truthy }
             end
 
@@ -272,11 +272,11 @@ module Capistrano
 
         context 'custom' do
           let(:properties) do
-            { ssh_options: {
-              user: 'another_user',
-              keys: %w(/home/another_user/.ssh/id_rsa),
-              forward_agent: false,
-              auth_methods: %w(publickey password) } }
+            { :ssh_options => {
+              :user => 'another_user',
+              :keys => %w(/home/another_user/.ssh/id_rsa),
+              :forward_agent => false,
+              :auth_methods => %w(publickey password) } }
           end
 
           before do

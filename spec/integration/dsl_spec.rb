@@ -11,11 +11,11 @@ describe Capistrano::DSL do
   describe 'setting and fetching hosts' do
     describe 'when defining a host using the `server` syntax' do
       before do
-        dsl.server 'example1.com', roles: %w{web}, active: true
-        dsl.server 'example2.com', roles: %w{web}
-        dsl.server 'example3.com', roles: %w{app web}, active: true
-        dsl.server 'example4.com', roles: %w{app}, primary: true
-        dsl.server 'example5.com', roles: %w{db}, no_release: true, active:true
+        dsl.server 'example1.com', :roles => %w{web}, :active => true
+        dsl.server 'example2.com', :roles => %w{web}
+        dsl.server 'example3.com', :roles => %w{app web}, :active => true
+        dsl.server 'example4.com', :roles => %w{app}, :primary => true
+        dsl.server 'example5.com', :roles => %w{db}, :no_release => true, :active => true
       end
 
       describe 'fetching all servers' do
@@ -37,7 +37,7 @@ describe Capistrano::DSL do
         end
 
         context 'with property filter options' do
-          subject { dsl.release_roles(:all, filter: :active) }
+          subject { dsl.release_roles(:all, :filter => :active) }
 
           it 'returns all release servers that match the property filter' do
             expect(subject.map(&:hostname)).to eq %w{example1.com example3.com}
@@ -48,7 +48,7 @@ describe Capistrano::DSL do
       describe 'fetching servers by multiple roles' do
         it "does not confuse the last role with options" do
           expect(dsl.roles(:app, :web).count).to eq 4
-          expect(dsl.roles(:app, :web, filter: :active).count).to eq 2
+          expect(dsl.roles(:app, :web, :filter => :active).count).to eq 2
         end
       end
 
@@ -69,7 +69,7 @@ describe Capistrano::DSL do
       end
 
       describe 'fetching filtered servers by role' do
-        subject { dsl.roles(:app, filter: :active) }
+        subject { dsl.roles(:app, :filter => :active) }
 
         it 'returns the servers' do
           expect(subject.map(&:hostname)).to eq %w{example3.com}
@@ -77,7 +77,7 @@ describe Capistrano::DSL do
       end
 
       describe 'fetching selected servers by role' do
-        subject { dsl.roles(:app, select: :active) }
+        subject { dsl.roles(:app, :select => :active) }
 
         it 'returns the servers' do
           expect(subject.map(&:hostname)).to eq %w{example3.com}
@@ -103,7 +103,7 @@ describe Capistrano::DSL do
       describe 'setting an internal host filter' do
         subject { dsl.roles(:app) }
         it 'is ignored' do
-          dsl.set :filter, { host: 'example3.com' }
+          dsl.set :filter, { :host => 'example3.com' }
           expect(subject.map(&:hostname)).to eq(['example3.com', 'example4.com'])
         end
       end
@@ -111,7 +111,7 @@ describe Capistrano::DSL do
       describe 'setting an internal role filter' do
         subject { dsl.roles(:app) }
         it 'ignores it' do
-          dsl.set :filter, { role: :web }
+          dsl.set :filter, { :role => :web }
           expect(subject.map(&:hostname)).to eq(['example3.com','example4.com'])
         end
       end
@@ -119,7 +119,7 @@ describe Capistrano::DSL do
       describe 'setting an internal host and role filter' do
         subject { dsl.roles(:app) }
         it 'ignores it' do
-          dsl.set :filter, { role: :web, host: 'example1.com' }
+          dsl.set :filter, { :role => :web, :host => 'example1.com' }
           expect(subject.map(&:hostname)).to eq(['example3.com','example4.com'])
         end
       end
@@ -127,7 +127,7 @@ describe Capistrano::DSL do
       describe 'setting an internal regexp host filter' do
         subject { dsl.roles(:all) }
         it 'is ignored' do
-          dsl.set :filter, { host: /1/ }
+          dsl.set :filter, { :host => /1/ }
           expect(subject.map(&:hostname)).to eq(%w{example1.com example2.com example3.com example4.com example5.com})
         end
       end
@@ -135,7 +135,7 @@ describe Capistrano::DSL do
       describe 'setting an internal hosts filter' do
         subject { dsl.roles(:app) }
         it 'is ignored' do
-          dsl.set :filter, { hosts: 'example3.com' }
+          dsl.set :filter, { :hosts => 'example3.com' }
           expect(subject.map(&:hostname)).to eq(['example3.com', 'example4.com'])
         end
       end
@@ -143,7 +143,7 @@ describe Capistrano::DSL do
       describe 'setting an internal roles filter' do
         subject { dsl.roles(:app) }
         it 'ignores it' do
-          dsl.set :filter, { roles: :web }
+          dsl.set :filter, { :roles => :web }
           expect(subject.map(&:hostname)).to eq(['example3.com','example4.com'])
         end
       end
@@ -151,7 +151,7 @@ describe Capistrano::DSL do
       describe 'setting an internal hosts and roles filter' do
         subject { dsl.roles(:app) }
         it 'ignores it' do
-          dsl.set :filter, { roles: :web, hosts: 'example1.com' }
+          dsl.set :filter, { :roles => :web, :hosts => 'example1.com' }
           expect(subject.map(&:hostname)).to eq(['example3.com','example4.com'])
         end
       end
@@ -159,7 +159,7 @@ describe Capistrano::DSL do
       describe 'setting an internal regexp hosts filter' do
         subject { dsl.roles(:all) }
         it 'is ignored' do
-          dsl.set :filter, { hosts: /1/ }
+          dsl.set :filter, { :hosts => /1/ }
           expect(subject.map(&:hostname)).to eq(%w{example1.com example2.com example3.com example4.com example5.com})
         end
       end
@@ -177,11 +177,11 @@ describe Capistrano::DSL do
     describe 'when defining hosts using the `role` syntax' do
       before do
         dsl.role :web, %w{example1.com example2.com example3.com}
-        dsl.role :web, %w{example1.com}, active: true
+        dsl.role :web, %w{example1.com}, :active => true
         dsl.role :app, %w{example3.com example4.com}
-        dsl.role :app, %w{example3.com}, active: true
-        dsl.role :app, %w{example4.com}, primary: true
-        dsl.role :db, %w{example5.com}, no_release: true
+        dsl.role :app, %w{example3.com}, :active => true
+        dsl.role :app, %w{example4.com}, :primary => true
+        dsl.role :db, %w{example5.com}, :no_release => true
       end
 
       describe 'fetching all servers' do
@@ -203,7 +203,7 @@ describe Capistrano::DSL do
         end
 
         context 'with filter options' do
-          subject { dsl.release_roles(:all, filter: :active) }
+          subject { dsl.release_roles(:all, :filter => :active) }
 
           it 'returns all release servers that match the filter' do
             expect(subject.map(&:hostname)).to eq %w{example1.com example3.com}
@@ -229,7 +229,7 @@ describe Capistrano::DSL do
       end
 
       describe 'fetching filtered servers by role' do
-        subject { dsl.roles(:app, filter: :active) }
+        subject { dsl.roles(:app, :filter => :active) }
 
         it 'returns the servers' do
           expect(subject.map(&:hostname)).to eq %w{example3.com}
@@ -237,7 +237,7 @@ describe Capistrano::DSL do
       end
 
       describe 'fetching selected servers by role' do
-        subject { dsl.roles(:app, select: :active) }
+        subject { dsl.roles(:app, :select => :active) }
 
         it 'returns the servers' do
           expect(subject.map(&:hostname)).to eq %w{example3.com}
@@ -265,9 +265,9 @@ describe Capistrano::DSL do
     describe 'when defining a host using a combination of the `server` and `role` syntax' do
 
       before do
-        dsl.server 'db@example1.com:1234', roles: %w{db}, active: true
-        dsl.server 'root@example1.com:1234', roles: %w{web}, active: true
-        dsl.server 'example1.com:5678', roles: %w{web}, active: true
+        dsl.server 'db@example1.com:1234', :roles => %w{db}, :active => true
+        dsl.server 'root@example1.com:1234', :roles => %w{web}, :active => true
+        dsl.server 'example1.com:5678', :roles => %w{web}, :active => true
         dsl.role :app, %w{deployer@example1.com:1234}
         dsl.role :app, %w{example1.com:5678}
       end
@@ -301,14 +301,14 @@ describe Capistrano::DSL do
 
       describe "using the :user property" do
         it "takes precedence over in the host string" do
-          dsl.server 'db@example1.com:1234', roles: %w{db}, active: true, user: 'brian'
+          dsl.server 'db@example1.com:1234', :roles => %w{db}, :active => true, :user => 'brian'
           expect(subject).to eq("brian@example1.com:1234")
         end
       end
 
       describe "using the :port property" do
         it "takes precedence over in the host string" do
-          dsl.server 'db@example1.com:9090', roles: %w{db}, active: true, port: 1234
+          dsl.server 'db@example1.com:9090', :roles => %w{db}, :active => true, :port => 1234
           expect(subject).to eq("db@example1.com:1234")
         end
       end
@@ -425,7 +425,7 @@ describe Capistrano::DSL do
   describe 'configuration SSHKit' do
     let(:config) { SSHKit.config }
     let(:backend) { SSHKit.config.backend.config }
-    let(:default_env) { { rails_env: :production } }
+    let(:default_env) { { :rails_env => :production } }
 
     before do
       dsl.set(:format, :dot)
@@ -434,9 +434,9 @@ describe Capistrano::DSL do
       dsl.set(:pty, true)
       dsl.set(:connection_timeout, 10)
       dsl.set(:ssh_options, {
-        keys: %w(/home/user/.ssh/id_rsa),
-        forward_agent: false,
-        auth_methods: %w(publickey password)
+        :keys => %w(/home/user/.ssh/id_rsa),
+        :forward_agent => false,
+        :auth_methods => %w(publickey password)
       })
       dsl.configure_backend
     end
@@ -474,11 +474,11 @@ describe Capistrano::DSL do
     describe "when passed server objects" do
 
       before do
-        dsl.server 'example1.com', roles: %w{web}, active: true
-        dsl.server 'example2.com', roles: %w{web}
-        dsl.server 'example3.com', roles: %w{app web}, active: true
-        dsl.server 'example4.com', roles: %w{app}, primary: true
-        dsl.server 'example5.com', roles: %w{db}, no_release: true
+        dsl.server 'example1.com', :roles => %w{web}, :active => true
+        dsl.server 'example2.com', :roles => %w{web}
+        dsl.server 'example3.com', :roles => %w{app web}, :active => true
+        dsl.server 'example4.com', :roles => %w{app}, :primary => true
+        dsl.server 'example5.com', :roles => %w{db}, :no_release => true
         @coordinator = mock('coordinator')
         @coordinator.expects(:each).returns(nil)
         ENV.delete 'ROLES'
@@ -489,14 +489,14 @@ describe Capistrano::DSL do
         hosts = dsl.roles(:web)
         all = dsl.roles(:all)
         SSHKit::Coordinator.expects(:new).with(hosts).returns(@coordinator)
-        dsl.set :filter, { role: 'web' }
+        dsl.set :filter, { :role => 'web' }
         dsl.on(all)
       end
 
       it 'filters by host and role from the :filter variable' do
         all = dsl.roles(:all)
         SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
-        dsl.set :filter, { role: 'db', host: 'example3.com' }
+        dsl.set :filter, { :role => 'db', :host => 'example3.com' }
         dsl.on(all)
       end
 
@@ -504,14 +504,14 @@ describe Capistrano::DSL do
         hosts = dsl.roles(:web)
         all = dsl.roles(:all)
         SSHKit::Coordinator.expects(:new).with(hosts).returns(@coordinator)
-        dsl.set :filter, { roles: 'web' }
+        dsl.set :filter, { :roles => 'web' }
         dsl.on(all)
       end
 
       it 'filters by hosts and roles from the :filter variable' do
         all = dsl.roles(:all)
         SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
-        dsl.set :filter, { roles: 'db', hosts: 'example3.com' }
+        dsl.set :filter, { :roles => 'db', :hosts => 'example3.com' }
         dsl.on(all)
       end
 
@@ -551,37 +551,37 @@ describe Capistrano::DSL do
       end
 
       it "selects nothing when a role filter is present" do
-        dsl.set :filter, { role: 'web' }
+        dsl.set :filter, { :role => 'web' }
         SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
         dsl.on('my.server')
       end
 
       it "selects using the string when a host filter is present" do
-        dsl.set :filter, { host: 'server.local' }
+        dsl.set :filter, { :host => 'server.local' }
         SSHKit::Coordinator.expects(:new).with(['server.local']).returns(@coordinator)
         dsl.on('server.local')
       end
 
       it "doesn't select when a host filter is present that doesn't match" do
-        dsl.set :filter, { host: 'ruby.local' }
+        dsl.set :filter, { :host => 'ruby.local' }
         SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
         dsl.on('server.local')
       end
 
       it "selects nothing when a roles filter is present" do
-        dsl.set :filter, { roles: 'web' }
+        dsl.set :filter, { :roles => 'web' }
         SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
         dsl.on('my.server')
       end
 
       it "selects using the string when a hosts filter is present" do
-        dsl.set :filter, { hosts: 'server.local' }
+        dsl.set :filter, { :hosts => 'server.local' }
         SSHKit::Coordinator.expects(:new).with(['server.local']).returns(@coordinator)
         dsl.on('server.local')
       end
 
       it "doesn't select when a hosts filter is present that doesn't match" do
-        dsl.set :filter, { hosts: 'ruby.local' }
+        dsl.set :filter, { :hosts => 'ruby.local' }
         SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
         dsl.on('server.local')
       end
@@ -593,26 +593,26 @@ describe Capistrano::DSL do
   describe 'role_properties()' do
 
     before do
-      dsl.role :redis, %w[example1.com example2.com], redis: { port: 6379, type: :slave }
-      dsl.server 'example1.com', roles: %w{web}, active: true, web: { port: 80 }
-      dsl.server 'example2.com', roles: %w{web redis}, web: { port: 81 }, redis: { type: :master }
-      dsl.server 'example3.com', roles: %w{app}, primary: true
+      dsl.role :redis, %w[example1.com example2.com], :redis => { :port => 6379, :type => :slave }
+      dsl.server 'example1.com', :roles => %w{web}, :active => true, :web => { :port => 80 }
+      dsl.server 'example2.com', :roles => %w{web redis}, :web => { :port => 81 }, :redis => { :type => :master }
+      dsl.server 'example3.com', :roles => %w{app}, :primary => true
     end
 
     it 'retrieves properties for a single role as a set' do
       rps = dsl.role_properties(:app)
-      expect(rps).to eq(Set[{ hostname: 'example3.com', role: :app}])
+      expect(rps).to eq(Set[{ :hostname => 'example3.com', :role => :app}])
     end
 
     it 'retrieves properties for multiple roles as a set' do
       rps = dsl.role_properties(:app, :web)
-      expect(rps).to eq(Set[{ hostname: 'example3.com', role: :app},{ hostname: 'example1.com', role: :web, port: 80},{ hostname: 'example2.com', role: :web, port: 81}])
+      expect(rps).to eq(Set[{ :hostname => 'example3.com', :role => :app},{ :hostname => 'example1.com', :role => :web, :port => 80},{ :hostname => 'example2.com', :role => :web, :port => 81}])
     end
 
     it 'yields the properties for a single role' do
       recipient = mock('recipient')
-      recipient.expects(:doit).with('example1.com', :redis, { port: 6379, type: :slave})
-      recipient.expects(:doit).with('example2.com', :redis, { port: 6379, type: :master})
+      recipient.expects(:doit).with('example1.com', :redis, { :port => 6379, :type => :slave})
+      recipient.expects(:doit).with('example2.com', :redis, { :port => 6379, :type => :master})
       dsl.role_properties(:redis) do |host, role, props|
         recipient.doit(host, role, props)
       end
@@ -620,8 +620,8 @@ describe Capistrano::DSL do
 
     it 'yields the properties for multiple roles' do
       recipient = mock('recipient')
-      recipient.expects(:doit).with('example1.com', :redis, { port: 6379, type: :slave})
-      recipient.expects(:doit).with('example2.com', :redis, { port: 6379, type: :master})
+      recipient.expects(:doit).with('example1.com', :redis, { :port => 6379, :type => :slave})
+      recipient.expects(:doit).with('example2.com', :redis, { :port => 6379, :type => :master})
       recipient.expects(:doit).with('example3.com', :app, nil)
       dsl.role_properties(:redis, :app) do |host, role, props|
         recipient.doit(host, role, props)
@@ -630,10 +630,10 @@ describe Capistrano::DSL do
 
     it 'yields the merged properties for multiple roles' do
       recipient = mock('recipient')
-      recipient.expects(:doit).with('example1.com', :redis, { port: 6379, type: :slave})
-      recipient.expects(:doit).with('example2.com', :redis, { port: 6379, type: :master})
-      recipient.expects(:doit).with('example1.com', :web, { port: 80 })
-      recipient.expects(:doit).with('example2.com', :web, { port: 81 })
+      recipient.expects(:doit).with('example1.com', :redis, { :port => 6379, :type => :slave})
+      recipient.expects(:doit).with('example2.com', :redis, { :port => 6379, :type => :master})
+      recipient.expects(:doit).with('example1.com', :web, { :port => 80 })
+      recipient.expects(:doit).with('example2.com', :web, { :port => 81 })
       dsl.role_properties(:redis, :web) do |host, role, props|
         recipient.doit(host, role, props)
       end
@@ -641,9 +641,9 @@ describe Capistrano::DSL do
 
     it 'honours a property filter before yielding' do
       recipient = mock('recipient')
-      recipient.expects(:doit).with('example1.com', :redis, { port: 6379, type: :slave})
-      recipient.expects(:doit).with('example1.com', :web, { port: 80 })
-      dsl.role_properties(:redis, :web, select: :active) do |host, role, props|
+      recipient.expects(:doit).with('example1.com', :redis, { :port => 6379, :type => :slave})
+      recipient.expects(:doit).with('example1.com', :web, { :port => 80 })
+      dsl.role_properties(:redis, :web, :select => :active) do |host, role, props|
         recipient.doit(host, role, props)
       end
     end

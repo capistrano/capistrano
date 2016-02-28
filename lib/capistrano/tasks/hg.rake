@@ -14,7 +14,7 @@ namespace :hg do
   task :clone do
     on release_roles :all do
       if strategy.test
-        info t(:mirror_exists, at: repo_path)
+        info t(:mirror_exists, :at => repo_path)
       else
         within deploy_path do
           strategy.clone

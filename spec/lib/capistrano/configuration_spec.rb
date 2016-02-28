@@ -7,7 +7,7 @@ module Capistrano
 
     describe '.new' do
       it 'accepts initial hash' do
-        configuration = described_class.new(custom: 'value')
+        configuration = described_class.new(:custom => 'value')
         expect(configuration.fetch(:custom)).to eq('value')
       end
     end
@@ -262,10 +262,10 @@ module Capistrano
         it 'merges them with the :ssh_options variable' do
           config.set :format, :pretty
           config.set :log_level, :debug
-          config.set :ssh_options, { user: 'albert' }
-          SSHKit::Backend::Netssh.configure do |ssh| ssh.ssh_options = { password: 'einstein' } end
+          config.set :ssh_options, { :user => 'albert' }
+          SSHKit::Backend::Netssh.configure do |ssh| ssh.ssh_options = { :password => 'einstein' } end
           config.configure_backend
-          expect(config.backend.config.backend.config.ssh_options).to eq({ user: 'albert', password: 'einstein' })
+          expect(config.backend.config.backend.config.ssh_options).to eq({ :user => 'albert', :password => 'einstein' })
         end
       end
     end

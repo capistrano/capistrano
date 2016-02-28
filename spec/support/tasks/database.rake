@@ -4,7 +4,7 @@ namespace :deploy do
   end
 end
 
-remote_file 'config/database.yml' => '/tmp/database.yml', roles: :all
+remote_file 'config/database.yml' => '/tmp/database.yml', :roles => :all
 
 file '/tmp/database.yml' do |t|
   sh "touch #{t.name}"

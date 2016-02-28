@@ -37,7 +37,7 @@ class Capistrano::Plugin < Rake::TaskLib
   # skipped, if you want full control over when and how the plugin's tasks are
   # executed. Simply pass `hooks:false` to opt out.
   #
-  def initialize(hooks:true)
+  def initialize(hooks: true)
     define_tasks
     register_hooks if hooks
     task "load:defaults" do
