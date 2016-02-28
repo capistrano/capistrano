@@ -5,11 +5,11 @@ module Capistrano
     describe HostFilter do
       subject(:host_filter) { HostFilter.new(values) }
 
-      let(:available) { [ Server.new("server1"),
+      let(:available) { [Server.new("server1"),
                           Server.new("server2"),
                           Server.new("server3"),
                           Server.new("server4"),
-                          Server.new("server5") ] }
+                          Server.new("server5")] }
 
       shared_examples "it filters hosts correctly" do |expected|
         it "filters correctly" do

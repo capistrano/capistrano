@@ -3,11 +3,11 @@ require "spec_helper"
 module Capistrano
   class Configuration
     describe Filter do
-      let(:available) { [ Server.new("server1").add_roles([:web,:db]),
+      let(:available) { [Server.new("server1").add_roles([:web,:db]),
                           Server.new("server2").add_role(:web),
                           Server.new("server3").add_role(:redis),
                           Server.new("server4").add_role(:db),
-                          Server.new("server5").add_role(:stageweb) ] }
+                          Server.new("server5").add_role(:stageweb)] }
 
       describe '#new' do
         it "won't create an invalid type of filter" do
