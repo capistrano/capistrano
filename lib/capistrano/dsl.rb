@@ -34,7 +34,7 @@ module Capistrano
           :user => local_user,
           :sha => fetch(:current_revision),
           :release => fetch(:release_timestamp))
-       )
+           )
     end
 
     def rollback_log_message
