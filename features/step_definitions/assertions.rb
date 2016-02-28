@@ -18,7 +18,7 @@ end
 
 Then(/^directories referenced in :linked_files are created in shared$/) do
   dirs = TestApp.linked_files.map { |path| TestApp.shared_path.join(path).dirname }
-  dirs.each do | dir|
+  dirs.each do |dir|
     run_vagrant_command(test_dir_exists(dir))
   end
 end
