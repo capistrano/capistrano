@@ -77,7 +77,6 @@ module Capistrano
       end
 
       class Properties
-
         def initialize
           @properties = {}
         end
@@ -124,9 +123,7 @@ module Capistrano
         def lvalue(key)
           key.to_s.chomp("=").to_sym
         end
-
       end
-
     end
   end
 end

@@ -7,7 +7,6 @@ module Capistrano
   class ValidationError < Exception; end
 
   class Configuration
-
     def initialize(config=nil)
       @config ||= config
     end

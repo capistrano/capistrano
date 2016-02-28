@@ -2,7 +2,6 @@ require "spec_helper"
 
 module Capistrano
   class Configuration
-
     describe Question do
 
       let(:question) { Question.new(key, default, options) }
@@ -55,6 +54,5 @@ module Capistrano
         end
       end
     end
-
   end
 end

@@ -3,7 +3,6 @@ load File.expand_path("../tasks/svn.rake", __FILE__)
 require "capistrano/scm"
 
 class Capistrano::Svn < Capistrano::SCM
-
   # execute svn in context with arguments
   def svn(*args)
     args.unshift(:svn)

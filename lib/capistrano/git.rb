@@ -3,7 +3,6 @@ load File.expand_path("../tasks/git.rake", __FILE__)
 require "capistrano/scm"
 
 class Capistrano::Git < Capistrano::SCM
-
   # execute git with argument in the context
   #
   def git(*args)

@@ -1,7 +1,6 @@
 module Capistrano
   class Configuration
     class Question
-
       def initialize(key, default, options={})
         @key, @default, @options = key, default, options
       end

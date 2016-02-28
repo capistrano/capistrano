@@ -1,6 +1,5 @@
 module Capistrano
   class VersionValidator
-
     def initialize(version)
       @version = version
     end
@@ -32,6 +31,5 @@ module Capistrano
     def requested
       Gem::Dependency.new("cap", current_version)
     end
-
   end
 end

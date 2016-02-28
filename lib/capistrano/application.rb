@@ -1,6 +1,5 @@
 module Capistrano
   class Application < Rake::Application
-
     def initialize
       super
       @rakefiles = %w{capfile Capfile capfile.rb Capfile.rb} << capfile
@@ -148,7 +147,6 @@ module Capistrano
        }
       ]
     end
-
   end
 
 end
