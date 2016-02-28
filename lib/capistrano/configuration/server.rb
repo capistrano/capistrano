@@ -55,7 +55,7 @@ module Capistrano
       end
 
       def netssh_options
-        @netssh_options ||= super.merge( fetch(:ssh_options) || {} )
+        @netssh_options ||= super.merge(fetch(:ssh_options) || {})
       end
 
       def roles_array

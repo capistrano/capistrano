@@ -35,7 +35,7 @@ module Capistrano
         end
 
         it "creates distinct server properties" do
-          servers.add_role(:db, %w{1 2}, :db => { :port => 1234 } )
+          servers.add_role(:db, %w{1 2}, :db => { :port => 1234 })
           servers.add_host("1", :db => { :master => true })
           expect(servers.count).to eq(2)
           expect(servers.roles_for([:db]).count).to eq 2

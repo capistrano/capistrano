@@ -37,7 +37,7 @@ module Capistrano
               if block_given?
                 yield host, role, props
               else
-                rps << (props || {}).merge( :role => role, :hostname => host.hostname )
+                rps << (props || {}).merge(:role => role, :hostname => host.hostname)
               end
             end
           end
