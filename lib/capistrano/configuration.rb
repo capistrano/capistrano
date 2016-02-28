@@ -34,7 +34,7 @@ module Capistrano
     end
 
     def set_if_empty(key, value=nil, &block)
-      set(key, value, &block) unless config.has_key? key
+      set(key, value, &block) unless config.key? key
     end
 
     def append(key, *values)
@@ -184,7 +184,7 @@ module Capistrano
         raise Capistrano::ValidationError.new("Value and block both passed to Configuration#set")
       end
 
-      return unless validators.has_key? key
+      return unless validators.key? key
 
       validators[key].each do |validator|
         validator.call(key, block || value)

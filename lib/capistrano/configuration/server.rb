@@ -99,7 +99,7 @@ module Capistrano
         end
 
         def respond_to?(method, _include_all=false)
-          @properties.has_key?(method)
+          @properties.key?(method)
         end
 
         def roles
