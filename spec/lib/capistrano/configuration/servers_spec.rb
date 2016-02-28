@@ -38,8 +38,8 @@ module Capistrano
           servers.add_host("1", :db => { :master => true })
           expect(servers.count).to eq(2)
           expect(servers.roles_for([:db]).count).to eq 2
-          expect(servers.find() { |s| s.hostname == "1" }.properties.db).to eq(:port => 1234, :master => true)
-          expect(servers.find() { |s| s.hostname == "2" }.properties.db).to eq(:port => 1234)
+          expect(servers.find { |s| s.hostname == "1" }.properties.db).to eq(:port => 1234, :master => true)
+          expect(servers.find { |s| s.hostname == "2" }.properties.db).to eq(:port => 1234)
         end
       end
 
