@@ -11,6 +11,7 @@ module Capistrano
       end
 
       private
+
       attr_reader :key, :default, :options
 
       def ask_question

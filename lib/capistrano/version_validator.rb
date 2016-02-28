@@ -13,6 +13,7 @@ module Capistrano
     end
 
     private
+
     attr_reader :version
 
 
