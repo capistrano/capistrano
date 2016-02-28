@@ -31,7 +31,6 @@ module Capistrano
             upload! File.open(prerequisite_file), file
           end
         end
-
       end
     end
 

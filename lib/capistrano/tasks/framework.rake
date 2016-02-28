@@ -1,5 +1,4 @@
 namespace :deploy do
-
   desc "Start a deployment, make sure server(s) ready."
   task :starting do
   end

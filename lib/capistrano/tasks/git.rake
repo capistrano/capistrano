@@ -1,5 +1,4 @@
 namespace :git do
-
   def strategy
     @strategy ||= Capistrano::Git.new(self, fetch(:git_strategy, Capistrano::Git::DefaultStrategy))
   end

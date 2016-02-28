@@ -74,7 +74,6 @@ module Capistrano
       end
 
       describe "assigning properties" do
-
         before do
           server.with(properties)
         end
@@ -157,7 +156,6 @@ module Capistrano
 
         context "value is a symbol" do
           context "value matches server property" do
-
             context "with :filter" do
               let(:options) { { :filter => :active } }
               it { expect(subject).to be_truthy }
@@ -218,7 +216,6 @@ module Capistrano
 
         context "value is a proc" do
           context "value matches server property" do
-
             context "with :filter" do
               let(:options) { { :filter => ->(s) { s.properties.active } } }
               it { expect(subject).to be_truthy }
@@ -233,7 +230,6 @@ module Capistrano
               let(:options) { { :exclude => ->(s) { s.properties.active } } }
               it { expect(subject).to be_falsey }
             end
-
           end
 
           context "value does not match server properly" do
@@ -251,10 +247,8 @@ module Capistrano
               let(:options) { { :exclude => ->(s) { s.properties.inactive } } }
               it { expect(subject).to be_truthy }
             end
-
           end
         end
-
       end
 
       describe "assign ssh_options" do
@@ -298,7 +292,6 @@ module Capistrano
             expect(server.netssh_options[:auth_methods]).to eq %w(publickey password)
           end
         end
-
       end
 
       describe ".[]" do

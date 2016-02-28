@@ -6,7 +6,6 @@ module Capistrano
       let(:servers) { Servers.new }
 
       describe "adding a role" do
-
         it "adds two new server instances" do
           expect { servers.add_role(:app, %w{1 2}) }.
             to change { servers.count }.from(0).to(2)
@@ -42,7 +41,6 @@ module Capistrano
           expect(servers.find() { |s| s.hostname == "1" }.properties.db).to eq(:port => 1234, :master => true)
           expect(servers.find() { |s| s.hostname == "2" }.properties.db).to eq(:port => 1234)
         end
-
       end
 
       describe "adding a role to an existing server" do
@@ -54,7 +52,6 @@ module Capistrano
         it "adds new roles to existing servers" do
           expect(servers.count).to eq 2
         end
-
       end
 
       describe "collecting server roles" do
@@ -120,7 +117,6 @@ module Capistrano
       end
 
       describe "adding a server" do
-
         before do
           servers.add_host("1", :roles => [:app, "web"], :test => :value)
         end
@@ -144,7 +140,6 @@ module Capistrano
         end
 
         describe "with a :user property" do
-
           it "sets the server ssh username" do
             servers.add_host("1", :roles => [:app, "web"], :user => "nick")
             expect(servers.count).to eq(1)
@@ -156,7 +151,6 @@ module Capistrano
             expect(servers.count).to eq(1)
             expect(servers.roles_for([:all]).first.user).to eq "nick"
           end
-
         end
 
         it "overwrites the value of a previously defined scalar property" do
@@ -204,11 +198,9 @@ module Capistrano
           expect(servers.roles_for([:foo]).first.hostname).to eq "1"
           expect(servers.roles_for([:bar]).first.hostname).to eq "1"
         end
-
       end
 
       describe "selecting roles" do
-
         before do
           servers.add_host("1", :roles => :app, :active => true)
           servers.add_host("2", :roles => :app)
@@ -237,11 +229,9 @@ module Capistrano
         it "is empty if the regular proc filter would remove all matching hosts" do
           expect(servers.roles_for([:app, :select => ->(h) { h.properties.inactive }])).to be_empty
         end
-
       end
 
       describe "excluding by property" do
-
         before do
           servers.add_host("1", :roles => :app, :active => true)
           servers.add_host("2", :roles => :app, :active => true, :no_release => true)
@@ -266,11 +256,9 @@ module Capistrano
           hosts = servers.roles_for([:app, :exclude => ->(h) { h.properties.active }])
           expect(hosts.map(&:hostname)).to be_empty
         end
-
       end
 
       describe "filtering roles internally" do
-
         before do
           servers.add_host("1", :roles => :app, :active => true)
           servers.add_host("2", :roles => :app)
@@ -282,7 +270,6 @@ module Capistrano
         subject { servers.roles_for(roles).map(&:hostname) }
 
         context "with the ROLES environment variable set" do
-
           before do
             ENV.stubs(:[]).with("ROLES").returns("web,db")
             ENV.stubs(:[]).with("HOSTS").returns(nil)
@@ -308,11 +295,9 @@ module Capistrano
               expect(subject).to eq %w{1 2}
             end
           end
-
         end
 
         context "with the HOSTS environment variable set" do
-
           before do
             ENV.stubs(:[]).with("ROLES").returns(nil)
             ENV.stubs(:[]).with("HOSTS").returns("3,5")
@@ -338,9 +323,7 @@ module Capistrano
               expect(subject).to be_empty
             end
           end
-
         end
-
       end
     end
   end

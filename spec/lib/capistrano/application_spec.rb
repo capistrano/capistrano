@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe Capistrano::Application do
-
   it "provides a --trace option which enables SSHKit/NetSSH trace output"
 
   it "provides a --format option which enables the choice of output formatting"
@@ -79,5 +78,4 @@ describe Capistrano::Application do
     $stdout = orig_stdout
     $stderr = orig_stderr
   end
-
 end

@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe Capistrano::DSL::Paths do
-
   let(:dsl) { Class.new.extend Capistrano::DSL }
   let(:parent) { Pathname.new("/var/shared") }
   let(:paths) { Class.new.extend Capistrano::DSL::Paths }
@@ -75,7 +74,6 @@ describe Capistrano::DSL::Paths do
   end
 
   describe '#release path' do
-
     subject { dsl.release_path }
 
     context "where no release path has been set" do
@@ -153,7 +151,6 @@ describe Capistrano::DSL::Paths do
     subject { dsl.stage_config_path.to_s }
 
     context "when not specified" do
-
       before do
         dsl.delete(:stage_config_path)
       end
@@ -178,7 +175,6 @@ describe Capistrano::DSL::Paths do
     subject { dsl.repo_path.to_s }
 
     context "when not specified" do
-
       before do
         dsl.delete(:repo_path)
       end

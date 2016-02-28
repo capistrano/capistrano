@@ -1,7 +1,6 @@
 require "open-uri"
 
 Vagrant.configure("2") do |config|
-
   config.ssh.insert_key = false
 
   [:app].each_with_index do |role, i|

@@ -9,7 +9,6 @@ module Capistrano
     let(:task_enhancements) { DummyTaskEnhancements.new }
 
     describe "ordering" do
-
       after do
         task.clear
         before_task.clear
@@ -99,7 +98,6 @@ module Capistrano
           ["namespace:before_task", "namespace:task", "namespace:after_task"]
         )
       end
-
     end
 
     describe "remote_file" do

@@ -1,7 +1,6 @@
 require "spec_helper"
 
 describe Capistrano::DSL do
-
   let(:dsl) { Class.new.extend Capistrano::DSL }
 
   before do
@@ -27,7 +26,6 @@ describe Capistrano::DSL do
       end
 
       describe "fetching all release servers" do
-
         context "with no additional options" do
           subject { dsl.release_roles(:all) }
 
@@ -163,7 +161,6 @@ describe Capistrano::DSL do
           expect(subject.map(&:hostname)).to eq(%w{example1.com example2.com example3.com example4.com example5.com})
         end
       end
-
     end
 
     describe "when defining role with reserved name" do
@@ -193,7 +190,6 @@ describe Capistrano::DSL do
       end
 
       describe "fetching all release servers" do
-
         context "with no additional options" do
           subject { dsl.release_roles(:all) }
 
@@ -258,11 +254,9 @@ describe Capistrano::DSL do
           end
         end
       end
-
     end
 
     describe "when defining a host using a combination of the `server` and `role` syntax" do
-
       before do
         dsl.server "db@example1.com:1234", :roles => %w{db}, :active => true
         dsl.server "root@example1.com:1234", :roles => %w{web}, :active => true
@@ -292,7 +286,6 @@ describe Capistrano::DSL do
           expect(as[1]).to eq("@example1.com:5678")
         end
       end
-
     end
 
     describe "when setting user and port" do
@@ -312,11 +305,9 @@ describe Capistrano::DSL do
         end
       end
     end
-
   end
 
   describe "setting and fetching variables" do
-
     before do
       dsl.set :scm, :git
     end
@@ -362,7 +353,6 @@ describe Capistrano::DSL do
         end
       end
     end
-
   end
 
   describe "asking for a variable" do
@@ -463,13 +453,10 @@ describe Capistrano::DSL do
       expect(backend.ssh_options[:forward_agent]).to eq false
       expect(backend.ssh_options[:auth_methods]).to eq %w(publickey password)
     end
-
   end
 
   describe "on()" do
-
     describe "when passed server objects" do
-
       before do
         dsl.server "example1.com", :roles => %w{web}, :active => true
         dsl.server "example2.com", :roles => %w{web}
@@ -535,11 +522,9 @@ describe Capistrano::DSL do
         ENV["ROLES"] = "web"
         dsl.on(all)
       end
-
     end
 
     describe "when passed server literal names" do
-
       before do
         ENV.delete "ROLES"
         ENV.delete "HOSTS"
@@ -582,13 +567,10 @@ describe Capistrano::DSL do
         SSHKit::Coordinator.expects(:new).with([]).returns(@coordinator)
         dsl.on("server.local")
       end
-
     end
-
   end
 
   describe "role_properties()" do
-
     before do
       dsl.role :redis, %w[example1.com example2.com], :redis => { :port => 6379, :type => :slave }
       dsl.server "example1.com", :roles => %w{web}, :active => true, :web => { :port => 80 }
@@ -645,5 +627,4 @@ describe Capistrano::DSL do
       end
     end
   end
-
 end

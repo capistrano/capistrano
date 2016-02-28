@@ -38,7 +38,6 @@ module Capistrano
     end
 
     describe '#sudo' do
-
       before do
         dsl.expects(:execute).with(:sudo, :my, :command)
       end

@@ -1,5 +1,4 @@
 namespace :deploy do
-
   task :starting do
     invoke "deploy:print_config_variables" if fetch(:print_config_variables, false)
     invoke "deploy:check"
@@ -7,7 +6,6 @@ namespace :deploy do
   end
 
   task :print_config_variables do
-
     puts 
     puts "------- Printing current config variables -------"
     env.keys.each do |config_variable_key|
@@ -244,5 +242,4 @@ namespace :deploy do
 
   task :restart
   task :failed
-
 end

@@ -41,7 +41,6 @@ module Capistrano
             expect { subject }.to raise_error(RuntimeError)
           end
         end
-
       end
 
       context "with optimistic versioning" do
@@ -90,10 +89,7 @@ module Capistrano
             end
           end
         end
-
       end
-
     end
-
   end
 end
