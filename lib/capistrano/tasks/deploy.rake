@@ -6,7 +6,7 @@ namespace :deploy do
   end
 
   task :print_config_variables do
-    puts 
+    puts
     puts "------- Printing current config variables -------"
     env.keys.each do |config_variable_key|
       if is_question?(config_variable_key)

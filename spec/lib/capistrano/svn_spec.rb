@@ -23,7 +23,7 @@ module Capistrano
     subject { Capistrano::Svn.new(context, Capistrano::Svn::DefaultStrategy) }
 
     describe "#test" do
-      it "should call test for repo HEAD" do  
+      it "should call test for repo HEAD" do
         context.expects(:repo_path).returns("/path/to/repo")
         context.expects(:test).with " [ -d /path/to/repo/.svn ] "
 
@@ -49,7 +49,7 @@ module Capistrano
         context.expects(:fetch).twice.with(:svn_username).returns("someuser")
         context.expects(:fetch).twice.with(:svn_password).returns("somepassword")
         context.expects(:fetch).once.with(:svn_revision).returns(nil)
- 
+
         context.expects(:execute).with(:svn, :checkout, :url, :path, "--username someuser", "--password somepassword")
 
         subject.clone
@@ -66,7 +66,7 @@ module Capistrano
         subject.update
       end
     end
-    
+
     describe "#update_specific_revision" do
       it "should run svn update and update to a specific revision" do
         context.expects(:execute).with(:svn, :update, "--username someuser", "--password somepassword", "--revision 12345")
@@ -79,12 +79,12 @@ module Capistrano
     end
 
     describe "#release" do
-      it "should run svn export" do        
+      it "should run svn export" do
         context.expects(:release_path).returns(:path)
         context.expects(:fetch).twice.with(:svn_username).returns("someuser")
         context.expects(:fetch).twice.with(:svn_password).returns("somepassword")
         context.expects(:fetch).once.with(:svn_revision).returns(nil)
-        
+
         context.expects(:execute).with(:svn, :export, "--force", ".", :path, "--username someuser", "--password somepassword")
 
         subject.release
