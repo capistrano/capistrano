@@ -28,7 +28,6 @@ describe Capistrano::DSL::Paths do
     end
   end
 
-
   describe '#linked_files' do
     subject { paths.linked_files(parent) }
 

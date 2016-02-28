@@ -60,8 +60,6 @@ module Capistrano
         end
       end
 
-
-
       context "with pessimistic versioning" do
         context "2 decimal places" do
           context "valid" do

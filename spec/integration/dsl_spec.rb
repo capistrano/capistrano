@@ -211,7 +211,6 @@ describe Capistrano::DSL do
         end
       end
 
-
       describe "fetching servers by role" do
         subject { dsl.roles(:app) }
 

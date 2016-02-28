@@ -51,7 +51,6 @@ module Capistrano
       end.parse!
     end
 
-
     def top_level_tasks
       if tasks_without_stage_dependency.include?(@top_level_tasks.first)
         @top_level_tasks

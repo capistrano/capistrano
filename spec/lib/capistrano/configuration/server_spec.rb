@@ -19,7 +19,6 @@ module Capistrano
         end
       end
 
-
       describe "checking roles" do
         subject { server.has_role?(:test) }
 

@@ -16,7 +16,6 @@ module Capistrano
 
     attr_reader :version
 
-
     def match?
       available =~ requested
     end

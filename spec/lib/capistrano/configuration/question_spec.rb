@@ -47,7 +47,6 @@ module Capistrano
             $stdin.expects(:gets).returns("")
           end
 
-
           it "returns the default as the value" do
             expect(question.call).to eq(branch)
           end

@@ -37,6 +37,5 @@ task :install do
     puts I18n.t(:written_file, :scope => :capistrano, :file => "Capfile")
   end
 
-
   puts I18n.t :capified, :scope => :capistrano
 end
