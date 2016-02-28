@@ -9,4 +9,3 @@ end
 When(/^I run "(.*?)"$/) do |command|
   @success, @output = TestApp.run(command)
 end
-

@@ -3,5 +3,3 @@ require "support/test_app"
 require "support/matchers"
 
 include TestApp
-
-
