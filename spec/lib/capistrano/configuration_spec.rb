@@ -57,7 +57,7 @@ module Capistrano
         end
 
         it "raises an exception when given both a value and block" do
-          expect{ config.set(:key, :value) { :value } }.to raise_error(Capistrano::ValidationError)
+          expect { config.set(:key, :value) { :value } }.to raise_error(Capistrano::ValidationError)
         end
       end
 
@@ -155,7 +155,7 @@ module Capistrano
         end
 
         it "raises an exception" do
-          expect{ config.set(:key, "sho") }.to raise_error(Capistrano::ValidationError)
+          expect { config.set(:key, "sho") }.to raise_error(Capistrano::ValidationError)
         end
       end
 

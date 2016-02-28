@@ -35,7 +35,7 @@ module Capistrano
         if echo?
           $stdin.gets
         else
-          $stdin.noecho(&:gets).tap{ $stdout.print "\n" }
+          $stdin.noecho(&:gets).tap { $stdout.print "\n" }
         end
       rescue Errno::EIO
         # when stdio gets closed

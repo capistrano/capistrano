@@ -26,7 +26,7 @@ module Capistrano
 
       def select?(options)
         options.each do |k,v|
-          callable = v.respond_to?(:call) ? v: ->(server){ server.fetch(v) }
+          callable = v.respond_to?(:call) ? v: ->(server) { server.fetch(v) }
           result = \
             case k
             when :filter, :select
