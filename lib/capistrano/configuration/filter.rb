@@ -11,7 +11,7 @@ module Capistrano
         raise "Invalid filter type #{type}" unless [:host, :role].include? type
         av = Array(values)
         @strategy = case
-                    when av.size == 0 then EmptyFilter.new
+                    when av.empty? then EmptyFilter.new
                     when av.include?(:all), av.include?("all") then NullFilter.new
                     when type == :host then HostFilter.new(values)
                     when type == :role then RoleFilter.new(values)
