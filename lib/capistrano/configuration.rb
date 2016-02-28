@@ -8,7 +8,7 @@ module Capistrano
 
   class Configuration
 
-    def initialize(config = nil)
+    def initialize(config=nil)
       @config ||= config
     end
 
