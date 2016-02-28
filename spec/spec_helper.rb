@@ -11,6 +11,6 @@ Dir['#{File.dirname(__FILE__)}/support/**/*.rb'].each { |f| require f }
 
 RSpec.configure do |config|
   config.raise_errors_for_deprecations!
- config.mock_framework = :mocha
- config.order = "random"
+  config.mock_framework = :mocha
+  config.order = "random"
 end
