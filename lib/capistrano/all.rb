@@ -13,5 +13,4 @@ require "capistrano/application"
 require "capistrano/configuration"
 
 module Capistrano
-
 end

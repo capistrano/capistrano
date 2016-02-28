@@ -61,6 +61,5 @@ module Capistrano
     def deploying?
       fetch(:deploying, false)
     end
-
   end
 end

@@ -1,7 +1,6 @@
 require "spec_helper"
 
 module Capistrano
-
   class DummyDSL
     include DSL
   end

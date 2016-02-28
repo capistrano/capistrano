@@ -1,7 +1,6 @@
 module Capistrano
   module DSL
     module Stages
-
       def stages
         Dir[stage_definitions].map { |f| File.basename(f, ".rb") }
       end
@@ -13,7 +12,6 @@ module Capistrano
       def stage_set?
         !!fetch(:stage, false)
       end
-
     end
   end
 end

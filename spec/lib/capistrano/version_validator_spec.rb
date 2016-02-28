@@ -1,7 +1,6 @@
 require "spec_helper"
 
 module Capistrano
-
   describe VersionValidator do
     let(:validator) { VersionValidator.new(version) }
     let(:version) { stub }
@@ -97,5 +96,4 @@ module Capistrano
     end
 
   end
-
 end

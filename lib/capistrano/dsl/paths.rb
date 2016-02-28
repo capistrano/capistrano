@@ -2,7 +2,6 @@ require "pathname"
 module Capistrano
   module DSL
     module Paths
-
       def deploy_to
         fetch(:deploy_to)
       end

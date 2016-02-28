@@ -147,5 +147,4 @@ module Capistrano
       ]
     end
   end
-
 end

@@ -29,7 +29,6 @@ module VagrantHelpers
       fail VagrantSSHCommandError, status
     end
   end
-
 end
 
 World(VagrantHelpers)

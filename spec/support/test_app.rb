@@ -174,5 +174,4 @@ module TestApp
     FileUtils.mkdir_p(location)
     FileUtils.mv(config_path, location)
   end
-
 end
