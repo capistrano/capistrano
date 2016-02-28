@@ -8,14 +8,14 @@ module Capistrano
       describe "adding a role" do
         subject { server.add_role(:test) }
         it "adds the role" do
-          expect{subject}.to change{server.roles.size}.from(0).to(1)
+          expect{ subject }.to change{ server.roles.size }.from(0).to(1)
         end
       end
 
       describe "adding roles" do
         subject { server.add_roles([:things, :stuff]) }
         it "adds the roles" do
-          expect{subject}.to change{server.roles.size}.from(0).to(2)
+          expect{ subject }.to change{ server.roles.size }.from(0).to(2)
         end
       end
 
@@ -160,46 +160,46 @@ module Capistrano
           context "value matches server property" do
 
             context "with :filter" do
-              let(:options) { { :filter => :active }}
+              let(:options) { { :filter => :active } }
               it { expect(subject).to be_truthy }
             end
 
             context "with :select" do
-              let(:options) { { :select => :active }}
+              let(:options) { { :select => :active } }
               it { expect(subject).to be_truthy }
             end
 
             context "with :exclude" do
-              let(:options) { { :exclude => :active }}
+              let(:options) { { :exclude => :active } }
               it { expect(subject).to be_falsey }
             end
           end
 
           context "value does not match server properly" do
             context "with :active true" do
-              let(:options) { { :active => true }}
+              let(:options) { { :active => true } }
               it { expect(subject).to be_truthy }
             end
 
             context "with :active false" do
-              let(:options) { { :active => false }}
+              let(:options) { { :active => false } }
               it { expect(subject).to be_falsey }
             end
           end
 
           context "value does not match server properly" do
             context "with :filter" do
-              let(:options) { { :filter => :inactive }}
+              let(:options) { { :filter => :inactive } }
               it { expect(subject).to be_falsey }
             end
 
             context "with :select" do
-              let(:options) { { :select => :inactive }}
+              let(:options) { { :select => :inactive } }
               it { expect(subject).to be_falsey }
             end
 
             context "with :exclude" do
-              let(:options) { { :exclude => :inactive }}
+              let(:options) { { :exclude => :inactive } }
               it { expect(subject).to be_truthy }
             end
           end
@@ -207,12 +207,12 @@ module Capistrano
 
         context "key is a property" do
           context "with :active true" do
-            let(:options) { { :active => true }}
+            let(:options) { { :active => true } }
             it { expect(subject).to be_truthy }
           end
 
           context "with :active false" do
-            let(:options) { { :active => false }}
+            let(:options) { { :active => false } }
             it { expect(subject).to be_falsey }
           end
         end
