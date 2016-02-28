@@ -1,8 +1,8 @@
-require 'capistrano/dsl/task_enhancements'
-require 'capistrano/dsl/paths'
-require 'capistrano/dsl/stages'
-require 'capistrano/dsl/env'
-require 'capistrano/configuration/filter'
+require "capistrano/dsl/task_enhancements"
+require "capistrano/dsl/paths"
+require "capistrano/dsl/stages"
+require "capistrano/dsl/env"
+require "capistrano/configuration/filter"
 
 module Capistrano
   module DSL

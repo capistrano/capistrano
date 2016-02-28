@@ -1,6 +1,6 @@
-require 'set'
-require 'capistrano/configuration'
-require 'capistrano/configuration/filter'
+require "set"
+require "capistrano/configuration"
+require "capistrano/configuration/filter"
 
 module Capistrano
   class Configuration

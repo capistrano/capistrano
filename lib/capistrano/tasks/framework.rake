@@ -1,50 +1,50 @@
 namespace :deploy do
 
-  desc 'Start a deployment, make sure server(s) ready.'
+  desc "Start a deployment, make sure server(s) ready."
   task :starting do
   end
 
-  desc 'Started'
+  desc "Started"
   task :started do
   end
 
-  desc 'Update server(s) by setting up a new release.'
+  desc "Update server(s) by setting up a new release."
   task :updating do
   end
 
-  desc 'Updated'
+  desc "Updated"
   task :updated do
   end
 
-  desc 'Revert server(s) to previous release.'
+  desc "Revert server(s) to previous release."
   task :reverting do
   end
 
-  desc 'Reverted'
+  desc "Reverted"
   task :reverted do
   end
 
-  desc 'Publish the release.'
+  desc "Publish the release."
   task :publishing do
   end
 
-  desc 'Published'
+  desc "Published"
   task :published do
   end
 
-  desc 'Finish the deployment, clean up server(s).'
+  desc "Finish the deployment, clean up server(s)."
   task :finishing do
   end
 
-  desc 'Finish the rollback, clean up server(s).'
+  desc "Finish the rollback, clean up server(s)."
   task :finishing_rollback do
   end
 
-  desc 'Finished'
+  desc "Finished"
   task :finished do
   end
 
-  desc 'Rollback to previous release.'
+  desc "Rollback to previous release."
   task :rollback do
     %w{ starting started
         reverting reverted
@@ -55,7 +55,7 @@ namespace :deploy do
   end
 end
 
-desc 'Deploy a new release.'
+desc "Deploy a new release."
 task :deploy do
   set(:deploying, true)
   %w{ starting started

@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
-lib = File.expand_path('../lib', __FILE__)
+lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'capistrano/version'
+require "capistrano/version"
 
 Gem::Specification.new do |gem|
   gem.name          = "capistrano"
@@ -13,19 +13,19 @@ Gem::Specification.new do |gem|
   gem.homepage      = "http://capistranorb.com/"
 
   gem.files         = `git ls-files`.split($/)
-  gem.executables   = ['cap', 'capify']
+  gem.executables   = ["cap", "capify"]
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.licenses      = ['MIT']
+  gem.licenses      = ["MIT"]
 
-  gem.required_ruby_version = '>= 1.9.3'
-  gem.add_dependency 'airbrussh', '>= 1.0.0.beta1'
-  gem.add_dependency 'i18n'
-  gem.add_dependency 'rake', '>= 10.0.0'
-  gem.add_dependency 'sshkit', '>= 1.9.0.rc1'
+  gem.required_ruby_version = ">= 1.9.3"
+  gem.add_dependency "airbrussh", ">= 1.0.0.beta1"
+  gem.add_dependency "i18n"
+  gem.add_dependency "rake", ">= 10.0.0"
+  gem.add_dependency "sshkit", ">= 1.9.0.rc1"
 
-  gem.add_development_dependency 'rspec'
-  gem.add_development_dependency 'mocha'
-  gem.add_development_dependency 'rubocop'
+  gem.add_development_dependency "rspec"
+  gem.add_development_dependency "mocha"
+  gem.add_development_dependency "rubocop"
 end

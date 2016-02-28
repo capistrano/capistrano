@@ -1,6 +1,6 @@
-require 'spec_helper'
-require 'rake'
-require 'capistrano/immutable_task'
+require "spec_helper"
+require "rake"
+require "capistrano/immutable_task"
 
 module Capistrano
   describe ImmutableTask do
@@ -9,10 +9,10 @@ module Capistrano
       Rake::Task.clear
     end
 
-    it 'prints warning and raises when task is enhanced' do
+    it "prints warning and raises when task is enhanced" do
       extend(Rake::DSL)
 
-      load_defaults = Rake::Task.define_task('load:defaults')
+      load_defaults = Rake::Task.define_task("load:defaults")
       load_defaults.extend(Capistrano::ImmutableTask)
 
       $stderr.expects(:puts).with do |message|

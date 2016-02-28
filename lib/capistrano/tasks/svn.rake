@@ -3,14 +3,14 @@ namespace :svn do
     @strategy ||= Capistrano::Svn.new(self, fetch(:svn_strategy, Capistrano::Svn::DefaultStrategy))
   end
 
-  desc 'Check that the repo is reachable'
+  desc "Check that the repo is reachable"
   task :check do
     on release_roles :all do
       strategy.check
     end
   end
 
-  desc 'Clone the repo to the cache'
+  desc "Clone the repo to the cache"
   task :clone do
     on release_roles :all do
       if strategy.test
@@ -23,7 +23,7 @@ namespace :svn do
     end
   end
 
-  desc 'Pull changes from the remote repo'
+  desc "Pull changes from the remote repo"
   task :update => :'svn:clone' do
     on release_roles :all do
       within repo_path do
@@ -32,7 +32,7 @@ namespace :svn do
     end
   end
 
-  desc 'Copy repo to releases'
+  desc "Copy repo to releases"
   task :create_release => :'svn:update' do
     on release_roles :all do
       within repo_path do
@@ -41,7 +41,7 @@ namespace :svn do
     end
   end
 
-  desc 'Determine the revision that will be deployed'
+  desc "Determine the revision that will be deployed"
   task :set_current_revision do
     on release_roles :all do
       within repo_path do

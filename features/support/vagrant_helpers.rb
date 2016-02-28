@@ -4,7 +4,7 @@ module VagrantHelpers
   class VagrantSSHCommandError < RuntimeError; end
 
   at_exit do
-    if ENV['KEEP_RUNNING']
+    if ENV["KEEP_RUNNING"]
       puts "Vagrant vm will be left up because KEEP_RUNNING is set."
       puts "Rerun without KEEP_RUNNING set to cleanup the vm."
     else

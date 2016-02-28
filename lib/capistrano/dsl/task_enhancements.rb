@@ -1,4 +1,4 @@
-require 'capistrano/upload_task'
+require "capistrano/upload_task"
 
 module Capistrano
   module TaskEnhancements
@@ -54,7 +54,7 @@ module Capistrano
 
     def exit_deploy_because_of_exception(ex)
       warn t(:deploy_failed, :ex => ex.message)
-      invoke 'deploy:failed'
+      invoke "deploy:failed"
       exit(false)
     end
 

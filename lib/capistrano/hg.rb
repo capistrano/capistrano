@@ -1,6 +1,6 @@
 load File.expand_path("../tasks/hg.rake", __FILE__)
 
-require 'capistrano/scm'
+require "capistrano/scm"
 
 class Capistrano::Hg < Capistrano::SCM
   # execute hg in context with arguments
@@ -29,7 +29,7 @@ class Capistrano::Hg < Capistrano::SCM
     def release
       if (tree = fetch(:repo_tree))
         tree = tree.slice %r#^/?(.*?)/?$#, 1
-        components = tree.split('/').size
+        components = tree.split("/").size
         hg "archive --type tgz -p . -I", tree, "--rev", fetch(:branch), "| tar -x --strip-components #{components} -f - -C", release_path
       else
         hg "archive", release_path, "--rev", fetch(:branch)

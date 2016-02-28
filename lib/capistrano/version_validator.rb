@@ -26,11 +26,11 @@ module Capistrano
     end
 
     def available
-      Gem::Dependency.new('cap', version)
+      Gem::Dependency.new("cap", version)
     end
 
     def requested
-      Gem::Dependency.new('cap', current_version)
+      Gem::Dependency.new("cap", current_version)
     end
 
   end

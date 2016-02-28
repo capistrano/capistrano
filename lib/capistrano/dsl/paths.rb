@@ -1,4 +1,4 @@
-require 'pathname'
+require "pathname"
 module Capistrano
   module DSL
     module Paths
@@ -12,11 +12,11 @@ module Capistrano
       end
 
       def current_path
-        deploy_path.join('current')
+        deploy_path.join("current")
       end
 
       def releases_path
-        deploy_path.join('releases')
+        deploy_path.join("releases")
       end
 
       def release_path
@@ -29,16 +29,16 @@ module Capistrano
       end
 
       def stage_config_path
-        Pathname.new fetch(:stage_config_path, 'config/deploy')
+        Pathname.new fetch(:stage_config_path, "config/deploy")
       end
 
       def deploy_config_path
-        Pathname.new fetch(:deploy_config_path, 'config/deploy.rb')
+        Pathname.new fetch(:deploy_config_path, "config/deploy.rb")
       end
 
       def repo_url
-        require 'cgi'
-        require 'uri'
+        require "cgi"
+        require "uri"
         if fetch(:git_http_username) and fetch(:git_http_password)
           URI.parse(fetch(:repo_url)).tap do |repo_uri|
             repo_uri.user     = fetch(:git_http_username)
@@ -54,15 +54,15 @@ module Capistrano
       end
 
       def repo_path
-        Pathname.new(fetch(:repo_path, ->(){deploy_path.join('repo')}))
+        Pathname.new(fetch(:repo_path, ->(){deploy_path.join("repo")}))
       end
 
       def shared_path
-        deploy_path.join('shared')
+        deploy_path.join("shared")
       end
 
       def revision_log
-        deploy_path.join('revisions.log')
+        deploy_path.join("revisions.log")
       end
 
       def now

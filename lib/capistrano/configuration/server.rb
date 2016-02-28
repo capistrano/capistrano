@@ -1,4 +1,4 @@
-require 'set'
+require "set"
 module Capistrano
   class Configuration
     class Server < SSHKit::Host
@@ -122,7 +122,7 @@ module Capistrano
         private
 
         def lvalue(key)
-          key.to_s.chomp('=').to_sym
+          key.to_s.chomp("=").to_sym
         end
 
       end

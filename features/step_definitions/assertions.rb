@@ -1,5 +1,5 @@
 Then(/^references in the remote repo are listed$/) do
-  expect(@output).to include('refs/heads/master')
+  expect(@output).to include("refs/heads/master")
 end
 
 Then(/^the shared path is created$/) do
@@ -49,25 +49,25 @@ Then(/^the current directory will be a symlink to the release$/) do
 end
 
 Then(/^the deploy\.rb file is created$/) do
-  file = TestApp.test_app_path.join('config/deploy.rb')
+  file = TestApp.test_app_path.join("config/deploy.rb")
   expect(File.exist?(file)).to be true
 end
 
 Then(/^the default stage files are created$/) do
-  staging = TestApp.test_app_path.join('config/deploy/staging.rb')
-  production = TestApp.test_app_path.join('config/deploy/production.rb')
+  staging = TestApp.test_app_path.join("config/deploy/staging.rb")
+  production = TestApp.test_app_path.join("config/deploy/production.rb")
   expect(File.exist?(staging)).to be true
   expect(File.exist?(production)).to be true
 end
 
 Then(/^the tasks folder is created$/) do
-  path = TestApp.test_app_path.join('lib/capistrano/tasks')
+  path = TestApp.test_app_path.join("lib/capistrano/tasks")
   expect(Dir.exist?(path)).to be true
 end
 
 Then(/^the specified stage files are created$/) do
-  qa = TestApp.test_app_path.join('config/deploy/qa.rb')
-  production = TestApp.test_app_path.join('config/deploy/production.rb')
+  qa = TestApp.test_app_path.join("config/deploy/qa.rb")
+  production = TestApp.test_app_path.join("config/deploy/production.rb")
   expect(File.exist?(qa)).to be true
   expect(File.exist?(production)).to be true
 end
@@ -91,18 +91,18 @@ Then(/^the task fails$/) do
 end
 
 Then(/^the failure task will run$/) do
-  failed = TestApp.shared_path.join('failed')
+  failed = TestApp.shared_path.join("failed")
   run_vagrant_command(test_file_exists(failed))
 end
 
 Then(/^the failure task will not run$/) do
-  failed = TestApp.shared_path.join('failed')
+  failed = TestApp.shared_path.join("failed")
   expect { run_vagrant_command(test_file_exists(failed)) }
     .to raise_error(VagrantHelpers::VagrantSSHCommandError)
 end
 
 When(/^an error is raised$/) do
-  error = TestApp.shared_path.join('fail')
+  error = TestApp.shared_path.join("fail")
   run_vagrant_command(test_file_exists(error))
 end
 

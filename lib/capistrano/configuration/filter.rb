@@ -1,8 +1,8 @@
-require 'capistrano/configuration'
-require 'capistrano/configuration/empty_filter'
-require 'capistrano/configuration/host_filter'
-require 'capistrano/configuration/null_filter'
-require 'capistrano/configuration/role_filter'
+require "capistrano/configuration"
+require "capistrano/configuration/empty_filter"
+require "capistrano/configuration/host_filter"
+require "capistrano/configuration/null_filter"
+require "capistrano/configuration/role_filter"
 
 module Capistrano
   class Configuration
@@ -12,7 +12,7 @@ module Capistrano
         av = Array(values)
         @strategy = case
                     when av.size == 0 then EmptyFilter.new
-                    when av.include?(:all), av.include?('all') then NullFilter.new
+                    when av.include?(:all), av.include?("all") then NullFilter.new
                     when type == :host then HostFilter.new(values)
                     when type == :role then RoleFilter.new(values)
                     else NullFilter.new

@@ -3,7 +3,7 @@ include Capistrano::DSL
 
 namespace :load do
   task :defaults do
-    load 'capistrano/defaults.rb'
+    load "capistrano/defaults.rb"
   end
 end
 
@@ -20,7 +20,7 @@ stages.each do |stage|
   Rake::Task.define_task(stage) do
     set(:stage, stage.to_sym)
 
-    invoke 'load:defaults'
+    invoke "load:defaults"
     Rake.application["load:defaults"].extend(Capistrano::ImmutableTask)
     load deploy_config_path
     load stage_config_path.join("#{stage}.rb")
@@ -30,4 +30,4 @@ stages.each do |stage|
   end
 end
 
-require 'capistrano/dotfile'
+require "capistrano/dotfile"

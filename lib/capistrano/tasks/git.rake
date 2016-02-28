@@ -11,7 +11,7 @@ namespace :git do
     }
   }
 
-  desc 'Upload the git wrapper script, this script guarantees that we can script git without getting an interactive prompt'
+  desc "Upload the git wrapper script, this script guarantees that we can script git without getting an interactive prompt"
   task :wrapper do
     on release_roles :all do
       execute :mkdir, "-p", "#{fetch(:tmp_dir)}/#{fetch(:application)}/"
@@ -20,7 +20,7 @@ namespace :git do
     end
   end
 
-  desc 'Check that the repository is reachable'
+  desc "Check that the repository is reachable"
   task :check => :'git:wrapper' do
     fetch(:branch)
     on release_roles :all do
@@ -30,7 +30,7 @@ namespace :git do
     end
   end
 
-  desc 'Clone the repo to the cache'
+  desc "Clone the repo to the cache"
   task :clone => :'git:wrapper' do
     on release_roles :all do
       if strategy.test
@@ -45,7 +45,7 @@ namespace :git do
     end
   end
 
-  desc 'Update the repo mirror to reflect the origin state'
+  desc "Update the repo mirror to reflect the origin state"
   task :update => :'git:clone' do
     on release_roles :all do
       within repo_path do
@@ -56,19 +56,19 @@ namespace :git do
     end
   end
 
-  desc 'Copy repo to releases'
+  desc "Copy repo to releases"
   task :create_release => :'git:update' do
     on release_roles :all do
       with fetch(:git_environmental_variables) do
         within repo_path do
-          execute :mkdir, '-p', release_path
+          execute :mkdir, "-p", release_path
           strategy.release
         end
       end
     end
   end
 
-  desc 'Determine the revision that will be deployed'
+  desc "Determine the revision that will be deployed"
   task :set_current_revision do
     on release_roles :all do
       within repo_path do
