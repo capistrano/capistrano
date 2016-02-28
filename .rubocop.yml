@@ -1,0 +1,17 @@
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  TargetRubyVersion: 1.9
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+Style/DoubleNegation:
+  Enabled: false
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
+Style/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+Style/TrivialAccessors:
+  AllowPredicates: true
