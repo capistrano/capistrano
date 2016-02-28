@@ -144,7 +144,7 @@ module Capistrano
       cmdline_filters << Filter.new(type, values)
     end
 
-    def filter list
+    def filter(list)
       setup_filters if @filters.nil?
       @filters.reduce(list) { |l,f| f.filter l }
     end

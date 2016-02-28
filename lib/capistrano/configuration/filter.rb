@@ -7,7 +7,7 @@ require "capistrano/configuration/role_filter"
 module Capistrano
   class Configuration
     class Filter
-      def initialize type, values=nil
+      def initialize(type, values=nil)
         raise "Invalid filter type #{type}" unless [:host, :role].include? type
         av = Array(values)
         @strategy = case
@@ -19,7 +19,7 @@ module Capistrano
                     end
       end
 
-      def filter servers
+      def filter(servers)
         @strategy.filter servers
       end
     end

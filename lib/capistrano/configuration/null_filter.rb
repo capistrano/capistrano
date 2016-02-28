@@ -1,7 +1,7 @@
 module Capistrano
   class Configuration
     class NullFilter
-      def filter servers
+      def filter(servers)
         servers
       end
     end
