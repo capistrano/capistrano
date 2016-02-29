@@ -33,8 +33,6 @@ Style/RegexpLiteral:
   Enabled: false
 Style/SignalException:
   Enabled: false
-Style/AccessorMethodName:
-  Enabled: false
 Performance/RedundantMerge:
   Enabled: false
 Style/PercentLiteralDelimiters:
@@ -102,4 +100,6 @@ Style/PerlBackrefs:
 Metrics/ClassLength:
   Enabled: false
 Metrics/ModuleLength:
+  Enabled: false
+Style/AccessorMethodName:
   Enabled: false
