@@ -69,8 +69,6 @@ Style/DotPosition:
   Enabled: false
 Style/BlockEndNewline:
   Enabled: false
-Style/AlignArray:
-  Enabled: false
 Style/MultilineBlockLayout:
   Enabled: false
 Style/TrailingCommaInLiteral:
