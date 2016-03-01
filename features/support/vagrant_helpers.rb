@@ -19,7 +19,7 @@ module VagrantHelpers
         puts "[vagrant] #{line}"
       end
     end
-    $?
+    $CHILD_STATUS
   end
 
   def run_vagrant_command(command)

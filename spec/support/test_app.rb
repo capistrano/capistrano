@@ -91,7 +91,7 @@ module TestApp
     Dir.chdir(test_app_path) do
       output = %x[#{command}]
     end
-    [$?.success?, output]
+    [$CHILD_STATUS.success?, output]
   end
 
   def stage
