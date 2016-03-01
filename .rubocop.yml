@@ -43,8 +43,6 @@ Style/RescueModifier:
   Enabled: false
 Style/ModuleFunction:
   Enabled: false
-Style/BlockEndNewline:
-  Enabled: false
 Style/TrailingCommaInLiteral:
   Enabled: false
 Style/CommandLiteral:
