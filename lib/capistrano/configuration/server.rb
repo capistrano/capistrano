@@ -84,11 +84,11 @@ module Capistrano
 
         def set(key, value)
           pval = @properties[key]
-          if pval.is_a? Hash and value.is_a? Hash
+          if pval.is_a?(Hash) && value.is_a?(Hash)
             pval.merge!(value)
-          elsif pval.is_a? Set and value.is_a? Set
+          elsif pval.is_a?(Set) && value.is_a?(Set)
             pval.merge(value)
-          elsif pval.is_a? Array and value.is_a? Array
+          elsif pval.is_a?(Array) && value.is_a?(Array)
             pval.concat value
           else
             @properties[key] = value

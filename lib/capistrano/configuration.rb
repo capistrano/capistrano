@@ -76,7 +76,7 @@ module Capistrano
 
     def is_question?(key)
       value = fetch_for(key, nil)
-      !value.nil? and value.is_a?(Question)
+      !value.nil? && value.is_a?(Question)
     end
 
     def role(name, hosts, options={})
@@ -178,7 +178,7 @@ module Capistrano
     end
 
     def invoke_validations(key, value, &block)
-      unless value.nil? or block.nil?
+      unless value.nil? || block.nil?
         raise Capistrano::ValidationError, "Value and block both passed to Configuration#set"
       end
 

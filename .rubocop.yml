@@ -19,8 +19,6 @@ Style/TrivialAccessors:
   AllowPredicates: true
 
 # Need discussion
-Style/AndOr:
-  Enabled: false
 Style/Documentation:
   Enabled: false
 Style/SpaceAfterComma:
