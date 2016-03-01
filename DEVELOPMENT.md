@@ -55,11 +55,11 @@ Currently, the Capistrano Travis build does *not* run the Cucumber suite. This m
 
 ## Coding guidelines
 
-This project uses [RuboCop](https://github.com/bbatsov/rubocop) to enforce standard Ruby coding guidelines. Currently we run RuboCop's lint rules only, which check for readability issues like indentation, ambiguity, and useless/unreachable code.
+This project uses [RuboCop](https://github.com/bbatsov/rubocop) to enforce standard Ruby coding guidelines.
 
-* Test that your contributions pass with `rake lint`
-* The linter is also run as part of the full test suite with `rake`
-* Note the Travis build will fail and your PR cannot be merged if the linter finds errors
+* Test that your contributions pass with `rake rubocop`
+* Rubocop is also run as part of the full test suite with `rake`
+* Note the Travis build will fail and your PR cannot be merged if Rubocop finds errors
 
 ## Submitting a pull request
 
