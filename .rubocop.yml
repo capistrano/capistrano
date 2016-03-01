@@ -39,8 +39,6 @@ Style/Lambda:
   Enabled: false
 Style/SingleLineBlockParams:
   Enabled: false
-Style/RescueModifier:
-  Enabled: false
 Style/ModuleFunction:
   Enabled: false
 Style/BlockEndNewline:

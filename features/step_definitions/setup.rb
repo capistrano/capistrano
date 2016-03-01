@@ -3,7 +3,11 @@ Given(/^a test app with the default configuration$/) do
 end
 
 Given(/^servers with the roles app and web$/) do
-  vagrant_cli_command("up") rescue nil
+  begin
+    vagrant_cli_command("up")
+  rescue
+    nil
+  end
 end
 
 Given(/^a linked file "(.*?)"$/) do |file|
