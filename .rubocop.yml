@@ -27,8 +27,6 @@ Style/RedundantReturn:
   Enabled: false
 Style/SpaceAfterComma:
   Enabled: false
-Style/ParallelAssignment:
-  Enabled: false
 Style/RegexpLiteral:
   Enabled: false
 Style/SignalException:
