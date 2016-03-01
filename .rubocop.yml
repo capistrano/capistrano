@@ -61,8 +61,6 @@ Style/MultilineBlockLayout:
   Enabled: false
 Style/TrailingCommaInLiteral:
   Enabled: false
-Style/Proc:
-  Enabled: false
 Style/CommandLiteral:
   Enabled: false
 
