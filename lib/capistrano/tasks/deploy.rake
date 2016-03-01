@@ -179,8 +179,8 @@ namespace :deploy do
       last_release_path = releases_path.join(last_release)
       if test "[ `readlink #{current_path}` != #{last_release_path} ]"
         execute :tar, "-czf",
-          deploy_path.join("rolled-back-release-#{last_release}.tar.gz"),
-        last_release_path
+                deploy_path.join("rolled-back-release-#{last_release}.tar.gz"),
+                last_release_path
         execute :rm, "-rf", last_release_path
       else
         debug "Last release is the current release, skip cleanup_rollback."
