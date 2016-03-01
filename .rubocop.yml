@@ -45,8 +45,6 @@ Style/IfUnlessModifier:
   Enabled: false
 Style/Lambda:
   Enabled: false
-Style/EmptyLiteral:
-  Enabled: false
 Style/SingleLineBlockParams:
   Enabled: false
 Style/Not:
