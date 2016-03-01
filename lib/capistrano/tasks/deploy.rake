@@ -124,9 +124,7 @@ namespace :deploy do
           target = release_path.join(dir)
           source = shared_path.join(dir)
           next if test "[ -L #{target} ]"
-          if test "[ -d #{target} ]"
-            execute :rm, "-rf", target
-          end
+          execute :rm, "-rf", target if test "[ -d #{target} ]"
           execute :ln, "-s", source, target
         end
       end
@@ -142,9 +140,7 @@ namespace :deploy do
           target = release_path.join(file)
           source = shared_path.join(file)
           next if test "[ -L #{target} ]"
-          if test "[ -f #{target} ]"
-            execute :rm, target
-          end
+          execute :rm, target if test "[ -f #{target} ]"
           execute :ln, "-s", source, target
         end
       end

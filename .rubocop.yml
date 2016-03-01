@@ -41,8 +41,6 @@ Style/BlockDelimiters:
   Enabled: false
 Style/ConditionalAssignment:
   Enabled: false
-Style/IfUnlessModifier:
-  Enabled: false
 Style/Lambda:
   Enabled: false
 Style/EmptyLiteral:
