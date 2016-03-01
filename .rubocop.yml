@@ -23,8 +23,6 @@ Style/AndOr:
   Enabled: false
 Style/Documentation:
   Enabled: false
-Style/SpaceAfterComma:
-  Enabled: false
 Style/RegexpLiteral:
   Enabled: false
 Style/SignalException:

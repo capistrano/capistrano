@@ -118,7 +118,7 @@ module Capistrano
         sshkit.backend.configure do |backend|
           backend.pty                = fetch(:pty)
           backend.connection_timeout = fetch(:connection_timeout)
-          backend.ssh_options        = (backend.ssh_options || {}).merge(fetch(:ssh_options,{}))
+          backend.ssh_options        = (backend.ssh_options || {}).merge(fetch(:ssh_options, {}))
         end
       end
     end
@@ -131,7 +131,7 @@ module Capistrano
       @filters = cmdline_filters.clone
       @filters << Filter.new(:role, ENV["ROLES"]) if ENV["ROLES"]
       @filters << Filter.new(:host, ENV["HOSTS"]) if ENV["HOSTS"]
-      fh = fetch_for(:filter,{}) || {}
+      fh = fetch_for(:filter, {}) || {}
       @filters << Filter.new(:host, fh[:hosts]) if fh[:hosts]
       @filters << Filter.new(:role, fh[:roles]) if fh[:roles]
       @filters << Filter.new(:host, fh[:host]) if fh[:host]
@@ -144,7 +144,7 @@ module Capistrano
 
     def filter(list)
       setup_filters if @filters.nil?
-      @filters.reduce(list) { |l,f| f.filter l }
+      @filters.reduce(list) { |l, f| f.filter l }
     end
 
     private

@@ -110,7 +110,7 @@ describe Capistrano::DSL do
         subject { dsl.roles(:app) }
         it "ignores it" do
           dsl.set :filter, :role => :web
-          expect(subject.map(&:hostname)).to eq(["example3.com","example4.com"])
+          expect(subject.map(&:hostname)).to eq(["example3.com", "example4.com"])
         end
       end
 
@@ -118,7 +118,7 @@ describe Capistrano::DSL do
         subject { dsl.roles(:app) }
         it "ignores it" do
           dsl.set :filter, :role => :web, :host => "example1.com"
-          expect(subject.map(&:hostname)).to eq(["example3.com","example4.com"])
+          expect(subject.map(&:hostname)).to eq(["example3.com", "example4.com"])
         end
       end
 
@@ -142,7 +142,7 @@ describe Capistrano::DSL do
         subject { dsl.roles(:app) }
         it "ignores it" do
           dsl.set :filter, :roles => :web
-          expect(subject.map(&:hostname)).to eq(["example3.com","example4.com"])
+          expect(subject.map(&:hostname)).to eq(["example3.com", "example4.com"])
         end
       end
 
@@ -150,7 +150,7 @@ describe Capistrano::DSL do
         subject { dsl.roles(:app) }
         it "ignores it" do
           dsl.set :filter, :roles => :web, :hosts => "example1.com"
-          expect(subject.map(&:hostname)).to eq(["example3.com","example4.com"])
+          expect(subject.map(&:hostname)).to eq(["example3.com", "example4.com"])
         end
       end
 
@@ -585,7 +585,7 @@ describe Capistrano::DSL do
 
     it "retrieves properties for multiple roles as a set" do
       rps = dsl.role_properties(:app, :web)
-      expect(rps).to eq(Set[{ :hostname => "example3.com", :role => :app },{ :hostname => "example1.com", :role => :web, :port => 80 },{ :hostname => "example2.com", :role => :web, :port => 81 }])
+      expect(rps).to eq(Set[{ :hostname => "example3.com", :role => :app }, { :hostname => "example1.com", :role => :web, :port => 80 }, { :hostname => "example2.com", :role => :web, :port => 81 }])
     end
 
     it "yields the properties for a single role" do

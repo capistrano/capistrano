@@ -98,7 +98,7 @@ module Capistrano
 
     # allows the `cap install` task to load without a capfile
     def capfile
-      File.expand_path(File.join(File.dirname(__FILE__),"..","Capfile"))
+      File.expand_path(File.join(File.dirname(__FILE__), "..", "Capfile"))
     end
 
     def version
