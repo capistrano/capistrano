@@ -28,7 +28,7 @@ module Capistrano
         if names.last.is_a? Hash
           names.last[:exclude] = :no_release
         else
-          names << { :exclude => :no_release }
+          names << { exclude: :no_release }
         end
         roles(*names)
       end

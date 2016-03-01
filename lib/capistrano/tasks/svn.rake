@@ -14,7 +14,7 @@ namespace :svn do
   task :clone do
     on release_roles :all do
       if strategy.test
-        info t(:mirror_exists, :at => repo_path)
+        info t(:mirror_exists, at: repo_path)
       else
         within deploy_path do
           strategy.clone
@@ -24,7 +24,7 @@ namespace :svn do
   end
 
   desc "Pull changes from the remote repo"
-  task :update => :'svn:clone' do
+  task update: :'svn:clone' do
     on release_roles :all do
       within repo_path do
         strategy.update
@@ -33,7 +33,7 @@ namespace :svn do
   end
 
   desc "Copy repo to releases"
-  task :create_release => :'svn:update' do
+  task create_release: :'svn:update' do
     on release_roles :all do
       within repo_path do
         strategy.release

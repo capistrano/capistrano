@@ -9,8 +9,6 @@ Style/ClassAndModuleChildren:
   Enabled: false
 Style/DoubleNegation:
   Enabled: false
-Style/HashSyntax:
-  EnforcedStyle: hash_rockets
 Style/SpaceAroundEqualsInParameterDefault:
   EnforcedStyle: no_space
 Style/StringLiterals:

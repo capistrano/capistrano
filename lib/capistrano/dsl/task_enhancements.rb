@@ -52,7 +52,7 @@ module Capistrano
     end
 
     def exit_deploy_because_of_exception(ex)
-      warn t(:deploy_failed, :ex => ex.message)
+      warn t(:deploy_failed, ex: ex.message)
       invoke "deploy:failed"
       exit(false)
     end

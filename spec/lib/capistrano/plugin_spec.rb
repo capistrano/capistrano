@@ -52,7 +52,7 @@ module Capistrano
     end
 
     it "skips registering hooks if :hooks => false" do
-      DummyPlugin.new(:hooks => false)
+      DummyPlugin.new(hooks: false)
       expect(Rake::Task["deploy:published"].prerequisites).to be_empty
     end
 
