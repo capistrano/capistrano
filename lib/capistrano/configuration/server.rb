@@ -38,7 +38,8 @@ module Capistrano
             end
           return false unless result
         end
-        return true
+
+        true
       end
 
       def primary
