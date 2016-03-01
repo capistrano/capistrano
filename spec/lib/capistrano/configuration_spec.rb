@@ -94,7 +94,7 @@ module Capistrano
       end
 
       context "value is a lambda" do
-        subject { config.fetch(:key, lambda { :lambda }) }
+        subject { config.fetch(:key, -> { :lambda }) }
         it "calls the lambda" do
           expect(subject).to eq :lambda
         end
@@ -108,28 +108,28 @@ module Capistrano
       end
 
       context "value inside lambda inside a lambda" do
-        subject { config.fetch(:key, lambda { lambda { "some value" } }) }
+        subject { config.fetch(:key, -> { -> { "some value" } }) }
         it "calls all procs and lambdas" do
           expect(subject).to eq "some value"
         end
       end
 
       context "value inside lambda inside a proc" do
-        subject { config.fetch(:key, proc { lambda { "some value" } }) }
+        subject { config.fetch(:key, proc { -> { "some value" } }) }
         it "calls all procs and lambdas" do
           expect(subject).to eq "some value"
         end
       end
 
       context "value inside proc inside a lambda" do
-        subject { config.fetch(:key, lambda { proc { "some value" } }) }
+        subject { config.fetch(:key, -> { proc { "some value" } }) }
         it "calls all procs and lambdas" do
           expect(subject).to eq "some value"
         end
       end
 
       context "lambda with parameters" do
-        subject { config.fetch(:key, lambda { |c| c }).call(42) }
+        subject { config.fetch(:key, ->(c) { c }).call(42) }
         it "is returned as a lambda" do
           expect(subject).to eq 42
         end
