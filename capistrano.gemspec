@@ -3,8 +3,6 @@ lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "capistrano/version"
 
-require "English"
-
 Gem::Specification.new do |gem|
   gem.name          = "capistrano"
   gem.version       = Capistrano::VERSION
@@ -14,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.summary       = "Capistrano - Welcome to easy deployment with Ruby over SSH"
   gem.homepage      = "http://capistranorb.com/"
 
-  gem.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
+  gem.files         = `git ls-files -z`.split("\x0")
   gem.executables   = %w(cap capify)
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
