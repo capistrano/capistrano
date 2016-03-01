@@ -83,7 +83,7 @@ module Capistrano
 
     def role(name, hosts, options={})
       if name == :all
-        raise ArgumentError.new("#{name} reserved name for role. Please choose another name")
+        raise ArgumentError, "#{name} reserved name for role. Please choose another name"
       end
 
       servers.add_role(name, hosts, options)
@@ -181,7 +181,7 @@ module Capistrano
 
     def invoke_validations(key, value, &block)
       unless value.nil? or block.nil?
-        raise Capistrano::ValidationError.new("Value and block both passed to Configuration#set")
+        raise Capistrano::ValidationError, "Value and block both passed to Configuration#set"
       end
 
       return unless validators.key? key
