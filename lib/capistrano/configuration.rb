@@ -76,7 +76,7 @@ module Capistrano
 
     def is_question?(key)
       value = fetch_for(key, nil)
-      not value.nil? and value.is_a?(Question)
+      !value.nil? and value.is_a?(Question)
     end
 
     def role(name, hosts, options={})
