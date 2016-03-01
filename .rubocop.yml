@@ -65,8 +65,6 @@ Style/SpecialGlobalVars:
   Enabled: false
 Style/ModuleFunction:
   Enabled: false
-Style/DotPosition:
-  Enabled: false
 Style/BlockEndNewline:
   Enabled: false
 Style/MultilineBlockLayout:

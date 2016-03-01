@@ -7,8 +7,8 @@ module Capistrano
 
       describe "adding a role" do
         it "adds two new server instances" do
-          expect { servers.add_role(:app, %w{1 2}) }.
-            to change { servers.count }.from(0).to(2)
+          expect { servers.add_role(:app, %w{1 2}) }
+            .to change { servers.count }.from(0).to(2)
         end
 
         it "handles de-duplification within roles" do
