@@ -1,4 +1,4 @@
-set :fail, proc { fail }
+set :fail, proc { raise }
 before "deploy:starting", :fail do
   on roles :all do
     execute :mkdir, "-p", shared_path

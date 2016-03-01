@@ -28,7 +28,7 @@ module VagrantHelpers
     if (status = vagrant_cli_command("ssh -c #{command.inspect}")).success?
       true
     else
-      fail VagrantSSHCommandError, status
+      raise VagrantSSHCommandError, status
     end
   end
 end

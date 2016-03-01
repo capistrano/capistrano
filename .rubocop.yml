@@ -27,8 +27,6 @@ Style/SpaceAfterComma:
   Enabled: false
 Style/RegexpLiteral:
   Enabled: false
-Style/SignalException:
-  Enabled: false
 Style/PercentLiteralDelimiters:
   Enabled: false
 Style/BlockDelimiters:
