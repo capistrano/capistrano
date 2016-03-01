@@ -49,7 +49,7 @@
       ga('send', 'event', 'harrowBanner', 'clickthrough');
     });
     $(".harrowBanner__dismissLink").on('click', function (e) {
-      $.cookie('harrowBanner__dismissed', '1', { expires: 10});
+      $.cookie('harrowBanner__dismissed', '1', { path: "/", expires: 10 });
       $('.harrowBanner').hide();
       ga('send', 'event', 'harrowBanner', 'dismiss');
     });
