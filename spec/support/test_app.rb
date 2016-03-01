@@ -43,14 +43,14 @@ module TestApp
     end
 
     Dir.chdir(test_app_path) do
-      %x[bundle]
+      `bundle`
     end
   end
 
   def install_test_app_with(config)
     create_test_app
     Dir.chdir(test_app_path) do
-      %x[bundle exec cap install STAGES=#{stage}]
+      `bundle exec cap install STAGES=#{stage}`
     end
     write_local_deploy_file(config)
   end
@@ -90,7 +90,7 @@ module TestApp
   def run(command)
     output = nil
     Dir.chdir(test_app_path) do
-      output = %x[#{command}]
+      output = `#{command}`
     end
     [$CHILD_STATUS.success?, output]
   end
