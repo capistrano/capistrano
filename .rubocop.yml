@@ -57,8 +57,6 @@ Style/SingleLineBlockParams:
   Enabled: false
 Style/Not:
   Enabled: false
-Style/WhileUntilModifier:
-  Enabled: false
 Style/RescueModifier:
   Enabled: false
 Style/SpecialGlobalVars:

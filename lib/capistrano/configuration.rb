@@ -51,9 +51,7 @@ module Capistrano
 
     def fetch(key, default=nil, &block)
       value = fetch_for(key, default, &block)
-      while callable_without_parameters?(value)
-        value = set(key, value.call)
-      end
+      value = set(key, value.call) while callable_without_parameters?(value)
       return value
     end
 
