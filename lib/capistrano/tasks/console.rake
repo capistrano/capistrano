@@ -5,11 +5,7 @@ task :console do
   loop do
     print "#{stage}> "
 
-    command = if (input = $stdin.gets)
-                input.chomp
-              else
-                "exit"
-              end
+    command = (input = $stdin.gets) ? input.chomp : "exit"
 
     next if command.empty?
 
