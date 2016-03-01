@@ -1,4 +1,4 @@
-require 'set'
+require "set"
 module Capistrano
   class Configuration
     class Server < SSHKit::Host
@@ -26,7 +26,7 @@ module Capistrano
 
       def select?(options)
         options.each do |k,v|
-          callable = v.respond_to?(:call) ? v: ->(server){server.fetch(v)}
+          callable = v.respond_to?(:call) ? v : ->(server) { server.fetch(v) }
           result = \
             case k
             when :filter, :select
@@ -55,7 +55,7 @@ module Capistrano
       end
 
       def netssh_options
-        @netssh_options ||= super.merge( fetch(:ssh_options) || {} )
+        @netssh_options ||= super.merge(fetch(:ssh_options) || {})
       end
 
       def roles_array
@@ -77,7 +77,6 @@ module Capistrano
       end
 
       class Properties
-
         def initialize
           @properties = {}
         end
@@ -100,7 +99,7 @@ module Capistrano
         end
 
         def respond_to?(method, _include_all=false)
-          @properties.has_key?(method)
+          @properties.key?(method)
         end
 
         def roles
@@ -122,11 +121,9 @@ module Capistrano
         private
 
         def lvalue(key)
-          key.to_s.chomp('=').to_sym
+          key.to_s.chomp("=").to_sym
         end
-
       end
-
     end
   end
 end

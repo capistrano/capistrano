@@ -1,14 +1,13 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe Capistrano::Application do
-
   it "provides a --trace option which enables SSHKit/NetSSH trace output"
 
   it "provides a --format option which enables the choice of output formatting"
 
   let(:help_output) do
     out, _err = capture_io do
-      flags '--help', '-h'
+      flags "--help", "-h"
     end
     out
   end
@@ -25,7 +24,7 @@ describe Capistrano::Application do
 
   it "overrides the rake method, but still prints the rake version" do
     out, _err = capture_io do
-      flags '--version', '-V'
+      flags "--version", "-V"
     end
     expect(out).to match(/\bCapistrano Version\b/)
     expect(out).to match(/\b#{Capistrano::VERSION}\b/)
@@ -35,15 +34,15 @@ describe Capistrano::Application do
 
   it "overrides the rake method, and sets the sshkit_backend to SSHKit::Backend::Printer" do
     capture_io do
-      flags '--dry-run', '-n'
+      flags "--dry-run", "-n"
     end
     sshkit_backend = Capistrano::Configuration.fetch(:sshkit_backend)
     expect(sshkit_backend).to eq(SSHKit::Backend::Printer)
   end
 
-  it 'enables printing all config variables on command line parameter' do
+  it "enables printing all config variables on command line parameter" do
     capture_io do
-      flags '--print-config-variables', '-p'
+      flags "--print-config-variables", "-p"
     end
     expect(Capistrano::Configuration.fetch(:print_config_variables)).to be true
   end
@@ -66,7 +65,7 @@ describe Capistrano::Application do
   end
 
   def capture_io
-    require 'stringio'
+    require "stringio"
 
     orig_stdout, orig_stderr         = $stdout, $stderr
     captured_stdout, captured_stderr = StringIO.new, StringIO.new
@@ -79,5 +78,4 @@ describe Capistrano::Application do
     $stdout = orig_stdout
     $stderr = orig_stderr
   end
-
 end

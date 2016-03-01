@@ -1,5 +1,4 @@
 module Capistrano
-
   # Base class for SCM strategy providers.
   #
   # @abstract

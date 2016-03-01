@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'capistrano/hg'
+require "capistrano/hg"
 
 module Capistrano
   describe Hg do
@@ -42,7 +42,7 @@ module Capistrano
         context.expects(:repo_url).returns(:url)
         context.expects(:repo_path).returns(:path)
 
-        context.expects(:execute).with(:hg, "clone", '--noupdate', :url, :path)
+        context.expects(:execute).with(:hg, "clone", "--noupdate", :url, :path)
 
         subject.clone
       end
@@ -68,11 +68,11 @@ module Capistrano
       end
 
       it "should run hg archive with a subtree" do
-        context.expects(:fetch).with(:repo_tree).returns('tree')
+        context.expects(:fetch).with(:repo_tree).returns("tree")
         context.expects(:fetch).with(:branch).returns(:branch)
         context.expects(:release_path).returns(:path)
 
-        context.expects(:execute).with(:hg, "archive --type tgz -p . -I", 'tree', "--rev", :branch, '| tar -x --strip-components 1 -f - -C', :path)
+        context.expects(:execute).with(:hg, "archive --type tgz -p . -I", "tree", "--rev", :branch, "| tar -x --strip-components 1 -f - -C", :path)
 
         subject.release
       end

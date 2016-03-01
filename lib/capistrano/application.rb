@@ -1,6 +1,5 @@
 module Capistrano
   class Application < Rake::Application
-
     def initialize
       super
       @rakefiles = %w{capfile Capfile capfile.rb Capfile.rb} << capfile
@@ -25,7 +24,7 @@ module Capistrano
     end
 
     def handle_options
-      options.rakelib = ['rakelib']
+      options.rakelib = ["rakelib"]
       options.trace_output = $stderr
 
       OptionParser.new do |opts|
@@ -48,10 +47,9 @@ module Capistrano
         end
 
         standard_rake_options.each { |args| opts.on(*args) }
-        opts.environment('RAKEOPT')
+        opts.environment("RAKEOPT")
       end.parse!
     end
-
 
     def top_level_tasks
       if tasks_without_stage_dependency.include?(@top_level_tasks.first)
@@ -64,7 +62,7 @@ module Capistrano
     def display_error_message(ex)
       unless options.backtrace
         Rake.application.options.suppress_backtrace_pattern = backtrace_pattern if backtrace_pattern
-        trace '(Backtrace restricted to imported tasks)'
+        trace "(Backtrace restricted to imported tasks)"
       end
 
       super
@@ -90,8 +88,8 @@ module Capistrano
 
     def load_imports
       if options.show_tasks
-        invoke 'load:defaults'
-        set(:stage, '')
+        invoke "load:defaults"
+        set(:stage, "")
         Dir[deploy_config_path].each { |f| add_import f }
       end
 
@@ -100,11 +98,11 @@ module Capistrano
 
     # allows the `cap install` task to load without a capfile
     def capfile
-      File.expand_path(File.join(File.dirname(__FILE__),'..','Capfile'))
+      File.expand_path(File.join(File.dirname(__FILE__),"..","Capfile"))
     end
 
     def version
-      ['--version', '-V',
+      ["--version", "-V",
        "Display the program version.",
        lambda { |_value|
          puts "Capistrano Version: #{Capistrano::VERSION} (Rake Version: #{RAKEVERSION})"
@@ -114,7 +112,7 @@ module Capistrano
     end
 
     def dry_run
-      ['--dry-run', '-n',
+      ["--dry-run", "-n",
        "Do a dry run without executing actions",
        lambda { |_value|
          Configuration.env.set(:sshkit_backend, SSHKit::Backend::Printer)
@@ -123,7 +121,7 @@ module Capistrano
     end
 
     def roles
-      ['--roles ROLES', '-r',
+      ["--roles ROLES", "-r",
        "Run SSH commands only on hosts matching these roles",
        lambda { |value|
          Configuration.env.add_cmdline_filter(:role, value)
@@ -132,7 +130,7 @@ module Capistrano
     end
 
     def hostfilter
-      ['--hosts HOSTS', '-z',
+      ["--hosts HOSTS", "-z",
        "Run SSH commands only on matching hosts",
        lambda { |value|
          Configuration.env.add_cmdline_filter(:host, value)
@@ -141,14 +139,12 @@ module Capistrano
     end
 
     def print_config_variables
-      ['--print-config-variables', '-p',
+      ["--print-config-variables", "-p",
        "Display the defined config variables before starting the deployment tasks.",
        lambda { |_value|
          Configuration.env.set(:print_config_variables, true)
        }
       ]
     end
-
   end
-
 end

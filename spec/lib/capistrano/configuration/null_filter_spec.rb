@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 module Capistrano
   class Configuration
@@ -6,9 +6,9 @@ module Capistrano
       subject(:null_filter) { NullFilter.new }
 
       describe '#filter' do
-        let(:servers) { mock('servers') }
+        let(:servers) { mock("servers") }
 
-        it 'returns the servers passed in as arguments' do
+        it "returns the servers passed in as arguments" do
           expect(null_filter.filter(servers)).to eq(servers)
         end
       end

@@ -1,6 +1,6 @@
-require 'spec_helper'
+require "spec_helper"
 
-require 'capistrano/git'
+require "capistrano/git"
 
 module Capistrano
   describe Git do
@@ -42,17 +42,17 @@ module Capistrano
         context.expects(:fetch).with(:git_shallow_clone).returns(nil)
         context.expects(:repo_url).returns(:url)
         context.expects(:repo_path).returns(:path)
-        context.expects(:execute).with(:git, :clone, '--mirror', :url, :path)
+        context.expects(:execute).with(:git, :clone, "--mirror", :url, :path)
 
         subject.clone
       end
 
       it "should run git clone in shallow mode" do
-        context.expects(:fetch).with(:git_shallow_clone).returns('1')
+        context.expects(:fetch).with(:git_shallow_clone).returns("1")
         context.expects(:repo_url).returns(:url)
         context.expects(:repo_path).returns(:path)
 
-        context.expects(:execute).with(:git, :clone, '--mirror', "--depth", '1', '--no-single-branch', :url, :path)
+        context.expects(:execute).with(:git, :clone, "--mirror", "--depth", "1", "--no-single-branch", :url, :path)
 
         subject.clone
       end
@@ -61,15 +61,15 @@ module Capistrano
     describe "#update" do
       it "should run git update" do
         context.expects(:fetch).with(:git_shallow_clone).returns(nil)
-        context.expects(:execute).with(:git, :remote, :update, '--prune')
+        context.expects(:execute).with(:git, :remote, :update, "--prune")
 
         subject.update
       end
 
       it "should run git update in shallow mode" do
-        context.expects(:fetch).with(:git_shallow_clone).returns('1')
+        context.expects(:fetch).with(:git_shallow_clone).returns("1")
         context.expects(:fetch).with(:branch).returns(:branch)
-        context.expects(:execute).with(:git, :fetch, "--depth", '1', "origin",  :branch)
+        context.expects(:execute).with(:git, :fetch, "--depth", "1", "origin", :branch)
 
         subject.update
       end
@@ -81,17 +81,17 @@ module Capistrano
         context.expects(:fetch).with(:branch).returns(:branch)
         context.expects(:release_path).returns(:path)
 
-        context.expects(:execute).with(:git, :archive, :branch, '| tar -x -f - -C', :path)
+        context.expects(:execute).with(:git, :archive, :branch, "| tar -x -f - -C", :path)
 
         subject.release
       end
 
       it "should run git archive with a subtree" do
-        context.expects(:fetch).with(:repo_tree).returns('tree')
+        context.expects(:fetch).with(:repo_tree).returns("tree")
         context.expects(:fetch).with(:branch).returns(:branch)
         context.expects(:release_path).returns(:path)
 
-        context.expects(:execute).with(:git, :archive, :branch, 'tree', '| tar -x --strip-components 1 -f - -C', :path)
+        context.expects(:execute).with(:git, :archive, :branch, "tree", "| tar -x --strip-components 1 -f - -C", :path)
 
         subject.release
       end

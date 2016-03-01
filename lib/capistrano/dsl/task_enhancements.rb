@@ -1,4 +1,4 @@
-require 'capistrano/upload_task'
+require "capistrano/upload_task"
 
 module Capistrano
   module TaskEnhancements
@@ -31,7 +31,6 @@ module Capistrano
             upload! File.open(prerequisite_file), file
           end
         end
-
       end
     end
 
@@ -53,14 +52,13 @@ module Capistrano
     end
 
     def exit_deploy_because_of_exception(ex)
-      warn t(:deploy_failed, ex: ex.message)
-      invoke 'deploy:failed'
+      warn t(:deploy_failed, :ex => ex.message)
+      invoke "deploy:failed"
       exit(false)
     end
 
     def deploying?
       fetch(:deploying, false)
     end
-
   end
 end
