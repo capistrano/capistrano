@@ -123,12 +123,11 @@ namespace :deploy do
         fetch(:linked_dirs).each do |dir|
           target = release_path.join(dir)
           source = shared_path.join(dir)
-          unless test "[ -L #{target} ]"
-            if test "[ -d #{target} ]"
-              execute :rm, "-rf", target
-            end
-            execute :ln, "-s", source, target
+          next if test "[ -L #{target} ]"
+          if test "[ -d #{target} ]"
+            execute :rm, "-rf", target
           end
+          execute :ln, "-s", source, target
         end
       end
     end
@@ -142,12 +141,11 @@ namespace :deploy do
         fetch(:linked_files).each do |file|
           target = release_path.join(file)
           source = shared_path.join(file)
-          unless test "[ -L #{target} ]"
-            if test "[ -f #{target} ]"
-              execute :rm, target
-            end
-            execute :ln, "-s", source, target
+          next if test "[ -L #{target} ]"
+          if test "[ -f #{target} ]"
+            execute :rm, target
           end
+          execute :ln, "-s", source, target
         end
       end
     end
