@@ -5,7 +5,7 @@ rvm:
   - 2.1
   - 2.0
   - rbx-2
-script: bundle exec rake spec lint
+script: bundle exec rake spec rubocop
 install: bundle install --jobs=1
 cache: bundler
 branches:

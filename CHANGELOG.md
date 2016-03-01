@@ -17,6 +17,7 @@ default of Capistrano 3.4.0 and earlier.
 
 Other changes:
 
+* Internal Rubocop cleanups.
 * `remove` DSL method for removing values like from arrays like `linked_dirs`
 * `append` DSL method for pushing values like `linked_dirs`
   [#1447](https://github.com/capistrano/capistrano/pull/1447),
