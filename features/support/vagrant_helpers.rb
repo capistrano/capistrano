@@ -1,3 +1,5 @@
+require "English"
+
 module VagrantHelpers
   extend self
 
