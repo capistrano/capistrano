@@ -33,8 +33,6 @@ Style/PercentLiteralDelimiters:
   Enabled: false
 Style/BlockDelimiters:
   Enabled: false
-Style/ConditionalAssignment:
-  Enabled: false
 Style/Lambda:
   Enabled: false
 Style/SingleLineBlockParams:
