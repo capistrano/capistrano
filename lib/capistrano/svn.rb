@@ -1,6 +1,6 @@
-load File.expand_path("../tasks/svn.rake", __FILE__)
+load File.expand_path('../tasks/svn.rake', __FILE__)
 
-require "capistrano/scm"
+require 'capistrano/scm'
 
 class Capistrano::Svn < Capistrano::SCM
   # execute svn in context with arguments
@@ -18,8 +18,8 @@ class Capistrano::Svn < Capistrano::SCM
     end
 
     def check
-      svn_username = fetch(:svn_username) ? "--username #{fetch(:svn_username)}" : ""
-      svn_password = fetch(:svn_password) ? "--password #{fetch(:svn_password)}" : ""
+      svn_username = fetch(:svn_username) ? "--username #{fetch(:svn_username)}" : ''
+      svn_password = fetch(:svn_password) ? "--password #{fetch(:svn_password)}" : ''
       test! :svn, :info, repo_url, svn_username, svn_password
     end
 
@@ -32,7 +32,7 @@ class Capistrano::Svn < Capistrano::SCM
     end
 
     def release
-      svn :export, "--force", ".", release_path
+      svn :export, '--force', '.', release_path
     end
 
     def fetch_revision

@@ -31,7 +31,7 @@ module Capistrano
       def response
         return @response if defined? @response
 
-        @response = (gets || "").chomp
+        @response = (gets || '').chomp
       end
 
       def gets

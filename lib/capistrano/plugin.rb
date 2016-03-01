@@ -1,5 +1,5 @@
-require "capistrano/all"
-require "rake/tasklib"
+require 'capistrano/all'
+require 'rake/tasklib'
 
 # IMPORTANT: The Capistrano::Plugin system is not yet considered a stable,
 # public API, and is subject to change without notice. Eventually it will be
@@ -44,7 +44,7 @@ class Capistrano::Plugin < Rake::TaskLib
   def initialize(hooks: true)
     define_tasks
     register_hooks if hooks
-    task "load:defaults" do
+    task 'load:defaults' do
       set_defaults
     end
   end
