@@ -80,7 +80,7 @@ module Capistrano
       end
 
       it "invokes using the correct namespace when defined within a namespace" do
-        Rake.application.in_namespace("namespace") {
+        Rake.application.in_namespace("namespace") do
           Rake::Task.define_task("task") do |t|
             order.push(t.name)
           end
@@ -90,7 +90,7 @@ module Capistrano
           task_enhancements.after("task", "after_task", :order) do |t|
             order.push(t.name)
           end
-        }
+        end
 
         Rake::Task["namespace:task"].invoke
 
