@@ -33,8 +33,6 @@ Style/RegexpLiteral:
   Enabled: false
 Style/SignalException:
   Enabled: false
-Performance/RedundantMerge:
-  Enabled: false
 Style/PercentLiteralDelimiters:
   Enabled: false
 Style/BlockDelimiters:
