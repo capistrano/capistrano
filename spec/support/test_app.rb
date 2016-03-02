@@ -9,7 +9,7 @@ module TestApp
   end
 
   def default_config
-    %{
+    <<-CONFIG
       set :deploy_to, '#{deploy_to}'
       set :repo_url, 'git://github.com/capistrano/capistrano.git'
       set :branch, 'master'
@@ -18,7 +18,7 @@ module TestApp
       set :linked_files, #{linked_files}
       set :linked_dirs, #{linked_dirs}
       set :format_options, log_file: nil
-    }
+    CONFIG
   end
 
   def linked_files
@@ -164,10 +164,10 @@ module TestApp
 
   def move_configuration_to_custom_location(location)
     prepend_to_capfile(
-      %{
+      <<-CONFIG
         set :stage_config_path, "app/config/deploy"
         set :deploy_config_path, "app/config/deploy.rb"
-      }
+      CONFIG
     )
 
     location = test_app_path.join(location)
