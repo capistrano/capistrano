@@ -3,6 +3,8 @@ AllCops:
   DisplayStyleGuide: true
   TargetRubyVersion: 2.0
 
+Style/BarePercentLiterals:
+  EnforcedStyle: percent_q
 Style/ClassAndModuleChildren:
   Enabled: false
 Style/DoubleNegation:

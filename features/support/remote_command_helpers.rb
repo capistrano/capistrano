@@ -12,7 +12,7 @@ module RemoteCommandHelpers
   end
 
   def exists?(type, path)
-    %{[ -#{type} "#{path}" ]}
+    %Q{[ -#{type} "#{path}" ]}
   end
 
   def safely_remove_file(_path)
