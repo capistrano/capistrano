@@ -152,8 +152,8 @@ module Capistrano
       fetch(:sshkit_backend) == SSHKit::Backend::Printer
     end
 
-    def install_plugin(plugin, hooks:true)
-      installer.install(plugin, hooks: hooks)
+    def install_plugin(plugin, load_hooks:true)
+      installer.install(plugin, load_hooks: load_hooks)
     end
 
     private

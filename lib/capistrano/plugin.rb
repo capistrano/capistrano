@@ -30,7 +30,7 @@ require "rake/tasklib"
 #
 #   # Capfile
 #   require "capistrano/superfancy"
-#   install_plugin Capistrano::Superfancy, hooks: false
+#   install_plugin Capistrano::Superfancy, load_hooks: false
 #
 class Capistrano::Plugin < Rake::TaskLib
   include Capistrano::DSL

@@ -11,18 +11,18 @@ module Capistrano
       # "Installs" a Plugin into Capistrano by loading its tasks, hooks, and
       # defaults at the appropriate time. The hooks in particular can be
       # skipped, if you want full control over when and how the plugin's tasks
-      # are executed. Simply pass `hooks:false` to opt out.
+      # are executed. Simply pass `load_hooks:false` to opt out.
       #
       # The plugin class or instance may be provided. These are equivalent:
       #
       # install(Capistrano::SCM::Git)
       # install(Capistrano::SCM::Git.new)
       #
-      def install(plugin, hooks:true)
+      def install(plugin, load_hooks:true)
         plugin = plugin.is_a?(Class) ? plugin.new : plugin
 
         plugin.define_tasks
-        plugin.register_hooks if hooks
+        plugin.register_hooks if load_hooks
 
         Rake::Task.define_task("load:defaults") do
           plugin.set_defaults

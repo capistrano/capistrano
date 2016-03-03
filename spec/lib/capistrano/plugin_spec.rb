@@ -51,8 +51,8 @@ module Capistrano
       expect(Rake::Task["deploy:published"].prerequisites).to include("hello")
     end
 
-    it "skips registering hooks if :hooks => false" do
-      install_plugin(DummyPlugin, hooks: false)
+    it "skips registering hooks if load_hooks: false" do
+      install_plugin(DummyPlugin, load_hooks: false)
       expect(Rake::Task["deploy:published"].prerequisites).to be_empty
     end
 
