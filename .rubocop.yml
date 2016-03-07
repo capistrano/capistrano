@@ -79,8 +79,6 @@ Style/Proc:
   Enabled: false
 Style/CommandLiteral:
   Enabled: false
-Style/AlignHash:
-  Enabled: false
 
 # Needs refactors
 Metrics/PerceivedComplexity:
