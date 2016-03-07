@@ -51,8 +51,6 @@ Style/Lambda:
   Enabled: false
 Style/EmptyLiteral:
   Enabled: false
-Style/RaiseArgs:
-  Enabled: false
 Style/SingleLineBlockParams:
   Enabled: false
 Style/Not:
