@@ -34,7 +34,7 @@ module Capistrano
             when :exclude
               !callable.call(self)
             else
-              self.fetch(k) == v
+              fetch(k) == v
             end
           return false unless result
         end

@@ -59,4 +59,4 @@ module Capistrano
     end
   end
 end
-self.extend Capistrano::DSL
+extend Capistrano::DSL
