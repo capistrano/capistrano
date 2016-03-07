@@ -47,8 +47,6 @@ Style/AlignParameters:
   Enabled: false
 Style/IfUnlessModifier:
   Enabled: false
-Style/Next:
-  Enabled: false
 Style/Lambda:
   Enabled: false
 Style/EmptyLiteral:
