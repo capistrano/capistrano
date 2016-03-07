@@ -61,8 +61,6 @@ Style/Not:
   Enabled: false
 Style/RescueModifier:
   Enabled: false
-Style/SpecialGlobalVars:
-  Enabled: false
 Style/ModuleFunction:
   Enabled: false
 Style/BlockEndNewline:
