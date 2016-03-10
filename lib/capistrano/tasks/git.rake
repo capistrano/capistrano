@@ -3,12 +3,12 @@ namespace :git do
     @strategy ||= Capistrano::Git.new(self, fetch(:git_strategy, Capistrano::Git::DefaultStrategy))
   end
 
-  set :git_environmental_variables, ->() {
+  set :git_environmental_variables, lambda do
     {
       git_askpass: '/bin/echo',
       git_ssh: "#{fetch(:tmp_dir)}/#{fetch(:application)}/git-ssh.sh"
     }
-  }
+  end
 
   desc 'Upload the git wrapper script, this script guarantees that we can script git without getting an interactive prompt'
   task :wrapper do
