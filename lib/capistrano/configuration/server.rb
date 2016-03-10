@@ -25,7 +25,7 @@ module Capistrano
       end
 
       def select?(options)
-        options.each do |k,v|
+        options.each do |k, v|
           callable = v.respond_to?(:call) ? v : ->(server) { server.fetch(v) }
           result = \
             case k

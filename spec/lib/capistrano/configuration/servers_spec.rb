@@ -167,22 +167,22 @@ module Capistrano
         end
 
         it "concatenates previously defined array properties" do
-          servers.add_host("1", :roles => [:b], :steps => [1,3,5])
-          servers.add_host("1", :roles => [:b], :steps => [1,9])
+          servers.add_host("1", :roles => [:b], :steps => [1, 3, 5])
+          servers.add_host("1", :roles => [:b], :steps => [1, 9])
           expect(servers.count).to eq(1)
-          expect(servers.roles_for([:b]).first.properties.steps).to eq([1,3,5,1,9])
+          expect(servers.roles_for([:b]).first.properties.steps).to eq([1, 3, 5, 1, 9])
         end
 
         it "merges previously defined set properties" do
-          servers.add_host("1", :roles => [:b], :endpoints => Set[123,333])
-          servers.add_host("1", :roles => [:b], :endpoints => Set[222,333])
+          servers.add_host("1", :roles => [:b], :endpoints => Set[123, 333])
+          servers.add_host("1", :roles => [:b], :endpoints => Set[222, 333])
           expect(servers.count).to eq(1)
-          expect(servers.roles_for([:b]).first.properties.endpoints).to eq(Set[123,222,333])
+          expect(servers.roles_for([:b]).first.properties.endpoints).to eq(Set[123, 222, 333])
         end
 
         it "adds array property value only ones for a new host" do
-          servers.add_host("2", :roles => [:array_test], :array_property => [1,2])
-          expect(servers.roles_for([:array_test]).first.properties.array_property).to eq [1,2]
+          servers.add_host("2", :roles => [:array_test], :array_property => [1, 2])
+          expect(servers.roles_for([:array_test]).first.properties.array_property).to eq [1, 2]
         end
 
         it "updates roles when custom user defined" do

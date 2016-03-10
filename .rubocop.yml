@@ -21,8 +21,6 @@ Style/TrivialAccessors:
 # Need discussion
 Style/Documentation:
   Enabled: false
-Style/SpaceAfterComma:
-  Enabled: false
 Style/RegexpLiteral:
   Enabled: false
 Style/SignalException:

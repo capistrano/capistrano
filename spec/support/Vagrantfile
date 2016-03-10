@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
       primary.vm.network "forwarded_port", :guest => 22, :host => "222#{i}".to_i
       primary.vm.provision :shell, :inline => "sudo apt-get -y install git-core"
 
-      vagrantkey = open("https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub", "r",&:read)
+      vagrantkey = open("https://raw.githubusercontent.com/mitchellh/vagrant/master/keys/vagrant.pub", "r", &:read)
 
       primary.vm.provision :shell,
                            :inline => <<-INLINE

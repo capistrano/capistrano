@@ -88,7 +88,7 @@ describe Capistrano::DSL::Paths do
 
     context "where the release path has been set" do
       before do
-        dsl.set(:release_path,"/var/www/release_path")
+        dsl.set(:release_path, "/var/www/release_path")
       end
 
       it "returns the set `release_path` value" do
