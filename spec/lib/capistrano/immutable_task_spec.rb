@@ -19,13 +19,13 @@ module Capistrano
         message =~ /^WARNING: load:defaults has already been invoked/
       end
 
-      expect {
+      expect do
         namespace :load do
           task :defaults do
             # Never reached since load_defaults is frozen and can't be enhanced
           end
         end
-      }.to raise_error(/frozen/i)
+      end.to raise_error(/frozen/i)
     end
   end
 end

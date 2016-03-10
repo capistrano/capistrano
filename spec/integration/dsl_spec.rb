@@ -165,9 +165,9 @@ describe Capistrano::DSL do
 
     describe "when defining role with reserved name" do
       it "fails with ArgumentError" do
-        expect {
+        expect do
           dsl.role :all, %w{example1.com}
-        }.to raise_error(ArgumentError, "all reserved name for role. Please choose another name")
+        end.to raise_error(ArgumentError, "all reserved name for role. Please choose another name")
       end
     end
 

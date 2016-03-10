@@ -263,7 +263,7 @@ module Capistrano
           config.set :format, :pretty
           config.set :log_level, :debug
           config.set :ssh_options, :user => "albert"
-          SSHKit::Backend::Netssh.configure do |ssh| ssh.ssh_options = { :password => "einstein" } end
+          SSHKit::Backend::Netssh.configure { |ssh| ssh.ssh_options = { :password => "einstein" } }
           config.configure_backend
           expect(config.backend.config.backend.config.ssh_options).to eq(:user => "albert", :password => "einstein")
         end

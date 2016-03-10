@@ -5,9 +5,9 @@ require "capistrano/scm"
 module RaiseNotImplementedMacro
   def raise_not_implemented_on(method)
     it "should raise NotImplemented on #{method}" do
-      expect {
+      expect do
         subject.send(method)
-      }.to raise_error(NotImplementedError)
+      end.to raise_error(NotImplementedError)
     end
   end
 end
