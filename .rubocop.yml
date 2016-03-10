@@ -33,8 +33,6 @@ Style/SingleLineBlockParams:
   Enabled: false
 Style/ModuleFunction:
   Enabled: false
-Style/BlockEndNewline:
-  Enabled: false
 Style/TrailingCommaInLiteral:
   Enabled: false
 
