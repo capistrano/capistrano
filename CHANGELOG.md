@@ -28,7 +28,7 @@ Other changes:
 * Removed the post-install message (@Kriechi)
 * Refactor `Configuration::Filter` to use filtering strategies instead
   of case statements (@cshaffer)
-* Old versions of SSHKit (before 1.7.1) are no longer supported
+* Old versions of SSHKit (before 1.9.0) are no longer supported
 * Drop support for Ruby 1.9.3 (Capistrano may still work with 1.9.3, but it is
   no longer officially supported)
 * Added new runtime option `--print-config-variables` that inspect all defined config variables in order to assist development of new capistrano tasks (@gerardo-navarro)
