@@ -31,6 +31,7 @@ and how to configure it, visit the
 
 ### New features:
 
+* Added a `doctor` task that outputs helpful troubleshooting information. Try it like this: `cap production doctor`. (@mattbrictson)
 * Added a `dry_run?` helper method
 * `remove` DSL method for removing values like from arrays like `linked_dirs`
 * `append` DSL method for pushing values like `linked_dirs`

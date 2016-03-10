@@ -3,22 +3,19 @@
 ---
 
 #### Steps to reproduce
+
 1. Lorem.
 2. Ipsum..
 3. Dolor...
 
 #### Expected behaviour
+
 Tell us what should happen
 
 #### Actual behaviour
+
 Tell us what happens instead
 
 #### Your configuration
 
-**Your Operating system (`$ uname -a` if on Linux/Mac)**:
-
-**Your Ruby Version (`$ ruby -v`):**
-
-**Your Capistrano version (`$ cap --version`):**
-
-**Your Capistrano Plugins (`$ bundle list | grep capistrano-`): **
+Paste Capistrano's `doctor` output here (`cap <stage> doctor`):

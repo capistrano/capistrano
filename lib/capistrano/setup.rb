@@ -1,3 +1,4 @@
+require "capistrano/doctor"
 require "capistrano/immutable_task"
 include Capistrano::DSL
 
@@ -22,8 +23,10 @@ stages.each do |stage|
 
     invoke "load:defaults"
     Rake.application["load:defaults"].extend(Capistrano::ImmutableTask)
-    load deploy_config_path
-    load stage_config_path.join("#{stage}.rb")
+    env.variables.untrusted! do
+      load deploy_config_path
+      load stage_config_path.join("#{stage}.rb")
+    end
     load "capistrano/#{fetch(:scm)}.rb"
     I18n.locale = fetch(:locale, :en)
     configure_backend
