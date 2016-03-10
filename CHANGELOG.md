@@ -17,6 +17,7 @@ default of Capistrano 3.4.0 and earlier.
 
 Other changes:
 
+* Capistrano is now fully-compatible with Rake 11.0. (@mattbrictson)
 * Internal Rubocop cleanups.
 * `remove` DSL method for removing values like from arrays like `linked_dirs`
 * `append` DSL method for pushing values like `linked_dirs`

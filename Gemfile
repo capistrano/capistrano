@@ -5,5 +5,6 @@ gemspec
 
 group :cucumber do
   gem "cucumber"
-  gem "rspec", "~> 3.0.0"
+  gem "rspec"
+  gem "rspec-core", "~> 3.4.4"
 end

@@ -29,7 +29,7 @@ describe Capistrano::Application do
     expect(out).to match(/\bCapistrano Version\b/)
     expect(out).to match(/\b#{Capistrano::VERSION}\b/)
     expect(out).to match(/\bRake Version\b/)
-    expect(out).to match(/\b#{RAKEVERSION}\b/)
+    expect(out).to match(/\b#{Rake::VERSION}\b/)
   end
 
   it "overrides the rake method, and sets the sshkit_backend to SSHKit::Backend::Printer" do
