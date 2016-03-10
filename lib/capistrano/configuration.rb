@@ -3,15 +3,12 @@ require_relative "configuration/question"
 require_relative "configuration/plugin_installer"
 require_relative "configuration/server"
 require_relative "configuration/servers"
+require_relative "configuration/variables"
 
 module Capistrano
   class ValidationError < Exception; end
 
   class Configuration
-    def initialize(config=nil)
-      @config ||= config
-    end
-
     def self.env
       @env ||= new
     end
@@ -20,22 +17,22 @@ module Capistrano
       @env = new
     end
 
+    extend Forwardable
+    attr_reader :variables
+    def_delegators :variables,
+                   :set, :fetch, :fetch_for, :delete, :keys, :validate
+
+    def initialize(values={})
+      @variables = Variables.new(values)
+    end
+
     def ask(key, default=nil, options={})
       question = Question.new(key, default, options)
       set(key, question)
     end
 
-    def set(key, value=nil, &block)
-      invoke_validations(key, value, &block)
-      config[key] = block || value
-
-      puts "Config variable set: #{key.inspect} => #{config[key].inspect}" if fetch(:print_config_variables, false)
-
-      config[key]
-    end
-
     def set_if_empty(key, value=nil, &block)
-      set(key, value, &block) unless config.key? key
+      set(key, value, &block) unless keys.include?(key)
     end
 
     def append(key, *values)
@@ -46,16 +43,6 @@ module Capistrano
       set(key, Array(fetch(key)) - values)
     end
 
-    def delete(key)
-      config.delete(key)
-    end
-
-    def fetch(key, default=nil, &block)
-      value = fetch_for(key, default, &block)
-      value = set(key, value.call) while callable_without_parameters?(value)
-      value
-    end
-
     def any?(key)
       value = fetch(key)
       if value && value.respond_to?(:any?)
@@ -63,16 +50,6 @@ module Capistrano
       else
         !fetch(key).nil?
       end
-    end
-
-    def validate(key, &validator)
-      vs = (validators[key] || [])
-      vs << validator
-      validators[key] = vs
-    end
-
-    def keys
-      config.keys
     end
 
     def is_question?(key)
@@ -166,40 +143,8 @@ module Capistrano
       @servers ||= Servers.new
     end
 
-    def config
-      @config ||= {}
-    end
-
-    def validators
-      @validators ||= {}
-    end
-
     def installer
       @installer ||= PluginInstaller.new
-    end
-
-    def fetch_for(key, default, &block)
-      if block_given?
-        config.fetch(key, &block)
-      else
-        config.fetch(key, default)
-      end
-    end
-
-    def callable_without_parameters?(x)
-      x.respond_to?(:call) && (!x.respond_to?(:arity) || x.arity == 0)
-    end
-
-    def invoke_validations(key, value, &block)
-      unless value.nil? || block.nil?
-        raise Capistrano::ValidationError, "Value and block both passed to Configuration#set"
-      end
-
-      return unless validators.key? key
-
-      validators[key].each do |validator|
-        validator.call(key, block || value)
-      end
     end
 
     def configure_sshkit_output(sshkit)

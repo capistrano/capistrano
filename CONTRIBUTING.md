@@ -25,9 +25,15 @@ As much the Capistrano community tries to write good, well-tested code, bugs sti
 
 **In case you’ve run across an already-known issue, check the FAQs first on the [official Capistrano site](http://capistranorb.com).**
 
-When opening a bug report, please include the following:
+When opening a bug report, please include the output of the `cap <stage> doctor` task, e.g.:
 
-* Versions of Ruby, Capistrano, and any plugins you’re using
+```
+cap production doctor
+```
+
+Also include in your report:
+
+* Versions of Ruby, Capistrano, and any plugins you’re using (if `doctor` didn't already do this for you)
 * A description of the troubleshooting steps you’ve taken
 * Logs and backtraces
 * Sections of your `deploy.rb` that may be relevant
