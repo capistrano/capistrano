@@ -1,6 +1,10 @@
 require "capistrano/all"
 require "rake/tasklib"
 
+# IMPORTANT: The Capistrano::Plugin system is not yet considered a stable,
+# public API, and is subject to change without notice. Eventually it will be
+# officially documented and supported, but for now, use it at your own risk.
+#
 # Base class for Capistrano plugins. Makes building a Capistrano plugin as easy
 # as writing a `Capistrano::Plugin` subclass and overriding any or all of its
 # three template methods:
