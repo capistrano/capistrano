@@ -23,8 +23,6 @@ Style/Documentation:
   Enabled: false
 Style/PercentLiteralDelimiters:
   Enabled: false
-Style/Lambda:
-  Enabled: false
 Style/SingleLineBlockParams:
   Enabled: false
 Style/ModuleFunction:

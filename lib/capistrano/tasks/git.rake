@@ -3,7 +3,7 @@ namespace :git do
     @strategy ||= Capistrano::Git.new(self, fetch(:git_strategy, Capistrano::Git::DefaultStrategy))
   end
 
-  set :git_environmental_variables, ->() {
+  set :git_environmental_variables, lambda {
     {
       :git_askpass => "/bin/echo",
       :git_ssh => "#{fetch(:tmp_dir)}/#{fetch(:application)}/git-ssh.sh"
