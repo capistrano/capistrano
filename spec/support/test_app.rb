@@ -1,6 +1,6 @@
-require "English"
-require "fileutils"
-require "pathname"
+require 'English'
+require 'fileutils'
+require 'pathname'
 
 module TestApp
   extend self
@@ -38,7 +38,7 @@ module TestApp
     FileUtils.rm_rf(test_app_path)
     FileUtils.mkdir(test_app_path)
 
-    File.open(gemfile, "w+") do |file|
+    File.open(gemfile, 'w+') do |file|
       file.write "gem 'capistrano', path: '#{path_to_cap}'"
     end
 
@@ -56,20 +56,20 @@ module TestApp
   end
 
   def write_local_deploy_file(config)
-    File.open(test_stage_path, "w") do |file|
+    File.open(test_stage_path, 'w') do |file|
       file.write config
     end
   end
 
   def append_to_deploy_file(config)
-    File.open(test_stage_path, "a") do |file|
+    File.open(test_stage_path, 'a') do |file|
       file.write config + "\n"
     end
   end
 
   def prepend_to_capfile(config)
     current_capfile = File.read(capfile)
-    File.open(capfile, "w") do |file|
+    File.open(capfile, 'w') do |file|
       file.write config
       file.write current_capfile
     end
@@ -80,7 +80,7 @@ module TestApp
   end
 
   def create_shared_file(path)
-    File.open(shared_path.join(path), "w")
+    File.open(shared_path.join(path), 'w')
   end
 
   def cap(task)
@@ -96,31 +96,31 @@ module TestApp
   end
 
   def stage
-    "test"
+    'test'
   end
 
   def test_stage_path
-    test_app_path.join("config/deploy/test.rb")
+    test_app_path.join('config/deploy/test.rb')
   end
 
   def test_app_path
-    Pathname.new("/tmp/test_app")
+    Pathname.new('/tmp/test_app')
   end
 
   def deploy_to
-    Pathname.new("/home/vagrant/var/www/deploy")
+    Pathname.new('/home/vagrant/var/www/deploy')
   end
 
   def shared_path
-    deploy_to.join("shared")
+    deploy_to.join('shared')
   end
 
   def current_path
-    deploy_to.join("current")
+    deploy_to.join('current')
   end
 
   def releases_path
-    deploy_to.join("releases")
+    deploy_to.join('releases')
   end
 
   def release_path
@@ -128,23 +128,23 @@ module TestApp
   end
 
   def timestamp
-    Time.now.utc.strftime("%Y%m%d%H%M%S")
+    Time.now.utc.strftime('%Y%m%d%H%M%S')
   end
 
   def repo_path
-    deploy_to.join("repo")
+    deploy_to.join('repo')
   end
 
   def path_to_cap
-    File.expand_path(".")
+    File.expand_path('.')
   end
 
   def gemfile
-    test_app_path.join("Gemfile")
+    test_app_path.join('Gemfile')
   end
 
   def capfile
-    test_app_path.join("Capfile")
+    test_app_path.join('Capfile')
   end
 
   def current_user
@@ -152,7 +152,7 @@ module TestApp
   end
 
   def task_dir
-    test_app_path.join("lib/capistrano/tasks")
+    test_app_path.join('lib/capistrano/tasks')
   end
 
   def copy_task_to_test_app(source)
@@ -160,7 +160,7 @@ module TestApp
   end
 
   def config_path
-    test_app_path.join("config")
+    test_app_path.join('config')
   end
 
   def move_configuration_to_custom_location(location)

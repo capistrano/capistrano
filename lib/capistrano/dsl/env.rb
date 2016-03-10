@@ -1,4 +1,4 @@
-require "forwardable"
+require 'forwardable'
 
 module Capistrano
   module DSL
@@ -38,11 +38,11 @@ module Capistrano
       end
 
       def release_timestamp
-        env.timestamp.strftime("%Y%m%d%H%M%S")
+        env.timestamp.strftime('%Y%m%d%H%M%S')
       end
 
       def asset_timestamp
-        env.timestamp.strftime("%Y%m%d%H%M.%S")
+        env.timestamp.strftime('%Y%m%d%H%M.%S')
       end
     end
   end

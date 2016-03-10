@@ -1,34 +1,34 @@
-require "spec_helper"
+require 'spec_helper'
 
 module Capistrano
   describe Configuration do
     let(:config) { Configuration.new }
     let(:servers) { stub }
 
-    describe ".new" do
-      it "accepts initial hash" do
-        configuration = described_class.new(custom: "value")
-        expect(configuration.fetch(:custom)).to eq("value")
+    describe '.new' do
+      it 'accepts initial hash' do
+        configuration = described_class.new(custom: 'value')
+        expect(configuration.fetch(:custom)).to eq('value')
       end
     end
 
-    describe ".env" do
-      it "is a global accessor to a single instance" do
+    describe '.env' do
+      it 'is a global accessor to a single instance' do
         Configuration.env.set(:test, true)
         expect(Configuration.env.fetch(:test)).to be_truthy
       end
     end
 
-    describe ".reset!" do
-      it "blows away the existing `env` and creates a new one" do
+    describe '.reset!' do
+      it 'blows away the existing `env` and creates a new one' do
         old_env = Configuration.env
         Configuration.reset!
         expect(Configuration.env).not_to be old_env
       end
     end
 
-    describe "roles" do
-      context "adding a role" do
+    describe 'roles' do
+      context 'adding a role' do
         subject { config.role(:app, %w{server1 server2}) }
 
         before do
@@ -36,43 +36,43 @@ module Capistrano
           servers.expects(:add_role).with(:app, %w{server1 server2}, {})
         end
 
-        it "adds the role" do
+        it 'adds the role' do
           expect(subject)
         end
       end
     end
 
-    describe "setting and fetching" do
+    describe 'setting and fetching' do
       subject { config.fetch(:key, :default) }
 
-      context "set" do
-        it "sets by value" do
+      context 'set' do
+        it 'sets by value' do
           config.set(:key, :value)
           expect(subject).to eq :value
         end
 
-        it "sets by block" do
+        it 'sets by block' do
           config.set(:key) { :value }
           expect(subject).to eq :value
         end
 
-        it "raises an exception when given both a value and block" do
+        it 'raises an exception when given both a value and block' do
           expect { config.set(:key, :value) { :value } }.to raise_error(Capistrano::ValidationError)
         end
       end
 
-      context "set_if_empty" do
-        it "sets by value when none is present" do
+      context 'set_if_empty' do
+        it 'sets by value when none is present' do
           config.set_if_empty(:key, :value)
           expect(subject).to eq :value
         end
 
-        it "sets by block when none is present" do
+        it 'sets by block when none is present' do
           config.set_if_empty(:key) { :value }
           expect(subject).to eq :value
         end
 
-        it "does not overwrite existing values" do
+        it 'does not overwrite existing values' do
           config.set(:key, :value)
           config.set_if_empty(:key, :update)
           config.set_if_empty(:key) { :update }
@@ -80,136 +80,136 @@ module Capistrano
         end
       end
 
-      context "value is not set" do
-        it "returns the default value" do
+      context 'value is not set' do
+        it 'returns the default value' do
           expect(subject).to eq :default
         end
       end
 
-      context "value is a proc" do
+      context 'value is a proc' do
         subject { config.fetch(:key, proc { :proc }) }
-        it "calls the proc" do
+        it 'calls the proc' do
           expect(subject).to eq :proc
         end
       end
 
-      context "value is a lambda" do
+      context 'value is a lambda' do
         subject { config.fetch(:key, -> { :lambda }) }
-        it "calls the lambda" do
+        it 'calls the lambda' do
           expect(subject).to eq :lambda
         end
       end
 
-      context "value inside proc inside a proc" do
-        subject { config.fetch(:key, proc { proc { "some value" } }) }
-        it "calls all procs and lambdas" do
-          expect(subject).to eq "some value"
+      context 'value inside proc inside a proc' do
+        subject { config.fetch(:key, proc { proc { 'some value' } }) }
+        it 'calls all procs and lambdas' do
+          expect(subject).to eq 'some value'
         end
       end
 
-      context "value inside lambda inside a lambda" do
-        subject { config.fetch(:key, -> { -> { "some value" } }) }
-        it "calls all procs and lambdas" do
-          expect(subject).to eq "some value"
+      context 'value inside lambda inside a lambda' do
+        subject { config.fetch(:key, -> { -> { 'some value' } }) }
+        it 'calls all procs and lambdas' do
+          expect(subject).to eq 'some value'
         end
       end
 
-      context "value inside lambda inside a proc" do
-        subject { config.fetch(:key, proc { -> { "some value" } }) }
-        it "calls all procs and lambdas" do
-          expect(subject).to eq "some value"
+      context 'value inside lambda inside a proc' do
+        subject { config.fetch(:key, proc { -> { 'some value' } }) }
+        it 'calls all procs and lambdas' do
+          expect(subject).to eq 'some value'
         end
       end
 
-      context "value inside proc inside a lambda" do
-        subject { config.fetch(:key, -> { proc { "some value" } }) }
-        it "calls all procs and lambdas" do
-          expect(subject).to eq "some value"
+      context 'value inside proc inside a lambda' do
+        subject { config.fetch(:key, -> { proc { 'some value' } }) }
+        it 'calls all procs and lambdas' do
+          expect(subject).to eq 'some value'
         end
       end
 
-      context "lambda with parameters" do
+      context 'lambda with parameters' do
         subject { config.fetch(:key, ->(c) { c }).call(42) }
-        it "is returned as a lambda" do
+        it 'is returned as a lambda' do
           expect(subject).to eq 42
         end
       end
 
-      context "block is passed to fetch" do
-        subject { config.fetch(:key, :default) { raise "we need this!" } }
+      context 'block is passed to fetch' do
+        subject { config.fetch(:key, :default) { raise 'we need this!' } }
 
-        it "returns the block value" do
+        it 'returns the block value' do
           expect { subject }.to raise_error(RuntimeError)
         end
       end
 
-      context "validations" do
+      context 'validations' do
         before do
           config.validate :key do |_, value|
             raise Capistrano::ValidationError unless value.length > 3
           end
         end
 
-        it "validates without error" do
-          config.set(:key, "longer_value")
+        it 'validates without error' do
+          config.set(:key, 'longer_value')
         end
 
-        it "raises an exception" do
-          expect { config.set(:key, "sho") }.to raise_error(Capistrano::ValidationError)
+        it 'raises an exception' do
+          expect { config.set(:key, 'sho') }.to raise_error(Capistrano::ValidationError)
         end
       end
 
-      context "appending" do
-        subject { config.append(:linked_dirs, "vendor/bundle", "tmp") }
+      context 'appending' do
+        subject { config.append(:linked_dirs, 'vendor/bundle', 'tmp') }
 
-        it "returns appended value" do
-          expect(subject).to eq ["vendor/bundle", "tmp"]
+        it 'returns appended value' do
+          expect(subject).to eq ['vendor/bundle', 'tmp']
         end
 
-        context "on non-array variable" do
-          before { config.set(:linked_dirs, "string") }
-          subject { config.append(:linked_dirs, "vendor/bundle") }
+        context 'on non-array variable' do
+          before { config.set(:linked_dirs, 'string') }
+          subject { config.append(:linked_dirs, 'vendor/bundle') }
 
-          it "returns appended value" do
-            expect(subject).to eq ["string", "vendor/bundle"]
+          it 'returns appended value' do
+            expect(subject).to eq ['string', 'vendor/bundle']
           end
         end
       end
 
-      context "removing" do
+      context 'removing' do
         before :each do
-          config.set(:linked_dirs, ["vendor/bundle", "tmp"])
+          config.set(:linked_dirs, ['vendor/bundle', 'tmp'])
         end
 
-        subject { config.remove(:linked_dirs, "vendor/bundle") }
+        subject { config.remove(:linked_dirs, 'vendor/bundle') }
 
-        it "returns without removed value" do
-          expect(subject).to eq ["tmp"]
+        it 'returns without removed value' do
+          expect(subject).to eq ['tmp']
         end
 
-        context "on non-array variable" do
-          before { config.set(:linked_dirs, "string") }
+        context 'on non-array variable' do
+          before { config.set(:linked_dirs, 'string') }
 
-          context "when removing same value" do
-            subject { config.remove(:linked_dirs, "string") }
+          context 'when removing same value' do
+            subject { config.remove(:linked_dirs, 'string') }
 
-            it "returns without removed value" do
+            it 'returns without removed value' do
               expect(subject).to eq []
             end
           end
 
-          context "when removing different value" do
-            subject { config.remove(:linked_dirs, "othervalue") }
+          context 'when removing different value' do
+            subject { config.remove(:linked_dirs, 'othervalue') }
 
-            it "returns without removed value" do
-              expect(subject).to eq ["string"]
+            it 'returns without removed value' do
+              expect(subject).to eq ['string']
             end
           end
         end
       end
     end
 
-    describe "keys" do
+    describe 'keys' do
       subject { config.keys }
 
       before do
@@ -217,23 +217,23 @@ module Capistrano
         config.set(:key2, :value2)
       end
 
-      it "returns all set keys" do
+      it 'returns all set keys' do
         expect(subject).to match_array [:key1, :key2]
       end
     end
 
-    describe "deleting" do
+    describe 'deleting' do
       before do
         config.set(:key, :value)
       end
 
-      it "deletes the value" do
+      it 'deletes the value' do
         config.delete(:key)
         expect(config.fetch(:key)).to be_nil
       end
     end
 
-    describe "asking" do
+    describe 'asking' do
       let(:question) { stub }
       let(:options) { Hash.new }
 
@@ -242,30 +242,30 @@ module Capistrano
                                .returns(question)
       end
 
-      it "prompts for the value when fetching" do
+      it 'prompts for the value when fetching' do
         config.ask(:branch, :default, options)
         expect(config.fetch(:branch)).to eq question
       end
     end
 
-    describe "setting the backend" do
-      it "by default, is SSHKit" do
+    describe 'setting the backend' do
+      it 'by default, is SSHKit' do
         expect(config.backend).to eq SSHKit
       end
 
-      it "can be set to another class" do
+      it 'can be set to another class' do
         config.backend = :test
         expect(config.backend).to eq :test
       end
 
-      describe "ssh_options for Netssh" do
-        it "merges them with the :ssh_options variable" do
+      describe 'ssh_options for Netssh' do
+        it 'merges them with the :ssh_options variable' do
           config.set :format, :pretty
           config.set :log_level, :debug
-          config.set :ssh_options, user: "albert"
-          SSHKit::Backend::Netssh.configure { |ssh| ssh.ssh_options = { password: "einstein" } }
+          config.set :ssh_options, user: 'albert'
+          SSHKit::Backend::Netssh.configure { |ssh| ssh.ssh_options = { password: 'einstein' } }
           config.configure_backend
-          expect(config.backend.config.backend.config.ssh_options).to eq(user: "albert", password: "einstein")
+          expect(config.backend.config.backend.config.ssh_options).to eq(user: 'albert', password: 'einstein')
         end
       end
     end

@@ -1,4 +1,4 @@
-require "English"
+require 'English'
 
 module VagrantHelpers
   extend self
@@ -6,11 +6,11 @@ module VagrantHelpers
   class VagrantSSHCommandError < RuntimeError; end
 
   at_exit do
-    if ENV["KEEP_RUNNING"]
-      puts "Vagrant vm will be left up because KEEP_RUNNING is set."
-      puts "Rerun without KEEP_RUNNING set to cleanup the vm."
+    if ENV['KEEP_RUNNING']
+      puts 'Vagrant vm will be left up because KEEP_RUNNING is set.'
+      puts 'Rerun without KEEP_RUNNING set to cleanup the vm.'
     else
-      vagrant_cli_command("destroy -f")
+      vagrant_cli_command('destroy -f')
     end
   end
 
