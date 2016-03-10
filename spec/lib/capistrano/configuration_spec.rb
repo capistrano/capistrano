@@ -136,7 +136,7 @@ module Capistrano
       end
 
       context "block is passed to fetch" do
-        subject { config.fetch(:key, :default) { fail "we need this!" } }
+        subject { config.fetch(:key, :default) { raise "we need this!" } }
 
         it "returns the block value" do
           expect { subject }.to raise_error(RuntimeError)

@@ -8,7 +8,7 @@ module Capistrano
       if match?
         self
       else
-        fail "Capfile locked at #{version}, but #{current_version} is loaded"
+        raise "Capfile locked at #{version}, but #{current_version} is loaded"
       end
     end
 
