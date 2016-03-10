@@ -15,15 +15,15 @@ Style/StringLiterals:
   EnforcedStyle: double_quotes
 Style/TrivialAccessors:
   AllowPredicates: true
-
-# Need discussion
-Style/Documentation:
-  Enabled: false
 Style/PercentLiteralDelimiters:
   Enabled: false
 Style/SingleLineBlockParams:
   Enabled: false
 Style/ModuleFunction:
+  Enabled: false
+
+# Enable someday
+Style/Documentation:
   Enabled: false
 
 # Needs refactors
