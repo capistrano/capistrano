@@ -1,6 +1,6 @@
 namespace :deploy do
   namespace :check do
-    task :linked_files => "config/database.yml"
+    task linked_files: "config/database.yml"
   end
 end
 

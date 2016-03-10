@@ -46,7 +46,7 @@ module Capistrano
       end
 
       def question
-        I18n.t(:question, :key => key, :default_value => default, :scope => :capistrano)
+        I18n.t(:question, key: key, default_value: default, scope: :capistrano)
       end
 
       def echo?

@@ -25,7 +25,7 @@ namespace :deploy do
     puts
   end
 
-  task :updating => :new_release_path do
+  task updating: :new_release_path do
     invoke "#{scm}:create_release"
     invoke "deploy:set_current_revision"
     invoke "deploy:symlink:shared"
@@ -90,7 +90,7 @@ namespace :deploy do
       on release_roles :all do |host|
         linked_files(shared_path).each do |file|
           unless test "[ -f #{file} ]"
-            error t(:linked_file_does_not_exist, :file => file, :host => host)
+            error t(:linked_file_does_not_exist, file: file, host: host)
             exit 1
           end
         end
@@ -152,7 +152,7 @@ namespace :deploy do
     on release_roles :all do |host|
       releases = capture(:ls, "-xtr", releases_path).split
       if releases.count >= fetch(:keep_releases)
-        info t(:keeping_releases, :host => host.to_s, :keep_releases => fetch(:keep_releases), :releases => releases.count)
+        info t(:keeping_releases, host: host.to_s, keep_releases: fetch(:keep_releases), releases: releases.count)
         directories = (releases - releases.last(fetch(:keep_releases)))
         if directories.any?
           directories_str = directories.map do |release|
@@ -160,7 +160,7 @@ namespace :deploy do
           end.join(" ")
           execute :rm, "-rf", directories_str
         else
-          info t(:no_old_releases, :host => host.to_s, :keep_releases => fetch(:keep_releases))
+          info t(:no_old_releases, host: host.to_s, keep_releases: fetch(:keep_releases))
         end
       end
     end
@@ -192,7 +192,7 @@ namespace :deploy do
   end
 
   desc "Revert to previous release timestamp"
-  task :revert_release => :rollback_release_path do
+  task revert_release: :rollback_release_path do
     on release_roles(:all) do
       set(:revision_log_message, rollback_log_message)
     end

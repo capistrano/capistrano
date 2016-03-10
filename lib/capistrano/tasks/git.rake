@@ -5,8 +5,8 @@ namespace :git do
 
   set :git_environmental_variables, lambda {
     {
-      :git_askpass => "/bin/echo",
-      :git_ssh => "#{fetch(:tmp_dir)}/#{fetch(:application)}/git-ssh.sh"
+      git_askpass: "/bin/echo",
+      git_ssh: "#{fetch(:tmp_dir)}/#{fetch(:application)}/git-ssh.sh"
     }
   }
 
@@ -20,7 +20,7 @@ namespace :git do
   end
 
   desc "Check that the repository is reachable"
-  task :check => :'git:wrapper' do
+  task check: :'git:wrapper' do
     fetch(:branch)
     on release_roles :all do
       with fetch(:git_environmental_variables) do
@@ -30,10 +30,10 @@ namespace :git do
   end
 
   desc "Clone the repo to the cache"
-  task :clone => :'git:wrapper' do
+  task clone: :'git:wrapper' do
     on release_roles :all do
       if strategy.test
-        info t(:mirror_exists, :at => repo_path)
+        info t(:mirror_exists, at: repo_path)
       else
         within deploy_path do
           with fetch(:git_environmental_variables) do
@@ -45,7 +45,7 @@ namespace :git do
   end
 
   desc "Update the repo mirror to reflect the origin state"
-  task :update => :'git:clone' do
+  task update: :'git:clone' do
     on release_roles :all do
       within repo_path do
         with fetch(:git_environmental_variables) do
@@ -56,7 +56,7 @@ namespace :git do
   end
 
   desc "Copy repo to releases"
-  task :create_release => :'git:update' do
+  task create_release: :'git:update' do
     on release_roles :all do
       with fetch(:git_environmental_variables) do
         within repo_path do

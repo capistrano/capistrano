@@ -16,7 +16,7 @@ module Capistrano
     end
 
     def t(key, options={})
-      I18n.t(key, options.merge(:scope => :capistrano))
+      I18n.t(key, options.merge(scope: :capistrano))
     end
 
     def scm
@@ -30,15 +30,15 @@ module Capistrano
     def revision_log_message
       fetch(:revision_log_message,
             t(:revision_log_message,
-              :branch => fetch(:branch),
-              :user => local_user,
-              :sha => fetch(:current_revision),
-              :release => fetch(:release_timestamp))
+              branch: fetch(:branch),
+              user: local_user,
+              sha: fetch(:current_revision),
+              release: fetch(:release_timestamp))
            )
     end
 
     def rollback_log_message
-      t(:rollback_log_message, :user => local_user, :release => fetch(:rollback_timestamp))
+      t(:rollback_log_message, user: local_user, release: fetch(:rollback_timestamp))
     end
 
     def local_user

@@ -14,8 +14,8 @@ task :install do
 
   mkdir_p deploy_dir
 
-  entries = [{ :template => deploy_rb, :file => config_dir.join("deploy.rb") }]
-  entries += envs.split(",").map { |stage| { :template => stage_rb, :file => deploy_dir.join("#{stage}.rb") } }
+  entries = [{ template: deploy_rb, file: config_dir.join("deploy.rb") }]
+  entries += envs.split(",").map { |stage| { template: stage_rb, file: deploy_dir.join("#{stage}.rb") } }
 
   entries.each do |entry|
     if File.exist?(entry[:file])
@@ -23,7 +23,7 @@ task :install do
     else
       File.open(entry[:file], "w+") do |f|
         f.write(ERB.new(File.read(entry[:template])).result(binding))
-        puts I18n.t(:written_file, :scope => :capistrano, :file => entry[:file])
+        puts I18n.t(:written_file, scope: :capistrano, file: entry[:file])
       end
     end
   end
@@ -34,8 +34,8 @@ task :install do
     warn "[skip] Capfile already exists"
   else
     FileUtils.cp(capfile, "Capfile")
-    puts I18n.t(:written_file, :scope => :capistrano, :file => "Capfile")
+    puts I18n.t(:written_file, scope: :capistrano, file: "Capfile")
   end
 
-  puts I18n.t :capified, :scope => :capistrano
+  puts I18n.t :capified, scope: :capistrano
 end
