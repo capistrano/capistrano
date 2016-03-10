@@ -49,8 +49,6 @@ Style/EmptyLiteral:
   Enabled: false
 Style/SingleLineBlockParams:
   Enabled: false
-Style/Not:
-  Enabled: false
 Style/RescueModifier:
   Enabled: false
 Style/ModuleFunction:
