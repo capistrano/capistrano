@@ -29,8 +29,6 @@ Style/SingleLineBlockParams:
   Enabled: false
 Style/ModuleFunction:
   Enabled: false
-Style/TrailingCommaInLiteral:
-  Enabled: false
 
 # Needs refactors
 Metrics/PerceivedComplexity:
