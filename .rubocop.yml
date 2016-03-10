@@ -21,8 +21,6 @@ Style/TrivialAccessors:
 # Need discussion
 Style/Documentation:
   Enabled: false
-Style/RegexpLiteral:
-  Enabled: false
 Style/PercentLiteralDelimiters:
   Enabled: false
 Style/BlockDelimiters:

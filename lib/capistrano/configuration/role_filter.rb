@@ -20,7 +20,7 @@ module Capistrano
           when Regexp then v
           else
             vs = v.to_s
-            vs =~ %r{^/(.+)/$} ? Regexp.new($1) : %r{^#{vs}$}
+            vs =~ %r{^/(.+)/$} ? Regexp.new($1) : /^#{vs}$/
           end
         end
         Regexp.union values
