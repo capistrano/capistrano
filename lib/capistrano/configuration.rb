@@ -158,11 +158,11 @@ module Capistrano
     end
 
     def config
-      @config ||= Hash.new
+      @config ||= {}
     end
 
     def validators
-      @validators ||= Hash.new
+      @validators ||= {}
     end
 
     def fetch_for(key, default, &block)
