@@ -87,7 +87,7 @@ module Capistrano
       end
 
       context "value is a proc" do
-        subject { config.fetch(:key, Proc.new { :proc }) }
+        subject { config.fetch(:key, proc { :proc }) }
         it "calls the proc" do
           expect(subject).to eq :proc
         end
@@ -101,7 +101,7 @@ module Capistrano
       end
 
       context "value inside proc inside a proc" do
-        subject { config.fetch(:key, Proc.new { Proc.new { "some value" } }) }
+        subject { config.fetch(:key, proc { proc { "some value" } }) }
         it "calls all procs and lambdas" do
           expect(subject).to eq "some value"
         end
@@ -115,14 +115,14 @@ module Capistrano
       end
 
       context "value inside lambda inside a proc" do
-        subject { config.fetch(:key, Proc.new { lambda { "some value" } }) }
+        subject { config.fetch(:key, proc { lambda { "some value" } }) }
         it "calls all procs and lambdas" do
           expect(subject).to eq "some value"
         end
       end
 
       context "value inside proc inside a lambda" do
-        subject { config.fetch(:key, lambda { Proc.new { "some value" } }) }
+        subject { config.fetch(:key, lambda { proc { "some value" } }) }
         it "calls all procs and lambdas" do
           expect(subject).to eq "some value"
         end
