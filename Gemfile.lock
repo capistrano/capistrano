@@ -102,7 +102,7 @@ GEM
       sawyer (~> 0.6.0, >= 0.5.3)
     public_suffix (1.5.3)
     rb-fsevent (0.9.7)
-    rb-inotify (0.9.6)
+    rb-inotify (0.9.7)
       ffi (>= 0.5.0)
     rdiscount (2.1.8)
     redcarpet (3.3.3)
