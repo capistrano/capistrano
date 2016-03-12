@@ -11,9 +11,14 @@ format has been changed to
 [Airbrussh](https://github.com/mattbrictson/airbrussh).** For more details on
 what Airbrussh does
 and how to configure it, visit the
-[Airbrussh README](https://github.com/mattbrictson/airbrussh#readme). To opt out
-of the new format, simply add `set :format, :pretty` to switch to the old
-default of Capistrano 3.4.0 and earlier.
+[Airbrussh README](https://github.com/mattbrictson/airbrussh#readme).
+
+* To opt out of the new format, simply add `set :format, :pretty` to switch to
+  the old default of Capistrano 3.4.0 and earlier.
+* If you are already an Airbrussh user, note that the default configuration has
+  changed, and the syntax for configuring Airbrussh has changed as well.
+  [This simple upgrade guide](https://github.com/mattbrictson/airbrussh/blob/master/UPGRADING-CAP-3.5.md)
+  will walk you through it.
 
 Other changes:
 
