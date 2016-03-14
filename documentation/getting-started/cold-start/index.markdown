@@ -207,3 +207,5 @@ DEBUG [f40edfbb]  3419812c9f146d9a84b44bcc2c3caef94da54758  refs/heads/master
 ```
 
 ![Capistrano Git Check Colour Example](/images/successful-git-check-example-screenshot.png)
+
+*Note:* If you get an error like `scp: /tmp/git-ssh.sh: Permission denied`, you may need to set the `:tmp_dir` param.
