@@ -17,8 +17,8 @@ module RemoteCommandHelpers
 
   def safely_remove_file(_path)
     run_vagrant_command("rm #{test_file}")
-  rescue VagrantHelpers::VagrantSSHCommandError
-    nil
+  rescue
+    VagrantHelpers::VagrantSSHCommandError
   end
 end
 
