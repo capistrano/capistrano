@@ -57,6 +57,7 @@ Other changes:
   * Allow dot in :application name (@marcovtwout)
   * Fixed git-ssh permission error (@spight)
   * Added option to set specific revision when using Subversion as SCM (@marcovtwout)
+  * SHA1 hash of current git revision written to REVISION file is no longer abbreviated
 
 ## `3.4.0`
 
