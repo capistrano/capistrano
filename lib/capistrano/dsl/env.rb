@@ -6,7 +6,7 @@ module Capistrano
       extend Forwardable
       def_delegators :env,
                      :configure_backend, :fetch, :set, :set_if_empty, :delete,
-                     :ask, :role, :server, :primary, :validate, :append, :remove
+                     :ask, :role, :server, :primary, :validate, :append, :remove, :dry_run?
 
       def is_question?(key)
         env.is_question?(key)

@@ -269,5 +269,17 @@ module Capistrano
         end
       end
     end
+
+    describe "dry_run?" do
+      it "returns false when using default backend" do
+        expect(config.dry_run?).to eq(false)
+      end
+
+      it "returns true when using printer backend" do
+        config.set :sshkit_backend, SSHKit::Backend::Printer
+
+        expect(config.dry_run?).to eq(true)
+      end
+    end
   end
 end

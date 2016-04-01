@@ -147,6 +147,10 @@ module Capistrano
       @filters.reduce(list) { |l, f| f.filter l }
     end
 
+    def dry_run?
+      fetch(:sshkit_backend) == SSHKit::Backend::Printer
+    end
+
     private
 
     def cmdline_filters
