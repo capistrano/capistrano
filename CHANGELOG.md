@@ -6,6 +6,7 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 
+* Added a `dry_run?` helper method
 **You'll notice a big cosmetic change in this release: the default logging
 format has been changed to
 [Airbrussh](https://github.com/mattbrictson/airbrussh).** For more details on
