@@ -6,7 +6,6 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
 
-* Added a `dry_run?` helper method
 **You'll notice a big cosmetic change in this release: the default logging
 format has been changed to
 [Airbrussh](https://github.com/mattbrictson/airbrussh).** For more details on
@@ -21,44 +20,49 @@ and how to configure it, visit the
   [This simple upgrade guide](https://github.com/mattbrictson/airbrussh/blob/master/UPGRADING-CAP-3.5.md)
   will walk you through it.
 
-Other changes:
+### Potentially breaking changes:
 
-* Capistrano is now fully-compatible with Rake 11.0. (@mattbrictson)
-* Internal Rubocop cleanups.
+* Drop support for Ruby 1.9.3 (Capistrano may still work with 1.9.3, but it is
+  no longer officially supported)
+* Git version 1.6.3 or greater is now required
+* Remove 'vendor/bundle' from default :linked_dirs (@ojab)
+* Old versions of SSHKit (before 1.9.0) are no longer supported
+* SHA1 hash of current git revision written to REVISION file is no longer abbreviated
+
+### New features:
+
+* Added a `dry_run?` helper method
 * `remove` DSL method for removing values like from arrays like `linked_dirs`
 * `append` DSL method for pushing values like `linked_dirs`
   [#1447](https://github.com/capistrano/capistrano/pull/1447),
   [#1586](https://github.com/capistrano/capistrano/pull/1586)
 * Added support for git shallow clone
-* Remove 'vendor/bundle' from default :linked_dirs (@ojab)
+* Added new runtime option `--print-config-variables` that inspect all defined config variables in order to assist development of new capistrano tasks (@gerardo-navarro)
+* Prune dead tracking branches from git repositories while updating
+* Added options to set username and password when using Subversion as SCM (@dsthode)
+* Allow after() to refer to tasks that have not been loaded yet (@jcoglan)
+* Allow use "all" as string for server filtering (@theist)
+* Print a warning and abort if "load:defaults" is erroneously invoked after
+  capistrano is already loaded, e.g. when a plugin is loaded in `deploy.rb`
+  instead of `Capfile`. (@mattbrictson)
+* Added option to set specific revision when using Subversion as SCM (@marcovtwout)
+* Deduplicate list of linked directories
+
+### Fixes:
+
+* Capistrano is now fully-compatible with Rake 11.0. (@mattbrictson)
+* Fix filtering behaviour when using literal hostnames in on() block (@townsen)
+* Allow dot in :application name (@marcovtwout)
+* Fixed git-ssh permission error (@spight)
+
+### Other changes:
+
+* Internal Rubocop cleanups.
 * Removed the post-install message (@Kriechi)
 * Refactor `Configuration::Filter` to use filtering strategies instead
   of case statements (@cshaffer)
-* Old versions of SSHKit (before 1.9.0) are no longer supported
-* Drop support for Ruby 1.9.3 (Capistrano may still work with 1.9.3, but it is
-  no longer officially supported)
-* Added new runtime option `--print-config-variables` that inspect all defined config variables in order to assist development of new capistrano tasks (@gerardo-navarro)
-* Prune dead tracking branches from git repositories while updating
-  * Git version 1.6.3 or greater is now required
-
-* Minor changes
-  * Fix filtering behaviour when using literal hostnames in on() block (@townsen)
-  * Added options to set username and password when using Subversion as SCM (@dsthode)
-  * Allow after() to refer to tasks that have not been loaded yet (@jcoglan)
-  * Ensure scm fetch_revision methods strip trailing whitespace (@mattbrictson)
-    * Reverted - no longer needed due to [SSHKit PR249](https://github.com/capistrano/sshkit/pull/249) (@robd)
-  * Allow use "all" as string for server filtering (@theist)
-  * Print a warning and abort if "load:defaults" is erroneously invoked after
-    capistrano is already loaded, e.g. when a plugin is loaded in `deploy.rb`
-    instead of `Capfile`. (@mattbrictson)
-  * Return first 12 characters (instead of 7) of SHA1 hash when determining current git revision (@sds)
-  * Clean up rubocop lint warnings (@cshaffer)
-  * Ensure task invocation within after hooks is namespace aware (@thickpaddy)
-  * Deduplicate list of linked directories
-  * Allow dot in :application name (@marcovtwout)
-  * Fixed git-ssh permission error (@spight)
-  * Added option to set specific revision when using Subversion as SCM (@marcovtwout)
-  * SHA1 hash of current git revision written to REVISION file is no longer abbreviated
+* Clean up rubocop lint warnings (@cshaffer)
+* Ensure task invocation within after hooks is namespace aware (@thickpaddy)
 
 ## `3.4.0`
 
