@@ -102,7 +102,7 @@ module Capistrano
       ['--version', '-V',
        "Display the program version.",
        lambda { |value|
-         puts "Capistrano Version: #{Capistrano::VERSION} (Rake Version: #{RAKEVERSION})"
+         puts "Capistrano Version: #{Capistrano::VERSION} (Rake Version: #{Rake::VERSION})"
          exit
        }
       ]

@@ -4,7 +4,14 @@ Reverse Chronological Order:
 
 ## master
 
-https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
+https://github.com/capistrano/capistrano/compare/v3.4.1...HEAD
+
+## `3.4.1`
+
+https://github.com/capistrano/capistrano/compare/v3.4.0...v3.4.1
+
+* Fix compatibility with Rake 11.0 (backported from
+  https://github.com/capistrano/capistrano/pull/1631) (@leehambley)
 
 ## `3.4.0`
 
