@@ -1,3 +1,7 @@
 #!/usr/bin/env cap
 include Capistrano::DSL
 require "capistrano/install"
+
+require "capistrano/harrow"
+require "capistrano/harrow/plugin"
+install_plugin Capistrano::Harrow::Plugin

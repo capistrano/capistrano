@@ -47,6 +47,7 @@ and how to configure it, visit the
   instead of `Capfile`. (@mattbrictson)
 * Added option to set specific revision when using Subversion as SCM (@marcovtwout)
 * Deduplicate list of linked directories
+* Integration with Harrow.io (See http://capistranorb.com/documentation/harrow/) when running `cap install`
 
 ### Fixes:
 
