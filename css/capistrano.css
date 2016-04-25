@@ -115,6 +115,10 @@ footer ul.social.icons {
   list-style-type: none;
 }
 
+li {
+  margin-left: 2em;
+}
+
 footer ul.social.icons li {
   float: left;
   margin-left: 10px;
