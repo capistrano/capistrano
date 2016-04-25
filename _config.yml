@@ -2,7 +2,6 @@ name: Capistrano
 highlighter: rouge
 safe: true
 lsi: false
-markdown: redcarpet
 redcarpet:
   extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data"]
 exclude: ["Gemfile", "Gemfile.lock", "README.md", "vendor"]
