@@ -4,7 +4,11 @@ Reverse Chronological Order:
 
 ## master
 
-https://github.com/capistrano/capistrano/compare/v3.4.0...HEAD
+https://github.com/capistrano/capistrano/compare/v3.5.0...HEAD
+
+## `3.5.0`
+
+https://github.com/capistrano/capistrano/compare/v3.4.1...v3.5.0
 
 **You'll notice a big cosmetic change in this release: the default logging
 format has been changed to
