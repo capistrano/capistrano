@@ -38,11 +38,11 @@ with any other software to form part of a larger tool.
 
 #### What does it cost, and how does that affect Capistrano
 
-Harrow has very low pricing (<https://harrow.io/pricing/>), for comparison with
-other continuous integration tools we have customers who have cut their monthly
-outgoing by a factor of 5 or more.
+Harrow has very reasonable pricing (<https://harrow.io/pricing/>), for
+comparison with other continuous integration tools we have customers who have
+cut their monthly outgoing by a factor of 5 or more.
 
-For individual users it's feee to use for ever. To work with collaborators in
+For individual users it's free to use for ever. To work with collaborators in
 your projects paid plans start at just $29/mo.
 
 Capistrano is unaffected by Harrow. Capistrano will remain liberally licensed
