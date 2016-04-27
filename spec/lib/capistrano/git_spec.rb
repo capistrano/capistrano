@@ -81,7 +81,7 @@ module Capistrano
         context.expects(:fetch).with(:branch).returns(:branch)
         context.expects(:release_path).returns(:path)
 
-        context.expects(:execute).with(:git, :archive, :branch, "| tar -x -f - -C", :path)
+        context.expects(:execute).with(:git, :archive, :branch, "| /usr/bin/env tar -x -f - -C", :path)
 
         subject.release
       end
@@ -91,7 +91,18 @@ module Capistrano
         context.expects(:fetch).with(:branch).returns(:branch)
         context.expects(:release_path).returns(:path)
 
-        context.expects(:execute).with(:git, :archive, :branch, "tree", "| tar -x --strip-components 1 -f - -C", :path)
+        context.expects(:execute).with(:git, :archive, :branch, "tree", "| /usr/bin/env tar -x --strip-components 1 -f - -C", :path)
+
+        subject.release
+      end
+
+      it "should run tar with an overridden name" do
+        context.expects(:fetch).with(:repo_tree).returns(nil)
+        context.expects(:fetch).with(:branch).returns(:branch)
+        SSHKit.config.command_map.expects(:[]).with(:tar).returns("/usr/bin/env gtar")
+        context.expects(:release_path).returns(:path)
+
+        context.expects(:execute).with(:git, :archive, :branch, "| /usr/bin/env gtar -x -f - -C", :path)
 
         subject.release
       end
