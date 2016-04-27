@@ -32,6 +32,10 @@ and how to configure it, visit the
 * Remove 'vendor/bundle' from default :linked_dirs (@ojab)
 * Old versions of SSHKit (before 1.9.0) are no longer supported
 * SHA1 hash of current git revision written to REVISION file is no longer abbreviated
+* Ensure task invocation within after hooks is namespace aware, which may require
+  you to change how your `after` hooks are declared in some cases; see
+  [#1652](https://github.com/capistrano/capistrano/issues/1652) for an example
+  and how to correct it (@thickpaddy)
 
 ### New features:
 
@@ -68,7 +72,6 @@ and how to configure it, visit the
 * Refactor `Configuration::Filter` to use filtering strategies instead
   of case statements (@cshaffer)
 * Clean up rubocop lint warnings (@cshaffer)
-* Ensure task invocation within after hooks is namespace aware (@thickpaddy)
 
 ## `3.4.0`
 
