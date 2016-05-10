@@ -36,6 +36,9 @@ and how to configure it, visit the
   you to change how your `after` hooks are declared in some cases; see
   [#1652](https://github.com/capistrano/capistrano/issues/1652) for an example
   and how to correct it (@thickpaddy)
+* Validation of the `:application` variable forbids special characters such as slash,
+  this may be a breaking change in case that you rely on using a `/` in your application
+  name to deploy from a sub directory.
 
 ### New features:
 
