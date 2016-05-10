@@ -33,8 +33,7 @@ module Capistrano
               branch: fetch(:branch),
               user: local_user,
               sha: fetch(:current_revision),
-              release: fetch(:release_timestamp))
-           )
+              release: fetch(:release_timestamp)))
     end
 
     def rollback_log_message

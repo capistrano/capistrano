@@ -107,8 +107,7 @@ module Capistrano
        lambda do |_value|
          puts "Capistrano Version: #{Capistrano::VERSION} (Rake Version: #{Rake::VERSION})"
          exit
-       end
-      ]
+       end]
     end
 
     def dry_run
@@ -116,8 +115,7 @@ module Capistrano
        "Do a dry run without executing actions",
        lambda do |_value|
          Configuration.env.set(:sshkit_backend, SSHKit::Backend::Printer)
-       end
-      ]
+       end]
     end
 
     def roles
@@ -125,8 +123,7 @@ module Capistrano
        "Run SSH commands only on hosts matching these roles",
        lambda do |value|
          Configuration.env.add_cmdline_filter(:role, value)
-       end
-      ]
+       end]
     end
 
     def hostfilter
@@ -134,8 +131,7 @@ module Capistrano
        "Run SSH commands only on matching hosts",
        lambda do |value|
          Configuration.env.add_cmdline_filter(:host, value)
-       end
-      ]
+       end]
     end
 
     def print_config_variables
@@ -143,8 +139,7 @@ module Capistrano
        "Display the defined config variables before starting the deployment tasks.",
        lambda do |_value|
          Configuration.env.set(:print_config_variables, true)
-       end
-      ]
+       end]
     end
   end
 end
