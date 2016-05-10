@@ -18,7 +18,7 @@ module Capistrano
       # install(Capistrano::SCM::Git)
       # install(Capistrano::SCM::Git.new)
       #
-      def install(plugin, load_hooks:true)
+      def install(plugin, load_hooks: true)
         plugin = plugin.is_a?(Class) ? plugin.new : plugin
 
         plugin.define_tasks

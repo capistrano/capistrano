@@ -269,7 +269,8 @@ module Capistrano
               user: "another_user",
               keys: %w(/home/another_user/.ssh/id_rsa),
               forward_agent: false,
-              auth_methods: %w(publickey password) } }
+              auth_methods: %w(publickey password)
+            } }
           end
 
           before do
