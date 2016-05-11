@@ -11,7 +11,7 @@ module Capistrano
       end
 
       def current_path
-        deploy_path.join("current")
+        deploy_path.join(fetch(:current_directory, "current"))
       end
 
       def releases_path

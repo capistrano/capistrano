@@ -8,6 +8,7 @@ https://github.com/capistrano/capistrano/compare/v3.5.0...HEAD
 
   * Make path to git wrapper script configurable (@thickpaddy)
   * Change git wrapper path to work better with multiple users (@thickpaddy)
+  * Make name of current directory configurable via configuration variable `:current_directory` (@websi)
 
 ## `3.5.0`
 
