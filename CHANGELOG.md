@@ -30,8 +30,7 @@ and how to configure it, visit the
 
 ### Potentially breaking changes:
 
-* Drop support for Ruby 1.9.3 (Capistrano may still work with 1.9.3, but it is
-  no longer officially supported)
+* Drop support for Ruby 1.9.3 (Capistrano does no longer work with 1.9.3)
 * Git version 1.6.3 or greater is now required
 * Remove 'vendor/bundle' from default :linked_dirs (@ojab)
 * Old versions of SSHKit (before 1.9.0) are no longer supported
