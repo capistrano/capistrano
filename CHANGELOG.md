@@ -6,6 +6,7 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.5.0...HEAD
 
+  * Raise a better error when an ‘after’ hook isn’t found (@jdelStrother)
   * Restrict the uploaded git wrapper script permissions to 700 (@irvingwashington)
   * Make path to git wrapper script configurable (@thickpaddy)
   * Change git wrapper path to work better with multiple users (@thickpaddy)
