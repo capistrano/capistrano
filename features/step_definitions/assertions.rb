@@ -2,6 +2,11 @@ Then(/^references in the remote repo are listed$/) do
   expect(@output).to include("refs/heads/master")
 end
 
+Then(/^git wrapper permissions are 0700$/) do
+  permissions_test = %Q([ $(stat -c "%a" #{TestApp.git_wrapper_path}) == "700" ])
+  expect(vagrant_cli_command("ssh -c '#{permissions_test}'")).to be_success
+end
+
 Then(/^the shared path is created$/) do
   run_vagrant_command(test_dir_exists(TestApp.shared_path))
 end

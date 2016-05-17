@@ -22,7 +22,7 @@ namespace :git do
     on release_roles :all do
       execute :mkdir, "-p", File.dirname(fetch(:git_wrapper_path))
       upload! StringIO.new("#!/bin/sh -e\nexec /usr/bin/ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no \"$@\"\n"), fetch(:git_wrapper_path)
-      execute :chmod, "+rx", fetch(:git_wrapper_path)
+      execute :chmod, "700", fetch(:git_wrapper_path)
     end
   end
 
