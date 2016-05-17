@@ -98,6 +98,11 @@ module Capistrano
           ["namespace:before_task", "namespace:task", "namespace:after_task"]
         )
       end
+
+      it "raises a sensible error if the task isn't found" do
+        task_enhancements.after("task", "non_existent_task")
+        expect { Rake::Task["task"].invoke order }.to raise_error(ArgumentError, 'Task "non_existent_task" not found')
+      end
     end
 
     describe "remote_file" do

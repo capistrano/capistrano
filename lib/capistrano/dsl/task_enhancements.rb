@@ -11,7 +11,9 @@ module Capistrano
       Rake::Task.define_task(post_task, *args, &block) if block_given?
       task = Rake::Task[task]
       task.enhance do
-        Rake.application.lookup(post_task, task.scope).invoke
+        post = Rake.application.lookup(post_task, task.scope)
+        raise ArgumentError, "Task #{post_task.inspect} not found" unless post
+        post.invoke
       end
     end
 
