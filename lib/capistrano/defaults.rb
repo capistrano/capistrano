@@ -1,4 +1,6 @@
-validate :application do |_key, value|
+validate :application do |_key, value_or_block|
+  value = value_or_block.respond_to?(:call) ? value_or_block.call : value_or_block
+
   changed_value = value.gsub(/[^A-Z0-9\.\-]/i, "_")
   if value != changed_value
     warn %Q(The :application value "#{value}" is invalid!)
