@@ -20,7 +20,7 @@ Each variable can be set to a specific value:
 set :application, 'MyLittleApplication'
 
 # use a lambda to delay evaluation
-set :application, -> { "SomeThing_#{fetch :other_config}" }
+set :special_thing, -> { "SomeThing_#{fetch :other_config}" }
 ```
 
 A value can be retrieved from the configuration at any time:
