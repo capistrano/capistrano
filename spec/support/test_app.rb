@@ -175,4 +175,8 @@ module TestApp
     FileUtils.mkdir_p(location)
     FileUtils.mv(config_path, location)
   end
+
+  def git_wrapper_path
+    "/tmp/git-ssh-my_app_name-#{stage}-#{current_user}.sh"
+  end
 end

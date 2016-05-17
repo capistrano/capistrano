@@ -6,6 +6,7 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.5.0...HEAD
 
+  * Restrict the uploaded git wrapper script permissions to 700 (@irvingwashington)
   * Make path to git wrapper script configurable (@thickpaddy)
   * Change git wrapper path to work better with multiple users (@thickpaddy)
   * Make name of current directory configurable via configuration variable `:current_directory` (@websi)
