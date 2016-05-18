@@ -13,7 +13,7 @@ namespace :git do
   set :git_environmental_variables, lambda {
     {
       git_askpass: "/bin/echo",
-      git_ssh: "#{fetch(:tmp_dir)}/#{fetch(:application)}/git-ssh.sh"
+      git_ssh: fetch(:git_wrapper_path)
     }
   }
 
