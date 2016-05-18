@@ -5,7 +5,7 @@ Reverse Chronological Order:
 ## master
 
 https://github.com/capistrano/capistrano/compare/v3.5.0...HEAD
-
+  * Make the default :application validator handle blocks correctly (@irvingwashington)
   * Raise a better error when an ‘after’ hook isn’t found (@jdelStrother)
   * Restrict the uploaded git wrapper script permissions to 700 (@irvingwashington)
   * Make path to git wrapper script configurable (@thickpaddy)
