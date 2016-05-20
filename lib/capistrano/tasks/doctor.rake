@@ -1,5 +1,5 @@
 desc "Display a Capistrano troubleshooting report (all doctor: tasks)"
-task doctor: ["doctor:environment", "doctor:gems", "doctor:variables"]
+task doctor: ["doctor:environment", "doctor:gems", "doctor:variables", "doctor:servers"]
 
 namespace :doctor do
   desc "Display Ruby environment details"
@@ -15,5 +15,10 @@ namespace :doctor do
   desc "Display the values of all Capistrano variables"
   task :variables do
     Capistrano::Doctor::VariablesDoctor.new.call
+  end
+
+  desc "Display the effective servers configuration"
+  task :servers do
+    Capistrano::Doctor::ServersDoctor.new.call
   end
 end

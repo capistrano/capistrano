@@ -119,6 +119,10 @@ module Capistrano
           end
         end
 
+        def to_h
+          @properties
+        end
+
         private
 
         def lvalue(key)
