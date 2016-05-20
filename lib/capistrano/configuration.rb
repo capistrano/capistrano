@@ -133,14 +133,14 @@ module Capistrano
       installer.install(plugin, load_hooks: load_hooks)
     end
 
+    def servers
+      @servers ||= Servers.new
+    end
+
     private
 
     def cmdline_filters
       @cmdline_filters ||= []
-    end
-
-    def servers
-      @servers ||= Servers.new
     end
 
     def installer
