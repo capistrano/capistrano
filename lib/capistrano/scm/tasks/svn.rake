@@ -1,23 +1,24 @@
-namespace :svn do
-  def strategy
-    @strategy ||= Capistrano::Svn.new(self, fetch(:svn_strategy, Capistrano::Svn::DefaultStrategy))
-  end
+# TODO: this is nearly identical to git.rake. DRY up?
 
+# This trick lets us access the Svn plugin within `on` blocks.
+svn = self
+
+namespace :svn do
   desc "Check that the repo is reachable"
   task :check do
     on release_roles :all do
-      strategy.check
+      svn.check_repo_is_reachable
     end
   end
 
   desc "Clone the repo to the cache"
   task :clone do
     on release_roles :all do
-      if strategy.test
+      if svn.repo_mirror_exists?
         info t(:mirror_exists, at: repo_path)
       else
         within deploy_path do
-          strategy.clone
+          svn.clone_repo
         end
       end
     end
@@ -27,7 +28,7 @@ namespace :svn do
   task update: :'svn:clone' do
     on release_roles :all do
       within repo_path do
-        strategy.update
+        svn.update_mirror
       end
     end
   end
@@ -36,7 +37,7 @@ namespace :svn do
   task create_release: :'svn:update' do
     on release_roles :all do
       within repo_path do
-        strategy.release
+        svn.archive_to_release_path
       end
     end
   end
@@ -45,7 +46,7 @@ namespace :svn do
   task :set_current_revision do
     on release_roles :all do
       within repo_path do
-        set :current_revision, strategy.fetch_revision
+        set :current_revision, svn.fetch_revision
       end
     end
   end

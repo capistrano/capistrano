@@ -41,6 +41,8 @@ affected by these deprecations.
 
 ### New features:
 
+  * The `set :scm, ...` mechanism is now deprecated in favor of a new SCM plugin
+  system. See the [UPGRADING](UPGRADING.md) document for details.
   * Added a `doctor:servers` subtask that outputs a summary of servers, roles & properties (@irvingwashington)
   * Make path to git wrapper script configurable (@thickpaddy)
   * Make name of current directory configurable via configuration variable `:current_directory` (@websi)

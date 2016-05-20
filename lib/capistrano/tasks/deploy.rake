@@ -26,7 +26,6 @@ namespace :deploy do
   end
 
   task updating: :new_release_path do
-    invoke "#{scm}:create_release"
     invoke "deploy:set_current_revision"
     invoke "deploy:symlink:shared"
   end
@@ -53,7 +52,6 @@ namespace :deploy do
 
   desc "Check required files and directories exist"
   task :check do
-    invoke "#{scm}:check"
     invoke "deploy:check:directories"
     invoke "deploy:check:linked_dirs"
     invoke "deploy:check:make_linked_dirs"
@@ -225,7 +223,6 @@ namespace :deploy do
 
   desc "Place a REVISION file with the current revision SHA in the current release path"
   task :set_current_revision  do
-    invoke "#{scm}:set_current_revision"
     on release_roles(:all) do
       within release_path do
         execute :echo, "\"#{fetch(:current_revision)}\" >> REVISION"

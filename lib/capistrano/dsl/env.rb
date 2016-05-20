@@ -7,15 +7,8 @@ module Capistrano
       def_delegators :env,
                      :configure_backend, :fetch, :set, :set_if_empty, :delete,
                      :ask, :role, :server, :primary, :validate, :append,
-                     :remove, :dry_run?, :install_plugin
-
-      def is_question?(key)
-        env.is_question?(key)
-      end
-
-      def any?(key)
-        env.any?(key)
-      end
+                     :remove, :dry_run?, :install_plugin, :any?, :is_question?,
+                     :configure_scm
 
       def roles(*names)
         env.roles_for(names.flatten)

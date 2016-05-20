@@ -1,22 +1,7 @@
+# This trick lets us access the Git plugin within `on` blocks.
+git = self
+
 namespace :git do
-  def strategy
-    @strategy ||= Capistrano::Git.new(self, fetch(:git_strategy, Capistrano::Git::DefaultStrategy))
-  end
-
-  set :git_wrapper_path, lambda {
-    # Try to avoid permissions issues when multiple users deploy the same app
-    # by using different file names in the same dir for each deployer and stage.
-    suffix = [:application, :stage, :local_user].map { |key| fetch(key).to_s }.join("-").gsub(/\s+/, "-")
-    "#{fetch(:tmp_dir)}/git-ssh-#{suffix}.sh"
-  }
-
-  set :git_environmental_variables, lambda {
-    {
-      git_askpass: "/bin/echo",
-      git_ssh: fetch(:git_wrapper_path)
-    }
-  }
-
   desc "Upload the git wrapper script, this script guarantees that we can script git without getting an interactive prompt"
   task :wrapper do
     on release_roles :all do
@@ -31,7 +16,7 @@ namespace :git do
     fetch(:branch)
     on release_roles :all do
       with fetch(:git_environmental_variables) do
-        strategy.check
+        git.check_repo_is_reachable
       end
     end
   end
@@ -39,12 +24,12 @@ namespace :git do
   desc "Clone the repo to the cache"
   task clone: :'git:wrapper' do
     on release_roles :all do
-      if strategy.test
+      if git.repo_mirror_exists?
         info t(:mirror_exists, at: repo_path)
       else
         within deploy_path do
           with fetch(:git_environmental_variables) do
-            strategy.clone
+            git.clone_repo
           end
         end
       end
@@ -56,7 +41,7 @@ namespace :git do
     on release_roles :all do
       within repo_path do
         with fetch(:git_environmental_variables) do
-          strategy.update
+          git.update_mirror
         end
       end
     end
@@ -68,7 +53,7 @@ namespace :git do
       with fetch(:git_environmental_variables) do
         within repo_path do
           execute :mkdir, "-p", release_path
-          strategy.release
+          git.archive_to_release_path
         end
       end
     end
@@ -79,7 +64,7 @@ namespace :git do
     on release_roles :all do
       within repo_path do
         with fetch(:git_environmental_variables) do
-          set :current_revision, strategy.fetch_revision
+          set :current_revision, git.fetch_revision
         end
       end
     end

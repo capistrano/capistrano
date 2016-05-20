@@ -1,23 +1,24 @@
-namespace :hg do
-  def strategy
-    @strategy ||= Capistrano::Hg.new(self, fetch(:hg_strategy, Capistrano::Hg::DefaultStrategy))
-  end
+# TODO: this is nearly identical to git.rake. DRY up?
 
+# This trick lets us access the Hg plugin within `on` blocks.
+hg = self
+
+namespace :hg do
   desc "Check that the repo is reachable"
   task :check do
     on release_roles :all do
-      strategy.check
+      hg.check_repo_is_reachable
     end
   end
 
   desc "Clone the repo to the cache"
   task :clone do
     on release_roles :all do
-      if strategy.test
+      if hg.repo_mirror_exists?
         info t(:mirror_exists, at: repo_path)
       else
         within deploy_path do
-          strategy.clone
+          hg.clone_repo
         end
       end
     end
@@ -27,7 +28,7 @@ namespace :hg do
   task update: :'hg:clone' do
     on release_roles :all do
       within repo_path do
-        strategy.update
+        hr.update_mirror
       end
     end
   end
@@ -36,7 +37,7 @@ namespace :hg do
   task create_release: :'hg:update' do
     on release_roles :all do
       within repo_path do
-        strategy.release
+        hg.archive_to_release_path
       end
     end
   end
@@ -45,7 +46,7 @@ namespace :hg do
   task :set_current_revision do
     on release_roles :all do
       within repo_path do
-        set :current_revision, strategy.fetch_revision
+        set :current_revision, hg.fetch_revision
       end
     end
   end
