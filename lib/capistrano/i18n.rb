@@ -24,6 +24,7 @@ en = {
     bye: "bye"
   },
   error: {
+    invalid_stage_name: '"%{name}" is a reserved word and cannot be used as a stage. Rename "%{path}" to something else.',
     user: {
       does_not_exist: "User %{user} does not exists",
       cannot_switch: "Cannot switch to user %{user}"

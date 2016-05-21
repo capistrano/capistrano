@@ -61,6 +61,12 @@ module TestApp
     end
   end
 
+  def write_local_stage_file(filename, config=nil)
+    File.open(test_app_path.join("config/deploy/#{filename}"), "w") do |file|
+      file.write(config) if config
+    end
+  end
+
   def append_to_deploy_file(config)
     File.open(test_stage_path, "a") do |file|
       file.write config + "\n"
