@@ -99,7 +99,6 @@ install `2.15.4`, and any other point-release in the `2.15.x` family without
 the risk of accidentally upgrading to `v3`.
 
 
---
 [rubygems]:                                    http://rubygems.org/
 [rubygems-pessimistic-operator]:               http://guides.rubygems.org/patterns/#pessimistic-version-constraint
 [capistrano-rails-asset-pipeline-readme]:      https://github.com/capistrano/rails/blob/master/README.md
