@@ -17,6 +17,7 @@ module Capistrano
           set :repo_url, ".git"
           set :copy_strategy, :scp
           set :custom_setting, "hello"
+          set "string_setting", "hello"
           ask :secret
         end
 
@@ -36,6 +37,7 @@ module Capistrano
         expect { doc.call }.to output(/:repo_url\s+".git"$/).to_stdout
         expect { doc.call }.to output(/:copy_strategy\s+:scp$/).to_stdout
         expect { doc.call }.to output(/:custom_setting\s+"hello"$/).to_stdout
+        expect { doc.call }.to output(/"string_setting"\s+"hello"$/).to_stdout
       end
 
       it "prints unanswered question variable as <ask>" do

@@ -20,18 +20,17 @@ module Capistrano
         title("Variables")
         values = inspect_all_values
 
-        table(variables.keys.sort) do |key, row|
+        table(variables.keys.sort_by(&:to_s)) do |key, row|
           row.yellow if suspicious_keys.include?(key)
-          row << ":#{key}"
+          row << key.inspect
           row << values[key]
         end
 
         puts if suspicious_keys.any?
 
-        suspicious_keys.sort.each do |key|
-          warning(
-            ":#{key} is not a recognized Capistrano setting (#{location(key)})"
-          )
+        suspicious_keys.sort_by(&:to_s).each do |key|
+          warning("#{key.inspect} is not a recognized Capistrano setting "\
+                  "(#{location(key)})")
         end
       end
 
