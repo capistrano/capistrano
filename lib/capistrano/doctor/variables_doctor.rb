@@ -7,7 +7,7 @@ module Capistrano
     class VariablesDoctor
       # These are keys that have no default values in Capistrano, but are
       # nonetheless expected to be set.
-      WHITELIST = [:application, :repo_url].freeze
+      WHITELIST = [:application, :repo_url, :git_strategy, :hg_strategy, :svn_strategy].freeze
       private_constant :WHITELIST
 
       include Capistrano::Doctor::OutputHelpers
