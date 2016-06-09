@@ -15,6 +15,7 @@ module Capistrano
         env.variables.untrusted! do
           set :application, "my_app"
           set :repo_url, ".git"
+          set :git_strategy, "Capistrano::Git::DefaultStrategy"
           set :copy_strategy, :scp
           set :custom_setting, "hello"
           set "string_setting", "hello"
@@ -53,6 +54,12 @@ module Capistrano
       it "does not print warning for unrecognized variable that is fetched" do
         expect { doc.call }.not_to \
           output(/:custom_setting is not a recognized Capistrano setting/)\
+          .to_stdout
+      end
+
+      it "does not print warning for the whitelisted git_strategy variable" do
+        expect { doc.call }.not_to \
+          output(/:git_strategy is not a recognized Capistrano setting/)\
           .to_stdout
       end
 
