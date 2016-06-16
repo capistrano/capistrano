@@ -88,7 +88,7 @@ namespace :deploy do
     DESC
     task :update_asset_mtimes, :roles => lambda { assets_role }, :except => { :no_release => true } do
       # Fetch assets/manifest contents.
-      manifest_content = capture("[ -e '#{shared_path.shellescape}/#{shared_assets_prefix}/#{asset_manifest_prefix}*' ] && cat #{shared_path.shellescape}/#{shared_assets_prefix}/#{asset_manifest_prefix}* || echo").strip
+      manifest_content = capture("[ -e '#{shared_path.shellescape}/#{shared_assets_prefix}/#{asset_manifest_prefix}'* ] && cat #{shared_path.shellescape}/#{shared_assets_prefix}/#{asset_manifest_prefix}* || echo").strip
 
       if manifest_content != ""
         current_assets = parse_manifest(manifest_content)
