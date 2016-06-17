@@ -18,6 +18,9 @@ module Capistrano
     end
 
     def remote_file(task)
+      warn("[Deprecation Warning] `remote_file` is deprecated and will be "\
+           "removed in Capistrano 3.7.0")
+
       target_roles = task.delete(:roles) { :all }
       define_remote_file_task(task, target_roles)
     end
