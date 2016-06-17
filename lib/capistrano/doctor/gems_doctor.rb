@@ -34,7 +34,7 @@ module Capistrano
       end
 
       def core_gem_names
-        %w(capistrano airbrussh rake sshkit) & Gem.loaded_specs.keys
+        %w(capistrano airbrussh rake sshkit net-ssh) & Gem.loaded_specs.keys
       end
 
       def plugin_gem_names
