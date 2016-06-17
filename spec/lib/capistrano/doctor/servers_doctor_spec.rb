@@ -57,6 +57,7 @@ module Capistrano
       end
 
       it "doesn't fail for no servers" do
+        Capistrano::Configuration.reset!
         expect { doc.call }.to output("\nServers (0)\n    \n").to_stdout
       end
 
