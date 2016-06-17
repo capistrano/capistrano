@@ -2,6 +2,7 @@ require "spec_helper"
 require "capistrano/doctor/gems_doctor"
 require "airbrussh/version"
 require "sshkit/version"
+require "net/ssh/version"
 
 module Capistrano
   module Doctor
@@ -30,6 +31,11 @@ module Capistrano
       it "prints the Airbrussh version" do
         expect { doc.call }.to\
           output(/airbrussh\s+#{Regexp.quote(Airbrussh::VERSION)}/).to_stdout
+      end
+
+      it "prints the net-ssh version" do
+        expect { doc.call }.to\
+          output(/net-ssh\s+#{Regexp.quote(Net::SSH::Version::STRING)}/).to_stdout
       end
 
       it "warns that new version is available" do
