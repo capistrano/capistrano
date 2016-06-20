@@ -1,3 +1,5 @@
+require "capistrano/proc_helpers"
+
 module Capistrano
   class Configuration
     # Holds the variables assigned at Capistrano runtime via `set` and retrieved
@@ -14,6 +16,8 @@ module Capistrano
         "/forwardable.rb:"
       ].freeze
       private_constant :CAPISTRANO_LOCATION, :IGNORED_LOCATIONS
+
+      include Capistrano::ProcHelpers
 
       def initialize(values={})
         @trusted_keys = []
@@ -98,10 +102,6 @@ module Capistrano
           IGNORED_LOCATIONS.none? { |i| line.include?(i) }
         end
         (locations[key] ||= []) << location
-      end
-
-      def callable_without_parameters?(x)
-        x.respond_to?(:call) && (!x.respond_to?(:arity) || x.arity == 0)
       end
 
       def assert_value_or_block_not_both(value, block)
