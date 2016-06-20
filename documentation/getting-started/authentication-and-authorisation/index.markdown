@@ -39,20 +39,26 @@ There are two places that we need automated, promptless authentication:
 
 #### 1.1 SSH keys from workstation to servers
 
-**Note:** If you are on Windows, all bets are off. I'd love it if someone
-could contribute a Windows guide to this, so we can include it here.
-
 An SSH key is a mechanism that allows a *public* half one key to be placed on
 a server, when we want to authenticate with that server, our SSH client uses
 the **private** part of that key to negotiate with the server, if the keys are
 correct, we are allowed to login.
 
-Then we need to create the key.
+**Note:** If you are on Windows, you can use Git for Windows to generate ssh keys. To do this, follow this steps:
+
+  1. Install [Git for Windows](https://git-scm.com/download/win).
+  2. Open "Git Bash" and follow next instructions always inside Git Bash prompt. 
+  3. Activate ssh-agent: ```$ eval "$(ssh-agent -s)" ```
+
+**Note:** If you want to use [Putty tool](http://www.putty.org/) to connect to remote server (from Windows) with ssh keys, then you need to generate ppk file, through puttygen tool.
+
 
 **Hint:** If you have more than one developer in your team, they should all add their
 public key to the `deploy` user's `authorized_keys` file, that way if someone
 quits or gets fired, you can remove their key from that file, and the rest of
 you can keep on shipping!
+
+Then we need to create the key.
 
 ```bash
 me@localhost $ ssh-keygen -t rsa -C 'me@my_email_address.com'
