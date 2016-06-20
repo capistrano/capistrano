@@ -3,6 +3,7 @@ require_relative "configuration/question"
 require_relative "configuration/plugin_installer"
 require_relative "configuration/server"
 require_relative "configuration/servers"
+require_relative "configuration/validated_variables"
 require_relative "configuration/variables"
 
 module Capistrano
@@ -23,7 +24,7 @@ module Capistrano
                    :set, :fetch, :fetch_for, :delete, :keys, :validate
 
     def initialize(values={})
-      @variables = Variables.new(values)
+      @variables = ValidatedVariables.new(Variables.new(values))
     end
 
     def ask(key, default=nil, options={})
