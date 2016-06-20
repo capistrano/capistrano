@@ -14,6 +14,7 @@ https://github.com/capistrano/capistrano/compare/v3.5.0...HEAD
   * Make name of current directory configurable via configuration variable `:current_directory` (@websi)
   * `doctor` no longer erroneously warns that `:git_strategy` and other SCM options are "unrecognized" (@shanesaww)
   * Add `net-ssh` gem version to `doctor:gems` output (@lebedev-yury)
+  * Deprecate `remote_file` feature (will be removed in Capistrano 3.7.0) (@lebedev-yury)
 
 ## `3.5.0`
 
