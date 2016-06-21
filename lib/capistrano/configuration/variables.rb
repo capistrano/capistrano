@@ -1,9 +1,11 @@
+require "capistrano/proc_helpers"
+
 module Capistrano
   class Configuration
     # Holds the variables assigned at Capistrano runtime via `set` and retrieved
     # with `fetch`. Does internal bookkeeping to help identify user mistakes
     # like spelling errors or unused variables that may lead to unexpected
-    # behavior. Also allows validation rules to be registered with `validate`.
+    # behavior.
     class Variables
       CAPISTRANO_LOCATION = File.expand_path("../..", __FILE__).freeze
       IGNORED_LOCATIONS = [
@@ -14,6 +16,8 @@ module Capistrano
         "/forwardable.rb:"
       ].freeze
       private_constant :CAPISTRANO_LOCATION, :IGNORED_LOCATIONS
+
+      include Capistrano::ProcHelpers
 
       def initialize(values={})
         @trusted_keys = []
@@ -31,7 +35,7 @@ module Capistrano
       end
 
       def set(key, value=nil, &block)
-        invoke_validations(key, value, &block)
+        assert_value_or_block_not_both(value, block)
         @trusted_keys << key if trusted?
         remember_location(key)
         values[key] = block || value
@@ -59,12 +63,6 @@ module Capistrano
 
       def delete(key)
         values.delete(key)
-      end
-
-      def validate(key, &validator)
-        vs = (validators[key] || [])
-        vs << validator
-        validators[key] = vs
       end
 
       def trusted_keys
@@ -106,24 +104,10 @@ module Capistrano
         (locations[key] ||= []) << location
       end
 
-      def callable_without_parameters?(x)
-        x.respond_to?(:call) && (!x.respond_to?(:arity) || x.arity == 0)
-      end
-
-      def validators
-        @validators ||= {}
-      end
-
-      def invoke_validations(key, value, &block)
+      def assert_value_or_block_not_both(value, block)
         unless value.nil? || block.nil?
           raise Capistrano::ValidationError,
                 "Value and block both passed to Configuration#set"
-        end
-
-        return unless validators.key? key
-
-        validators[key].each do |validator|
-          validator.call(key, block || value)
         end
       end
 
