@@ -1,3 +1,17 @@
+## 2.15.9
+
+* Continue if `HOSTROLEFILTER=` is set
+* Don't treat `run()` as a parallel task in logging
+
+## 2.15.8 / May 30, 2016
+
+* Empty release bump
+
+## 2.15.7 / May 30, 2016
+
+* Fix subversion authentication arguments
+* Fix rescue block for asset_manifest_prefix
+
 ## 2.15.6 / June 17 2015
 
 * Handle new Sprockets manifest name (@skaes)
