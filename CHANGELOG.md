@@ -6,6 +6,12 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.6.1...HEAD
 
+* The `set :scm, ...` mechanism is now deprecated in favor of a new SCM plugin
+system. See the [UPGRADING](UPGRADING.md) document for details.
+* The `:git_strategy`, `:hg_strategy`, and `:svn_strategy` settings have been
+removed with no replacement. If you have been using these to customize
+Capistrano's SCM behavior, you will need to rewrite your customization using
+the [new plugin system](https://github.com/capistrano/documentation/pull/188).
 * Your contribution here!
 * The `tar` used by the Git SCM now honors the SSHKit command map, allowing an alternative tar binary to be used (e.g. gtar) #1787 (@caius)
 * Fix test suite to work with Mocha 1.2.0 (@caius)
@@ -41,8 +47,6 @@ affected by these deprecations.
 
 ### New features:
 
-  * The `set :scm, ...` mechanism is now deprecated in favor of a new SCM plugin
-  system. See the [UPGRADING](UPGRADING.md) document for details.
   * Added a `doctor:servers` subtask that outputs a summary of servers, roles & properties (@irvingwashington)
   * Make path to git wrapper script configurable (@thickpaddy)
   * Make name of current directory configurable via configuration variable `:current_directory` (@websi)
