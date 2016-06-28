@@ -20,7 +20,7 @@ module Capistrano
         end
       end
 
-      describe '#filter' do
+      describe "#filter" do
         context "with a string" do
           let(:values) { "server1" }
           it_behaves_like "it filters hosts correctly", %w{server1}

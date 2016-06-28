@@ -13,7 +13,7 @@ module Capistrano
         ]
       end
 
-      describe '#new' do
+      describe "#new" do
         it "won't create an invalid type of filter" do
           expect do
             Filter.new(:zarg)
@@ -73,12 +73,12 @@ module Capistrano
         end
       end
 
-      describe '#filter' do
+      describe "#filter" do
         let(:strategy) { filter.instance_variable_get(:@strategy) }
         let(:results) { mock("result") }
 
-        shared_examples 'it calls #filter on its strategy' do
-          it 'calls #filter on its strategy' do
+        shared_examples "it calls #filter on its strategy" do
+          it "calls #filter on its strategy" do
             strategy.expects(:filter).with(available).returns(results)
             expect(filter.filter(available)).to eq(results)
           end
@@ -86,22 +86,22 @@ module Capistrano
 
         context "for an empty filter" do
           let(:filter) { Filter.new(:role) }
-          it_behaves_like 'it calls #filter on its strategy'
+          it_behaves_like "it calls #filter on its strategy"
         end
 
         context "for a null filter" do
           let(:filter) { Filter.new(:role, :all) }
-          it_behaves_like 'it calls #filter on its strategy'
+          it_behaves_like "it calls #filter on its strategy"
         end
 
         context "for a role filter" do
           let(:filter) { Filter.new(:role, "web") }
-          it_behaves_like 'it calls #filter on its strategy'
+          it_behaves_like "it calls #filter on its strategy"
         end
 
         context "for a host filter" do
           let(:filter) { Filter.new(:host, "server1") }
-          it_behaves_like 'it calls #filter on its strategy'
+          it_behaves_like "it calls #filter on its strategy"
         end
       end
     end

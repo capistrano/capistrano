@@ -12,7 +12,7 @@ describe Capistrano::DSL::Paths do
     dsl.set(:deploy_to, "/var/www")
   end
 
-  describe '#linked_dirs' do
+  describe "#linked_dirs" do
     subject { paths.linked_dirs(parent) }
 
     before do
@@ -27,7 +27,7 @@ describe Capistrano::DSL::Paths do
     end
   end
 
-  describe '#linked_files' do
+  describe "#linked_files" do
     subject { paths.linked_files(parent) }
 
     before do
@@ -43,7 +43,7 @@ describe Capistrano::DSL::Paths do
     end
   end
 
-  describe '#linked_file_dirs' do
+  describe "#linked_file_dirs" do
     subject { paths.linked_file_dirs(parent) }
 
     before do
@@ -58,7 +58,7 @@ describe Capistrano::DSL::Paths do
     end
   end
 
-  describe '#linked_dir_parents' do
+  describe "#linked_dir_parents" do
     subject { paths.linked_dir_parents(parent) }
 
     before do
@@ -73,7 +73,7 @@ describe Capistrano::DSL::Paths do
     end
   end
 
-  describe '#release path' do
+  describe "#release path" do
     subject { dsl.release_path }
 
     context "where no release path has been set" do
@@ -97,7 +97,7 @@ describe Capistrano::DSL::Paths do
     end
   end
 
-  describe '#set_release_path' do
+  describe "#set_release_path" do
     let(:now) { Time.parse("Oct 21 16:29:00 2015") }
     subject { dsl.release_path }
 
@@ -123,7 +123,7 @@ describe Capistrano::DSL::Paths do
     end
   end
 
-  describe '#deploy_config_path' do
+  describe "#deploy_config_path" do
     subject { dsl.deploy_config_path.to_s }
 
     context "when not specified" do
@@ -147,7 +147,7 @@ describe Capistrano::DSL::Paths do
     end
   end
 
-  describe '#stage_config_path' do
+  describe "#stage_config_path" do
     subject { dsl.stage_config_path.to_s }
 
     context "when not specified" do
@@ -171,7 +171,7 @@ describe Capistrano::DSL::Paths do
     end
   end
 
-  describe '#repo_path' do
+  describe "#repo_path" do
     subject { dsl.repo_path.to_s }
 
     context "when not specified" do
