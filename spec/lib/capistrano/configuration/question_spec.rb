@@ -15,7 +15,7 @@ module Capistrano
         end
       end
 
-      describe '#call' do
+      describe "#call" do
         context "value is entered" do
           let(:branch) { "branch" }
 

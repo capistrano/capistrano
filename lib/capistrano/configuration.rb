@@ -7,7 +7,7 @@ require_relative "configuration/validated_variables"
 require_relative "configuration/variables"
 
 module Capistrano
-  class ValidationError < Exception; end
+  class ValidationError < RuntimeError; end
 
   class Configuration
     def self.env

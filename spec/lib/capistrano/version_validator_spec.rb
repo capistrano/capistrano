@@ -5,13 +5,13 @@ module Capistrano
     let(:validator) { VersionValidator.new(version) }
     let(:version) { stub }
 
-    describe '#new' do
+    describe "#new" do
       it "takes a version" do
         expect(validator)
       end
     end
 
-    describe '#verify' do
+    describe "#verify" do
       let(:current_version) { "3.0.1" }
 
       subject { validator.verify }

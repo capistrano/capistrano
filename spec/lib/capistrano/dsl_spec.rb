@@ -9,7 +9,7 @@ module Capistrano
   describe DSL do
     let(:dsl) { DummyDSL.new }
 
-    describe '#t' do
+    describe "#t" do
       before do
         I18n.expects(:t).with(:phrase, count: 2, scope: :capistrano)
       end
@@ -19,7 +19,7 @@ module Capistrano
       end
     end
 
-    describe '#stage_set?' do
+    describe "#stage_set?" do
       subject { dsl.stage_set? }
 
       context "stage is set" do
@@ -37,7 +37,7 @@ module Capistrano
       end
     end
 
-    describe '#sudo' do
+    describe "#sudo" do
       before do
         dsl.expects(:execute).with(:sudo, :my, :command)
       end

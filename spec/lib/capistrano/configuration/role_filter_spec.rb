@@ -23,7 +23,7 @@ module Capistrano
         end
       end
 
-      describe '#filter' do
+      describe "#filter" do
         context "with a single role string" do
           let(:values) { "web" }
           it_behaves_like "it filters roles correctly", 2, %w{server1 server2}

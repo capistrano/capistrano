@@ -141,7 +141,7 @@ module Capistrano
         end
       end
 
-      describe '#include?' do
+      describe "#include?" do
         let(:options) { {} }
 
         subject { server.select?(options) }
