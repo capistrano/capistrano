@@ -4,7 +4,11 @@ rvm:
   - 2.2
   - 2.1
   - 2.0
-  - rbx-2
+matrix:
+  include:
+    # Run specs on Rubinius, but not RuboCop, since it seg faults
+    - rvm: rbx-2
+      script: bundle exec rake spec
 script: bundle exec rake spec rubocop
 install: bundle install --jobs=1
 cache: bundler
