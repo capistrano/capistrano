@@ -8,6 +8,16 @@ validate :application do |_key, value|
   end
 end
 
+[:git_strategy, :hg_strategy, :svn_strategy].each do |strategy|
+  validate(strategy) do |key, _value|
+    warn(
+      "[Deprecation Warning] #{key} is deprecated and will be removed in "\
+      "Capistrano 3.7.0.\n"\
+      "https://github.com/capistrano/capistrano/blob/master/UPGRADING-3.7.md"
+    )
+  end
+end
+
 set_if_empty :scm, :git
 set_if_empty :branch, "master"
 set_if_empty :deploy_to, -> { "/var/www/#{fetch(:application)}" }

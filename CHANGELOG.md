@@ -18,6 +18,9 @@ https://github.com/capistrano/capistrano/compare/v3.5.0...HEAD
   * Fix `NoMethodError: undefined method gsub` when setting `:application` to a
     Proc. [#1681](https://github.com/capistrano/capistrano/issues/1681)
     (@mattbrictson)
+  * Deprecate `:git_strategy`, `:hg_strategy`, and `:svn_strategy` variables.
+    These will be completely removed in 3.7.0. Refer to the
+    [upgrading doc](UPGRADING-3.7.md) for details.
 
 ## `3.5.0`
 
