@@ -52,3 +52,7 @@ Given(/^a custom task to run in the event of a failure$/) do
   safely_remove_file(TestApp.shared_path.join("failed"))
   TestApp.copy_task_to_test_app("spec/support/tasks/failed.rake")
 end
+
+Given(/^a stage file named (.+)$/) do |filename|
+  TestApp.write_local_stage_file(filename)
+end
