@@ -69,5 +69,16 @@ module Capistrano
         end
       end
     end
+
+    describe "#invoke" do
+      it "will print a message on stderr, when reinvoking task" do
+        Rake::Task.define_task("some_task")
+
+        dsl.invoke("some_task")
+        expect do
+          dsl.invoke("some_task")
+        end.to output(/.*Capistrano tasks may only be invoked once.*/).to_stderr
+      end
+    end
   end
 end
