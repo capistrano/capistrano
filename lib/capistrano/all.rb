@@ -11,6 +11,7 @@ require "capistrano/i18n"
 require "capistrano/dsl"
 require "capistrano/application"
 require "capistrano/configuration"
+require "capistrano/rake_monkey_patch"
 
 module Capistrano
 end
