@@ -56,6 +56,21 @@ module Capistrano
     def run_locally(&block)
       SSHKit::Backend::Local.new(&block).run
     end
+
+    # Catch common beginner mistake and give a helpful error message on stderr
+    def execute(*)
+      file, line, = caller.first.split(":")
+      colors = SSHKit::Color.new($stderr)
+      $stderr.puts colors.colorize("Warning: `execute' should be wrapped in an `on' scope in #{file}:#{line}.", :red)
+      $stderr.puts
+      $stderr.puts "  task :example do"
+      $stderr.puts colors.colorize("    on roles(:app) do", :yellow)
+      $stderr.puts "      execute 'whoami'"
+      $stderr.puts colors.colorize("    end", :yellow)
+      $stderr.puts "  end"
+      $stderr.puts
+      raise NoMethodError, "undefined method `execute' for main:Object"
+    end
   end
 end
 extend Capistrano::DSL
