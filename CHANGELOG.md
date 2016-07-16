@@ -6,25 +6,41 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.5.0...HEAD
 
-  * Added warning about future deprecation of reinvocation behaviour (@troelskn)
-  * Added a `doctor:servers` subtask that outputs a summary of servers, roles & properties (@irvingwashington)
-  * Raise a better error when an ‘after’ hook isn’t found (@jdelStrother)
-  * Restrict the uploaded git wrapper script permissions to 700 (@irvingwashington)
-  * Make path to git wrapper script configurable (@thickpaddy)
-  * Change git wrapper path to work better with multiple users (@thickpaddy)
-  * Make name of current directory configurable via configuration variable `:current_directory` (@websi)
-  * `doctor` no longer erroneously warns that `:git_strategy` and other SCM options are "unrecognized" (@shanesaww)
-  * Add `net-ssh` gem version to `doctor:gems` output (@lebedev-yury)
+Thank you to the many first-time contributors from the Capistrano community who
+helped with this release!
+
+### Deprecations:
+
   * Deprecate `remote_file` feature (will be removed in Capistrano 3.7.0) (@lebedev-yury)
-  * Fix `NoMethodError: undefined method gsub` when setting `:application` to a
-    Proc. [#1681](https://github.com/capistrano/capistrano/issues/1681)
-    (@mattbrictson)
   * Deprecate `:git_strategy`, `:hg_strategy`, and `:svn_strategy` variables.
-    These will be completely removed in 3.7.0. Refer to the
-    [upgrading doc](UPGRADING-3.7.md) for details.
+    These will be completely removed in 3.7.0.
+  * Added warning about future deprecation of reinvocation behaviour (@troelskn)
+
+Refer to the [Capistrano 3.7.0 upgrade document](UPGRADING-3.7.md) if you are
+affected by these deprecations.
+
+### New features:
+
+  * Added a `doctor:servers` subtask that outputs a summary of servers, roles & properties (@irvingwashington)
+  * Make path to git wrapper script configurable (@thickpaddy)
+  * Make name of current directory configurable via configuration variable `:current_directory` (@websi)
   * It is now possible to rollback to a specific release using the
     `ROLLBACK_RELEASE` environment variable.
     [#1155](https://github.com/capistrano/capistrano/issues/1155) (@lanrion)
+
+### Fixes:
+
+  * `doctor` no longer erroneously warns that `:git_strategy` and other SCM options are "unrecognized" (@shanesaww)
+  * Fix `NoMethodError: undefined method gsub` when setting `:application` to a
+    Proc. [#1681](https://github.com/capistrano/capistrano/issues/1681)
+    (@mattbrictson)
+
+### Other changes:
+
+  * Raise a better error when an ‘after’ hook isn’t found (@jdelStrother)
+  * Change git wrapper path to work better with multiple users (@thickpaddy)
+  * Restrict the uploaded git wrapper script permissions to 700 (@irvingwashington)
+  * Add `net-ssh` gem version to `doctor:gems` output (@lebedev-yury)
 
 ## `3.5.0`
 
