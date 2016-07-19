@@ -75,6 +75,10 @@ and how to configure it, visit the
 * Added option to set specific revision when using Subversion as SCM (@marcovtwout)
 * Deduplicate list of linked directories
 * Integration with Harrow.io (See http://capistranorb.com/documentation/harrow/) when running `cap install`
+* Added validate method to DSL to allow validation of certain values (@Kriechi)
+    * validate values before assignment inside of `set(:key, value)`
+    * should raise a `Capistrano::ValidationError` if invalid
+* Added default validation for Capistrano-specific variables (@Kriechi)
 
 ### Fixes:
 
@@ -207,12 +211,6 @@ https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.3
 
     This allows roles to specify properties common to all servers and
     then for individual servers to modify them, keeping things DRY
-
-* Enhancements (@Kriechi)
-  * Added validate method to DSL to allow validation of certain values
-    - validate values before assignment inside of `set(:key, value)`
-    - should raise a `Capistrano::ValidationError` if invalid
-  * Added default validation for Capistrano-specific variables
 
 Breaking Changes:
   * By using Ruby's noecho method introduced in Ruby version 1.9.3, we dropped support for Ruby versions prior to 1.9.3. See [issue #878](https://github.com/capistrano/capistrano/issues/878) and [PR #1112](https://github.com/capistrano/capistrano/pull/1112) for more information. (@kaikuchn)
