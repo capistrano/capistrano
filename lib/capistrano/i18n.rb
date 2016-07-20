@@ -15,6 +15,7 @@ en = {
   no_old_releases: "No old releases (keeping newest %{keep_releases}) on %{host}",
   linked_file_does_not_exist: "linked file %{file} does not exist on %{host}",
   cannot_rollback: "There are no older releases to rollback to",
+  cannot_found_rollback_release: "Cannot rollback because release %{release} does not exist",
   mirror_exists: "The repository mirror is at %{at}",
   revision_log_message: "Branch %{branch} (at %{sha}) deployed as release %{release} by %{user}",
   rollback_log_message: "%{user} rolled back to release %{release}",

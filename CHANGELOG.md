@@ -22,6 +22,9 @@ https://github.com/capistrano/capistrano/compare/v3.5.0...HEAD
   * Deprecate `:git_strategy`, `:hg_strategy`, and `:svn_strategy` variables.
     These will be completely removed in 3.7.0. Refer to the
     [upgrading doc](UPGRADING-3.7.md) for details.
+  * It is now possible to rollback to a specific release using the
+    `ROLLBACK_RELEASE` environment variable.
+    [#1155](https://github.com/capistrano/capistrano/issues/1155) (@lanrion)
 
 ## `3.5.0`
 
