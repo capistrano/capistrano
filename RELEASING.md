@@ -11,6 +11,7 @@
 2.  **Ensure all tests are passing by running `rake spec` and `rake features`.**
 3. Determine which would be the correct next version number according to [semver](http://semver.org/).
 4. Update the version in `./lib/capistrano/version.rb`.
+4. Update the version in the `./README.md` Gemfile example (`gem "capistrano", "~> X.Y"`).
 5. Update the `CHANGELOG`.
 6. Commit the changelog and version in a single commit, the message should be "Preparing vX.Y.Z"
 7. Run `rake release`; this will tag, push to GitHub, and publish to rubygems.org.
