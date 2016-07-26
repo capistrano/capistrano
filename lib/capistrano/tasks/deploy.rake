@@ -209,7 +209,15 @@ namespace :deploy do
         error t(:cannot_rollback)
         exit 1
       end
-      last_release = releases[1]
+
+      rollback_release = ENV["ROLLBACK_RELEASE"]
+      index = rollback_release.nil? ? 1 : releases.index(rollback_release)
+      if index.nil?
+        error t(:cannot_found_rollback_release, release: rollback_release)
+        exit 1
+      end
+
+      last_release = releases[index]
       set_release_path(last_release)
       set(:rollback_timestamp, last_release)
     end
