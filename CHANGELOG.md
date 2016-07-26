@@ -4,7 +4,13 @@ Reverse Chronological Order:
 
 ## master
 
-https://github.com/capistrano/capistrano/compare/v3.5.0...HEAD
+https://github.com/capistrano/capistrano/compare/v3.6.0...HEAD
+
+* Your contribution here!
+
+## `3.6.0` (2016-07-26)
+
+https://github.com/capistrano/capistrano/compare/v3.5.0...v3.6.0
 
 Thank you to the many first-time contributors from the Capistrano community who
 helped with this release!
