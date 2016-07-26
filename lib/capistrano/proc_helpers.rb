@@ -7,7 +7,7 @@ module Capistrano
     # "deferred value". That is, a value that is resolved by invoking `call` at
     # the time it is first needed.
     def callable_without_parameters?(x)
-      x.respond_to?(:call) && (!x.respond_to?(:arity) || x.arity == 0)
+      x.respond_to?(:call) && (!x.respond_to?(:arity) || x.arity.zero?)
     end
   end
 end
