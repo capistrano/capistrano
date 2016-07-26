@@ -99,8 +99,8 @@ module Capistrano
           @properties[key]
         end
 
-        def respond_to?(method, _include_all=false)
-          @properties.key?(method)
+        def respond_to_missing?(method, _include_all=false)
+          @properties.key?(method) || super
         end
 
         def roles
