@@ -111,6 +111,7 @@ module Capistrano
           @properties.keys
         end
 
+        # rubocop:disable Style/MethodMissing
         def method_missing(key, value=nil)
           if value
             set(lvalue(key), value)
@@ -118,6 +119,7 @@ module Capistrano
             fetch(key)
           end
         end
+        # rubocop:enable Style/MethodMissing
 
         def to_h
           @properties
