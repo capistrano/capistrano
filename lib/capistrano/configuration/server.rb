@@ -99,8 +99,8 @@ module Capistrano
           @properties[key]
         end
 
-        def respond_to?(method, _include_all=false)
-          @properties.key?(method)
+        def respond_to_missing?(method, _include_all=false)
+          @properties.key?(method) || super
         end
 
         def roles
@@ -111,6 +111,7 @@ module Capistrano
           @properties.keys
         end
 
+        # rubocop:disable Style/MethodMissing
         def method_missing(key, value=nil)
           if value
             set(lvalue(key), value)
@@ -118,6 +119,7 @@ module Capistrano
             fetch(key)
           end
         end
+        # rubocop:enable Style/MethodMissing
 
         def to_h
           @properties

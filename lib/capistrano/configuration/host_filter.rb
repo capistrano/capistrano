@@ -3,7 +3,7 @@ module Capistrano
     class HostFilter
       def initialize(values)
         av = Array(values).dup
-        av.map! { |v| (v.is_a?(String) && v =~ /^(?<name>[-A-Za-z0-9.]+)(,\g<name>)*$/) ? v.split(",") : v }
+        av.map! { |v| v.is_a?(String) && v =~ /^(?<name>[-A-Za-z0-9.]+)(,\g<name>)*$/ ? v.split(",") : v }
         av.flatten!
         @rex = regex_matcher(av)
       end
