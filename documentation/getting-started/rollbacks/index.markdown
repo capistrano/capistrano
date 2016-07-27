@@ -13,17 +13,17 @@ If the error occurs during a deployment task which is prior to the final cutover
 
 Per http://capistranorb.com/documentation/getting-started/flow/, the standard deployment and rollback processes are nearly identical. The difference is that in a deploy, the `deploy:updating` and `deploy:updated` tasks are executed, while in a rollback, the `deploy:reverting` and `deploy:reverted` (a hook task) tasks are run. Also, instead of `deploy:finishing`, `deploy:finishing_rollback` is run, as cleanup can sometimes be different.
 
-## `deploy:reverting`
+### `deploy:reverting`
 
 This starts by setting the release_path to the last known good release path. It does this by obtaining a list of folders in the releases folder and if there are at least two, sets the second to last release as the release_path. It also sets the `rollback_timestamp` to this same release which it uses for the log entry.
 
 Once this has been set, the remaining standard deployment tasks flip the symlink accordingly.
 
-## `deploy:finishing_rollback`
+### `deploy:finishing_rollback`
 
 To finish the rollback, Capistrano creates a tarball of the failed release in the deploy path, and then deletes the release folder.
 
-## `deploy:failed`
+### `deploy:failed`
 
 In a situation where `cap [stage] deploy` fails, the `deploy:failed` hook is invoked. You can add custom rollback tasks to this hook:
 
@@ -34,3 +34,9 @@ end
 ```
 
 This is different from a specifically invoked rollback, and is application specific. *For reasons stated above, it can be dangerous to use this hook without careful testing.*
+
+### `deploy:rollback ROLLBACK_RELEASE=release`
+
+Rollback to a specific release using the `ROLLBACK_RELEASE` environment variable.
+
+e.g. `cap staging deploy:rollback ROLLBACK_RELEASE=20160614133327`
