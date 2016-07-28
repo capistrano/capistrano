@@ -26,8 +26,8 @@ to erase them from the repository history for all time.
 </div>
 
 Ideally one should remove `config/database.yml` to something like
-`config/database.yml.example`, you and your team should copy the example file
-into place on their development machines, under Capistrano this leaves the
+`config/database.yml.example`. You and your team should copy the example file
+into place on their development machines, under Capistrano. This leaves the
 `database.yml` filename unused so that we can symlink the production database
 configuration into place at deploy time.
 
@@ -77,13 +77,13 @@ Capistrano breaks down common tasks into a notion of *roles*, that is, taking
 a typical Rails application that we have roughly speaking three roles, `web`,
 `app`, and `db`.
 
-It can be confusing, as the boundary of web and app servers is a bit blurry if
-using [Passenger]() with Apache, which in effect embeds your app server in the
-web server (embeds Passenger in the Apache process itself), confusingly
+The three roles can be confusing, as the boundary of web and app servers is a bit blurry if, for example,
+using [Passenger](https://www.phusionpassenger.com/) with Apache, which in effect embeds your app server in the
+web server (embeds Passenger in the Apache process itself). Confusingly,
 Passenger can also be used in modes where this isn't true, so we'll ignore
-that for the time being, and if you know the difference (i.e you are using
+that for the time being. If you know the difference (i.e you are using
 nginx as your web server, and puma/unicorn, or similar for your app server,
-that should be fine) we can assume that they're the same, which is pretty
+that should be fine), then we can assume that they're the same, which is pretty
 common.
 
 The example file generated will look something like this:
@@ -123,7 +123,7 @@ etc.) and also arbitrary custom properties.  They are there in case people want 
 server list more comprehensively from something like the *EC2* command line tools, and
 want to use the extended properties for something that makes sense in their environment.
 
-The following shows defining two servers, one where we set the
+The following shows defining two servers: one where we set the
 username, and another where we set the port.  These host strings are parsed and expanded
 out in to the equivalent of the server line after the comment:
 
@@ -141,8 +141,8 @@ properties will be merged. See the Properties Documentation for details
 </div>
 
 <div class="alert-box alert"> If you define servers with either the simple or the extended
-syntax and explicitly specify a user or a port number the last definition will win. This
-is identical behaviour to scalar custom properties. In older versions of Capistrano
+syntax and explicitly specify a user or a port number, the last definition will win. This
+is identical behaviour to scalar custom properties. In older versions of Capistrano,
 <b>multiple</b> servers were created and the merging was ill-defined.  </div>
 
 ### 5. Set the shared information in `deploy.rb`.
@@ -164,13 +164,13 @@ them a little:
 Here we'd set the name of the application, ideally in a way that's safe for
 filenames on your target operating system.
 
-Second we set the repository URL, this *MUST* be somewhere that the server we
+Second we set the repository URL, and this *MUST* be somewhere that the server we
 are deploying to can reach.
 
-Here's how this might look in a typical example, note that we'll cover
-authentication in the next chapter, for now we'll assume this repository is
-open source, we'll take an example application from the [Rails Examples and
-Tutorials](http://railsapps.github.io/) site; there we'll find maintained a
+Here's how this might look in a typical example: note that we'll cover
+authentication in the next chapter, but for now we'll assume this repository is
+open source, taking an example application from the [Rails Examples and
+Tutorials](http://railsapps.github.io/) site. There we'll find maintained a
 handful of typical Rails apps with typical dependencies.
 
 The Rails application they host, which uses Devise (for authentication) and
@@ -184,7 +184,7 @@ forked to the Capistrano repository, but you can find the (unchanged) original
   set :branch, 'master'
 ```
 
-I've simplified the `:branch` variable to simply be a `set` variable, not a
+I've simplified the `:branch` variable to simply be a `set` variable, and not a
 question prompt, as this repository only has a master branch.
 
 ## Roundup
