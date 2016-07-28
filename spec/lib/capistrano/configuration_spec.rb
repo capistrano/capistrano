@@ -154,8 +154,13 @@ module Capistrano
           config.set(:key, "longer_value")
         end
 
-        it "validates proc without error" do
+        it "validates block without error" do
           config.set(:key) { "longer_value" }
+          expect(config.fetch(:key)).to eq "longer_value"
+        end
+
+        it "validates lambda without error" do
+          config.set :key, -> { "longer_value" }
           expect(config.fetch(:key)).to eq "longer_value"
         end
 
@@ -163,8 +168,13 @@ module Capistrano
           expect { config.set(:key, "sho") }.to raise_error(Capistrano::ValidationError)
         end
 
-        it "raises an exception on invalid string provided by proc" do
+        it "raises an exception on invalid string provided by block" do
           config.set(:key) { "sho" }
+          expect { config.fetch(:key) }.to raise_error(Capistrano::ValidationError)
+        end
+
+        it "raises an exception on invalid string provided by lambda" do
+          config.set :key, -> { "sho" }
           expect { config.fetch(:key) }.to raise_error(Capistrano::ValidationError)
         end
       end
