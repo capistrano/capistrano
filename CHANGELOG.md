@@ -8,6 +8,12 @@ https://github.com/capistrano/capistrano/compare/v3.6.0...HEAD
 
 * Your contribution here!
 
+## `3.7.0`
+
+### Deprecations
+ 
+ * `remote_file` feature is removed in Capistrano 3.7.0 and is no longer available to use
+
 ## `3.6.0` (2016-07-26)
 
 https://github.com/capistrano/capistrano/compare/v3.5.0...v3.6.0
