@@ -35,7 +35,6 @@ module Capistrano
       end
 
       def set(key, value=nil, &block)
-        assert_value_or_block_not_both(value, block)
         @trusted_keys << key if trusted?
         remember_location(key)
         values[key] = block || value
@@ -102,13 +101,6 @@ module Capistrano
           IGNORED_LOCATIONS.none? { |i| line.include?(i) }
         end
         (locations[key] ||= []) << location
-      end
-
-      def assert_value_or_block_not_both(value, block)
-        unless value.nil? || block.nil?
-          raise Capistrano::ValidationError,
-                "Value and block both passed to Configuration#set"
-        end
       end
 
       def trace_set(key)
