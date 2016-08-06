@@ -7,6 +7,7 @@ Reverse Chronological Order:
 https://github.com/capistrano/capistrano/compare/v3.6.0...HEAD
 
 * Your contribution here!
+* Replace spaces with dashes when computing the git-ssh suffix. (@will_in_wi)
 
 ## `3.6.0` (2016-07-26)
 
