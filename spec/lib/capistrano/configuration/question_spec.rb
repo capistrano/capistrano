@@ -16,6 +16,28 @@ module Capistrano
         end
       end
 
+      describe "prompt" do
+        before do
+          $stdin.expects(:gets).returns("")
+        end
+
+        context "without :text option" do
+          it "uses i18n" do
+            $stdout.expects(:print).with("Please enter branch (default): ")
+            question.call
+          end
+        end
+
+        context "with :text option" do
+          let(:options) { { text: "Custom prompt: " } }
+
+          it "uses :text value" do
+            $stdout.expects(:print).with("Custom prompt: ")
+            question.call
+          end
+        end
+      end
+
       describe "#call" do
         context "value is entered" do
           let(:branch) { "branch" }
