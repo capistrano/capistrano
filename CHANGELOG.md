@@ -4,12 +4,19 @@ Reverse Chronological Order:
 
 ## master
 
-https://github.com/capistrano/capistrano/compare/v3.6.0...HEAD
+https://github.com/capistrano/capistrano/compare/v3.6.1...HEAD
 
-* Restored compatibility with older versions of Rake (< 11.0.0), introduced in previous change. (@troelskn)
-* Fix `NoMethodError: undefined method gsub` when setting `:application` to a Proc, for real this time! The original fix released in 3.6.0 worked for values specified with blocks, but not for those specified with procs or lambdas (the latter syntax is much more common). [#1681](https://github.com/capistrano/capistrano/issues/1681)
 * Your contribution here!
-* Replace spaces with dashes when computing the git-ssh suffix. (@will_in_wi)
+
+## `3.6.1` (2016-08-23)
+
+https://github.com/capistrano/capistrano/compare/v3.6.0...v3.6.1
+
+### Fixes:
+
+* Restore compatibility with older versions of Rake (< 11.0.0) (@troelskn)
+* Fix `NoMethodError: undefined method gsub` when setting `:application` to a Proc. The original fix released in 3.6.0 worked for values specified with blocks, but not for those specified with procs or lambdas (the latter syntax is much more common). [#1681](https://github.com/capistrano/capistrano/issues/1681)
+* Fix a bug where deploy would fail if `:local_user` contained a space; spaces are now replaced with dashes when computing the git-ssh suffix. (@will_in_wi)
 
 ## `3.6.0` (2016-07-26)
 
