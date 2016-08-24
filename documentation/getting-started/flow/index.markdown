@@ -53,8 +53,8 @@ Assume you require the following files in `Capfile`,
 require 'capistrano/setup'
 require 'capistrano/deploy'
 require 'capistrano/bundler'
-require 'capistrano/rails/migrations'
 require 'capistrano/rails/assets'
+require 'capistrano/rails/migrations'
 ```
 
 When you run `cap production deploy`, it runs these tasks:
