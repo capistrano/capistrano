@@ -6,6 +6,7 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.6.0...HEAD
 
+* Restored compatibility with older versions of Rake (< 11.0.0), introduced in previous change. (@troelskn)
 * Fix `NoMethodError: undefined method gsub` when setting `:application` to a Proc, for real this time! The original fix released in 3.6.0 worked for values specified with blocks, but not for those specified with procs or lambdas (the latter syntax is much more common). [#1681](https://github.com/capistrano/capistrano/issues/1681)
 * Your contribution here!
 * Replace spaces with dashes when computing the git-ssh suffix. (@will_in_wi)
