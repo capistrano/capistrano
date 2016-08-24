@@ -1,14 +1,15 @@
 # capistranorb.com
 
-This is the repository that generates the [capistranorb.com](http://capistranorb.com/) site. Feel free to send pull requests to make improvements to Capistrano's documentation!
+This directory generates the [capistranorb.com](http://capistranorb.com/) site. Feel free to send pull requests to make improvements to Capistrano's documentation!
 
 ### Quick start
 
 This is a GitHub Pages project, which means it is built using Jekyll. To run the site locally, you'll need a functioning Ruby environment.
 
-After checking out the capistrano-documentation project, run:
+After checking out the capistrano repository, run:
 
 ```
+cd docs
 bundle install
 ```
 
