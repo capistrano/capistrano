@@ -1,6 +1,7 @@
 Thanks for helping build Capistrano! Here are the development practices followed by our community.
 
 * [Who can help](#who-can-help)
+* [Contributing documentation](#contributing-documentation)
 * [Setting up your development environment](#setting-up-your-development-environment)
 * [Coding guidelines](#coding-guidelines)
 * [Submitting a pull request](#submitting-a-pull-request)
@@ -16,6 +17,10 @@ Everyone can help improve Capistrano. There are ways to contribute even if you a
 * writing code (no contribution is too small!)
 * reviewing pull requests and suggesting improvements
 * reporting bugs or suggesting new features (see [CONTRIBUTING.md][])
+
+## Contributing documentation
+
+Improvements and additions to Capistrano's documentation are very much appreciated. The official documention is stored in the `docs/` directory as Markdown files. These files are used to automatically generate the [capistranorb.com](http://capistranorb.com/) website, which is hosted by GitHub Pages. Feel free to make changes to this documentation as you see fit. Before opening a pull request, make sure your documentation renders correctly by previewing the website in your local environment. Refer to [docs/README.md][] for instructions.
 
 ## Setting up your development environment
 
@@ -71,7 +76,7 @@ Your code should conform to these guidelines:
  * We can't merge it without a [good commit message](http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message). If you do this right, Github will use the commit message as the body of your pull request, double win.
  * If you are making an improvement/fix for an existing issue, make sure to mention the issue number (if we have not yet merged it )
  * Add an entry to the `CHANGELOG` under the `### master` section, but please don't mess with the version.
- * If you add a new feature, please make sure to document it, open a corresponding pull request in [the documentation](https://github.com/capistrano/documentation) and mention the code change pull request over there, and Github will link everything up. If it's a simple feature, or a new variable, or something changed, it may be appropriate simply to document it in the generated `Capfile` or `deploy.rb`, or in the `README`
+ * If you add a new feature, please make sure to document it by modifying the appropriate Markdown files in `docs/` (see [contributing documentation](#contributing-documentation), above). If it's a simple feature, or a new variable, or something changed, it may be appropriate simply to document it in the generated `Capfile` or `deploy.rb`, or in the `README`.
  * Take care to squash your commit into one single commit with a good message, it saves us a lot of work in maintaining the CHANGELOG if we can generate it from the commit messages between the release tags!
  * Tests! It's tricky to test some parts of Capistrano, but do your best, it might just serve as a starting point for us to build a reliable test on top of, and help us understand where you are coming from.
 
@@ -120,3 +125,4 @@ After a pull request is merged, it is assigned to a GitHub milestone for the upc
 
 
 [CONTRIBUTING.md]: https://github.com/capistrano/capistrano/blob/master/CONTRIBUTING.md
+[docs/README.md]: https://github.com/capistrano/capistrano/blob/master/docs/README.md
