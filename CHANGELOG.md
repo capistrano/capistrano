@@ -8,6 +8,7 @@ https://github.com/capistrano/capistrano/compare/v3.6.1...HEAD
 
 * Your contribution here!
 * `remote_file` feature has been removed and is no longer available to use @SaiVardhan
+* fix bug with greedy matching in host_filter (@cseeger-epages)
 
 ## `3.6.1` (2016-08-23)
 
