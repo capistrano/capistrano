@@ -29,7 +29,3 @@ extended to support them.
 ### Source Code
 
 <div class="github-widget" data-repo="capistrano/capistrano"></div>
-<div class="github-widget" data-repo="capistrano/capistrano.github.io"></div>
-
-<div class="github-widget" data-repo="capistrano/documentation"></div>
-<div class="github-widget" data-repo="capistrano/documentation.github.io"></div>
