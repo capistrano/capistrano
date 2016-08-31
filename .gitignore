@@ -21,4 +21,5 @@ tags
 test/tmp
 test/version_tmp
 tmp
+/docs/_site/
 vendor/
