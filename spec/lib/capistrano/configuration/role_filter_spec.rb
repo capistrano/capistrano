@@ -11,7 +11,8 @@ module Capistrano
           Server.new("server2").add_role(:web),
           Server.new("server3").add_role(:redis),
           Server.new("server4").add_role(:db),
-          Server.new("server5").add_role(:stageweb)
+          Server.new("server5").add_role(:stageweb),
+          Server.new("server6").add_role(:"db.new")
         ]
       end
 
@@ -57,6 +58,21 @@ module Capistrano
         context "with both a string and regex" do
           let(:values) { "db,/red/" }
           it_behaves_like "it filters roles correctly", 3, %w{server1 server3 server4}
+        end
+
+        context "with a dot wildcard" do
+          let(:values) { "db.*" }
+          it_behaves_like "it filters roles correctly", 0, %w{}
+        end
+
+        context "with a dot" do
+          let(:values) { "db.new" }
+          it_behaves_like "it filters roles correctly", 1, %w{server6}
+        end
+
+        context "with a dot wildcard regex" do
+          let(:values) { "/db.*/" }
+          it_behaves_like "it filters roles correctly", 3, %w{server1 server4 server6}
         end
       end
     end
