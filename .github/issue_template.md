@@ -1,7 +1,9 @@
-### Steps to reproduce
+**Important:** GitHub issues are for feature requests or bug reports. The Capistrano team recommends you use [Stack Overflow](http://stackoverflow.com/questions/tagged/capistrano) for general questions. For more details, please see our [contribution policy](https://github.com/capistrano/capistrano/blob/master/CONTRIBUTING.md).
 
-(Guidelines for creating a bug report are available
-here: https://github.com/capistrano/capistrano/blob/master/CONTRIBUTING.md)
+---
+
+### Steps to reproduce
+If at all possible, please try to create a new Capistrano example project which reproduces the issue you are seeing. You can then upload the individual files to a GitHub Gist or a GitHub project. Often times, an issue is resolved simply by making this test case.
 
 ### Expected behavior
 Tell us what should happen
@@ -11,9 +13,5 @@ Tell us what happens instead
 
 ### System configuration
 Please link to the output of `cap <stage> doctor` in a GitHub Gist.
-
-### Test case
-
-If at all possible, please try to create a new Capistrano example project which reproduces the issue you are seeing. You can then upload the individual files to a GitHub Gist or a GitHub project. Often times, an issue is resolved simply by making this test case.
 
 Thanks for helping improve Capistrano!
