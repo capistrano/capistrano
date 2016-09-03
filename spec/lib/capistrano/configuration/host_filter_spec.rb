@@ -55,6 +55,11 @@ module Capistrano
           let(:values) { 'server\d{1,3}$' }
           it_behaves_like "it filters hosts correctly", %w{server1 server2 server3 server4 server5}
         end
+
+        context "without number" do
+          let(:values) { "server" }
+          it_behaves_like "it filters hosts correctly", %w{}
+        end
       end
     end
   end
