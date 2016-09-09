@@ -173,7 +173,7 @@ $ bundle exec cap production deploy --print-config-variables
 
 Capistrano is a large project encompassing multiple GitHub repositories and a community of plugins, and it can be overwhelming when you are just getting started. Here are resources that can help:
 
-* **The `docs/` directory contains the official documentation**, and is used to generate the [Capistrano website](http://capistranorb.com)
+* **The [docs](docs) directory contains the official documentation**, and is used to generate the [Capistrano website](http://capistranorb.com)
 * [Stack Overflow](http://stackoverflow.com/questions/tagged/capistrano) has a Capistrano tag with lots of activity
 * [The Capistrano mailing list](https://groups.google.com/forum/#!forum/capistrano) is low-traffic but is monitored by Capistrano contributors
 * [CodersClan](http://codersclan.net/?repo_id=325&source=link) has Capistrano experts available to solve problems for bounties
