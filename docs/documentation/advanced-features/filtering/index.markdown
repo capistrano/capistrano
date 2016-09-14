@@ -31,7 +31,7 @@ and the configuration ones which are _Property-Filters_
 
 ### On-Filtering
 
-On-filters apply only to the `on()` method that invokes SSH. There are two types:
+On-filters apply only to the `on()` method that invokes SSH. There are two default types:
 
 * [Host Filters](/documentation/advanced-features/host-filtering/), and
 
@@ -49,6 +49,9 @@ available servers to only those with the role `app`, then filter them
 to look for servers with the hostname `server1` or `server2`. If only `server2`
 had the role `app` (`server1` has some other role), then in this situation your
 task would only run on `server2`.
+
+Custom filters may also be added; see
+[Custom Filters](/documentation/advanced-features/custom-filters/).
 
 ### Property-Filtering
 
