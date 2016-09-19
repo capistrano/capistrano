@@ -91,10 +91,9 @@ module Capistrano
       end
 
       def assert_value_or_block_not_both(value, block)
-        unless value.nil? || block.nil?
-          raise Capistrano::ValidationError,
-                "Value and block both passed to Configuration#set"
-        end
+        return if value.nil? || block.nil?
+        raise Capistrano::ValidationError,
+              "Value and block both passed to Configuration#set"
       end
 
       class ValidatedQuestion < Question

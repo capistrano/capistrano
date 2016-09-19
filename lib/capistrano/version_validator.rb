@@ -5,11 +5,8 @@ module Capistrano
     end
 
     def verify
-      if match?
-        self
-      else
-        raise "Capfile locked at #{version}, but #{current_version} is loaded"
-      end
+      return self if match?
+      raise "Capfile locked at #{version}, but #{current_version} is loaded"
     end
 
     private
