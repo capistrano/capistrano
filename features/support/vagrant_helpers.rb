@@ -25,11 +25,9 @@ module VagrantHelpers
   end
 
   def run_vagrant_command(command)
-    if (status = vagrant_cli_command("ssh -c #{command.inspect}")).success?
-      true
-    else
-      raise VagrantSSHCommandError, status
-    end
+    status = vagrant_cli_command("ssh -c #{command.inspect}")
+    return true if status.success?
+    raise VagrantSSHCommandError, status
   end
 end
 
