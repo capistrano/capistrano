@@ -318,15 +318,17 @@ namespace :deploy do
     except `restart').
   DESC
   task :create_symlink, :except => { :no_release => true } do
+    tmp_current_path = File.join(releases_path, current_dir)
+
     on_rollback do
       if previous_release
-        run "#{try_sudo} rm -f #{current_path}; #{try_sudo} ln -s #{previous_release} #{current_path}; true"
+        run "#{try_sudo} ln -nsf #{previous_release} #{tmp_current_path} && #{try_sudo} mv #{tmp_current_path} #{deploy_to}"
       else
         logger.important "no previous release to rollback to, rollback of symlink skipped"
       end
     end
 
-    run "#{try_sudo} rm -f #{current_path} && #{try_sudo} ln -s #{latest_release} #{current_path}"
+    run "#{try_sudo} ln -nsf #{latest_release} #{tmp_current_path} && #{try_sudo} mv #{tmp_current_path} #{deploy_to}"
   end
 
   desc <<-DESC
@@ -370,7 +372,8 @@ namespace :deploy do
     DESC
     task :revision, :except => { :no_release => true } do
       if previous_release
-        run "#{try_sudo} rm #{current_path}; #{try_sudo} ln -s #{previous_release} #{current_path}"
+        tmp_current_path = File.join(releases_path, current_dir)
+        run "#{try_sudo} ln -nsf #{previous_release} #{tmp_current_path} && #{try_sudo} mv #{tmp_current_path} #{deploy_to}"
       else
         abort "could not rollback the code because there is no prior release"
       end
