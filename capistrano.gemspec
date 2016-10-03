@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.summary       = "Capistrano - Welcome to easy deployment with Ruby over SSH"
   gem.homepage      = "http://capistranorb.com/"
 
-  gem.files         = `git ls-files -z`.split("\x0")
+  gem.files         = `git ls-files -z`.split("\x0").reject { |f| f =~ /^docs/ }
   gem.executables   = %w(cap capify)
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
