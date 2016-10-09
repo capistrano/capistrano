@@ -141,7 +141,7 @@ To customize the stages that are created, use:
 $ bundle exec cap install STAGES=local,sandbox,qa,production
 ```
 
-Note that the files that Capistrano creates are simply templates to get you started. Make sure to edit the `deploy.rb` and stage files so they contain values appropriate for your project and your target servers.
+Note that the files that Capistrano creates are simply templates to get you started. Make sure to edit the `deploy.rb` and stage files so that they contain values appropriate for your project and your target servers.
 
 ### Command-line usage
 
