@@ -4,7 +4,7 @@ require "capistrano/svn"
 
 module Capistrano
   describe Svn do
-    let(:context) { Class.new.new }
+    let(:context) { mock }
     subject { Capistrano::Svn.new(context, Capistrano::Svn::DefaultStrategy) }
 
     describe "#svn" do
@@ -19,7 +19,7 @@ module Capistrano
   end
 
   describe Svn::DefaultStrategy do
-    let(:context) { Class.new.new }
+    let(:context) { mock }
     subject { Capistrano::Svn.new(context, Capistrano::Svn::DefaultStrategy) }
 
     describe "#test" do

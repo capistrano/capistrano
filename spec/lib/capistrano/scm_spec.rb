@@ -26,7 +26,7 @@ module BlindStrategy; end
 
 module Capistrano
   describe SCM do
-    let(:context) { Class.new.new }
+    let(:context) { mock }
 
     describe "#initialize" do
       subject { Capistrano::SCM.new(context, DummyStrategy) }
