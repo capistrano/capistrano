@@ -4,7 +4,7 @@ require "capistrano/hg"
 
 module Capistrano
   describe Hg do
-    let(:context) { Class.new.new }
+    let(:context) { mock }
     subject { Capistrano::Hg.new(context, Capistrano::Hg::DefaultStrategy) }
 
     describe "#hg" do
@@ -16,7 +16,7 @@ module Capistrano
   end
 
   describe Hg::DefaultStrategy do
-    let(:context) { Class.new.new }
+    let(:context) { mock }
     subject { Capistrano::Hg.new(context, Capistrano::Hg::DefaultStrategy) }
 
     describe "#test" do

@@ -4,7 +4,7 @@ require "capistrano/git"
 
 module Capistrano
   describe Git do
-    let(:context) { Class.new.new }
+    let(:context) { mock }
     subject { Capistrano::Git.new(context, Capistrano::Git::DefaultStrategy) }
 
     describe "#git" do
@@ -16,7 +16,7 @@ module Capistrano
   end
 
   describe Git::DefaultStrategy do
-    let(:context) { Class.new.new }
+    let(:context) { mock }
     subject { Capistrano::Git.new(context, Capistrano::Git::DefaultStrategy) }
 
     describe "#test" do

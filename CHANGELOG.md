@@ -7,6 +7,7 @@ Reverse Chronological Order:
 https://github.com/capistrano/capistrano/compare/v3.6.1...HEAD
 
 * Your contribution here!
+* Fix test suite to work with Mocha 1.2.0 (@caius)
 * `remote_file` feature has been removed and is no longer available to use @SaiVardhan
 * Fix bug where host_filter and role_filter were overly greedy [#1766](https://github.com/capistrano/capistrano/issues/1766) (@cseeger-epages)
 
