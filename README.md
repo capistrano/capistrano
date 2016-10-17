@@ -58,7 +58,7 @@ Deploying to a fleet of app servers? Capistrano can run each deployment task con
 
 #### Server roles
 
-Your application may need many different types of servers: a database server, an app server, two app servers, and a job queue work server, for example. Capistrano lets you tag each server with one or more roles, so you can control what tasks are executed where.
+Your application may need many different types of servers: a database server, an app server, two web servers, and a job queue work server, for example. Capistrano lets you tag each server with one or more roles, so you can control what tasks are executed where.
 
 #### Community driven
 
