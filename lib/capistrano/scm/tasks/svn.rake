@@ -1,24 +1,24 @@
 # TODO: this is nearly identical to git.rake. DRY up?
 
 # This trick lets us access the Svn plugin within `on` blocks.
-svn = self
+svn_plugin = self
 
 namespace :svn do
   desc "Check that the repo is reachable"
   task :check do
     on release_roles :all do
-      svn.check_repo_is_reachable
+      svn_plugin.check_repo_is_reachable
     end
   end
 
   desc "Clone the repo to the cache"
   task :clone do
     on release_roles :all do
-      if svn.repo_mirror_exists?
+      if svn_plugin.repo_mirror_exists?
         info t(:mirror_exists, at: repo_path)
       else
         within deploy_path do
-          svn.clone_repo
+          svn_plugin.clone_repo
         end
       end
     end
@@ -28,7 +28,7 @@ namespace :svn do
   task update: :'svn:clone' do
     on release_roles :all do
       within repo_path do
-        svn.update_mirror
+        svn_plugin.update_mirror
       end
     end
   end
@@ -37,7 +37,7 @@ namespace :svn do
   task create_release: :'svn:update' do
     on release_roles :all do
       within repo_path do
-        svn.archive_to_release_path
+        svn_plugin.archive_to_release_path
       end
     end
   end
@@ -46,7 +46,7 @@ namespace :svn do
   task :set_current_revision do
     on release_roles :all do
       within repo_path do
-        set :current_revision, svn.fetch_revision
+        set :current_revision, svn_plugin.fetch_revision
       end
     end
   end
