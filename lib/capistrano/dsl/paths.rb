@@ -19,7 +19,7 @@ module Capistrano
       end
 
       def release_path
-        fetch(:release_path, current_path)
+        fetch(:release_path) { current_path }
       end
 
       def set_release_path(timestamp=now)

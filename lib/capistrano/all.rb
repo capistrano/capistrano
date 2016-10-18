@@ -11,6 +11,7 @@ require "capistrano/i18n"
 require "capistrano/dsl"
 require "capistrano/application"
 require "capistrano/configuration"
+require "capistrano/configuration/scm_resolver"
 
 module Capistrano
 end

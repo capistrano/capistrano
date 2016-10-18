@@ -18,14 +18,21 @@ module Capistrano
       # install(Capistrano::SCM::Git)
       # install(Capistrano::SCM::Git.new)
       #
-      def install(plugin, load_hooks: true)
+      # Note that the :load_immediately flag is for internal use only and will
+      # be removed in an upcoming release.
+      #
+      def install(plugin, load_hooks: true, load_immediately: false)
         plugin = plugin.is_a?(Class) ? plugin.new : plugin
 
         plugin.define_tasks
         plugin.register_hooks if load_hooks
 
-        Rake::Task.define_task("load:defaults") do
+        if load_immediately
           plugin.set_defaults
+        else
+          Rake::Task.define_task("load:defaults") do
+            plugin.set_defaults
+          end
         end
       end
     end
