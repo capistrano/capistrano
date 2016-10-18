@@ -1,24 +1,24 @@
 # TODO: this is nearly identical to git.rake. DRY up?
 
 # This trick lets us access the Hg plugin within `on` blocks.
-hg = self
+hg_plugin = self
 
 namespace :hg do
   desc "Check that the repo is reachable"
   task :check do
     on release_roles :all do
-      hg.check_repo_is_reachable
+      hg_plugin.check_repo_is_reachable
     end
   end
 
   desc "Clone the repo to the cache"
   task :clone do
     on release_roles :all do
-      if hg.repo_mirror_exists?
+      if hg_plugin.repo_mirror_exists?
         info t(:mirror_exists, at: repo_path)
       else
         within deploy_path do
-          hg.clone_repo
+          hg_plugin.clone_repo
         end
       end
     end
@@ -37,7 +37,7 @@ namespace :hg do
   task create_release: :'hg:update' do
     on release_roles :all do
       within repo_path do
-        hg.archive_to_release_path
+        hg_plugin.archive_to_release_path
       end
     end
   end
@@ -46,7 +46,7 @@ namespace :hg do
   task :set_current_revision do
     on release_roles :all do
       within repo_path do
-        set :current_revision, hg.fetch_revision
+        set :current_revision, hg_plugin.fetch_revision
       end
     end
   end
