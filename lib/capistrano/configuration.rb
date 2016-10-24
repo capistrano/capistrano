@@ -140,6 +140,10 @@ module Capistrano
                         load_immediately: load_immediately)
     end
 
+    def scm_plugin_installed?
+      installer.scm_installed?
+    end
+
     def servers
       @servers ||= Servers.new
     end

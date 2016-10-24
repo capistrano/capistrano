@@ -20,20 +20,20 @@ Capistrano checks out your application's source code. SCM plugins can be
 packaged as Ruby gems and distributed to other users.
 
 This document is a short guide to writing your own plugin. *It applies to
-Capistrano 3.5.0 and newer.*
+Capistrano 3.7.0 and newer.*
 
-### 1. Write a Ruby class that extends Capistrano::Plugin
+### 1. Write a Ruby class that extends Capistrano::SCM::Plugin
 
 Let's say you want to create a "Foo" SCM. You'll need to write a plugin class,
 like this:
 
 ```ruby
-require "capistrano/plugin"
+require "capistrano/scm/plugin"
 
 # By convention, Capistrano plugins are placed in the
 # Capistrano namespace. This is completely optional.
 module Capistrano
-  class FooPlugin < ::Capistrano::Plugin
+  class FooPlugin < ::Capistrano::SCM::Plugin
     def set_defaults
       # Define any variables needed to configure the plugin.
       # set_if_empty :myvar, "my-default-value"
@@ -42,11 +42,13 @@ module Capistrano
 end
 ```
 
-### 2. Implement the create_release task
+### 2. Implement a create_release task
 
 When the user runs `cap deploy`, your SCM is responsible for creating the
 release directory and copying the application source code into it. You need to
-do this using a `create_release` task that is namespaced to your plugin.
+do this using a task that is registered to run after `deploy:new_release_path`.
+
+By convention (not a requirement), this task is called `create_release`.
 
 Inside your plugin class, use the `define_tasks` and `register_hooks` methods
 like this:
@@ -56,7 +58,6 @@ def define_tasks
   # The namespace can be whatever you want, but its best
   # to choose a name that matches your plugin name.
   namespace :foo do
-    # The task *must* be named `create_release`
     task :create_release do
       # Your code to create the release directory and copy
       # the source code into it goes here.

@@ -1,7 +1,6 @@
-require "capistrano/plugin"
-require "capistrano/scm"
+require "capistrano/scm/plugin"
 
-class Capistrano::SCM::Svn < Capistrano::Plugin
+class Capistrano::SCM::Svn < Capistrano::SCM::Plugin
   def register_hooks
     after "deploy:new_release_path", "svn:create_release"
     before "deploy:check", "svn:check"

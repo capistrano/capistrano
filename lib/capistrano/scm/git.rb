@@ -1,7 +1,6 @@
-require "capistrano/plugin"
-require "capistrano/scm"
+require "capistrano/scm/plugin"
 
-class Capistrano::SCM::Git < Capistrano::Plugin
+class Capistrano::SCM::Git < Capistrano::SCM::Plugin
   def set_defaults
     set_if_empty :git_shallow_clone, false
     set_if_empty :git_wrapper_path, lambda {
