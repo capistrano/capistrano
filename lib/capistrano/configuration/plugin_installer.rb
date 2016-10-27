@@ -26,6 +26,7 @@ module Capistrano
 
         plugin.define_tasks
         plugin.register_hooks if load_hooks
+        @scm_installed ||= provides_scm?(plugin)
 
         if load_immediately
           plugin.set_defaults
@@ -34,6 +35,16 @@ module Capistrano
             plugin.set_defaults
           end
         end
+      end
+
+      def scm_installed?
+        @scm_installed
+      end
+
+      private
+
+      def provides_scm?(plugin)
+        plugin.respond_to?(:scm?) && plugin.scm?
       end
     end
   end

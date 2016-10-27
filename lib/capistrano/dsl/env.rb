@@ -8,7 +8,7 @@ module Capistrano
                      :configure_backend, :fetch, :set, :set_if_empty, :delete,
                      :ask, :role, :server, :primary, :validate, :append,
                      :remove, :dry_run?, :install_plugin, :any?, :is_question?,
-                     :configure_scm
+                     :configure_scm, :scm_plugin_installed?
 
       def roles(*names)
         env.roles_for(names.flatten)

@@ -29,7 +29,8 @@ module Capistrano
         set(:scm, :git) if using_default_scm?
 
         print_deprecation_warnings_if_applicable
-        return if scm_plugin_loaded?
+        # Note that `scm_plugin_installed?` comes from Capistrano::DSL
+        return if scm_plugin_installed?
 
         if built_in_scm_name?
           load_built_in_scm
@@ -45,13 +46,6 @@ module Capistrano
       def using_default_scm?
         return @using_default_scm if defined? @using_default_scm
         @using_default_scm = (fetch(:scm) == DEFAULT_GIT)
-      end
-
-      # This is somewhat of a hack, because there is no guarantee that a third-
-      # party SCM will necessarily implement the typical SCM tasks. But it works
-      # well enough for the built-in SCMs.
-      def scm_plugin_loaded?
-        Rake::Task.tasks.any? { |t| t.name =~ /^[^:]+:create_release/ }
       end
 
       def scm_name
@@ -102,7 +96,7 @@ module Capistrano
 
       def print_deprecation_warnings_if_applicable
         if using_default_scm?
-          warn_add_git_to_capfile unless scm_plugin_loaded?
+          warn_add_git_to_capfile unless scm_plugin_installed?
         elsif built_in_scm_name?
           warn_set_scm_is_deprecated
         elsif third_party_scm_name?
