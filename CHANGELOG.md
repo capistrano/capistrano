@@ -12,7 +12,7 @@ system. See the [UPGRADING-3.7](UPGRADING-3.7.md) document for details.
 * The `:git_strategy`, `:hg_strategy`, and `:svn_strategy` settings have been
 removed with no replacement. If you have been using these to customize
 Capistrano's SCM behavior, you will need to rewrite your customization using
-the [new plugin system](https://github.com/capistrano/documentation/pull/188).
+the [new plugin system](http://capistranorb.com/documentation/advanced-features/custom-scm/).
 * The `tar` used by the Git SCM now honors the SSHKit command map, allowing an alternative tar binary to be used (e.g. gtar) #1787 (@caius)
 * Fix test suite to work with Mocha 1.2.0 (@caius)
 * `remote_file` feature has been removed and is no longer available to use @SaiVardhan
