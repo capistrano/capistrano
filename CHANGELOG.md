@@ -4,18 +4,34 @@ Reverse Chronological Order:
 
 ## master
 
-https://github.com/capistrano/capistrano/compare/v3.6.1...HEAD
+https://github.com/capistrano/capistrano/compare/v3.7.0.beta1...HEAD
 
 * Your contribution here!
+
+## `3.7.0.beta1` (2016-11-02)
+
+https://github.com/capistrano/capistrano/compare/v3.6.1...v3.7.0.beta1
+
+### Deprecations:
+
 * The `set :scm, ...` mechanism is now deprecated in favor of a new SCM plugin
 system. See the [UPGRADING-3.7](UPGRADING-3.7.md) document for details.
+
+### Potentially breaking changes:
+
 * The `:git_strategy`, `:hg_strategy`, and `:svn_strategy` settings have been
 removed with no replacement. If you have been using these to customize
 Capistrano's SCM behavior, you will need to rewrite your customization using
 the [new plugin system](http://capistranorb.com/documentation/advanced-features/custom-scm/).
-* The `tar` used by the Git SCM now honors the SSHKit command map, allowing an alternative tar binary to be used (e.g. gtar) #1787 (@caius)
-* Fix test suite to work with Mocha 1.2.0 (@caius)
 * `remote_file` feature has been removed and is no longer available to use @SaiVardhan
+
+### New features:
+
+* The `tar` used by the Git SCM now honors the SSHKit command map, allowing an alternative tar binary to be used (e.g. gtar) #1787 (@caius)
+
+### Fixes:
+
+* Fix test suite to work with Mocha 1.2.0 (@caius)
 * Fix bug where host_filter and role_filter were overly greedy [#1766](https://github.com/capistrano/capistrano/issues/1766) (@cseeger-epages)
 
 ## `3.6.1` (2016-08-23)
