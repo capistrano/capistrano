@@ -7,6 +7,7 @@ Reverse Chronological Order:
 https://github.com/capistrano/capistrano/compare/v3.7.0.beta1...HEAD
 
 * Your contribution here!
+* Suppress log messages of `git ls-remote` by filtering remote refs (@aeroastro)
 
 ## `3.7.0.beta1` (2016-11-02)
 
