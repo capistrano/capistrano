@@ -68,6 +68,7 @@ The following variables are settable:
   * Example: `set :repo_url, 'git@example.com:me/my_repo.git'` for a git repo located in /home/git/me
   * Hint #1: to access a repo on a machine using a non-standard ssh port: `set :repo_url, 'ssh://git@example.com:30000/~/me/my_repo.git'`
   * Hint #2: when using :svn and branches, declare the repo_url like this: `set :repo_url, -> { "svn://myhost/myrepo/#{fetch(:branch)}" }`
+  * Warning: if you move your repository to a new URL and change this variable, already deployed remote servers won't reflect this change automatically, you have to manually re-configure the repository on the remote servers (in path determined by `:repo_path`) or delete it (`rm -rf repo` in the default setup) and let Capistrano recreate it on the next deploy using the updated URL.
 
 * `:branch`
   * **default:** `'master'`
