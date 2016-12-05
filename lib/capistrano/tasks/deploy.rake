@@ -149,7 +149,7 @@ namespace :deploy do
   task :cleanup do
     on release_roles :all do |host|
       releases = capture(:ls, "-x", releases_path).split
-      if !(releases.all? { |e| /^\d{14}$/ =~ e})
+      if !(releases.all? { |e| /^\d{14}$/ =~ e })
         warn t(:skip_cleanup, host: host.to_s)
       elsif releases.count >= fetch(:keep_releases)
         info t(:keeping_releases, host: host.to_s, keep_releases: fetch(:keep_releases), releases: releases.count)
