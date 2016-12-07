@@ -8,6 +8,8 @@ https://github.com/capistrano/capistrano/compare/v3.7.0.beta1...HEAD
 
 * Your contribution here!
 
+* Fix the removal of old releases `deploy:cleanup`. Logic is changed because of unreliable modification times on folders. Removal of directories is now decided by sorting on folder names (name is generated from current datetime format YmdHis). Cleanup is skipped, and a warning is given when a folder name is in a different format.
+
 ## `3.7.0.beta1` (2016-11-02)
 
 https://github.com/capistrano/capistrano/compare/v3.6.1...v3.7.0.beta1

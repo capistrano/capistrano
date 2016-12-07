@@ -12,6 +12,7 @@ en = {
   written_file: "create %{file}",
   question: "Please enter %{key} (%{default_value}): ",
   keeping_releases: "Keeping %{keep_releases} of %{releases} deployed releases on %{host}",
+  skip_cleanup: "Skipping cleanup of old releases on %{host}; unexpected foldername found (should be timestamp)",
   no_old_releases: "No old releases (keeping newest %{keep_releases}) on %{host}",
   linked_file_does_not_exist: "linked file %{file} does not exist on %{host}",
   cannot_rollback: "There are no older releases to rollback to",
