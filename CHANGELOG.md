@@ -4,13 +4,35 @@ Reverse Chronological Order:
 
 ## master
 
-https://github.com/capistrano/capistrano/compare/v3.7.0.beta1...HEAD
+https://github.com/capistrano/capistrano/compare/v3.7.0...HEAD
 
 * Your contribution here!
 
-* Fix the removal of old releases `deploy:cleanup`. Logic is changed because of unreliable modification times on folders. Removal of directories is now decided by sorting on folder names (name is generated from current datetime format YmdHis). Cleanup is skipped, and a warning is given when a folder name is in a different format.
-* Add support for custom on-filters
-  [#1776](https://github.com/capistrano/capistrano/issues/1776)
+## `3.7.0` (2016-12-10)
+
+https://github.com/capistrano/capistrano/compare/v3.6.1...v3.7.0
+
+*Note: These release notes include all changes since 3.6.1, including the changes that were first published in 3.7.0.beta1.*
+
+### Deprecations:
+
+* The `set :scm, ...` mechanism is now deprecated in favor of a new SCM plugin system. See the [UPGRADING-3.7](UPGRADING-3.7.md) document for details
+
+### Potentially breaking changes:
+
+* The `:git_strategy`, `:hg_strategy`, and `:svn_strategy` settings have been removed with no replacement. If you have been using these to customize Capistrano's SCM behavior, you will need to rewrite your customization using the [new plugin system](http://capistranorb.com/documentation/advanced-features/custom-scm/)
+* `remote_file` feature has been removed and is no longer available to use @SaiVardhan
+
+### New features:
+
+* The `tar` used by the Git SCM now honors the SSHKit command map, allowing an alternative tar binary to be used (e.g. gtar) #1787 (@caius)
+* Add support for custom on-filters [#1776](https://github.com/capistrano/capistrano/issues/1776)
+
+### Fixes:
+
+* Fix test suite to work with Mocha 1.2.0 (@caius)
+* Fix bug where host_filter and role_filter were overly greedy [#1766](https://github.com/capistrano/capistrano/issues/1766) (@cseeger-epages)
+* Fix the removal of old releases `deploy:cleanup`. Logic is changed because of unreliable modification times on folders. Removal of directories is now decided by sorting on folder names (name is generated from current datetime format YmdHis). Cleanup is skipped, and a warning is given when a folder name is in a different format
 
 ## `3.7.0.beta1` (2016-11-02)
 
