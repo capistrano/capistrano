@@ -1,16 +1,5 @@
 # Capistrano 3.7.0 upgrade guide
 
-Capistrano 3.7.0 has not yet been released. This guide serves as a preview of
-what is *planned* for 3.7.0, so that you can be prepared to update your
-Capistrano deployment if necessary once it becomes available.
-
-If you wish to try the new 3.7.0 behavior today, you can do so by using the
-`master` branch in your Gemfile:
-
-```ruby
-gem "capistrano", :github => "capistrano/capistrano"
-```
-
 ## The :scm variable is deprecated
 
 Up until now, Capistrano's SCM was configured using the `:scm` variable:
