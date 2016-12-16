@@ -96,7 +96,7 @@ The following variables are settable:
 
 * `:linked_files`
   * **default:** `[]`
-  * Listed files will be symlinked into each release directory during deployment.
+  * Listed files will be symlinked from the shared folder of the application into each release directory during deployment.
   * Can be used for persistent configuration files like `database.yml`. See Structure for the exact directories.
 
 * `:linked_dirs`
