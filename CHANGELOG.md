@@ -6,8 +6,8 @@ Reverse Chronological Order:
 
 https://github.com/capistrano/capistrano/compare/v3.7.0...HEAD
 
-	* Your contribution here!
-	* Fixed a bug with mercurial deploys trying to use an undefined variable
+* Your contribution here!
+* Fixed a bug with mercurial deploys trying to use an undefined variable
 
 ## `3.7.0` (2016-12-10)
 
