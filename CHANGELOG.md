@@ -4,10 +4,21 @@ Reverse Chronological Order:
 
 ## master
 
-https://github.com/capistrano/capistrano/compare/v3.7.0...HEAD
+https://github.com/capistrano/capistrano/compare/v3.7.1...HEAD
 
 * Your contribution here!
-* Fixed a bug with mercurial deploys trying to use an undefined variable
+
+## `3.7.1` (2016-12-16)
+
+https://github.com/capistrano/capistrano/compare/v3.7.0...v3.7.1
+
+### Potentially breaking changes:
+
+* None
+
+### Fixes:
+
+* Fixed a bug with mercurial deploys failing due to an undefined variable
 
 ## `3.7.0` (2016-12-10)
 
