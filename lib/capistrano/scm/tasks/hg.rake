@@ -28,7 +28,7 @@ namespace :hg do
   task update: :'hg:clone' do
     on release_roles :all do
       within repo_path do
-        hr.update_mirror
+        hg_plugin.update_mirror
       end
     end
   end
