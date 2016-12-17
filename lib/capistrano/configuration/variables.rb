@@ -35,7 +35,7 @@ module Capistrano
       end
 
       def set(key, value=nil, &block)
-        @trusted_keys << key if trusted?
+        @trusted_keys << key if trusted? && !@trusted_keys.include?(key)
         remember_location(key)
         values[key] = block || value
         trace_set(key)
@@ -43,7 +43,7 @@ module Capistrano
       end
 
       def fetch(key, default=nil, &block)
-        fetched_keys << key
+        fetched_keys << key unless fetched_keys.include?(key)
         peek(key, default, &block)
       end
 
