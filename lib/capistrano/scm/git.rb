@@ -3,6 +3,7 @@ require "capistrano/scm/plugin"
 class Capistrano::SCM::Git < Capistrano::SCM::Plugin
   def set_defaults
     set_if_empty :git_shallow_clone, false
+    set_if_empty :git_enable_submodules, false
     set_if_empty :git_wrapper_path, lambda {
       # Try to avoid permissions issues when multiple users deploy the same app
       # by using different file names in the same dir for each deployer and stage.
@@ -59,6 +60,26 @@ class Capistrano::SCM::Git < Capistrano::SCM::Plugin
       git :archive, fetch(:branch), tree, "| #{SSHKit.config.command_map[:tar]} -x --strip-components #{components} -f - -C", release_path
     else
       git :archive, fetch(:branch), "| #{SSHKit.config.command_map[:tar]} -x -f - -C", release_path
+    end
+  end
+
+  ##
+  # Adds configured submodules recursively to release
+  # It does so by connecting the bare repo and the work tree using environment variables
+  # The reset creates a temporary index, but does not change the working directory
+  # The temporary index is removed after everything is done
+  def submodules_to_release_path
+    temp_index_file_path = release_path.join("INDEX_#{fetch(:release_timestamp)}")
+    backend.within "../releases/#{fetch(:release_timestamp)}" do
+      backend.with(
+        "GIT_DIR" => repo_path.to_s,
+        "GIT_WORK_TREE" => release_path.to_s,
+        "GIT_INDEX_FILE" => temp_index_file_path.to_s
+      ) do
+        git :reset, "--mixed", fetch(:branch)
+        git :submodule, "update", "--init", "--depth", 1, "--checkout", "--recursive"
+        backend.execute :rm, temp_index_file_path.to_s
+      end
     end
   end
 

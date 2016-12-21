@@ -7,6 +7,7 @@ Reverse Chronological Order:
 https://github.com/capistrano/capistrano/compare/v3.7.1...HEAD
 
 * Your contribution here!
+* Bring back `:git_enable_submodules` (@1st8)
 
 ## `3.7.1` (2016-12-16)
 
