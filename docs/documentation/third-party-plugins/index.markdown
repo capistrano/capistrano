@@ -41,3 +41,5 @@ This list is neither complete nor audited in any way.
 <div class="github-widget" data-repo="sambauers/capistrano-committed"></div>
 
 <div class="github-widget" data-repo="aidistan/capistrano-pm2"></div>
+
+<div class="github-widget" data-repo="mgrachev/capistrano-hanami"></div>
