@@ -54,6 +54,7 @@ namespace :git do
         within repo_path do
           execute :mkdir, "-p", release_path
           git_plugin.archive_to_release_path
+          git_plugin.submodules_to_release_path if fetch(:git_enable_submodules)
         end
       end
     end

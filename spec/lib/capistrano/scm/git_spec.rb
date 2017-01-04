@@ -119,6 +119,43 @@ module Capistrano
       end
     end
 
+    describe "#submodules_to_release_path" do
+      before do
+        env.set(:branch, "branch")
+        env.set(:repo_path, Pathname.new("/repo"))
+        env.set(:release_timestamp, 20_161_221_135_840)
+        env.set(:release_path, Pathname.new("/releases/20161221135840"))
+      end
+
+      it "should switch to relative release director" do
+        backend.expects(:within).with("../releases/20161221135840")
+
+        subject.submodules_to_release_path
+      end
+
+      it "should set git environment variables" do
+        backend.stubs(:within).yields
+        backend.expects(:with).with(
+          "GIT_DIR" => "/repo",
+          "GIT_WORK_TREE" => "/releases/20161221135840",
+          "GIT_INDEX_FILE" => "/releases/20161221135840/INDEX_20161221135840"
+        )
+
+        subject.submodules_to_release_path
+      end
+
+      it "should run git commands and remove temp file" do
+        backend.stubs(:within).yields
+        backend.expects(:with).yields
+
+        backend.expects(:execute).with(:git, :reset, "--mixed", "branch")
+        backend.expects(:execute).with(:git, :submodule, "update", "--init", "--depth", 1, "--checkout", "--recursive")
+        backend.expects(:execute).with(:rm, "/releases/20161221135840/INDEX_20161221135840")
+
+        subject.submodules_to_release_path
+      end
+    end
+
     describe "#fetch_revision" do
       it "should capture git rev-list" do
         env.set(:branch, "branch")
