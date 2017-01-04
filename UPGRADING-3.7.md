@@ -12,7 +12,7 @@ set :scm, :svn
 To avoid deprecation warnings:
 
 1. Remove `set :scm, ...` from your Capistrano configuration.
-2. Add *one* of the following SCM declarations to your `Capfile`:
+2. Add *one* of the following SCM declarations to your `Capfile` after `require "capistrano/deploy"`:
 
 ```ruby
 # To use Git
