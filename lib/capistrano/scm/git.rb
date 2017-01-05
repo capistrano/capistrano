@@ -32,7 +32,7 @@ class Capistrano::SCM::Git < Capistrano::SCM::Plugin
   end
 
   def check_repo_is_reachable
-    git :'ls-remote --heads', repo_url
+    git :'ls-remote', repo_url, "HEAD"
   end
 
   def clone_repo

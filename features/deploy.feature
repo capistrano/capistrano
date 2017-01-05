@@ -7,7 +7,6 @@ Feature: Deploy
   Scenario: Creating the repo
     When I run cap "git:check"
     Then the task is successful
-    And references in the remote repo are listed
     And git wrapper permissions are 0700
 
   Scenario: Creating the directory structure

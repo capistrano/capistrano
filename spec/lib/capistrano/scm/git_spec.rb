@@ -46,7 +46,7 @@ module Capistrano
     describe "#check_repo_is_reachable" do
       it "should test the repo url" do
         env.set(:repo_url, "url")
-        backend.expects(:execute).with(:git, :'ls-remote --heads', "url").returns(true)
+        backend.expects(:execute).with(:git, :'ls-remote', "url", "HEAD").returns(true)
 
         subject.check_repo_is_reachable
       end
