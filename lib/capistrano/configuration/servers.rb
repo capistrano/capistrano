@@ -17,10 +17,12 @@ module Capistrano
         end
       end
 
+      # rubocop:disable Security/MarshalLoad
       def add_role(role, hosts, options={})
         options_deepcopy = Marshal.dump(options.merge(roles: role))
         Array(hosts).each { |host| add_host(host, Marshal.load(options_deepcopy)) }
       end
+      # rubocop:enable Security/MarshalLoad
 
       def roles_for(names)
         options = extract_options(names)

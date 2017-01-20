@@ -3,6 +3,10 @@ AllCops:
   DisplayStyleGuide: true
   TargetRubyVersion: 2.0
 
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
+    - "lib/**/*.rake"
 Style/BarePercentLiterals:
   EnforcedStyle: percent_q
 Style/ClassAndModuleChildren:
