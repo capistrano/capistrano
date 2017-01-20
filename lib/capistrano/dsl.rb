@@ -59,10 +59,12 @@ module Capistrano
       VersionValidator.new(locked_version).verify
     end
 
+    # rubocop:disable Security/MarshalLoad
     def on(hosts, options={}, &block)
       subset_copy = Marshal.dump(Configuration.env.filter(hosts))
       SSHKit::Coordinator.new(Marshal.load(subset_copy)).each(options, &block)
     end
+    # rubocop:enable Security/MarshalLoad
 
     def run_locally(&block)
       SSHKit::Backend::Local.new(&block).run
