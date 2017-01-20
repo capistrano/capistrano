@@ -46,7 +46,11 @@ module Capistrano
       end
 
       def question
-        I18n.t(:question, key: key, default_value: default, scope: :capistrano)
+        if default.nil?
+          I18n.t(:question, key: key, scope: :capistrano)
+        else
+          I18n.t(:question_default, key: key, default_value: default, scope: :capistrano)
+        end
       end
 
       def echo?
