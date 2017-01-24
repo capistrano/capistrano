@@ -106,7 +106,7 @@ footer {
   color: #fff;
 }
 
-footer a {
+footer a, footer a:hover {
   color: #fff;
 }
 
@@ -119,10 +119,14 @@ li {
   margin-left: 2em;
 }
 
-footer ul.social.icons li {
+footer ul.social.icons li.foundicon {
   float: left;
   margin-left: 10px;
   font-size: 5em;
+}
+
+footer ul.social.icons li.thanks-dnsimple {
+  clear: left;
 }
 
 .github-widget {
