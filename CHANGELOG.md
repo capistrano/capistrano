@@ -8,6 +8,7 @@ https://github.com/capistrano/capistrano/compare/v3.7.1...HEAD
 
 * Your contribution here!
 * Suppress log messages of `git ls-remote` by filtering remote refs (@aeroastro)
+* The Git SCM now allows the repo_url to be changed without manually wiping out the mirror on each target host first (@javanthropus)
 
 ## `3.7.1` (2016-12-16)
 

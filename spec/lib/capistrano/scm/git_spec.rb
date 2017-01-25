@@ -74,6 +74,9 @@ module Capistrano
 
     describe "#update_mirror" do
       it "should run git update" do
+        env.set(:repo_url, "url")
+
+        backend.expects(:execute).with(:git, :remote, "set-url", "origin", "url")
         backend.expects(:execute).with(:git, :remote, :update, "--prune")
 
         subject.update_mirror
@@ -82,6 +85,9 @@ module Capistrano
       it "should run git update in shallow mode" do
         env.set(:git_shallow_clone, "1")
         env.set(:branch, "branch")
+        env.set(:repo_url, "url")
+
+        backend.expects(:execute).with(:git, :remote, "set-url", "origin", "url")
         backend.expects(:execute).with(:git, :fetch, "--depth", "1", "origin", "branch")
 
         subject.update_mirror
