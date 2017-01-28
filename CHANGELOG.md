@@ -4,9 +4,20 @@ Reverse Chronological Order:
 
 ## master
 
-https://github.com/capistrano/capistrano/compare/v3.7.1...HEAD
+https://github.com/capistrano/capistrano/compare/v3.7.2...HEAD
 
 * Your contribution here!
+
+## `3.7.2` (2017-01-27)
+
+https://github.com/capistrano/capistrano/compare/v3.7.1...v3.7.2
+
+### Potentially breaking changes:
+
+* None
+
+### Other changes:
+
 * Suppress log messages of `git ls-remote` by filtering remote refs (@aeroastro)
 * The Git SCM now allows the repo_url to be changed without manually wiping out the mirror on each target host first (@javanthropus)
 
