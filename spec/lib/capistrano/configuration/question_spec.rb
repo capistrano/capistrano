@@ -5,6 +5,7 @@ module Capistrano
     describe Question do
       let(:question) { Question.new(key, default, options) }
       let(:question_without_echo) { Question.new(key, default, echo: false) }
+      let(:question_without_default) { Question.new(key, nil) }
       let(:default) { :default }
       let(:key) { :branch }
       let(:options) { nil }
@@ -19,11 +20,8 @@ module Capistrano
         context "value is entered" do
           let(:branch) { "branch" }
 
-          before do
-            $stdout.expects(:print).with("Please enter branch (default): ")
-          end
-
           it "returns the echoed value" do
+            $stdout.expects(:print).with("Please enter branch (default): ")
             $stdin.expects(:gets).returns(branch)
             $stdin.expects(:noecho).never
 
@@ -31,10 +29,19 @@ module Capistrano
           end
 
           it "returns the value but does not echo it" do
+            $stdout.expects(:print).with("Please enter branch (default): ")
             $stdin.expects(:noecho).returns(branch)
             $stdout.expects(:print).with("\n")
 
             expect(question_without_echo.call).to eq(branch)
+          end
+
+          it "returns the value but has no default between parenthesis" do
+            $stdout.expects(:print).with("Please enter branch: ")
+            $stdin.expects(:gets).returns(branch)
+            $stdin.expects(:noecho).never
+
+            expect(question_without_default.call).to eq(branch)
           end
         end
 
