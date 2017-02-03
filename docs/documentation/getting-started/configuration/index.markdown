@@ -132,7 +132,7 @@ The following variables are settable:
   * Used in SSHKit.
 
 * `:format`
-  * **default:** `:pretty`
+  * **default:** `:airbrussh`
   * Used in SSHKit.
 
 
