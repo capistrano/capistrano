@@ -1,10 +1,17 @@
 // A modified version of https://raw.githubusercontent.com/richleland/pygments-css/master/monokai.css
 
+.highlighter-rouge {
+    background-color: #272822;
+}
+
 .highlight {
-	background: #272822;
-	padding: 1em;
-	font-size: 0.9em;
-	overflow: auto;
+    background: #272822;
+    padding: 1em;
+    font-size: 0.9em;
+    overflow: auto;
+    line-height: 150%;
+    overflow-y: auto;
+    overflow-x: scroll;
 }
 
 .highlight code {
