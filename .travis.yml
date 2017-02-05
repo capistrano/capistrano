@@ -1,15 +1,16 @@
 language: ruby
 dist: trusty
 rvm:
-  - 2.3.1
+  - 2.4.0
+  - 2.3.3
   - 2.2
   - 2.1
   - 2.0
   - rbx-3
 matrix:
   include:
-    # Run Danger only once, on 2.3.1
-    - rvm: 2.3.1
+    # Run Danger only once, on 2.3.3
+    - rvm: 2.3.3
       before_script: bundle exec danger
 
 script: bundle exec rake spec rubocop
