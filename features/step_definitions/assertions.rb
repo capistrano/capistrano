@@ -1,10 +1,12 @@
+require "shellwords"
+
 Then(/^references in the remote repo are listed$/) do
   expect(@output).to include("refs/heads/master")
 end
 
 Then(/^git wrapper permissions are 0700$/) do
-  permissions_test = %Q([ $(stat -c "%a" #{TestApp.git_wrapper_path}) == "700" ])
-  expect(vagrant_cli_command("ssh -c '#{permissions_test}'")).to be_success
+  permissions_test = %Q([ $(stat -c "%a" #{TestApp.git_wrapper_path.shellescape}) == "700" ])
+  expect(vagrant_cli_command("ssh -c #{permissions_test.shellescape}")).to be_success
 end
 
 Then(/^the shared path is created$/) do
