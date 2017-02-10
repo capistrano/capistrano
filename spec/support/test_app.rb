@@ -19,6 +19,7 @@ module TestApp
       set :linked_files, #{linked_files}
       set :linked_dirs, #{linked_dirs}
       set :format_options, log_file: nil
+      set :local_user, #{current_user.inspect}
     CONFIG
   end
 
@@ -154,7 +155,7 @@ module TestApp
   end
 
   def current_user
-    `whoami`.chomp
+    "(GitHub Web Flow) via ShipIt"
   end
 
   def task_dir

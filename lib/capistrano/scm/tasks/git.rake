@@ -5,9 +5,9 @@ namespace :git do
   desc "Upload the git wrapper script, this script guarantees that we can script git without getting an interactive prompt"
   task :wrapper do
     on release_roles :all do
-      execute :mkdir, "-p", File.dirname(fetch(:git_wrapper_path))
+      execute :mkdir, "-p", File.dirname(fetch(:git_wrapper_path)).shellescape
       upload! StringIO.new("#!/bin/sh -e\nexec /usr/bin/ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no \"$@\"\n"), fetch(:git_wrapper_path)
-      execute :chmod, "700", fetch(:git_wrapper_path)
+      execute :chmod, "700", fetch(:git_wrapper_path).shellescape
     end
   end
 
