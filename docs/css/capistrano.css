@@ -91,6 +91,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Enriqueta', serif;
 }
 
+.highlighter-rouge {
+  margin-bottom: 1.25em;
+}
+
 /*p code, li code {
   padding: 3px;
   background-color: #E6E6E6;
