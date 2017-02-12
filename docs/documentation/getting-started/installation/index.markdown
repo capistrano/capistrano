@@ -8,10 +8,10 @@ Capistrano is bundled as a Ruby Gem. **It requires Ruby 2.0 or newer.**
 Capistrano can be installed as a standalone Gem, or bundled into your
 application.
 
-<div class="alert">
+<p class="alert-box alert">
 It is recommended to fix the version number when using Capistrano, and is
 therefore recommended to use an appropriate bundler.
-</div>
+</p>
 
 ### General Usage
 
