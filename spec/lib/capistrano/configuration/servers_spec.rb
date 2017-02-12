@@ -130,6 +130,7 @@ module Capistrano
 
         it "can accept multiple servers with the same hostname but different ports or users" do
           servers.add_host("1", roles: [:app, "web"], test: :value, port: 12)
+          expect(servers.count).to eq(2)
           servers.add_host("1", roles: [:app, "web"], test: :value, port: 34)
           servers.add_host("1", roles: [:app, "web"], test: :value, user: "root")
           servers.add_host("1", roles: [:app, "web"], test: :value, user: "deployer")
