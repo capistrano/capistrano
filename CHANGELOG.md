@@ -9,6 +9,8 @@ https://github.com/capistrano/capistrano/compare/v3.7.2...HEAD
 * [#1835](https://github.com/capistrano/capistrano/pull/1835): Stopped printing parenthesis in ask prompt if no default or nil was passed as argument [(@chamini2)](https://github.com/chamini2)
 * [#1840](https://github.com/capistrano/capistrano/pull/1840): Git plugin: shellescape git_wrapper_path [(@olleolleolle)](https://github.com/olleolleolle)
 * [#1843](https://github.com/capistrano/capistrano/pull/1843): Properly shell escape git:wrapper steps - [@mattbrictson](https://github.com/mattbrictson)
+* [#1846](https://github.com/capistrano/capistrano/pull/1846): Defining a role is now O(hosts) instead of O(hosts^2) [(@dbenamy)](https://github.com/dbenamy)
+* [#1846](https://github.com/capistrano/capistrano/pull/1846): add_host will add a new host in a case where it used to incorrectly update an existing one (potentially breaking) [(@dbenamy)](https://github.com/dbenamy)
 * Your contribution here!
 
 ## `3.7.2` (2017-01-27)
