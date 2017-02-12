@@ -9,6 +9,7 @@ module Capistrano
 
       def add_host(host, properties={})
         new_host = Server[host]
+        new_host.port = properties[:port] if properties.key?(:port)
         if (server = servers.find { |s| s.matches? new_host })
           server.user = new_host.user if new_host.user
           server.with(properties)
