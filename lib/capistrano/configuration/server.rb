@@ -64,6 +64,7 @@ module Capistrano
       end
 
       def matches?(other)
+        # This matching logic must stay in sync with `Servers#add_host`.
         hostname == other.hostname && port == other.port
       end
 

@@ -10,11 +10,14 @@ module Capistrano
       def add_host(host, properties={})
         new_host = Server[host]
         new_host.port = properties[:port] if properties.key?(:port)
-        if (server = servers.find { |s| s.matches? new_host })
-          server.user = new_host.user if new_host.user
-          server.with(properties)
+        # This matching logic must stay in sync with `Server#matches?`.
+        key = ServerKey.new(new_host.hostname, new_host.port)
+        existing = servers_by_key[key]
+        if existing
+          existing.user = new_host.user if new_host.user
+          existing.with(properties)
         else
-          servers << new_host.with(properties)
+          servers_by_key[key] = new_host.with(properties)
         end
       end
 
@@ -27,7 +30,7 @@ module Capistrano
 
       def roles_for(names)
         options = extract_options(names)
-        s = Filter.new(:role, names).filter(servers)
+        s = Filter.new(:role, names).filter(servers_by_key.values)
         s.select { |server| server.select?(options) }
       end
 
@@ -54,13 +57,15 @@ module Capistrano
       end
 
       def each
-        servers.each { |server| yield server }
+        servers_by_key.values.each { |server| yield server }
       end
 
       private
 
-      def servers
-        @servers ||= []
+      ServerKey = Struct.new(:hostname, :port)
+
+      def servers_by_key
+        @servers_by_key ||= {}
       end
 
       def extract_options(array)
