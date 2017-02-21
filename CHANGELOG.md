@@ -1,6 +1,12 @@
 # Capistrano 3.x Changelog
 
-Reverse Chronological Order:
+All notable changes to this project will be documented in this file, in reverse chronological order. This project adheres to [Semantic Versioning](http://semver.org).
+
+**Capistrano uses a six-week release cadence.** Every six weeks, give or take, any changes in master will be published as a new rubygems version. If you'd like to use a feature or fix that is in master and you can't wait for the next planned release, put this in your project's Gemfile to use the master branch directly:
+
+```ruby
+gem "capistrano", :github => "capistrano/capistrano"
+```
 
 ## master
 
