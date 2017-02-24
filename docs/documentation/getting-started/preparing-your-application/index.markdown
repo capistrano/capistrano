@@ -3,10 +3,10 @@ title: Preparing Your Application
 layout: default
 ---
 
-<div class="alert-box radius">
+<p class="alert-box">
   This will focus on preparing a Rails application, but most ideas expressed
   here have parallels in Python, or PHP applications
-</div>
+</p>
 
 ### 1. Commit your application to some externally available source control hosting provider.
 
@@ -18,12 +18,12 @@ There might be 3<sup>rd</sup> party plugins adding support for various other sys
 
 ### 2. Move secrets out of the repository.
 
-<div class="alert-box alert">
+<p class="alert-box alert">
 If you've accidentally committed state secrets to the repository, you might
 want to take
 <a href="https://help.github.com/articles/remove-sensitive-data">special steps</a>
 to erase them from the repository history for all time.
-</div>
+</p>
 
 Ideally one should remove `config/database.yml` to something like
 `config/database.yml.example`. You and your team should copy the example file
@@ -34,7 +34,7 @@ configuration into place at deploy time.
 The original `database.yml` should be added to the `.gitignore` (or your SCM's
 parallel concept of ignored files)
 
-```bash 
+```bash
 $ cp config/database.yml{,.example}
 $ echo config/database.yml >> .gitignore
 ```
@@ -136,14 +136,14 @@ server 'world.com', roles: [:web], user: 'hello'
 server 'example.com', roles: [:web], port: 1234
 ```
 
-<div class="alert-box radius"> You can define a server or role using both syntaxes and the
+<p class="alert-box"> You can define a server or role using both syntaxes and the
 properties will be merged. See the Properties Documentation for details
-</div>
+</p>
 
-<div class="alert-box alert"> If you define servers with either the simple or the extended
+<p class="alert-box alert"> If you define servers with either the simple or the extended
 syntax and explicitly specify a user or a port number, the last definition will win. This
 is identical behaviour to scalar custom properties. In older versions of Capistrano,
-<b>multiple</b> servers were created and the merging was ill-defined.  </div>
+<b>multiple</b> servers were created and the merging was ill-defined. </p>
 
 ### 5. Set the shared information in `deploy.rb`.
 
