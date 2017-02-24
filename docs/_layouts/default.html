@@ -35,25 +35,6 @@
   {% include footer.html %}
 
   <script src="/js/jquery-1.7.min.js"></script>
-  <script src="/js/jquery.cookie.js"></script>
-  <script type="text/javascript">
-  $(function(){
-    if ($.cookie('harrowBanner__dismissed') != '1') {
-      $('.harrowBanner').css('display', 'block');
-      ga('send', 'event', 'harrowBanner', 'shown');
-    } else {
-      ga('send', 'event', 'harrowBanner', 'alreadydismissed');
-    }
-    $(".harrowBanner__ctaButton").on('click', function (e) {
-      ga('send', 'event', 'harrowBanner', 'clickthrough');
-    });
-    $(".harrowBanner__dismissLink").on('click', function (e) {
-      $.cookie('harrowBanner__dismissed', '1', { path: "/", expires: 10 });
-      $('.harrowBanner').hide();
-      ga('send', 'event', 'harrowBanner', 'dismiss');
-    });
-  });
-  </script>
   <script src="/js/jquery.githubRepoWidget.min.js"></script>
   <script src="/js/prism.js"></script>
   <script src="/js/prism.ruby.js"></script>
