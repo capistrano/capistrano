@@ -3,7 +3,7 @@ title: Preparing Your Application
 layout: default
 ---
 
-<p class="alert-box radius">
+<p class="alert-box">
   This will focus on preparing a Rails application, but most ideas expressed
   here have parallels in Python, or PHP applications
 </p>
@@ -136,7 +136,7 @@ server 'world.com', roles: [:web], user: 'hello'
 server 'example.com', roles: [:web], port: 1234
 ```
 
-<p class="alert-box radius"> You can define a server or role using both syntaxes and the
+<p class="alert-box"> You can define a server or role using both syntaxes and the
 properties will be merged. See the Properties Documentation for details
 </p>
 

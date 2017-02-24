@@ -95,6 +95,30 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1.25em;
 }
 
+.alert-box {
+  font-weight: normal;
+  color: black;
+
+  background-color: #d7ecfa;
+  border: none;
+  padding-left: 20px;
+}
+
+.alert-box.alert {
+  background-color: #f7e4e1;
+  color: black;
+}
+
+.alert-box.success {
+  background-color: #e1faea;
+  color: black;
+}
+
+.alert-box.secondary {
+  background-color: #eaeaea;
+  color: black;
+}
+
 /*p code, li code {
   padding: 3px;
   background-color: #E6E6E6;
