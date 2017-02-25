@@ -85,8 +85,13 @@ module Capistrano
         env.set(:repo_tree, "tree")
         env.set(:branch, :branch)
         env.set(:release_path, "path")
+        env.set(:tmp_dir, "/tmp")
 
-        backend.expects(:execute).with(:hg, "archive --type tgz -p . -I", "tree", "--rev", :branch, "| tar -x --strip-components 1 -f - -C", "path")
+        SecureRandom.stubs(:hex).with(10).returns("random")
+        backend.expects(:execute).with(:hg, "archive -p . -I", "tree", "--rev", :branch, "/tmp/random.tar")
+        backend.expects(:execute).with(:mkdir, "-p", "path")
+        backend.expects(:execute).with(:tar, "-x --strip-components 1 -f", "/tmp/random.tar", "-C", "path")
+        backend.expects(:execute).with(:rm, "/tmp/random.tar")
 
         subject.archive_to_release_path
       end

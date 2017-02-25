@@ -1,4 +1,5 @@
 require "capistrano/scm/plugin"
+require "securerandom"
 
 class Capistrano::SCM::Hg < Capistrano::SCM::Plugin
   def register_hooks
@@ -36,7 +37,13 @@ class Capistrano::SCM::Hg < Capistrano::SCM::Plugin
     if (tree = fetch(:repo_tree))
       tree = tree.slice %r#^/?(.*?)/?$#, 1
       components = tree.split("/").size
-      hg "archive --type tgz -p . -I", tree, "--rev", fetch(:branch), "| tar -x --strip-components #{components} -f - -C", release_path
+      temp_tar = "#{fetch(:tmp_dir)}/#{SecureRandom.hex(10)}.tar"
+
+      hg "archive -p . -I", tree, "--rev", fetch(:branch), temp_tar
+
+      backend.execute :mkdir, "-p", release_path
+      backend.execute :tar, "-x --strip-components #{components} -f", temp_tar, "-C", release_path
+      backend.execute :rm, temp_tar
     else
       hg "archive", release_path, "--rev", fetch(:branch)
     end
