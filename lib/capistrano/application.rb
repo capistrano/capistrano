@@ -2,7 +2,7 @@ module Capistrano
   class Application < Rake::Application
     def initialize
       super
-      @rakefiles = %w{capfile Capfile capfile.rb Capfile.rb} << capfile
+      @rakefiles = %w{capfile Capfile capfile.rb Capfile.rb}
     end
 
     def name
@@ -76,6 +76,15 @@ module Capistrano
       end
     end
 
+    # allows the `cap install` task to load without a capfile
+    def find_rakefile_location
+      if (location = super).nil?
+        [capfile, Dir.pwd]
+      else
+        location
+      end
+    end
+
     private
 
     def backtrace_pattern
@@ -96,7 +105,6 @@ module Capistrano
       super
     end
 
-    # allows the `cap install` task to load without a capfile
     def capfile
       File.expand_path(File.join(File.dirname(__FILE__), "..", "Capfile"))
     end
