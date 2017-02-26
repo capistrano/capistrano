@@ -81,6 +81,20 @@ module Capistrano
 
         subject.clone_repo
       end
+
+      context "with username and password specified" do
+        before do
+          env.set(:git_http_username, "hello")
+          env.set(:git_http_password, "topsecret")
+          env.set(:repo_url, "https://example.com/repo.git")
+          env.set(:repo_path, "path")
+        end
+
+        it "should include the credentials in the url" do
+          backend.expects(:execute).with(:git, :clone, "--mirror", "https://hello:topsecret@example.com/repo.git", "path")
+          subject.clone_repo
+        end
+      end
     end
 
     describe "#update_mirror" do
