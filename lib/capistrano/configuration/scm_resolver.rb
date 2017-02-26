@@ -29,8 +29,12 @@ module Capistrano
         set(:scm, :git) if using_default_scm?
 
         print_deprecation_warnings_if_applicable
+
         # Note that `scm_plugin_installed?` comes from Capistrano::DSL
-        return if scm_plugin_installed?
+        if scm_plugin_installed?
+          delete(:scm)
+          return
+        end
 
         if built_in_scm_name?
           load_built_in_scm
