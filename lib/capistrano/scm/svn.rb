@@ -34,6 +34,9 @@ class Capistrano::SCM::Svn < Capistrano::SCM::Plugin
   end
 
   def update_mirror
+    # Switch the repository URL if necessary.
+    repo_mirror_url = fetch_repo_mirror_url
+    svn :switch, repo_url unless repo_mirror_url == repo_url
     svn :update
   end
 
@@ -43,5 +46,11 @@ class Capistrano::SCM::Svn < Capistrano::SCM::Plugin
 
   def fetch_revision
     backend.capture(:svnversion, repo_path.to_s)
+  end
+
+  def fetch_repo_mirror_url
+    backend.capture(:svn, :info, repo_path.to_s).each_line do |line|
+      return $1 if /\AURL: (.*)\n\z/ =~ line
+    end
   end
 end
