@@ -71,6 +71,10 @@ module Capistrano
 
     describe "#update_mirror" do
       it "should run svn update" do
+        env.set(:repo_url, "url")
+        env.set(:repo_path, "path")
+        backend.expects(:capture).with(:svn, :info, "path").returns("URL: url\n")
+
         env.set(:svn_username, "someuser")
         env.set(:svn_password, "somepassword")
         backend.expects(:execute).with(:svn, :update, "--username someuser", "--password somepassword")
@@ -80,6 +84,10 @@ module Capistrano
 
       context "for specific revision" do
         it "should run svn update" do
+          env.set(:repo_url, "url")
+          env.set(:repo_path, "path")
+          backend.expects(:capture).with(:svn, :info, "path").returns("URL: url\n")
+
           env.set(:svn_username, "someuser")
           env.set(:svn_password, "somepassword")
           env.set(:svn_revision, "12345")
@@ -87,6 +95,19 @@ module Capistrano
 
           subject.update_mirror
         end
+      end
+
+      it "should run svn switch if repo_url is changed" do
+        env.set(:repo_url, "url")
+        env.set(:repo_path, "path")
+        backend.expects(:capture).with(:svn, :info, "path").returns("URL: old_url\n")
+
+        env.set(:svn_username, "someuser")
+        env.set(:svn_password, "somepassword")
+        backend.expects(:execute).with(:svn, :switch, "url", "--username someuser", "--password somepassword")
+        backend.expects(:execute).with(:svn, :update, "--username someuser", "--password somepassword")
+
+        subject.update_mirror
       end
     end
 
