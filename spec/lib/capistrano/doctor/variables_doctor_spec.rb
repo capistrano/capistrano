@@ -14,6 +14,7 @@ module Capistrano
 
         env.variables.untrusted! do
           set :application, "my_app"
+          set :repo_tree, "public"
           set :repo_url, ".git"
           set :copy_strategy, :scp
           set :custom_setting, "hello"
@@ -35,6 +36,7 @@ module Capistrano
         expect { doc.call }.to output(/:pty\s+false$/).to_stdout
         expect { doc.call }.to output(/:application\s+"my_app"$/).to_stdout
         expect { doc.call }.to output(/:repo_url\s+".git"$/).to_stdout
+        expect { doc.call }.to output(/:repo_tree\s+"public"$/).to_stdout
         expect { doc.call }.to output(/:copy_strategy\s+:scp$/).to_stdout
         expect { doc.call }.to output(/:custom_setting\s+"hello"$/).to_stdout
         expect { doc.call }.to output(/"string_setting"\s+"hello"$/).to_stdout
@@ -53,6 +55,12 @@ module Capistrano
       it "does not print warning for unrecognized variable that is fetched" do
         expect { doc.call }.not_to \
           output(/:custom_setting is not a recognized Capistrano setting/)\
+          .to_stdout
+      end
+
+      it "does not print warning for whitelisted variable" do
+        expect { doc.call }.not_to \
+          output(/:repo_tree is not a recognized Capistrano setting/)\
           .to_stdout
       end
 
