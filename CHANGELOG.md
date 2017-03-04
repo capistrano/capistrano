@@ -19,6 +19,7 @@ https://github.com/capistrano/capistrano/compare/v3.7.2...HEAD
 * [#1846](https://github.com/capistrano/capistrano/pull/1846): add_host will add a new host in a case where it used to incorrectly update an existing one (potentially breaking) [(@dbenamy)](https://github.com/dbenamy)
 * [capistrano-harrow#4](https://github.com/harrowio/capistrano-harrow/issues/4): Drop dependency on `capistrano-harrow` gem. Gem can still be installed separately [(@leehambley)](https://github.com/leehambley)
 * Run `svn switch` to work with svn branches if repo_url is changed
+* [#1856](https://github.com/capistrano/capistrano/pull/1856): Fix hg repo_tree implementation - [@mattbrictson](https://github.com/mattbrictson)
 * Your contribution here!
 
 ## `3.7.2` (2017-01-27)
