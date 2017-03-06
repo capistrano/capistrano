@@ -22,6 +22,7 @@ https://github.com/capistrano/capistrano/compare/v3.7.2...HEAD
 * [#1856](https://github.com/capistrano/capistrano/pull/1856): Fix hg repo_tree implementation - [@mattbrictson](https://github.com/mattbrictson)
 * [#1857](https://github.com/capistrano/capistrano/pull/1857): Don't emit doctor warning when repo_tree is set - [@mattbrictson](https://github.com/mattbrictson)
 * [#1860](https://github.com/capistrano/capistrano/pull/1860): Allow cap to be run within subdir and still work - [@mattbrictson](https://github.com/mattbrictson)
+* [#1859](https://github.com/capistrano/capistrano/pull/1859): Move git-specific repo_url logic into git plugin - [@mattbrictson](https://github.com/mattbrictson)
 * Your contribution here!
 
 ## `3.7.2` (2017-01-27)

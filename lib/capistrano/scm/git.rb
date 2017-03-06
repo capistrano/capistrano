@@ -1,5 +1,7 @@
 require "capistrano/scm/plugin"
+require "cgi"
 require "shellwords"
+require "uri"
 
 class Capistrano::SCM::Git < Capistrano::SCM::Plugin
   def set_defaults
@@ -33,20 +35,20 @@ class Capistrano::SCM::Git < Capistrano::SCM::Plugin
   end
 
   def check_repo_is_reachable
-    git :'ls-remote', repo_url, "HEAD"
+    git :'ls-remote', git_repo_url, "HEAD"
   end
 
   def clone_repo
     if (depth = fetch(:git_shallow_clone))
-      git :clone, "--mirror", "--depth", depth, "--no-single-branch", repo_url, repo_path.to_s
+      git :clone, "--mirror", "--depth", depth, "--no-single-branch", git_repo_url, repo_path.to_s
     else
-      git :clone, "--mirror", repo_url, repo_path.to_s
+      git :clone, "--mirror", git_repo_url, repo_path.to_s
     end
   end
 
   def update_mirror
     # Update the origin URL if necessary.
-    git :remote, "set-url", "origin", repo_url
+    git :remote, "set-url", "origin", git_repo_url
 
     # Note: Requires git version 1.9 or greater
     if (depth = fetch(:git_shallow_clone))
@@ -73,5 +75,20 @@ class Capistrano::SCM::Git < Capistrano::SCM::Plugin
   def git(*args)
     args.unshift :git
     backend.execute(*args)
+  end
+
+  def git_repo_url
+    if fetch(:git_http_username) && fetch(:git_http_password)
+      URI.parse(repo_url).tap do |repo_uri|
+        repo_uri.user     = fetch(:git_http_username)
+        repo_uri.password = CGI.escape(fetch(:git_http_password))
+      end.to_s
+    elsif fetch(:git_http_username)
+      URI.parse(repo_url).tap do |repo_uri|
+        repo_uri.user = fetch(:git_http_username)
+      end.to_s
+    else
+      repo_url
+    end
   end
 end
