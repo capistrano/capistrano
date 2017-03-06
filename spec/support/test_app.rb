@@ -90,13 +90,14 @@ module TestApp
     File.open(shared_path.join(path), "w")
   end
 
-  def cap(task)
-    run "bundle exec cap #{stage} #{task}"
+  def cap(task, subdirectory=nil)
+    run "bundle exec cap #{stage} #{task}", subdirectory
   end
 
-  def run(command)
+  def run(command, subdirectory=nil)
     output = nil
-    Dir.chdir(test_app_path) do
+    dir = subdirectory ? test_app_path.join(subdirectory) : test_app_path
+    Dir.chdir(dir) do
       output = `#{command}`
     end
     [$CHILD_STATUS.success?, output]
