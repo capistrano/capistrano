@@ -104,6 +104,12 @@ Add Capistrano to your project's Gemfile:
 ``` ruby
 group :development do
   gem "capistrano", "~> 3.7"
+
+  # Optional: these gems are needed to support ed25519 SSH keys
+  gem "bcrypt_pbkdf", require: false
+  gem "net-ssh", ">= 4.0.0", require: false
+  gem "rbnacl", "~> 3.4", require: false
+  gem "rbnacl-libsodium", require: false
 end
 ```
 
