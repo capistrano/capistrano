@@ -12,19 +12,35 @@ gem "capistrano", :github => "capistrano/capistrano"
 
 https://github.com/capistrano/capistrano/compare/v3.7.2...HEAD
 
+* Your contribution here!
+
+## `3.8.0` (2017-03-10)
+
+https://github.com/capistrano/capistrano/compare/v3.7.2...v3.8.0
+
+### Potentially breaking changes:
+
+* [#1846](https://github.com/capistrano/capistrano/pull/1846): add_host will add a new host in a case where it used to incorrectly update an existing one (potentially breaking) [(@dbenamy)](https://github.com/dbenamy)
+
+### New features:
+
+* [#1860](https://github.com/capistrano/capistrano/pull/1860): Allow cap to be run within subdir and still work - [@mattbrictson](https://github.com/mattbrictson)
+
+### Fixes:
+
 * [#1835](https://github.com/capistrano/capistrano/pull/1835): Stopped printing parenthesis in ask prompt if no default or nil was passed as argument [(@chamini2)](https://github.com/chamini2)
 * [#1840](https://github.com/capistrano/capistrano/pull/1840): Git plugin: shellescape git_wrapper_path [(@olleolleolle)](https://github.com/olleolleolle)
 * [#1843](https://github.com/capistrano/capistrano/pull/1843): Properly shell escape git:wrapper steps - [@mattbrictson](https://github.com/mattbrictson)
 * [#1846](https://github.com/capistrano/capistrano/pull/1846): Defining a role is now O(hosts) instead of O(hosts^2) [(@dbenamy)](https://github.com/dbenamy)
-* [#1846](https://github.com/capistrano/capistrano/pull/1846): add_host will add a new host in a case where it used to incorrectly update an existing one (potentially breaking) [(@dbenamy)](https://github.com/dbenamy)
-* [capistrano-harrow#4](https://github.com/harrowio/capistrano-harrow/issues/4): Drop dependency on `capistrano-harrow` gem. Gem can still be installed separately [(@leehambley)](https://github.com/leehambley)
 * Run `svn switch` to work with svn branches if repo_url is changed
 * [#1856](https://github.com/capistrano/capistrano/pull/1856): Fix hg repo_tree implementation - [@mattbrictson](https://github.com/mattbrictson)
 * [#1857](https://github.com/capistrano/capistrano/pull/1857): Don't emit doctor warning when repo_tree is set - [@mattbrictson](https://github.com/mattbrictson)
-* [#1860](https://github.com/capistrano/capistrano/pull/1860): Allow cap to be run within subdir and still work - [@mattbrictson](https://github.com/mattbrictson)
+
+### Other changes:
+
+* [capistrano-harrow#4](https://github.com/harrowio/capistrano-harrow/issues/4): Drop dependency on `capistrano-harrow` gem. Gem can still be installed separately [(@leehambley)](https://github.com/leehambley)
 * [#1859](https://github.com/capistrano/capistrano/pull/1859): Move git-specific repo_url logic into git plugin - [@mattbrictson](https://github.com/mattbrictson)
 * [#1858](https://github.com/capistrano/capistrano/pull/1858): Unset the :scm variable when an SCM plugin is used - [@mattbrictson](https://github.com/mattbrictson)
-* Your contribution here!
 
 ## `3.7.2` (2017-01-27)
 
