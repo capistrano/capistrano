@@ -18,9 +18,9 @@ https://github.com/capistrano/capistrano/compare/v3.7.2...HEAD
 
 https://github.com/capistrano/capistrano/compare/v3.7.2...v3.8.0
 
-### Potentially breaking changes:
+### Minor breaking changes:
 
-* [#1846](https://github.com/capistrano/capistrano/pull/1846): add_host will add a new host in a case where it used to incorrectly update an existing one (potentially breaking) [(@dbenamy)](https://github.com/dbenamy)
+* [#1846](https://github.com/capistrano/capistrano/pull/1846): add_host - When this method has already been called once for a given host and it is called a second time with a port, a new host will be added. Previously, the first host would have been updated. [(@dbenamy)](https://github.com/dbenamy)
 
 ### New features:
 
