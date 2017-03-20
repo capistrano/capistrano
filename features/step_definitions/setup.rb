@@ -2,6 +2,10 @@ Given(/^a test app with the default configuration$/) do
   TestApp.install
 end
 
+Given(/^a test app without any configuration$/) do
+  TestApp.create_test_app
+end
+
 Given(/^servers with the roles app and web$/) do
   begin
     vagrant_cli_command("up")

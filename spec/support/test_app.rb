@@ -44,14 +44,14 @@ module TestApp
     end
 
     Dir.chdir(test_app_path) do
-      `bundle`
+      run "bundle"
     end
   end
 
   def install_test_app_with(config)
     create_test_app
     Dir.chdir(test_app_path) do
-      `bundle exec cap install STAGES=#{stage}`
+      run "cap install STAGES=#{stage}"
     end
     write_local_deploy_file(config)
   end
@@ -91,14 +91,15 @@ module TestApp
   end
 
   def cap(task, subdirectory=nil)
-    run "bundle exec cap #{stage} #{task}", subdirectory
+    run "cap #{stage} #{task} --trace", subdirectory
   end
 
   def run(command, subdirectory=nil)
     output = nil
+    command = "bundle exec #{command}" unless command =~ /^bundle\b/
     dir = subdirectory ? test_app_path.join(subdirectory) : test_app_path
     Dir.chdir(dir) do
-      output = `#{command}`
+      output = with_clean_bundler_env { `#{command}` }
     end
     [$CHILD_STATUS.success?, output]
   end
@@ -186,5 +187,10 @@ module TestApp
 
   def git_wrapper_path
     "/tmp/git-ssh-my_app_name-#{stage}-#{current_user}.sh"
+  end
+
+  def with_clean_bundler_env(&block)
+    return yield unless defined?(Bundler)
+    Bundler.with_clean_env(&block)
   end
 end

@@ -13,6 +13,7 @@ gem "capistrano", :github => "capistrano/capistrano"
 https://github.com/capistrano/capistrano/compare/v3.7.2...HEAD
 
 * Your contribution here!
+* [#1867](https://github.com/capistrano/capistrano/pull/1867): Allow `cap -T` to run without Capfile present - [@mattbrictson](https://github.com/mattbrictson)
 
 ## `3.8.0` (2017-03-10)
 
