@@ -8,7 +8,7 @@ module Capistrano
   class Configuration
     class Filter
       def initialize(type, values=nil)
-        raise "Invalid filter type #{type}" unless [:host, :role].include? type
+        raise "Invalid filter type #{type}" unless %i(host role).include? type
         av = Array(values)
         @strategy = if av.empty? then EmptyFilter.new
                     elsif av.include?(:all) || av.include?("all") then NullFilter.new

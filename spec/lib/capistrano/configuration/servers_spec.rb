@@ -56,7 +56,7 @@ module Capistrano
 
       describe "collecting server roles" do
         let(:app) { Set.new([:app]) }
-        let(:web_app) { Set.new([:web, :app]) }
+        let(:web_app) { Set.new(%i(web app)) }
         let(:web) { Set.new([:web]) }
 
         before do
@@ -108,7 +108,7 @@ module Capistrano
         end
 
         it "returns the correct app and web servers" do
-          expect(servers.roles_for([:app, :web]).map(&:hostname)).to eq %w{1 2 3}
+          expect(servers.roles_for(%i(app web)).map(&:hostname)).to eq %w{1 2 3}
         end
 
         it "returns all servers" do
@@ -284,7 +284,7 @@ module Capistrano
           end
 
           context "when selecting specific roles" do
-            let(:roles) { [:app, :web] }
+            let(:roles) { %i(app web) }
             it "ignores it" do
               expect(subject).to eq %w{1 2 3 4}
             end
@@ -312,7 +312,7 @@ module Capistrano
           end
 
           context "when selecting specific roles" do
-            let(:roles) { [:app, :web] }
+            let(:roles) { %i(app web) }
             it "ignores it" do
               expect(subject).to eq %w{1 2 3 4}
             end

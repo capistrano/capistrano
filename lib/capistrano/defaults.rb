@@ -8,7 +8,7 @@ validate :application do |_key, value|
   end
 end
 
-[:git_strategy, :hg_strategy, :svn_strategy].each do |strategy|
+%i(git_strategy hg_strategy svn_strategy).each do |strategy|
   validate(strategy) do |key, _value|
     warn(
       "[Deprecation Warning] #{key} is deprecated and will be removed in "\

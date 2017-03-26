@@ -238,7 +238,7 @@ module Capistrano
       end
 
       it "returns all set keys" do
-        expect(subject).to match_array [:key1, :key2]
+        expect(subject).to match_array %i(key1 key2)
       end
     end
 
@@ -255,7 +255,7 @@ module Capistrano
 
     describe "asking" do
       let(:question) { stub }
-      let(:options) { Hash.new }
+      let(:options) { {} }
 
       before do
         Configuration::Question.expects(:new).with(:branch, :default, options)

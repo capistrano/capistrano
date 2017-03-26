@@ -13,7 +13,7 @@ module Capistrano
       end
 
       describe "adding roles" do
-        subject { server.add_roles([:things, :stuff]) }
+        subject { server.add_roles(%i(things stuff)) }
         it "adds the roles" do
           expect { subject }.to change { server.roles.size }.from(0).to(2)
         end

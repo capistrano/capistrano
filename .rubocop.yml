@@ -13,6 +13,11 @@ Style/ClassAndModuleChildren:
   Enabled: false
 Style/DoubleNegation:
   Enabled: false
+Style/FileName:
+  Exclude:
+    - "Dangerfile"
+Style/IndentHeredoc:
+  Enabled: false
 Style/SpaceAroundEqualsInParameterDefault:
   EnforcedStyle: no_space
 Style/StringLiterals:
