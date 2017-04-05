@@ -43,3 +43,9 @@ This list is neither complete nor audited in any way.
 <div class="github-widget" data-repo="aidistan/capistrano-pm2"></div>
 
 <div class="github-widget" data-repo="mgrachev/capistrano-hanami"></div>
+
+<div class="github-widget" data-repo="dkdeploy/dkdeploy-core"></div>
+
+<div class="github-widget" data-repo="dkdeploy/dkdeploy-php"></div>
+
+<div class="github-widget" data-repo="dkdeploy/dkdeploy-typo3-cms"></div>
