@@ -3,6 +3,9 @@ AllCops:
   DisplayStyleGuide: true
   TargetRubyVersion: 2.0
 
+Lint/AmbiguousBlockAssociation:
+  Enabled:
+    false
 Metrics/BlockLength:
   Exclude:
     - "spec/**/*"
