@@ -112,7 +112,8 @@ module Capistrano
         $stderr.puts(<<-MESSAGE)
 [Deprecation Notice] `set :scm, #{scm_name.inspect}` is deprecated.
 To ensure your project is compatible with future versions of Capistrano,
-remove the :scm setting and instead add these lines to your Capfile:
+remove the :scm setting and instead add these lines to your Capfile after
+`require "capistrano/deploy"`:
 
     require "capistrano/scm/#{scm_name}"
     install_plugin #{built_in_scm_plugin_class_name}
@@ -124,7 +125,7 @@ MESSAGE
         $stderr.puts(<<-MESSAGE)
 [Deprecation Notice] Future versions of Capistrano will not load the Git SCM
 plugin by default. To silence this deprecation warning, add the following to
-your Capfile:
+your Capfile after `require "capistrano/deploy"`:
 
     require "capistrano/scm/git"
     install_plugin Capistrano::SCM::Git
