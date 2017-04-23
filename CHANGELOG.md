@@ -14,6 +14,8 @@ https://github.com/capistrano/capistrano/compare/v3.8.1...HEAD
 
 * Your contribution here!
 
+* [#1882](https://github.com/capistrano/capistrano/pull/1882): Explain where to add new Capfile lines in scm deprecation warning - [@robd](https://github.com/robd)
+
 ## `3.8.1` (2017-04-21)
 
 https://github.com/capistrano/capistrano/compare/v3.8.0...v3.8.1
