@@ -15,7 +15,7 @@ module Capistrano
       end
 
       def releases_path
-        deploy_path.join("releases")
+        deploy_path.join(fetch(:releases_directory, "releases"))
       end
 
       def release_path

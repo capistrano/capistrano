@@ -1,6 +1,7 @@
 *.gem
 *.rbc
 *.swp
+*.idea
 .bundle
 .config
 .rspec

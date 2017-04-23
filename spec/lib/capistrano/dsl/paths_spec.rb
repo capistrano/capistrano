@@ -97,6 +97,32 @@ describe Capistrano::DSL::Paths do
     end
   end
 
+  describe "#releases path" do
+    subject { dsl.releases_path }
+
+    context "where no releases directory has been set" do
+      before do
+        dsl.delete(:releases_directory)
+      end
+
+      it "returns the `releases_path` value" do
+        expect(subject.to_s).to eq "/var/www/releases"
+      end
+    end
+
+    context "where the release path has been set" do
+      before do
+        dsl.set(:releases_directory, "release_directory")
+      end
+
+      it "returns the set `releases_path` value" do
+        expect(subject.to_s).to eq "/var/www/release_directory"
+      end
+    end
+  end
+
+
+
   describe "#set_release_path" do
     let(:now) { Time.parse("Oct 21 16:29:00 2015") }
     subject { dsl.release_path }
