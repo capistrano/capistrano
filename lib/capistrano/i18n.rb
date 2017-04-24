@@ -19,7 +19,7 @@ en = {
   cannot_rollback: "There are no older releases to rollback to",
   cannot_found_rollback_release: "Cannot rollback because release %{release} does not exist",
   mirror_exists: "The repository mirror is at %{at}",
-  revision_log_message: "Branch %{branch} (at %{sha}) deployed as release %{release} by %{user}",
+  revision_log_message: "[%{time}] Branch %{branch} (at %{sha}) deployed as release %{release} by %{user}",
   rollback_log_message: "%{user} rolled back to release %{release}",
   deploy_failed: "The deploy has failed with an error: %{ex}",
   console: {
