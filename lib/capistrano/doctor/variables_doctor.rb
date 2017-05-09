@@ -12,7 +12,8 @@ module Capistrano
 
       include Capistrano::Doctor::OutputHelpers
 
-      def initialize(env=Capistrano::Configuration.env)
+      def initialize(additional_variables_whitelist=%i(), env=Capistrano::Configuration.env)
+        @additional_variables_whitelist = additional_variables_whitelist
         @env = env
       end
 
@@ -53,12 +54,16 @@ module Capistrano
       end
 
       def suspicious_keys
-        (variables.untrusted_keys & variables.unused_keys) - WHITELIST
+        (variables.untrusted_keys & variables.unused_keys) - actual_whitelist
       end
 
       def location(key)
         loc = variables.source_locations(key).first
         loc && loc.sub(/^#{Regexp.quote(Dir.pwd)}/, "").sub(/:in.*/, "")
+      end
+
+      def actual_whitelist
+        WHITELIST | @additional_variables_whitelist
       end
     end
   end

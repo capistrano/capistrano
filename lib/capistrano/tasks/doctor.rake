@@ -14,7 +14,7 @@ namespace :doctor do
 
   desc "Display the values of all Capistrano variables"
   task :variables do
-    Capistrano::Doctor::VariablesDoctor.new.call
+    Capistrano::Doctor::VariablesDoctor.new(fetch(:doctor_variables_whitelist, %i())).call
   end
 
   desc "Display the effective servers configuration"
