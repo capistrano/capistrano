@@ -15,8 +15,10 @@ namespace :git do
   task check: :'git:wrapper' do
     fetch(:branch)
     on release_roles :all do
-      with fetch(:git_environmental_variables) do
-        git_plugin.check_repo_is_reachable
+      within repo_path do
+        with fetch(:git_environmental_variables) do
+          git_plugin.check_repo_is_reachable
+        end
       end
     end
   end
