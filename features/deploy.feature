@@ -52,3 +52,12 @@ Feature: Deploy
     When I run cap "deploy:symlink:release"
     Then the current directory will be a symlink to the release
 
+  Scenario: Rolling Back
+    Given I make 2 deployments
+    When I run cap "deploy:rollback"
+    Then the current symlink points to the previous release
+
+  Scenario: Rolling Back to a specific release
+    Given I make 3 deployments
+    When I rollback to a specific release
+    Then the current symlink points to that specific release

@@ -1,7 +1,9 @@
-require "English"
+require "open3"
 
 module VagrantHelpers
   extend self
+
+  attr_accessor :status, :stdout, :stderr
 
   class VagrantSSHCommandError < RuntimeError; end
 
@@ -17,17 +19,18 @@ module VagrantHelpers
   def vagrant_cli_command(command)
     puts "[vagrant] #{command}"
     Dir.chdir(VAGRANT_ROOT) do
-      `#{VAGRANT_BIN} #{command} 2>&1`.split("\n").each do |line|
-        puts "[vagrant] #{line}"
-      end
+      @stdout, @stderr, @status = Open3.capture3("#{VAGRANT_BIN} #{command}")
     end
-    $CHILD_STATUS
+
+    (@stdout + @stderr).split("\n").each { |line| puts "[vagrant] #{line}" }
+
+    @status
   end
 
   def run_vagrant_command(command)
-    status = vagrant_cli_command("ssh -c #{command.inspect}")
-    return true if status.success?
-    raise VagrantSSHCommandError, status
+    vagrant_cli_command("ssh -c #{command.inspect}")
+    return true if @status.success?
+    raise VagrantSSHCommandError, @status
   end
 end
 

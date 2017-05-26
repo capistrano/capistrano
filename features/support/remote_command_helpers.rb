@@ -15,6 +15,10 @@ module RemoteCommandHelpers
     %Q{[ -#{type} "#{path}" ]}
   end
 
+  def symlinked?(symlink_path, target_path)
+    "[ #{symlink_path} -ef #{target_path} ]"
+  end
+
   def safely_remove_file(_path)
     run_vagrant_command("rm #{test_file}")
   rescue

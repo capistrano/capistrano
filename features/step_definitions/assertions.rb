@@ -124,3 +124,15 @@ end
 Then(/doesn't contain "([^"]*)" in the output/) do |expected|
   expect(@output).not_to include(expected)
 end
+
+Then(/the current symlink points to the previous release/) do
+  previous_release_path = @release_paths[-2]
+
+  run_vagrant_command(symlinked?(TestApp.current_path, previous_release_path))
+end
+
+Then(/^the current symlink points to that specific release$/) do
+  specific_release_path = TestApp.releases_path.join(@rollback_release)
+
+  run_vagrant_command(symlinked?(TestApp.current_path, specific_release_path))
+end
