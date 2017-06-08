@@ -29,5 +29,8 @@ set :repo_url, "git@example.com:me/my_repo.git"
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
 
+# Default value for local_user is ENV['USER']
+# set :local_user, -> { `git config user.name`.chomp }
+
 # Default value for keep_releases is 5
 # set :keep_releases, 5
