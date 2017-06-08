@@ -42,9 +42,9 @@ repository the content will be a  raw git repository (e.g. objects, refs,
 etc.).
 
 * `revisions.log` is used to log every deploy or rollback. Each entry is
-timestamped and the executing  user (username from local machine) is listed.
-Depending on your VCS data like branchnames or revision  numbers are listed as
-well.
+timestamped and the executing  user (`:local_user`, defaulting to the local
+username) is listed. Depending on your VCS data like branch names or revision
+numbers are listed as well.
 
 * `shared` contains the `linked_files` and `linked_dirs` which are symlinked
 into each release. This  data persists across deployments and releases. It
