@@ -6,7 +6,9 @@ end
 
 Then(/^git wrapper permissions are 0700$/) do
   permissions_test = %Q([ $(stat -c "%a" #{TestApp.git_wrapper_path.shellescape}) == "700" ])
-  expect(vagrant_cli_command("ssh -c #{permissions_test.shellescape}")).to be_success
+  _stdout, _stderr, status = vagrant_cli_command("ssh -c #{permissions_test.shellescape}")
+
+  expect(status).to be_success
 end
 
 Then(/^the shared path is created$/) do

@@ -72,7 +72,7 @@ Given(/^I make (\d+) deployments$/) do |count|
 
   @release_paths = (1..count.to_i).map do
     TestApp.cap("deploy")
-    run_vagrant_command("readlink #{TestApp.current_path}")
+    stdout, _stderr = run_vagrant_command("readlink #{TestApp.current_path}")
 
     stdout.strip
   end
