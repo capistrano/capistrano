@@ -1,6 +1,12 @@
 # Capistrano 3.x Changelog
 
-All notable changes to this project will be documented in this file, in reverse chronological order. This project adheres to [Semantic Versioning](http://semver.org).
+All notable changes to this project will be documented in this file, in reverse chronological order.
+
+**Capistrano follows a modified version of [SemVer](http://semver.org)**, similar to the Ruby on Rails project. For a `X.Y.Z` release:
+
+* `Z` indicates bug fixes only; no breaking changes and no new features, except as necessary for security fixes.
+* `Y` is bumped when we add new features. Occasionally a `Y` release may include small breaking changes. We will notify via CHANGELOG entries and/or deprecation notices if there are breaking changes.
+* `X` is incremented for significant breaking changes. This is reserved for special occasions, like a complete rewrite.
 
 **Capistrano uses a six-week release cadence.** Every six weeks, give or take, any changes in master will be published as a new rubygems version. If you'd like to use a feature or fix that is in master and you can't wait for the next planned release, put this in your project's Gemfile to use the master branch directly:
 
