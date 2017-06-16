@@ -186,6 +186,8 @@ Related GitHub repositories:
 
 GitHub issues are for bug reports and feature requests. Please refer to the [CONTRIBUTING](CONTRIBUTING.md) document for guidelines on submitting GitHub issues.
 
+If you think you may have discovered a security vulnerability in Capistrano, do not open a GitHub issue. Instead, please send a report to <security@capistranorb.com>.
+
 ## How to contribute
 
 Contributions to Capistrano, in the form of code, documentation or idea, are gladly accepted. Read the [DEVELOPMENT](DEVELOPMENT.md) document to learn how to hack on Capistrano's code, run the tests, and contribute your first pull request.

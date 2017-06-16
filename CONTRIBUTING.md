@@ -41,6 +41,8 @@ Also include in your report:
 
 If you are an experienced Ruby programmer, take a few minutes to get the Capistrano test suite running (see [DEVELOPMENT.md][]), and do what you can to get a test case written that fails. *This will be a huge help!*
 
+If you think you may have discovered a security vulnerability in Capistrano, do not open a GitHub issue. Instead, please send a report to <security@capistranorb.com>.
+
 ## Requesting new features or improvements
 
 Capistrano continues to improve thanks to people like you! Feel free to open a GitHub issue for any or all of these ideas:
