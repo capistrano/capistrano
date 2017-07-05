@@ -13,3 +13,9 @@ end
 When(/^I run "(.*?)"$/) do |command|
   @success, @output = TestApp.run(command)
 end
+
+When(/^I rollback to a specific release$/) do
+  @rollback_release = @release_paths.first.split("/").last
+
+  step %Q{I run cap "deploy:rollback ROLLBACK_RELEASE=#{@rollback_release}"}
+end

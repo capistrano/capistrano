@@ -6,7 +6,9 @@ end
 
 Then(/^git wrapper permissions are 0700$/) do
   permissions_test = %Q([ $(stat -c "%a" #{TestApp.git_wrapper_path.shellescape}) == "700" ])
-  expect(vagrant_cli_command("ssh -c #{permissions_test.shellescape}")).to be_success
+  _stdout, _stderr, status = vagrant_cli_command("ssh -c #{permissions_test.shellescape}")
+
+  expect(status).to be_success
 end
 
 Then(/^the shared path is created$/) do
@@ -123,4 +125,16 @@ end
 
 Then(/doesn't contain "([^"]*)" in the output/) do |expected|
   expect(@output).not_to include(expected)
+end
+
+Then(/the current symlink points to the previous release/) do
+  previous_release_path = @release_paths[-2]
+
+  run_vagrant_command(symlinked?(TestApp.current_path, previous_release_path))
+end
+
+Then(/^the current symlink points to that specific release$/) do
+  specific_release_path = TestApp.releases_path.join(@rollback_release)
+
+  run_vagrant_command(symlinked?(TestApp.current_path, specific_release_path))
 end

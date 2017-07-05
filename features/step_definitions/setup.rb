@@ -21,8 +21,14 @@ end
 
 Given(/^file "(.*?)" exists in shared path$/) do |file|
   file_shared_path = TestApp.shared_path.join(file)
-  run_vagrant_command("mkdir -p #{TestApp.shared_path}")
+  run_vagrant_command("mkdir -p #{file_shared_path.dirname}")
   run_vagrant_command("touch #{file_shared_path}")
+end
+
+Given(/^all linked files exists in shared path$/) do
+  TestApp.linked_files.each do |linked_file|
+    step %Q{file "#{linked_file}" exists in shared path}
+  end
 end
 
 Given(/^file "(.*?)" does not exist in shared path$/) do |file|
@@ -59,4 +65,15 @@ end
 
 Given(/^a stage file named (.+)$/) do |filename|
   TestApp.write_local_stage_file(filename)
+end
+
+Given(/^I make (\d+) deployments$/) do |count|
+  step "all linked files exists in shared path"
+
+  @release_paths = (1..count.to_i).map do
+    TestApp.cap("deploy")
+    stdout, _stderr = run_vagrant_command("readlink #{TestApp.current_path}")
+
+    stdout.strip
+  end
 end
