@@ -130,10 +130,13 @@ The following variables are settable:
 * `:log_level`
   * **default:** `:debug`
   * Used in SSHKit.
+  * Other available options are :info, :warn and :error.
 
 * `:format`
   * **default:** `:airbrussh`
   * Used in SSHKit.
+  * Other available options are :dot and :pretty.
+  * The default formatter :airbrussh will print the output even when :log_level is :warn or :error, while :dot and :pretty will use the defined :log_level.
 
 
 Capistrano plugins can provide their own configuration variables. Please refer
