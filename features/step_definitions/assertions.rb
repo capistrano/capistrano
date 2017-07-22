@@ -21,12 +21,14 @@ end
 
 Then(/^(\d+) valid releases are kept/) do |num| # default is 5
   test = %Q([ $(ls -g #{TestApp.releases_path} | grep -E '[0-9]{14}' | wc -l) == "#{num}" ])
-  expect(vagrant_cli_command("ssh -c #{test.shellescape}")).to be_success
+  _, _, status = vagrant_cli_command("ssh -c #{test.shellescape}")
+  expect(status).to be_success
 end
 
 Then(/^the invalid (.+) release is ignored$/) do |filename|
   test = "ls -g #{TestApp.releases_path} | grep #{filename}"
-  expect(vagrant_cli_command("ssh -c #{test.shellescape}")).to be_success
+  _, _, status = vagrant_cli_command("ssh -c #{test.shellescape}")
+  expect(status).to be_success
 end
 
 Then(/^directories in :linked_dirs are created in shared$/) do
