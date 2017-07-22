@@ -19,7 +19,7 @@ Then(/^the releases path is created$/) do
   run_vagrant_command(test_dir_exists(TestApp.releases_path))
 end
 
-Then(/^(\d+) valid releases are kept/) do |num| # default is 5
+Then(/^(\d+) valid releases are kept/) do |num|
   test = %Q([ $(ls -g #{TestApp.releases_path} | grep -E '[0-9]{14}' | wc -l) == "#{num}" ])
   _, _, status = vagrant_cli_command("ssh -c #{test.shellescape}")
   expect(status).to be_success
