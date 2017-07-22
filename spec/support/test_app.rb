@@ -132,12 +132,12 @@ module TestApp
     deploy_to.join("releases")
   end
 
-  def release_path
-    releases_path.join(timestamp)
+  def release_path(t=timestamp)
+    releases_path.join(t)
   end
 
-  def timestamp
-    Time.now.utc.strftime("%Y%m%d%H%M%S")
+  def timestamp(offset=0)
+    (Time.now.utc + offset).strftime("%Y%m%d%H%M%S")
   end
 
   def repo_path

@@ -52,6 +52,14 @@ Feature: Deploy
     When I run cap "deploy:symlink:release"
     Then the current directory will be a symlink to the release
 
+  Scenario: Cleanup
+    Given config stage file has line "set :keep_releases, 3"
+    And 5 valid existing releases
+    And an invalid release named "new"
+    When I run cap "deploy:cleanup"
+    Then 3 valid releases are kept
+    And the invalid "new" release is ignored
+
   Scenario: Rolling Back
     Given I make 2 deployments
     When I run cap "deploy:rollback"
@@ -61,3 +69,4 @@ Feature: Deploy
     Given I make 3 deployments
     When I rollback to a specific release
     Then the current symlink points to that specific release
+

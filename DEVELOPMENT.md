@@ -28,11 +28,10 @@ Capistrano is a Ruby project, so we expect you to have a functioning Ruby enviro
 
 Make sure to install:
 
-* [Bundler](https://bundler.io/) 1.10.5 (see note)
+* [Bundler](https://bundler.io/)
 * [Vagrant](https://www.vagrantup.com/)
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (or another [Vagrant-supported](https://docs.vagrantup.com/v2/getting-started/providers.html) VM host)
 
-*Note: As of this writing (December 2015), Vagrant does not work with Bundler > 1.10.5. If you have multiple versions of Bundler installed, use the special underscore command-line argument to force a compatible version, like this: `bundle _1.10.5_ exec rake features`.*
 
 ### Running tests
 
@@ -45,7 +44,7 @@ $ bundle install
 # Run the RSpec suite
 $ bundle exec rake spec
 
-# Run the Cucumber suite (requires Bundler 1.10.5)
+# Run the Cucumber suite
 $ bundle exec rake features
 
 # Run the Cucumber suite and leave the VM running (faster for subsequent runs)

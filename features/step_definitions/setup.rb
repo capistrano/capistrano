@@ -77,3 +77,16 @@ Given(/^I make (\d+) deployments$/) do |count|
     stdout.strip
   end
 end
+
+Given(/^(\d+) valid existing releases$/) do |num|
+  a_day = 86_400 # in seconds
+  offset = -(a_day * num.to_i)
+  num.to_i.times do
+    run_vagrant_command("mkdir -p #{TestApp.release_path(TestApp.timestamp(offset))}")
+    offset += a_day
+  end
+end
+
+Given(/^an invalid release named "(.+)"$/) do |filename|
+  run_vagrant_command("mkdir -p #{TestApp.release_path(filename)}")
+end

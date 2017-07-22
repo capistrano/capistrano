@@ -20,6 +20,8 @@ https://github.com/capistrano/capistrano/compare/v3.8.1...HEAD
 
 * Your contribution here!
 
+* Updated `deploy:cleanup` to continue rotating the releases and skip the invalid directory names instead of skipping the whole rotation of releases. The warning message has changed slightly due to the change of behavior.
+
 ## `3.8.2` (2017-06-16)
 
 https://github.com/capistrano/capistrano/compare/v3.8.1...v3.8.2
