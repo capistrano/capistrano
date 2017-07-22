@@ -19,10 +19,16 @@ module Capistrano
         colors = SSHKit::Color.new($stderr)
         $stderr.puts colors.colorize("Skipping task `#{task_name}'.", :yellow)
         $stderr.puts "Capistrano tasks may only be invoked once. Since task `#{task}' was previously invoked, invoke(\"#{task_name}\") at #{file}:#{line} will be skipped."
-        $stderr.puts "If you really meant to run this task again, first call Rake::Task[\"#{task_name}\"].reenable"
+        $stderr.puts "If you really meant to run this task again, use invoke!(\"#{task_name}\")"
         $stderr.puts colors.colorize("THIS BEHAVIOR MAY CHANGE IN A FUTURE VERSION OF CAPISTRANO. Please join the conversation here if this affects you.", :red)
         $stderr.puts colors.colorize("https://github.com/capistrano/capistrano/issues/1686", :red)
       end
+      task.invoke(*args)
+    end
+
+    def invoke!(task_name, *args)
+      task = Rake::Task[task_name]
+      task.reenable
       task.invoke(*args)
     end
 

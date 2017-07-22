@@ -77,7 +77,7 @@ module Capistrano
         dsl.invoke("some_task")
         expect do
           dsl.invoke("some_task")
-        end.to output(/.*Capistrano tasks may only be invoked once.*/).to_stderr
+        end.to output(/If you really meant to run this task again, use invoke!/).to_stderr
       end
     end
   end
