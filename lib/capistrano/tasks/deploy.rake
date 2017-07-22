@@ -149,16 +149,13 @@ namespace :deploy do
   task :cleanup do
     on release_roles :all do |host|
       releases = capture(:ls, "-x", releases_path).split
-      invalid_releases = releases.reject { |e| /^\d{14}$/ =~ e }
+      valid, invalid = releases.partition { |e| /^\d{14}$/ =~ e }
 
-      if invalid_releases.any?
-        warn t(:skip_cleanup, host: host.to_s)
-        releases -= invalid_releases
-      end
+      warn t(:skip_cleanup, host: host.to_s) if invalid.any?
 
-      if releases.count >= fetch(:keep_releases)
-        info t(:keeping_releases, host: host.to_s, keep_releases: fetch(:keep_releases), releases: releases.count)
-        directories = (releases - releases.last(fetch(:keep_releases)))
+      if valid.count >= fetch(:keep_releases)
+        info t(:keeping_releases, host: host.to_s, keep_releases: fetch(:keep_releases), releases: valid.count)
+        directories = (valid - valid.last(fetch(:keep_releases)))
         if directories.any?
           directories_str = directories.map do |release|
             releases_path.join(release)
