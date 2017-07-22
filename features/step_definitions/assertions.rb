@@ -19,6 +19,16 @@ Then(/^the releases path is created$/) do
   run_vagrant_command(test_dir_exists(TestApp.releases_path))
 end
 
+Then(/^(\d+) valid releases are kept/) do |num| # default is 5
+  test = %Q([ $(ls -g #{TestApp.releases_path} | grep -E '[0-9]{14}' | wc -l) == "#{num}" ])
+  expect(vagrant_cli_command("ssh -c #{test.shellescape}")).to be_success
+end
+
+Then(/^the invalid (.+) release is ignored$/) do |filename|
+  test = "ls -g #{TestApp.releases_path} | grep #{filename}"
+  expect(vagrant_cli_command("ssh -c #{test.shellescape}")).to be_success
+end
+
 Then(/^directories in :linked_dirs are created in shared$/) do
   TestApp.linked_dirs.each do |dir|
     run_vagrant_command(test_dir_exists(TestApp.shared_path.join(dir)))
