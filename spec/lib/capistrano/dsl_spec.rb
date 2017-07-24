@@ -71,13 +71,54 @@ module Capistrano
     end
 
     describe "#invoke" do
-      it "will print a message on stderr, when reinvoking task" do
-        Rake::Task.define_task("some_task")
+      context "reinvoking" do
+        it "will not reenable invoking task" do
+          counter = 0
 
-        dsl.invoke("some_task")
-        expect do
-          dsl.invoke("some_task")
-        end.to output(/.*Capistrano tasks may only be invoked once.*/).to_stderr
+          Rake::Task.define_task("A") do
+            counter += 1
+          end
+
+          expect do
+            dsl.invoke("A")
+            dsl.invoke("A")
+          end.to change { counter }.by(1)
+        end
+
+        it "will print a message on stderr" do
+          Rake::Task.define_task("B")
+
+          expect do
+            dsl.invoke("B")
+            dsl.invoke("B")
+          end.to output(/If you really meant to run this task again, use invoke!/).to_stderr
+        end
+      end
+    end
+
+    describe "#invoke!" do
+      context "reinvoking" do
+        it "will reenable invoking task" do
+          counter = 0
+
+          Rake::Task.define_task("C") do
+            counter += 1
+          end
+
+          expect do
+            dsl.invoke!("C")
+            dsl.invoke!("C")
+          end.to change { counter }.by(2)
+        end
+
+        it "will not print a message on stderr" do
+          Rake::Task.define_task("D")
+
+          expect do
+            dsl.invoke!("D")
+            dsl.invoke!("D")
+          end.to_not output(/If you really meant to run this task again, use invoke!/).to_stderr
+        end
       end
     end
   end
