@@ -16,20 +16,25 @@ gem "capistrano", :github => "capistrano/capistrano"
 
 ## master
 
-https://github.com/capistrano/capistrano/compare/v3.8.2...HEAD
+https://github.com/capistrano/capistrano/compare/v3.9.0...HEAD
 
 * Your contribution here!
 
-* Updated `deploy:cleanup` to continue rotating the releases and skip the invalid directory names instead of skipping the whole rotation of releases. The warning message has changed slightly due to the change of behavior.
-* [#1911](https://github.com/capistrano/capistrano/pull/1911): Add Capistrano::DSL#invoke! for repetetive tasks
+## `3.9.0` (2017-07-28)
+
+https://github.com/capistrano/capistrano/compare/v3.8.2...v3.9.0
 
 ### Breaking changes:
 
 * None
 
-### Other changes:
+### New features:
 
-* None
+* [#1911](https://github.com/capistrano/capistrano/pull/1911): Add Capistrano::DSL#invoke! for repetetive tasks
+
+### Fixes:
+
+* [#1899](https://github.com/capistrano/capistrano/pull/1899): Updated `deploy:cleanup` to continue rotating the releases and skip the invalid directory names instead of skipping the whole rotation of releases. The warning message has changed slightly due to the change of behavior.
 
 ## `3.8.2` (2017-06-16)
 
