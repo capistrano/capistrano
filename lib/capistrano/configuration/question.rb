@@ -18,6 +18,7 @@ module Capistrano
 
       def ask_question
         $stdout.print question
+        $stdout.flush
       end
 
       def value_or_default
