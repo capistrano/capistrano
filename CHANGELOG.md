@@ -19,6 +19,7 @@ gem "capistrano", :github => "capistrano/capistrano"
 https://github.com/capistrano/capistrano/compare/v3.9.0...HEAD
 
 * Your contribution here!
+* [#1912](https://github.com/capistrano/capistrano/pull/1912): Fixed an issue that does not display ask_question - [@kminiatures](https://github.com/kminiatures)
 
 ## `3.9.0` (2017-07-28)
 
