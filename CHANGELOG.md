@@ -31,7 +31,7 @@ https://github.com/capistrano/capistrano/compare/v3.8.2...v3.9.0
 
 ### New features:
 
-* [#1911](https://github.com/capistrano/capistrano/pull/1911): Add Capistrano::DSL#invoke! for repetetive tasks
+* [#1911](https://github.com/capistrano/capistrano/pull/1911): Add Capistrano::DSL#invoke! for repetitive tasks
 
 ### Fixes:
 
