@@ -16,10 +16,21 @@ gem "capistrano", :github => "capistrano/capistrano"
 
 ## master
 
-https://github.com/capistrano/capistrano/compare/v3.9.0...HEAD
+https://github.com/capistrano/capistrano/compare/v3.9.1...HEAD
 
 * Your contribution here!
-* [#1912](https://github.com/capistrano/capistrano/pull/1912): Fixed an issue that does not display ask_question - [@kminiatures](https://github.com/kminiatures)
+
+## `3.9.1` (2017-09-08)
+
+https://github.com/capistrano/capistrano/compare/v3.9.0...v3.9.1
+
+### Breaking changes:
+
+* None
+
+### Fixes:
+
+* [#1912](https://github.com/capistrano/capistrano/pull/1912): Fixed an issue where questions posed by `ask` were not printed on certain platforms - [@kminiatures](https://github.com/kminiatures)
 
 ## `3.9.0` (2017-07-28)
 
