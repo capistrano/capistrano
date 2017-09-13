@@ -14,15 +14,15 @@ All notable changes to this project will be documented in this file, in reverse 
 gem "capistrano", :github => "capistrano/capistrano"
 ```
 
-## master
+## [master]
 
-https://github.com/capistrano/capistrano/compare/v3.9.1...HEAD
+[master]: https://github.com/capistrano/capistrano/compare/v3.9.1...HEAD
 
 * Your contribution here!
 
-## `3.9.1` (2017-09-08)
+## [`3.9.1`] (2017-09-08)
 
-https://github.com/capistrano/capistrano/compare/v3.9.0...v3.9.1
+[`3.9.1`]: https://github.com/capistrano/capistrano/compare/v3.9.0...v3.9.1
 
 ### Breaking changes:
 
@@ -32,9 +32,9 @@ https://github.com/capistrano/capistrano/compare/v3.9.0...v3.9.1
 
 * [#1912](https://github.com/capistrano/capistrano/pull/1912): Fixed an issue where questions posed by `ask` were not printed on certain platforms - [@kminiatures](https://github.com/kminiatures)
 
-## `3.9.0` (2017-07-28)
+## [`3.9.0`] (2017-07-28)
 
-https://github.com/capistrano/capistrano/compare/v3.8.2...v3.9.0
+[`3.9.0`]: https://github.com/capistrano/capistrano/compare/v3.8.2...v3.9.0
 
 ### Breaking changes:
 
@@ -60,9 +60,9 @@ https://github.com/capistrano/capistrano/compare/v3.8.1...v3.8.2
 
 * [#1882](https://github.com/capistrano/capistrano/pull/1882): Explain where to add new Capfile lines in scm deprecation warning - [@robd](https://github.com/robd)
 
-## `3.8.1` (2017-04-21)
+## [`3.8.1`] (2017-04-21)
 
-https://github.com/capistrano/capistrano/compare/v3.8.0...v3.8.1
+[`3.8.1`]: https://github.com/capistrano/capistrano/compare/v3.8.0...v3.8.1
 
 ### Breaking changes:
 
@@ -72,9 +72,9 @@ https://github.com/capistrano/capistrano/compare/v3.8.0...v3.8.1
 
 * [#1867](https://github.com/capistrano/capistrano/pull/1867): Allow `cap -T` to run without Capfile present - [@mattbrictson](https://github.com/mattbrictson)
 
-## `3.8.0` (2017-03-10)
+## [`3.8.0`] (2017-03-10)
 
-https://github.com/capistrano/capistrano/compare/v3.7.2...v3.8.0
+[`3.8.0`]: https://github.com/capistrano/capistrano/compare/v3.7.2...v3.8.0
 
 ### Minor breaking changes:
 
@@ -100,9 +100,9 @@ https://github.com/capistrano/capistrano/compare/v3.7.2...v3.8.0
 * [#1859](https://github.com/capistrano/capistrano/pull/1859): Move git-specific repo_url logic into git plugin - [@mattbrictson](https://github.com/mattbrictson)
 * [#1858](https://github.com/capistrano/capistrano/pull/1858): Unset the :scm variable when an SCM plugin is used - [@mattbrictson](https://github.com/mattbrictson)
 
-## `3.7.2` (2017-01-27)
+## [`3.7.2`] (2017-01-27)
 
-https://github.com/capistrano/capistrano/compare/v3.7.1...v3.7.2
+[`3.7.2`]: https://github.com/capistrano/capistrano/compare/v3.7.1...v3.7.2
 
 ### Potentially breaking changes:
 
@@ -113,9 +113,9 @@ https://github.com/capistrano/capistrano/compare/v3.7.1...v3.7.2
 * Suppress log messages of `git ls-remote` by filtering remote refs (@aeroastro)
 * The Git SCM now allows the repo_url to be changed without manually wiping out the mirror on each target host first (@javanthropus)
 
-## `3.7.1` (2016-12-16)
+## [`3.7.1`] (2016-12-16)
 
-https://github.com/capistrano/capistrano/compare/v3.7.0...v3.7.1
+[`3.7.1`]: https://github.com/capistrano/capistrano/compare/v3.7.0...v3.7.1
 
 ### Potentially breaking changes:
 
@@ -125,9 +125,9 @@ https://github.com/capistrano/capistrano/compare/v3.7.0...v3.7.1
 
 * Fixed a bug with mercurial deploys failing due to an undefined variable
 
-## `3.7.0` (2016-12-10)
+## [`3.7.0`] (2016-12-10)
 
-https://github.com/capistrano/capistrano/compare/v3.6.1...v3.7.0
+[`3.7.0`]: https://github.com/capistrano/capistrano/compare/v3.6.1...v3.7.0
 
 *Note: These release notes include all changes since 3.6.1, including the changes that were first published in 3.7.0.beta1.*
 
@@ -151,9 +151,9 @@ https://github.com/capistrano/capistrano/compare/v3.6.1...v3.7.0
 * Fix bug where host_filter and role_filter were overly greedy [#1766](https://github.com/capistrano/capistrano/issues/1766) (@cseeger-epages)
 * Fix the removal of old releases `deploy:cleanup`. Logic is changed because of unreliable modification times on folders. Removal of directories is now decided by sorting on folder names (name is generated from current datetime format YmdHis). Cleanup is skipped, and a warning is given when a folder name is in a different format
 
-## `3.7.0.beta1` (2016-11-02)
+## [`3.7.0.beta1`] (2016-11-02)
 
-https://github.com/capistrano/capistrano/compare/v3.6.1...v3.7.0.beta1
+[`3.7.0.beta1`]: https://github.com/capistrano/capistrano/compare/v3.6.1...v3.7.0.beta1
 
 ### Deprecations:
 
@@ -177,9 +177,9 @@ the [new plugin system](http://capistranorb.com/documentation/advanced-features/
 * Fix test suite to work with Mocha 1.2.0 (@caius)
 * Fix bug where host_filter and role_filter were overly greedy [#1766](https://github.com/capistrano/capistrano/issues/1766) (@cseeger-epages)
 
-## `3.6.1` (2016-08-23)
+## [`3.6.1`] (2016-08-23)
 
-https://github.com/capistrano/capistrano/compare/v3.6.0...v3.6.1
+[`3.6.1`]: https://github.com/capistrano/capistrano/compare/v3.6.0...v3.6.1
 
 ### Fixes:
 
@@ -187,9 +187,9 @@ https://github.com/capistrano/capistrano/compare/v3.6.0...v3.6.1
 * Fix `NoMethodError: undefined method gsub` when setting `:application` to a Proc. The original fix released in 3.6.0 worked for values specified with blocks, but not for those specified with procs or lambdas (the latter syntax is much more common). [#1681](https://github.com/capistrano/capistrano/issues/1681)
 * Fix a bug where deploy would fail if `:local_user` contained a space; spaces are now replaced with dashes when computing the git-ssh suffix. (@will_in_wi)
 
-## `3.6.0` (2016-07-26)
+## [`3.6.0`] (2016-07-26)
 
-https://github.com/capistrano/capistrano/compare/v3.5.0...v3.6.0
+[`3.6.0`]: https://github.com/capistrano/capistrano/compare/v3.5.0...v3.6.0
 
 Thank you to the many first-time contributors from the Capistrano community who
 helped with this release!
@@ -227,9 +227,9 @@ affected by these deprecations.
   * Restrict the uploaded git wrapper script permissions to 700 (@irvingwashington)
   * Add `net-ssh` gem version to `doctor:gems` output (@lebedev-yury)
 
-## `3.5.0`
+## [`3.5.0`]
 
-https://github.com/capistrano/capistrano/compare/v3.4.1...v3.5.0
+[`3.5.0`]: https://github.com/capistrano/capistrano/compare/v3.4.1...v3.5.0
 
 **You'll notice a big cosmetic change in this release: the default logging
 format has been changed to
@@ -300,9 +300,9 @@ and how to configure it, visit the
   of case statements (@cshaffer)
 * Clean up rubocop lint warnings (@cshaffer)
 
-## `3.4.0`
+## [`3.4.0`]
 
-https://github.com/capistrano/capistrano/compare/v3.3.5...v3.4.0
+[`3.4.0`]: https://github.com/capistrano/capistrano/compare/v3.3.5...v3.4.0
 
 * Fixed fetch revision for annotated git tags. (@igorsokolov)
 * Fixed updating roles when custom user or port is specified. (@ayastreb)
@@ -334,16 +334,16 @@ https://github.com/capistrano/capistrano/compare/v3.3.5...v3.4.0
   * Allow specification of repo_path using stage variable
     default is as before (@townsen)
 
-## `3.3.5`
+## [`3.3.5`]
 
-https://github.com/capistrano/capistrano/compare/v3.3.4...v3.3.5
+[`3.3.5`]: https://github.com/capistrano/capistrano/compare/v3.3.4...v3.3.5
 
 * Fixed setting properties twice when creating new server. See [issue
   #1214](https://github.com/capistrano/capistrano/issues/1214) (@ayastreb)
 
-## `3.3.4`
+## [`3.3.4`]
 
-https://github.com/capistrano/capistrano/compare/v3.3.3...v3.3.4
+[`3.3.4`]: https://github.com/capistrano/capistrano/compare/v3.3.3...v3.3.4
 
 * Minor changes:
   * Rely on a newer version of capistrano-stats with better privacy (@leehambley)
@@ -352,9 +352,9 @@ https://github.com/capistrano/capistrano/compare/v3.3.3...v3.3.4
   * Spec improvements (@dimitrid, @sponomarev)
   * Fix to CLI flags for git-ls-remote (@dimitrid)
 
-## `3.3.3`
+## [`3.3.3`]
 
-https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.3
+[`3.3.3`]: https://github.com/capistrano/capistrano/compare/v3.2.1...v3.3.3
 
 * Enhancement (@townsen)
   * Added the variable `:repo_tree` which allows the specification of a sub-tree that
@@ -438,9 +438,9 @@ Breaking Changes:
   * Updated svn fetch_revision method to use `svnversion`
   * `cap install` no longer overwrites existing files. (@dmarkow)
 
-## `3.2.1`
+## [`3.2.1`]
 
-https://github.com/capistrano/capistrano/compare/v3.2.0...v3.2.1
+[`3.2.1`]: https://github.com/capistrano/capistrano/compare/v3.2.0...v3.2.1
 
 * Bug Fixes:
   * 3.2.0 introduced some behaviour to modify the way before/after hooks were called, to allow the optional
@@ -455,12 +455,12 @@ https://github.com/capistrano/capistrano/compare/v3.2.0...v3.2.1
   * Added `keys` method to Configuration to allow introspection of configuration options. (@juanibiapina)
   * Improve error message when git:check fails (raise instead of silently `exit 1`) (@mbrictson)
 
-## `3.2.0`
+## [`3.2.0`]
 
 The changelog entries here are incomplete, because many authors choose not to
 be credited for their work, check the tag comparison link for Github.
 
-https://github.com/capistrano/capistrano/compare/v3.1.0...v3.2.0
+[`3.2.0`]: https://github.com/capistrano/capistrano/compare/v3.1.0...v3.2.0
 
 * Minor changes:
   * Added `keys` method to Server properties to allow introspection of automatically added
@@ -468,9 +468,9 @@ https://github.com/capistrano/capistrano/compare/v3.1.0...v3.2.0
   * Compatibility with Rake 10.2.0 - `ensure_task` is now added to `@top_level_tasks` as a string. (@dmarkow)
   * Amended the git check command, "ls-remote", to use "-h", limiting the list to refs/heads
 
-## `3.1.0`
+## [`3.1.0`]
 
-https://github.com/capistrano/capistrano/compare/v3.0.1...v3.1.0
+[`3.1.0`]: https://github.com/capistrano/capistrano/compare/v3.0.1...v3.1.0
 
 Breaking changes:
 
@@ -504,17 +504,17 @@ Breaking changes:
 
 Big thanks to @Kriechi for his help.
 
-## `3.0.1`
+## [`3.0.1`]
 
-https://github.com/capistrano/capistrano/compare/v3.0.0...v3.0.1
+[`3.0.1`]: https://github.com/capistrano/capistrano/compare/v3.0.0...v3.0.1
 
   * `capify` not listed as executable (@leehambley)
   * Confirm license as MIT (@leehambley)
   * Move the git ssh helper to application path (@mpapis)
 
-## `3.0.0`
+## [`3.0.0`]
 
-https://github.com/capistrano/capistrano/compare/2.15.5...v3.0.0
+[`3.0.0`]: https://github.com/capistrano/capistrano/compare/2.15.5...v3.0.0
 
 If you are coming here to wonder why your Capfile doesn't work anymore, please
 vendor lock your Capistrano at 2.x, whichever version was working for you
