@@ -48,9 +48,9 @@ gem "capistrano", :github => "capistrano/capistrano"
 
 * [#1899](https://github.com/capistrano/capistrano/pull/1899): Updated `deploy:cleanup` to continue rotating the releases and skip the invalid directory names instead of skipping the whole rotation of releases. The warning message has changed slightly due to the change of behavior.
 
-## `3.8.2` (2017-06-16)
+## [`3.8.2`] (2017-06-16)
 
-https://github.com/capistrano/capistrano/compare/v3.8.1...v3.8.2
+[`3.8.2`]: https://github.com/capistrano/capistrano/compare/v3.8.1...v3.8.2
 
 ### Breaking changes:
 
