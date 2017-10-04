@@ -66,7 +66,7 @@ Then(/^directory symlinks are created in the new release$/) do
 end
 
 Then(/^the current directory will be a symlink to the release$/) do
-  run_vagrant_command(test_symlink_exists(TestApp.current_path))
+  run_vagrant_command(exists?("e", TestApp.current_path))
 end
 
 Then(/^the deploy\.rb file is created$/) do

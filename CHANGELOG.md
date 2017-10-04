@@ -20,6 +20,7 @@ gem "capistrano", :github => "capistrano/capistrano"
 
 * Your contribution here!
 * As of this release, version 2.x of Capistrano is officially End of Life. No further releases of 2.x series are planned, and pull requests against 2.x are no longer accepted. The maintainers encourage you to upgrade to 3.x if possible.
+* Prevents last good release from being deleted during cleanup if there are too many subsequent failed deploys
 
 ## [`3.9.1`] (2017-09-08)
 

@@ -14,6 +14,8 @@ en = {
   question_default: "Please enter %{key} (%{default_value}): ",
   keeping_releases: "Keeping %{keep_releases} of %{releases} deployed releases on %{host}",
   skip_cleanup: "Skipping cleanup of invalid releases on %{host}; unexpected foldername found (should be timestamp)",
+  wont_delete_current_release: "Current release was marked for being removed but it's going to be skipped on %{host}",
+  no_current_release: "There is no current release present on %{host}",
   no_old_releases: "No old releases (keeping newest %{keep_releases}) on %{host}",
   linked_file_does_not_exist: "linked file %{file} does not exist on %{host}",
   cannot_rollback: "There are no older releases to rollback to",
