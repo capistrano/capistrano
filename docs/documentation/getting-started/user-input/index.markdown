@@ -7,7 +7,7 @@ User input can be required in a task or during configuration:
 
 ```ruby
 # used in a configuration
-set :database_name, ask('Enter the database name:')
+set :database_name, ask(:database_name, "default_database_name")
 
 # used in a task
 desc "Ask about breakfast"
@@ -24,15 +24,16 @@ input from being displayed. This option should be used to ask the user for
 passwords and other sensitive data during a deploy run.
 
 ```ruby
-set :database_password, ask('Enter the database password:', 'default', echo: false)
+set :database_password, ask(:database_password, 'default_password', echo: false)
 ```
 
 
-If you only pass in a symbol this will be printed as text for the user and the
+The symbol passed as a parameter will be printed as text for the user and the
 input will be saved to this variable:
 
 ```ruby
 ask(:database_encoding, 'UTF-8')
+# Please enter :database_encoding (UTF-8):
 
 fetch(:database_encoding)
 # => contains the user input (or the default)
@@ -43,6 +44,6 @@ fetch(:database_encoding)
 You can use `ask` to set a server- or role-specific configuration variable.
 
 ```ruby
-set :password, ask('Server password', nil)
+set :password, ask(:password, nil)
 server 'example.com', user: 'ssh_user_name', port: 22, password: fetch(:password), roles: %w{web app db}
 ```
