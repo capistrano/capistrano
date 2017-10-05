@@ -7,7 +7,7 @@ User input can be required in a task or during configuration:
 
 ```ruby
 # used in a configuration
-set :database_name, ask(:database_name, "default_database_name")
+ask(:database_name, "default_database_name")
 
 # used in a task
 desc "Ask about breakfast"
@@ -24,7 +24,7 @@ input from being displayed. This option should be used to ask the user for
 passwords and other sensitive data during a deploy run.
 
 ```ruby
-set :database_password, ask(:database_password, 'default_password', echo: false)
+ask(:database_password, 'default_password', echo: false)
 ```
 
 
@@ -44,6 +44,12 @@ fetch(:database_encoding)
 You can use `ask` to set a server- or role-specific configuration variable.
 
 ```ruby
-set :password, ask(:password, nil)
+ask(:password, nil)
 server 'example.com', user: 'ssh_user_name', port: 22, password: fetch(:password), roles: %w{web app db}
 ```
+
+
+**Important!** `ask` will not prompt the user immediately. The question is
+deferred until the first time `fetch` is used to obtain the setting. That means
+you can `ask` for many variables, but only the variables used by your task(s)
+will actually prompt the user for input.
