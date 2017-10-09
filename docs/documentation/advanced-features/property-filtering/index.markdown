@@ -26,7 +26,7 @@ server 'example1.com', roles: %w{web}, active: true
 server 'example2.com', roles: %w{web}
 server 'example3.com', roles: %w{app web}, active: true
 server 'example4.com', roles: %w{app}, primary: true
-server 'example5.com', roles: %w{db}, no_release: true, active:true
+server 'example5.com', roles: %w{db}, no_release: true, active: true
 
 task :demo do
   puts "All active release roles: 1,3"
