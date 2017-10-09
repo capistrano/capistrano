@@ -1,15 +1,7 @@
 ---
-title: Task Cookbook
+title: Custom Rails Tasks
 layout: default
 ---
-
-This page documents common custom tasks for specific use cases. It is hoped that these will be copied and modified for your use case, and also provide a basis for understanding how to extend Capistrano for your own usage.
-
-You can also look in most Capistrano repositories (including core) for rake tasks to see further example of how it works.
-
-Feel free to contribute more via a Pull Request.
-
-## Rails
 
 Many of these tasks probably require [Capistrano::Rails](https://github.com/capistrano/rails).
 
