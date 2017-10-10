@@ -89,6 +89,29 @@ module Capistrano
             end
           end
         end
+
+        context "with multiple versions" do
+          let(:current_version) { "3.5.9" }
+
+          context "valid" do
+            let(:version) { [">= 3.5.0", "< 3.5.10"] }
+            it { is_expected.to be_truthy }
+          end
+
+          context "invalid" do
+            let(:version) { [">= 3.5.0", "< 3.5.8"] }
+            it "fails" do
+              expect { subject }.to raise_error(RuntimeError)
+            end
+          end
+
+          context "invalid" do
+            let(:version) { ["> 3.5.9", "< 3.5.13"] }
+            it "fails" do
+              expect { subject }.to raise_error(RuntimeError)
+            end
+          end
+        end
       end
     end
   end
