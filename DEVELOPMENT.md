@@ -71,7 +71,7 @@ Pull requests are awesome, and if they arrive with decent tests, and conform to 
 
 Your code should conform to these guidelines:
 
- * The code is MIT licenced, your code will fall under the same license if we merge it.
+ * The code is MIT licensed, your code will fall under the same license if we merge it.
  * We can't merge it without a [good commit message](http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message). If you do this right, Github will use the commit message as the body of your pull request, double win.
  * If you are making an improvement/fix for an existing issue, make sure to mention the issue number (if we have not yet merged it )
  * Add an entry to the `CHANGELOG` under the `### master` section, but please don't mess with the version.
