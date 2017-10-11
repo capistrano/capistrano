@@ -41,6 +41,11 @@ module Capistrano
           it_behaves_like "it filters hosts correctly", %w{server1 server3}
         end
 
+        context "with mixed splittable and unsplittable strings" do
+          let(:values) { %w{server1 server2,server3} }
+          it_behaves_like "it filters hosts correctly", %w{server1 server2 server3}
+        end
+
         context "with a regexp" do
           let(:values) { "server[13]$" }
           it_behaves_like "it filters hosts correctly", %w{server1 server3}

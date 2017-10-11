@@ -3,8 +3,7 @@ module Capistrano
     class RoleFilter
       def initialize(values)
         av = Array(values).dup
-        av.map! { |v| v.is_a?(String) ? v.split(",") : v }
-        av.flatten!
+        av = av.flat_map { |v| v.is_a?(String) ? v.split(",") : v }
         @rex = regex_matcher(av)
       end
 
