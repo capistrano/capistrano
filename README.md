@@ -88,6 +88,10 @@ Likewise, your server(s) will likely need supporting software installed before y
 
 Capistrano is designed to deploy using a single, non-privileged SSH user, using a *non-interactive* SSH session. If your deployment requires `sudo`, interactive prompts, authenticating as one user but running commands as another, you can probably accomplish this with Capistrano, but it may be difficult. Your automated deployments will be much smoother if you can avoid such requirements.
 
+#### Shells
+
+Capistrano 3 expects a POSIX shell like Bash or Sh. Shells like tcsh, csh, and such may work, but probably will not.
+
 ## Quick start
 
 ### Requirements
