@@ -56,7 +56,7 @@ module Capistrano
         private
 
         def find_whitespace_roles
-          servers.map(&:roles).map(&:to_a).flatten.uniq
+          servers.map(&:roles).flat_map(&:to_a).uniq
                  .select { |role| include_whitespace?(role) }
         end
       end
