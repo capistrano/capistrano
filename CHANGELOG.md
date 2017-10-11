@@ -19,6 +19,7 @@ gem "capistrano", :github => "capistrano/capistrano"
 [master]: https://github.com/capistrano/capistrano/compare/v3.9.1...HEAD
 
 * Your contribution here!
+* As of this release, version 2.x of Capistrano is officially End of Life.
 
 ## [`3.9.1`] (2017-09-08)
 
