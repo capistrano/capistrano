@@ -136,3 +136,7 @@ Capistrano 3 now runs the `deploy:cleanup` task as part of the standard deploy w
 ```ruby
 set :keep_releases, 10
 ```
+
+#### POSIX Shell
+
+Capistrano 3 expects a POSIX shell like Bash or Sh. Shells like tcsh, csh, and such may work, but probably will not.
