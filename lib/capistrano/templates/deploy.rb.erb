@@ -1,5 +1,5 @@
-# config valid only for current version of Capistrano
-lock "<%= Capistrano::VERSION %>"
+# config valid for current version and patch releases of Capistrano
+lock "~> <%= Capistrano::VERSION %>"
 
 set :application, "my_app_name"
 set :repo_url, "git@example.com:me/my_repo.git"
