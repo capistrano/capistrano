@@ -17,8 +17,9 @@ module Capistrano
 
     def enhance(*args, &block)
       $stderr.puts <<-MESSAGE
-WARNING: #{name} has already been invoked and can no longer be modified.
-Check that you haven't loaded a Capistrano plugin in deploy.rb by mistake.
+ERROR: #{name} has already been invoked and can no longer be modified.
+Check that you haven't loaded a Capistrano plugin in deploy.rb or a stage
+(e.g. deploy/production.rb) by mistake.
 Plugins must be loaded in the Capfile to initialize properly.
 MESSAGE
 
