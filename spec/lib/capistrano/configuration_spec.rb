@@ -194,6 +194,15 @@ module Capistrano
             expect(subject).to eq ["string", "vendor/bundle"]
           end
         end
+
+        context "with duplicated value" do
+          before { config.set(:linked_dirs, "tmp") }
+          subject { config.append(:linked_dirs, "tmp") }
+
+          it "returns unique values" do
+            expect(subject).to eq ["tmp"]
+          end
+        end
       end
 
       context "removing" do
