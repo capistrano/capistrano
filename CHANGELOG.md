@@ -21,7 +21,7 @@ gem "capistrano", :github => "capistrano/capistrano"
 * Your contribution here!
 * As of this release, version 2.x of Capistrano is officially End of Life. No further releases of 2.x series are planned, and pull requests against 2.x are no longer accepted. The maintainers encourage you to upgrade to 3.x if possible.
 * [#1937](https://github.com/capistrano/capistrano/pull/1937): Clarify error message when plugin is required in the wrong config file.
-* Default to locking the version using the pessimistic version operator at the patch level.
+* [#1930](https://github.com/capistrano/capistrano/issues/1930): Default to locking the version using the pessimistic version operator at the patch level.
 
 ## [`3.9.1`] (2017-09-08)
 
