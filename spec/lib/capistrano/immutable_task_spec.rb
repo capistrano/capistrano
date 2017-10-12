@@ -16,7 +16,7 @@ module Capistrano
       load_defaults.extend(Capistrano::ImmutableTask)
 
       $stderr.expects(:puts).with do |message|
-        message =~ /^WARNING: load:defaults has already been invoked/
+        message =~ /^ERROR: load:defaults has already been invoked/
       end
 
       expect do
