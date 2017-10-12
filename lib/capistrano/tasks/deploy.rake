@@ -158,13 +158,13 @@ namespace :deploy do
         directories = (valid - valid.last(fetch(:keep_releases))).map do |release|
           releases_path.join(release).to_s
         end
-        begin
+        if test("[ -d #{current_path} ]")
           current_release = capture(:readlink, current_path).to_s
           if directories.include?(current_release)
             warn t(:wont_delete_current_release, host: host.to_s)
             directories.delete(current_release)
           end
-        rescue SSHKit::Command::Failed
+        else
           debug t(:no_current_release, host: host.to_s)
         end
         if directories.any?
