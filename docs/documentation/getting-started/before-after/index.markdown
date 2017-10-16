@@ -13,12 +13,14 @@ after :finishing, :notify
 
 
 # or define in block
-before :starting, :ensure_user do
-  #
-end
+namespace :deploy do
+  before :starting, :ensure_user do
+    #
+  end
 
-after :finishing, :notify do
-  #
+  after :finishing, :notify do
+    #
+  end
 end
 ```
 
