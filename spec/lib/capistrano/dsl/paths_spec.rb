@@ -21,9 +21,9 @@ describe Capistrano::DSL::Paths do
 
     it "returns the full pathnames" do
       expect(subject).to eq [
-                                Pathname.new("/var/shared/log"),
-                                Pathname.new("/var/shared/public/system")
-                            ]
+        Pathname.new("/var/shared/log"),
+        Pathname.new("/var/shared/public/system")
+      ]
     end
   end
 
@@ -36,10 +36,10 @@ describe Capistrano::DSL::Paths do
 
     it "returns the full pathnames" do
       expect(subject).to eq [
-                                Pathname.new("/var/shared/config/database.yml"),
-                                Pathname.new("/var/shared/log/my.log"),
-                                Pathname.new("/var/shared/log/access.log")
-                            ]
+        Pathname.new("/var/shared/config/database.yml"),
+        Pathname.new("/var/shared/log/my.log"),
+        Pathname.new("/var/shared/log/access.log")
+      ]
     end
   end
 
@@ -52,9 +52,9 @@ describe Capistrano::DSL::Paths do
 
     it "returns the full paths names of the parent dirs" do
       expect(subject).to eq [
-                                Pathname.new("/var/shared/config"),
-                                Pathname.new("/var/shared/log")
-                            ]
+        Pathname.new("/var/shared/config"),
+        Pathname.new("/var/shared/log")
+      ]
     end
   end
 
@@ -67,9 +67,9 @@ describe Capistrano::DSL::Paths do
 
     it "returns the full paths names of the parent dirs" do
       expect(subject).to eq [
-                                Pathname.new("/var/shared"),
-                                Pathname.new("/var/shared/public")
-                            ]
+        Pathname.new("/var/shared"),
+        Pathname.new("/var/shared/public")
+      ]
     end
   end
 
