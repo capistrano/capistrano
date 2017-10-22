@@ -21,9 +21,9 @@ describe Capistrano::DSL::Paths do
 
     it "returns the full pathnames" do
       expect(subject).to eq [
-        Pathname.new("/var/shared/log"),
-        Pathname.new("/var/shared/public/system")
-      ]
+                                Pathname.new("/var/shared/log"),
+                                Pathname.new("/var/shared/public/system")
+                            ]
     end
   end
 
@@ -36,10 +36,10 @@ describe Capistrano::DSL::Paths do
 
     it "returns the full pathnames" do
       expect(subject).to eq [
-        Pathname.new("/var/shared/config/database.yml"),
-        Pathname.new("/var/shared/log/my.log"),
-        Pathname.new("/var/shared/log/access.log")
-      ]
+                                Pathname.new("/var/shared/config/database.yml"),
+                                Pathname.new("/var/shared/log/my.log"),
+                                Pathname.new("/var/shared/log/access.log")
+                            ]
     end
   end
 
@@ -52,9 +52,9 @@ describe Capistrano::DSL::Paths do
 
     it "returns the full paths names of the parent dirs" do
       expect(subject).to eq [
-        Pathname.new("/var/shared/config"),
-        Pathname.new("/var/shared/log")
-      ]
+                                Pathname.new("/var/shared/config"),
+                                Pathname.new("/var/shared/log")
+                            ]
     end
   end
 
@@ -67,9 +67,9 @@ describe Capistrano::DSL::Paths do
 
     it "returns the full paths names of the parent dirs" do
       expect(subject).to eq [
-        Pathname.new("/var/shared"),
-        Pathname.new("/var/shared/public")
-      ]
+                                Pathname.new("/var/shared"),
+                                Pathname.new("/var/shared/public")
+                            ]
     end
   end
 
@@ -121,6 +121,39 @@ describe Capistrano::DSL::Paths do
         expect(subject.to_s).to eq "/var/www/releases/timestamp"
       end
     end
+
+  end
+
+  describe "#releases_path" do
+    subject { paths.releases_path }
+
+    context "with custom releases directory" do
+      before do
+        paths.expects(:fetch).with(:releases_directory,"releases").returns("test123")
+        paths.expects(:fetch).with(:deploy_to).returns("/var/www")
+      end
+
+      it "returns the releases path with the custom directory" do
+        expect(subject.to_s).to eq "/var/www/test123"
+      end
+    end
+
+  end
+
+  describe "#shared_path" do
+    subject { paths.shared_path }
+
+    context "with custom shared directory" do
+      before do
+        paths.expects(:fetch).with(:shared_directory,"shared").returns("test123")
+        paths.expects(:fetch).with(:deploy_to).returns("/var/www")
+      end
+
+      it "returns the shared path with the custom directory" do
+        expect(subject.to_s).to eq "/var/www/test123"
+      end
+    end
+
   end
 
   describe "#deploy_config_path" do
