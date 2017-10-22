@@ -121,7 +121,6 @@ describe Capistrano::DSL::Paths do
         expect(subject.to_s).to eq "/var/www/releases/timestamp"
       end
     end
-
   end
 
   describe "#releases_path" do
@@ -137,7 +136,6 @@ describe Capistrano::DSL::Paths do
         expect(subject.to_s).to eq "/var/www/test123"
       end
     end
-
   end
 
   describe "#shared_path" do
@@ -153,7 +151,6 @@ describe Capistrano::DSL::Paths do
         expect(subject.to_s).to eq "/var/www/test123"
       end
     end
-
   end
 
   describe "#deploy_config_path" do
