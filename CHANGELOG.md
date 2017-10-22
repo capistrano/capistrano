@@ -19,6 +19,7 @@ gem "capistrano", :github => "capistrano/capistrano"
 [master]: https://github.com/capistrano/capistrano/compare/v3.9.1...HEAD
 
 * Your contribution here!
+* [#1889](https://github.com/capistrano/capistrano/issues/1889): Make 'releases' and 'shared' directory names configurable from deployment target
 * [#1922](https://github.com/capistrano/capistrano/pull/1922): Prevents last good release from being deleted during cleanup if there are too many subsequent failed deploys
 * As of this release, version 2.x of Capistrano is officially End of Life. No further releases of 2.x series are planned, and pull requests against 2.x are no longer accepted. The maintainers encourage you to upgrade to 3.x if possible.
 * [#1937](https://github.com/capistrano/capistrano/pull/1937): Clarify error message when plugin is required in the wrong config file.
@@ -61,10 +62,6 @@ gem "capistrano", :github => "capistrano/capistrano"
 * None
 
 ### Other changes:
-
-* [#1889](https://github.com/capistrano/capistrano/issues/1889): Make 'releases' and 'shared' directory names configurable from deployment target
-
-* [#1889](https://github.com/capistrano/capistrano/issues/1889): Make 'releases' and 'shared' directory names configurable from deployment target
 
 * [#1882](https://github.com/capistrano/capistrano/pull/1882): Explain where to add new Capfile lines in scm deprecation warning - [@robd](https://github.com/robd)
 
