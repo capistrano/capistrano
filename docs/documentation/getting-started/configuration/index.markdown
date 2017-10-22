@@ -138,6 +138,18 @@ The following variables are settable:
   * Other available options are :dot and :pretty.
   * The default formatter :airbrussh will print the output even when :log_level is :warn or :error, while :dot and :pretty will use the defined :log_level.
 
+* `:shared_directory`
+  * **default:**  `shared`
+  * Name for shared directory, containing files and directories symlinked into the release directory during deployment.
+
+* `:releases_directory`
+  * **default:** `releases`
+  * Name for releases directory, target location for releases.
+
+* `:current_directory`
+  * **default:** `current`
+  * Name for `current` link pointing to the newest successful deployment's release folder.
+
 
 Capistrano plugins can provide their own configuration variables. Please refer
 to the plugin documentation for the specifics. Plugins are allowed to add or
