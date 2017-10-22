@@ -64,6 +64,8 @@ gem "capistrano", :github => "capistrano/capistrano"
 
 * [#1889](https://github.com/capistrano/capistrano/issues/1889): Make 'releases' and 'shared' directory names configurable from deployment target
 
+* [#1889](https://github.com/capistrano/capistrano/issues/1889): Make 'releases' and 'shared' directory names configurable from deployment target
+
 * [#1882](https://github.com/capistrano/capistrano/pull/1882): Explain where to add new Capfile lines in scm deprecation warning - [@robd](https://github.com/robd)
 
 ## [`3.8.1`] (2017-04-21)
