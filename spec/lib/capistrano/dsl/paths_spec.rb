@@ -129,7 +129,7 @@ describe Capistrano::DSL::Paths do
 
     context "with custom releases directory" do
       before do
-        paths.expects(:fetch).with(:releases_directory,"releases").returns("test123")
+        paths.expects(:fetch).with(:releases_directory, "releases").returns("test123")
         paths.expects(:fetch).with(:deploy_to).returns("/var/www")
       end
 
@@ -145,7 +145,7 @@ describe Capistrano::DSL::Paths do
 
     context "with custom shared directory" do
       before do
-        paths.expects(:fetch).with(:shared_directory,"shared").returns("test123")
+        paths.expects(:fetch).with(:shared_directory, "shared").returns("test123")
         paths.expects(:fetch).with(:deploy_to).returns("/var/www")
       end
 
