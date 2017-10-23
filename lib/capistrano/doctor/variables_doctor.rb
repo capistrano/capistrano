@@ -5,9 +5,16 @@ module Capistrano
     # Prints a table of all Capistrano variables and their current values. If
     # there are unrecognized variables, print warnings for them.
     class VariablesDoctor
-      # These are keys that have no default values in Capistrano, but are
-      # nonetheless expected to be set.
-      WHITELIST = %i(application repo_url repo_tree).freeze
+      # These are keys that are recognized by Capistrano, but do not have values
+      # set by default.
+      WHITELIST = %i(
+        application
+        current_directory
+        releases_directory
+        repo_url
+        repo_tree
+        shared_directory
+      ).freeze
       private_constant :WHITELIST
 
       include Capistrano::Doctor::OutputHelpers
