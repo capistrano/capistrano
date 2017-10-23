@@ -107,7 +107,7 @@ Add Capistrano to your project's Gemfile:
 
 ``` ruby
 group :development do
-  gem "capistrano", "~> 3.9"
+  gem "capistrano", "~> 3.10"
 end
 ```
 
