@@ -123,6 +123,36 @@ describe Capistrano::DSL::Paths do
     end
   end
 
+  describe "#releases_path" do
+    subject { paths.releases_path }
+
+    context "with custom releases directory" do
+      before do
+        paths.expects(:fetch).with(:releases_directory, "releases").returns("test123")
+        paths.expects(:fetch).with(:deploy_to).returns("/var/www")
+      end
+
+      it "returns the releases path with the custom directory" do
+        expect(subject.to_s).to eq "/var/www/test123"
+      end
+    end
+  end
+
+  describe "#shared_path" do
+    subject { paths.shared_path }
+
+    context "with custom shared directory" do
+      before do
+        paths.expects(:fetch).with(:shared_directory, "shared").returns("test123")
+        paths.expects(:fetch).with(:deploy_to).returns("/var/www")
+      end
+
+      it "returns the shared path with the custom directory" do
+        expect(subject.to_s).to eq "/var/www/test123"
+      end
+    end
+  end
+
   describe "#deploy_config_path" do
     subject { dsl.deploy_config_path.to_s }
 
