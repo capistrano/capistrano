@@ -3,7 +3,7 @@ title: Remote file task
 layout: default
 ---
 
-**Warning: `remote_file` is deprecated and will be removed in Capistrano 3.7.0**
+**Warning: `remote_file` is deprecated and was removed in Capistrano 3.7.0**
 
 The `remote_file` task is allowing the existence of a remote file to be set as a prerequisite. These tasks can in turn depend on local files if required. In this implementation, the fact that we're dealing with a file in the shared path is assumed.
 
