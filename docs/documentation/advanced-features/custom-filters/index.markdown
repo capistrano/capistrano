@@ -36,6 +36,7 @@ The filter could look like this:
 
 `config/deploy.rb`
 
+```ruby
     class RegionFilter
 
       def initialize(regions)
@@ -50,14 +51,17 @@ The filter could look like this:
       end
 
     end
+```
 
 You would add servers like this:
 
 `config/deploy/production.rb`
 
+```ruby
     server('123.123.123.123', region: 'north-east')
     server('12.12.12.12',     region: 'south-west')
     server('4.5.6.7',         region: 'mid-west')
+```
 
 To tell Capistrano to use this filter, you would use the
 `Configuration#add_filter` method. In this example, we look at the `REGIONS`
@@ -66,11 +70,13 @@ we're interested in:
 
 `config/deploy.rb`
 
+```ruby
     if ENV['REGIONS']
       regions = ENV['REGIONS'].split(',')
       filter = RegionFilter.new(regions)
       Capistrano::Configuration.env.add_filter(filter)
     end
+```
 
 We obtain a list of regions to deploy to from the environment variable,
 construct a new filter with those regions, and add it to Capistrano's list of
