@@ -43,7 +43,7 @@ namespace :deploy do
   end
 
   task :finishing_rollback do
-    invoke "deploy:cleanup_rollback"
+    invoke "deploy:cleanup_rollback" if fetch(:delete_rollback_source, true)
   end
 
   task :finished do
