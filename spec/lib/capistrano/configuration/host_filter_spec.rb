@@ -10,7 +10,7 @@ module Capistrano
          Server.new("server2"),
          Server.new("server3"),
          Server.new("server4"),
-         Server.new("server5")]
+         Server.new("server10")]
       end
 
       shared_examples "it filters hosts correctly" do |expected|
@@ -32,8 +32,8 @@ module Capistrano
         end
 
         context "with a comma separated string" do
-          let(:values) { "server1,server3" }
-          it_behaves_like "it filters hosts correctly", %w{server1 server3}
+          let(:values) { "server1,server10" }
+          it_behaves_like "it filters hosts correctly", %w{server1 server10}
         end
 
         context "with an array of strings" do
@@ -53,12 +53,12 @@ module Capistrano
 
         context "with a regexp with line boundaries" do
           let(:values) { "^server" }
-          it_behaves_like "it filters hosts correctly", %w{server1 server2 server3 server4 server5}
+          it_behaves_like "it filters hosts correctly", %w{server1 server2 server3 server4 server10}
         end
 
         context "with a regexp with a comma" do
           let(:values) { 'server\d{1,3}$' }
-          it_behaves_like "it filters hosts correctly", %w{server1 server2 server3 server4 server5}
+          it_behaves_like "it filters hosts correctly", %w{server1 server2 server3 server4 server10}
         end
 
         context "without number" do

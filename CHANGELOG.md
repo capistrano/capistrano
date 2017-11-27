@@ -20,6 +20,10 @@ gem "capistrano", :github => "capistrano/capistrano"
 
 * Your contribution here!
 
+### Fixes:
+
+* [#1954](https://github.com/capistrano/capistrano/pull/1954): Fix Host filtering when multi-host strings contain `0`
+
 ## [`3.10.0`] (2017-10-23)
 
 [`3.10.0`]: https://github.com/capistrano/capistrano/compare/v3.9.1...v3.10.0
