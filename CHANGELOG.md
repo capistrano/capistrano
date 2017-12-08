@@ -16,9 +16,17 @@ gem "capistrano", :github => "capistrano/capistrano"
 
 ## [master]
 
-[master]: https://github.com/capistrano/capistrano/compare/v3.10.0...HEAD
+[master]: https://github.com/capistrano/capistrano/compare/v3.10.1...HEAD
 
 * Your contribution here!
+
+## [`3.10.1`] (2017-12-08)
+
+[`3.10.1`]: https://github.com/capistrano/capistrano/compare/v3.10.0...v3.10.1
+
+### Breaking changes:
+
+* None
 
 ### Fixes:
 
