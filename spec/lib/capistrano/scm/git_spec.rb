@@ -36,6 +36,20 @@ module Capistrano
         subject.set_defaults
         expect(env.fetch(:git_wrapper_path)).to eq("/tmp/git-ssh-my_app-staging-(Git Web User) via ShipIt.sh")
       end
+
+      it "makes git_max_concurrent_connections" do
+        subject.set_defaults
+        expect(env.fetch(:git_max_concurrent_connections)).to eq(10)
+        env.set(:git_max_concurrent_connections, 7)
+        expect(env.fetch(:git_max_concurrent_connections)).to eq(7)
+      end
+
+      it "makes git_wait_interval" do
+        subject.set_defaults
+        expect(env.fetch(:git_wait_interval)).to eq(3)
+        env.set(:git_wait_interval, 5)
+        expect(env.fetch(:git_wait_interval)).to eq(5)
+      end
     end
 
     describe "#git" do
