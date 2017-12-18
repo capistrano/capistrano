@@ -18,7 +18,9 @@ gem "capistrano", :github => "capistrano/capistrano"
 
 [master]: https://github.com/capistrano/capistrano/compare/v3.10.1...HEAD
 
-* Your contribution here!
+### New features:
+
+* [#1058](https://github.com/capistrano/capistrano/pull/1058): Update git plugin rake tasks - configurable max concurrent connections and wait interval settings
 
 ## [`3.10.1`] (2017-12-08)
 
