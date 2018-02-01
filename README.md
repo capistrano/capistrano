@@ -103,11 +103,11 @@ Capistrano 3 expects a POSIX shell like Bash or Sh. Shells like tcsh, csh, and s
 
 ### Install the Capistrano gem
 
-Add Capistrano to your project's Gemfile:
+Add Capistrano to your project's Gemfile using `require: false`:
 
 ``` ruby
 group :development do
-  gem "capistrano", "~> 3.10"
+  gem "capistrano", "~> 3.10", require: false
 end
 ```
 
