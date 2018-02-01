@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file, in reverse 
 **Capistrano uses a six-week release cadence.** Every six weeks, give or take, any changes in master will be published as a new rubygems version. If you'd like to use a feature or fix that is in master and you can't wait for the next planned release, put this in your project's Gemfile to use the master branch directly:
 
 ```ruby
-gem "capistrano", :github => "capistrano/capistrano"
+gem "capistrano", github: "capistrano/capistrano", require: false
 ```
 
 ## [master]
