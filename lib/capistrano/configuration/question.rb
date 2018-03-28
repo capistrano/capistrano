@@ -36,6 +36,8 @@ module Capistrano
       end
 
       def gets
+        return unless $stdin.tty?
+
         if echo?
           $stdin.gets
         else
