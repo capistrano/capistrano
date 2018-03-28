@@ -57,6 +57,17 @@ module Capistrano
             expect(question.call).to eq(branch)
           end
         end
+
+        context "tty unavailable" do
+          before do
+            $stdin.expects(:gets).never
+            $stdin.expects(:tty?).returns(false)
+          end
+
+          it "returns the default as the value" do
+            expect(question.call).to eq(default)
+          end
+        end
       end
     end
   end
