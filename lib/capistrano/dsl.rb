@@ -73,7 +73,7 @@ module Capistrano
     # rubocop:enable Security/MarshalLoad
 
     def run_locally(&block)
-      SSHKit::Backend::Local.new(&block).run
+      fetch(:sshkit_backend, SSHKit::Backend::Local).new(SSHKit::Host.new(:local), &block).run
     end
 
     # Catch common beginner mistake and give a helpful error message on stderr

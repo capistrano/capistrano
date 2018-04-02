@@ -20,6 +20,10 @@ gem "capistrano", github: "capistrano/capistrano", require: false
 
 * Your contribution here!
 
+### Fixes:
+
+* [#1822] Select appropriate SSHKit Backend inside run_locally to avoid dry-run to execute code.
+
 ## [`3.10.1`] (2017-12-08)
 
 [`3.10.1`]: https://github.com/capistrano/capistrano/compare/v3.10.0...v3.10.1
