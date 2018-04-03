@@ -47,10 +47,14 @@ module Capistrano
     def any?(key)
       value = fetch(key)
       if value && value.respond_to?(:any?)
-        value.any?
-      else
-        !fetch(key).nil?
+        begin
+          return value.any?
+        rescue ArgumentError # rubocop:disable Lint/HandleExceptions
+          # Gracefully ignore values whose `any?` method doesn't accept 0 args
+        end
       end
+
+      !value.nil?
     end
 
     def is_question?(key)
