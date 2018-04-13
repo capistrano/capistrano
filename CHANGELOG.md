@@ -19,6 +19,7 @@ gem "capistrano", github: "capistrano/capistrano", require: false
 [master]: https://github.com/capistrano/capistrano/compare/v3.10.1...HEAD
 
 * Your contribution here!
+* [#1977](https://github.com/capistrano/capistrano/pull/1977): Remove append operator when writing the git file - [@mmiller1](https://github.com/mmiller1)
 
 ## [`3.10.1`] (2017-12-08)
 

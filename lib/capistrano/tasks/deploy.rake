@@ -238,7 +238,7 @@ namespace :deploy do
   task :set_current_revision  do
     on release_roles(:all) do
       within release_path do
-        execute :echo, "\"#{fetch(:current_revision)}\" >> REVISION"
+        execute :echo, "\"#{fetch(:current_revision)}\" > REVISION"
       end
     end
   end
