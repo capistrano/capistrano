@@ -16,10 +16,15 @@ gem "capistrano", github: "capistrano/capistrano", require: false
 
 ## [master]
 
-[master]: https://github.com/capistrano/capistrano/compare/v3.10.2...HEAD
+[master]: https://github.com/capistrano/capistrano/compare/v3.11.0...HEAD
 
 * Your contribution here!
+
+## [`3.11.0`] (2018-06-02)
+
 * [#1972](https://github.com/capistrano/capistrano/pull/1972): fallback ask to default when used in non interactive session
+
+[`3.11.0`]: https://github.com/capistrano/capistrano/compare/v3.10.2...v3.11.0
 
 ## [`3.10.2`] (2018-04-15)
 
