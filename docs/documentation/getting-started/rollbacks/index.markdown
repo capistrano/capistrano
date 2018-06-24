@@ -11,7 +11,7 @@ When a deployment is run, Capistrano executes one task at a time on all servers 
 
 If the error occurs during a deployment task which is prior to the final cutover, for example during creation of symlinks, the process will simply stop and the previously deployed application will continue to run. However if the failing deployment task is after `deploy:symlink:release`, during which the `current` symlink is moved to the newly deployed code, this may result in an inconsistent state which may be solved by executing `cap [stage] deploy:rollback`. Rollback can also be a solution for issues with failed deployments due to buggy code or other reasons.
 
-Per http://capistranorb.com/documentation/getting-started/flow/, the standard deployment and rollback processes are nearly identical. The difference is that in a deploy, the `deploy:updating` and `deploy:updated` tasks are executed, while in a rollback, the `deploy:reverting` and `deploy:reverted` (a hook task) tasks are run. Also, instead of `deploy:finishing`, `deploy:finishing_rollback` is run, as cleanup can sometimes be different.
+Per https://capistranorb.com/documentation/getting-started/flow/, the standard deployment and rollback processes are nearly identical. The difference is that in a deploy, the `deploy:updating` and `deploy:updated` tasks are executed, while in a rollback, the `deploy:reverting` and `deploy:reverted` (a hook task) tasks are run. Also, instead of `deploy:finishing`, `deploy:finishing_rollback` is run, as cleanup can sometimes be different.
 
 ### `deploy:reverting`
 

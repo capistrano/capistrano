@@ -37,7 +37,7 @@ Read more about this:
  * [At Sam Stephenson's excellent *Unix shell initialization* wiki
    page](https://github.com/sstephenson/rbenv/wiki/Unix-shell-initialization)
  * [Interactive and non-interactive shells and scripts
-   documentation](http://www.tldp.org/LDP/abs/html/intandnonint.html)
+   documentation](https://www.tldp.org/LDP/abs/html/intandnonint.html)
 
 ## How does what Capistrano does differ from an SSH session
 
@@ -54,7 +54,7 @@ login` shell, the exact opposite of what we need for Capistrano!
 ## How can I check?
 
 I actually had to look this up, most of the time it's common sense, but
-[stackoverflow to the rescue](http://unix.stackexchange.com/a/26782), let's
+[stackoverflow to the rescue](https://unix.stackexchange.com/a/26782), let's
 figure this out!
 
 First, we'll try a *real* SSH session, logging in via our terminal, and seeing

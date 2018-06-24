@@ -170,7 +170,7 @@ are deploying to can reach.
 Here's how this might look in a typical example: note that we'll cover
 authentication in the next chapter, but for now we'll assume this repository is
 open source, taking an example application from the [Rails Examples and
-Tutorials](http://railsapps.github.io/) site. There we'll find maintained a
+Tutorials](https://railsapps.github.io/) site. There we'll find maintained a
 handful of typical Rails apps with typical dependencies.
 
 The Rails application they host, which uses Devise (for authentication) and
