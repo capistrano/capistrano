@@ -1,6 +1,6 @@
 # capistranorb.com
 
-This `docs/` directory generates the [capistranorb.com](http://capistranorb.com/) site. Feel free to send pull requests to make improvements to Capistrano's documentation!
+This `docs/` directory generates the [capistranorb.com](https://capistranorb.com/) site. Feel free to send pull requests to make improvements to Capistrano's documentation!
 
 ### Quick start
 

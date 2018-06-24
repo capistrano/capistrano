@@ -68,7 +68,7 @@ You can test this using a ssh client, e.g. `ssh myuser@destinationserver`. If
 you cannot connect at all, you may need to set up the SSH server or resolve
 firewall/network issues. Look for a tutorial (here are suggestions for
 [Ubuntu](https://help.ubuntu.com/community/SSH) and
-[RedHat/CentOS](http://www.cyberciti.biz/faq/centos-ssh/)).
+[RedHat/CentOS](https://www.cyberciti.biz/faq/centos-ssh/)).
 
 If a password is requested when you log in, you may need to set up SSH keys.
 GitHub has a [good tutorial](https://help.github.com/articles/generating-ssh-keys/)
@@ -77,7 +77,7 @@ key to `~/.ssh/authorized_keys` on the destination server as the deployment user
 (append on a new line).
 
 More information on SSH and login is available via the
-[Authentication and Authorisation](http://capistranorb.com/documentation/getting-started/authentication-and-authorisation/)
+[Authentication and Authorisation](https://capistranorb.com/documentation/getting-started/authentication-and-authorisation/)
 section of the guide.
 
 If you are still struggling to get login working, try the
