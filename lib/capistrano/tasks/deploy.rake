@@ -168,8 +168,7 @@ namespace :deploy do
           debug t(:no_current_release, host: host.to_s)
         end
         if directories.any?
-          directories_str = directories.join(" ")
-          execute :rm, "-rf", directories_str
+          execute :rm, "-rf", *directories
         else
           info t(:no_old_releases, host: host.to_s, keep_releases: fetch(:keep_releases))
         end
