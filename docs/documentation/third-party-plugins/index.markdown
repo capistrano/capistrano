@@ -52,3 +52,6 @@ You can help us expanding this list by sending us a pull request on
 <div class="github-widget" data-repo="dkdeploy/dkdeploy-php"></div>
 
 <div class="github-widget" data-repo="dkdeploy/dkdeploy-typo3-cms"></div>
+
+<div class="github-widget" data-repo="aeroastro/capistrano-lazy_cleanup"></div>
+
