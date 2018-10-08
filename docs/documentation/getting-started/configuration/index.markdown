@@ -120,7 +120,7 @@ The following variables are settable:
   * If you have a shared web host, this setting may need to be set (e.g. /home/user/tmp/capistrano).
 
 * `:local_user`
-  * **default:** `-> { Etc.getlogin }`
+  * **default:** `-> { ENV["USER"] || ENV["LOGNAME"] || ENV["USERNAME"] }`
   * Username of the local machine used to update the revision log.
 
 * `:pty`
