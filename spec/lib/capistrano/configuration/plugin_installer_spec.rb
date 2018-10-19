@@ -49,7 +49,7 @@ module Capistrano
           expect(task.prerequisites).to eq([:example_prerequisite])
         end
 
-        it "sets defaults when load:defaults is invoked" do
+        it "sets defaults when load:defaults is invoked", capture_io: true do
           expect(fetch(:example_variable)).to be_nil
           invoke "load:defaults"
           expect(fetch(:example_variable)).to eq("foo")

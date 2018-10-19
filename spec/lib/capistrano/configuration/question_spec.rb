@@ -58,7 +58,7 @@ module Capistrano
           end
         end
 
-        context "tty unavailable" do
+        context "tty unavailable", capture_io: true do
           before do
             $stdin.expects(:gets).never
             $stdin.expects(:tty?).returns(false)

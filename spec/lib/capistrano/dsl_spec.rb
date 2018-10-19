@@ -60,7 +60,7 @@ module Capistrano
           end
         end
 
-        it "prints helpful message to stderr" do
+        it "prints helpful message to stderr", capture_io: true do
           expect do
             expect do
               task.invoke
@@ -72,7 +72,7 @@ module Capistrano
 
     describe "#invoke" do
       context "reinvoking" do
-        it "will not reenable invoking task" do
+        it "will not reenable invoking task", capture_io: true do
           counter = 0
 
           Rake::Task.define_task("A") do
@@ -85,7 +85,7 @@ module Capistrano
           end.to change { counter }.by(1)
         end
 
-        it "will print a message on stderr" do
+        it "will print a message on stderr", capture_io: true do
           Rake::Task.define_task("B")
 
           expect do
@@ -98,7 +98,7 @@ module Capistrano
 
     describe "#invoke!" do
       context "reinvoking" do
-        it "will reenable invoking task" do
+        it "will reenable invoking task", capture_io: true do
           counter = 0
 
           Rake::Task.define_task("C") do
@@ -111,7 +111,7 @@ module Capistrano
           end.to change { counter }.by(2)
         end
 
-        it "will not print a message on stderr" do
+        it "will not print a message on stderr", capture_io: true do
           Rake::Task.define_task("D")
 
           expect do

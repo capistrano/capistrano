@@ -71,7 +71,7 @@ module Capistrano
           Rake::Task.clear
         end
 
-        it "has an doctor:servers task that calls ServersDoctor" do
+        it "has an doctor:servers task that calls ServersDoctor", capture_io: true do
           ServersDoctor.any_instance.expects(:call)
           Rake::Task["doctor:servers"].invoke
         end

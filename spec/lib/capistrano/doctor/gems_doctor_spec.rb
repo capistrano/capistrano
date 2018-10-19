@@ -53,7 +53,7 @@ module Capistrano
           Rake::Task.clear
         end
 
-        it "has an doctor:gems task that calls GemsDoctor" do
+        it "has an doctor:gems task that calls GemsDoctor", capture_io: true do
           GemsDoctor.any_instance.expects(:call)
           Rake::Task["doctor:gems"].invoke
         end

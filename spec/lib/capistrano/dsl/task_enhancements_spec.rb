@@ -35,7 +35,7 @@ module Capistrano
         end
       end
 
-      it "invokes in proper order if define after than before" do
+      it "invokes in proper order if define after than before", capture_io: true do
         task_enhancements.after("task", "after_task")
         task_enhancements.before("task", "before_task")
 
@@ -44,7 +44,7 @@ module Capistrano
         expect(order).to eq(%w(before_task task after_task))
       end
 
-      it "invokes in proper order if define before than after" do
+      it "invokes in proper order if define before than after", capture_io: true do
         task_enhancements.before("task", "before_task")
         task_enhancements.after("task", "after_task")
 
@@ -53,7 +53,7 @@ module Capistrano
         expect(order).to eq(%w(before_task task after_task))
       end
 
-      it "invokes in proper order when referring to as-yet undefined tasks" do
+      it "invokes in proper order when referring to as-yet undefined tasks", capture_io: true do
         task_enhancements.after("task", "not_loaded_task")
 
         Rake::Task.define_task("not_loaded_task") do
@@ -65,7 +65,7 @@ module Capistrano
         expect(order).to eq(%w(task not_loaded_task))
       end
 
-      it "invokes in proper order and with arguments and block" do
+      it "invokes in proper order and with arguments and block", capture_io: true do
         task_enhancements.after("task", "after_task_custom", :order) do |_t, _args|
           order.push "after_task"
         end
@@ -79,7 +79,7 @@ module Capistrano
         expect(order).to eq(%w(before_task task after_task))
       end
 
-      it "invokes using the correct namespace when defined within a namespace" do
+      it "invokes using the correct namespace when defined within a namespace", capture_io: true do
         Rake.application.in_namespace("namespace") do
           Rake::Task.define_task("task") do |t|
             order.push(t.name)
@@ -99,7 +99,7 @@ module Capistrano
         )
       end
 
-      it "raises a sensible error if the task isn't found" do
+      it "raises a sensible error if the task isn't found", capture_io: true do
         task_enhancements.after("task", "non_existent_task")
         expect { Rake::Task["task"].invoke order }.to raise_error(ArgumentError, 'Task "non_existent_task" not found')
       end
