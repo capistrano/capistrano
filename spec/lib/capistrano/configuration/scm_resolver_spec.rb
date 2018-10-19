@@ -1,4 +1,5 @@
 require "spec_helper"
+require "capistrano/scm"
 
 module Capistrano
   class Configuration
@@ -24,12 +25,12 @@ module Capistrano
           expect { resolver.resolve }.to output(/will not load the git scm/i).to_stderr
         end
 
-        it "activates the git scm" do
+        it "activates the git scm", capture_io: true do
           resolver.resolve
           expect(Rake::Task["git:wrapper"]).not_to be_nil
         end
 
-        it "sets :scm to :git" do
+        it "sets :scm to :git", capture_io: true do
           resolver.resolve
           expect(fetch(:scm)).to eq(:git)
         end

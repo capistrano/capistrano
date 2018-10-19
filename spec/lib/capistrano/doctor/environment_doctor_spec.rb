@@ -29,7 +29,7 @@ module Capistrano
           Rake::Task.clear
         end
 
-        it "has an doctor:environment task that calls EnvironmentDoctor" do
+        it "has an doctor:environment task that calls EnvironmentDoctor", capture_io: true do
           EnvironmentDoctor.any_instance.expects(:call)
           Rake::Task["doctor:environment"].invoke
         end

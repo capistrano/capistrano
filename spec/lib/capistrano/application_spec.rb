@@ -5,46 +5,40 @@ describe Capistrano::Application do
 
   it "provides a --format option which enables the choice of output formatting"
 
-  let(:help_output) do
-    out, _err = capture_io do
-      flags "--help", "-h"
-    end
-    out
-  end
-
-  it "displays documentation URL as help banner" do
-    expect(help_output.lines.first).to match(/capistranorb.com/)
+  it "displays documentation URL as help banner", capture_io: true do
+    flags "--help", "-h"
+    expect($stdout.string.each_line.first).to match(/capistranorb.com/)
   end
 
   %w(quiet silent verbose).each do |switch|
-    it "doesn't include --#{switch} in help" do
-      expect(help_output).not_to match(/--#{switch}/)
+    it "doesn't include --#{switch} in help", capture_io: true do
+      flags "--help", "-h"
+      expect($stdout.string).not_to match(/--#{switch}/)
     end
   end
 
-  it "overrides the rake method, but still prints the rake version" do
-    out, _err = capture_io do
-      flags "--version", "-V"
-    end
+  it "overrides the rake method, but still prints the rake version", capture_io: true do
+    flags "--version", "-V"
+    out = $stdout.string
     expect(out).to match(/\bCapistrano Version\b/)
     expect(out).to match(/\b#{Capistrano::VERSION}\b/)
     expect(out).to match(/\bRake Version\b/)
     expect(out).to match(/\b#{Rake::VERSION}\b/)
   end
 
-  it "overrides the rake method, and sets the sshkit_backend to SSHKit::Backend::Printer" do
-    capture_io do
-      flags "--dry-run", "-n"
-    end
+  it "overrides the rake method, and sets the sshkit_backend to SSHKit::Backend::Printer", capture_io: true do
+    flags "--dry-run", "-n"
     sshkit_backend = Capistrano::Configuration.fetch(:sshkit_backend)
     expect(sshkit_backend).to eq(SSHKit::Backend::Printer)
   end
 
-  it "enables printing all config variables on command line parameter" do
-    capture_io do
+  it "enables printing all config variables on command line parameter", capture_io: true do
+    begin
       flags "--print-config-variables", "-p"
+      expect(Capistrano::Configuration.fetch(:print_config_variables)).to be true
+    ensure
+      Capistrano::Configuration.reset!
     end
-    expect(Capistrano::Configuration.fetch(:print_config_variables)).to be true
   end
 
   def flags(*sets)
@@ -62,23 +56,5 @@ describe Capistrano::Application do
     end
     subject.run
     subject.options
-  end
-
-  def capture_io
-    require "stringio"
-
-    orig_stdout = $stdout
-    orig_stderr = $stderr
-    captured_stdout = StringIO.new
-    captured_stderr = StringIO.new
-    $stdout = captured_stdout
-    $stderr = captured_stderr
-
-    yield
-
-    return captured_stdout.string, captured_stderr.string
-  ensure
-    $stdout = orig_stdout
-    $stderr = orig_stderr
   end
 end

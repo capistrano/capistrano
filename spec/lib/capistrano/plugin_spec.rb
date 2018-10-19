@@ -62,14 +62,14 @@ module Capistrano
       dummy.expects(:set_defaults).never
     end
 
-    it "calls set_defaults during load:defaults" do
+    it "calls set_defaults during load:defaults", capture_io: true do
       dummy = DummyPlugin.new
       dummy.expects(:set_defaults).once
       install_plugin(dummy)
       Rake::Task["load:defaults"].invoke
     end
 
-    it "is able to load tasks from a .rake file" do
+    it "is able to load tasks from a .rake file", capture_io: true do
       install_plugin(ExternalTasksPlugin)
       Rake::Task["plugin_test"].invoke
       expect(fetch(:plugin_result)).to eq("hello")

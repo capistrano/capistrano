@@ -74,7 +74,7 @@ module Capistrano
           Rake::Task.clear
         end
 
-        it "has an doctor:variables task that calls VariablesDoctor" do
+        it "has an doctor:variables task that calls VariablesDoctor", capture_io: true do
           VariablesDoctor.any_instance.expects(:call)
           Rake::Task["doctor:variables"].invoke
         end
