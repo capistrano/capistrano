@@ -25,3 +25,8 @@ end
 if Gem::Requirement.new("< 2.1").satisfied_by?(Gem::Version.new(RUBY_VERSION))
   gem "public_suffix", "< 3.0.0"
 end
+
+# Latest versions of i18n don't support Ruby < 2.1
+if Gem::Requirement.new("< 2.1").satisfied_by?(Gem::Version.new(RUBY_VERSION))
+  gem "i18n", "< 1.3.0"
+end
