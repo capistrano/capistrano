@@ -3,7 +3,7 @@ title: How can I access stage configuration variables?
 layout: default
 ---
 
-Configuration variables are access with the fetch method, like so:
+Configuration variables are accessed with the fetch method, like so:
 
 ```ruby
 local = fetch(:configuration_variable, _default_value_)
