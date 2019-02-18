@@ -148,7 +148,7 @@ namespace :deploy do
   desc "Clean up old releases"
   task :cleanup do
     on release_roles :all do |host|
-      releases = capture(:ls, "-x", releases_path).split
+      releases = capture(:ls, "-x", releases_path).split(" ")
       valid, invalid = releases.partition { |e| /^\d{14}$/ =~ e }
 
       warn t(:skip_cleanup, host: host.to_s) if invalid.any?

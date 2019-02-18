@@ -18,6 +18,8 @@ gem "capistrano", github: "capistrano/capistrano", require: false
 
 [master]: https://github.com/capistrano/capistrano/compare/v3.11.0...HEAD
 
+* [#1979](https://github.com/capistrano/capistrano/issues/1979): Fixed issue where deploy:cleanup would be skipped when too many existing releases
+
 * Your contribution here!
 
 ## [`3.11.0`] (2018-06-02)
