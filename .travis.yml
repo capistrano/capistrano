@@ -1,8 +1,8 @@
 language: ruby
 rvm:
-  - 2.6.0
-  - 2.5.3
-  - 2.4.5
+  - 2.6.3
+  - 2.5.5
+  - 2.4.6
   - 2.3.8
   - 2.2
   - 2.1
@@ -17,7 +17,7 @@ matrix:
     - rvm: rbx-2
       script: bundle exec rake spec
     # Run Danger only once, on 2.5.3
-    - rvm: 2.5.3
+    - rvm: 2.5.5
       before_script: bundle exec danger
 
 script: bundle exec rake spec rubocop
@@ -26,4 +26,3 @@ cache: bundler
 branches:
   except:
     - legacy-v2
-sudo: false
