@@ -1,4 +1,5 @@
 require "capistrano/scm/plugin"
+require "shellwords"
 
 class Capistrano::SCM::Svn < Capistrano::SCM::Plugin
   def register_hooks
@@ -13,9 +14,9 @@ class Capistrano::SCM::Svn < Capistrano::SCM::Plugin
 
   def svn(*args)
     args.unshift(:svn)
-    args.push "--username #{fetch(:svn_username)}" if fetch(:svn_username)
-    args.push "--password #{fetch(:svn_password)}" if fetch(:svn_password)
-    args.push "--revision #{fetch(:svn_revision)}" if fetch(:svn_revision)
+    args.push "--username #{Shellwords.escape(fetch(:svn_username))}" if fetch(:svn_username)
+    args.push "--password #{Shellwords.escape(fetch(:svn_password))}" if fetch(:svn_password)
+    args.push "--revision #{Shellwords.escape(fetch(:svn_revision))}" if fetch(:svn_revision)
     backend.execute(*args)
   end
 
@@ -24,8 +25,8 @@ class Capistrano::SCM::Svn < Capistrano::SCM::Plugin
   end
 
   def check_repo_is_reachable
-    svn_username = fetch(:svn_username) ? "--username #{fetch(:svn_username)}" : ""
-    svn_password = fetch(:svn_password) ? "--password #{fetch(:svn_password)}" : ""
+    svn_username = fetch(:svn_username) ? "--username #{Shellwords.escape(fetch(:svn_username))}" : ""
+    svn_password = fetch(:svn_password) ? "--password #{Shellwords.escape(fetch(:svn_password))}" : ""
     backend.test :svn, :info, repo_url, svn_username, svn_password
   end
 
