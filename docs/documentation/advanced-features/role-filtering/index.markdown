@@ -12,11 +12,10 @@ match a given role or roles.
 
 If the filter matches no servers, no actions will be taken.
 
-If you specify a filter, it will match any servers that have that role, but
-it will _only_ run the tasks for that role, not for any other roles that
-server may have. For example, if you filtered for servers with the `web` role,
-and a server had both the `web` and `db` role, only the `web` role would
-be executed on it.
+If you specify a filter, it will match any servers that have that role, and
+it will run _all_ tasks for each of the roles that server has. For example,
+if you filtered for servers with the `web` role, and a server had both the
+`web` and `db` role, both the `web` and `db` role tasks would be executed on it.
 
 ### Specifying a role filter
 
