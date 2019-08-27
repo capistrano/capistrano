@@ -12,7 +12,10 @@ Gem::Specification.new do |gem|
   gem.description   = "Capistrano is a utility and framework for executing commands in parallel on multiple remote machines, via SSH."
   gem.summary       = "Capistrano - Welcome to easy deployment with Ruby over SSH"
   gem.homepage      = "http://capistranorb.com/"
-
+  gem.metadata      = {
+    "changelog_uri" => "https://github.com/capistrano/capistrano/blob/master/CHANGELOG.md"  
+  }
+  
   gem.files         = `git ls-files -z`.split("\x0").reject { |f| f =~ /^docs/ }
   gem.executables   = %w(cap capify)
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
