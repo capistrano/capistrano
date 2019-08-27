@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.summary       = "Capistrano - Welcome to easy deployment with Ruby over SSH"
   gem.homepage      = "http://capistranorb.com/"
   gem.metadata      = {
-    "changelog_uri" => "https://github.com/capistrano/capistrano/blob/master/CHANGELOG.md"  
+    "changelog_uri" => "https://github.com/capistrano/capistrano/blob/master/CHANGELOG.md"
   }
   gem.files         = `git ls-files -z`.split("\x0").reject { |f| f =~ /^docs/ }
   gem.executables   = %w(cap capify)
