@@ -168,7 +168,9 @@ namespace :deploy do
           debug t(:no_current_release, host: host.to_s)
         end
         if directories.any?
-          execute :rm, "-rf", *directories
+          directories.each_slice(100) do |directories_batch|
+            execute :rm, "-rf", *directories_batch
+          end
         else
           info t(:no_old_releases, host: host.to_s, keep_releases: fetch(:keep_releases))
         end

@@ -70,6 +70,12 @@ Feature: Deploy
     Then 3 valid releases are kept
     And the current directory will be a symlink to the release
 
+  Scenario: Cleanup when there are more releases than arguments can handle
+    Given config stage file has line "set :keep_releases, 3"
+    And 5000 valid existing releases
+    When I run cap "deploy:cleanup"
+    Then 3 valid releases are kept
+
   Scenario: Rolling Back
     Given I make 2 deployments
     When I run cap "deploy:rollback"
