@@ -30,3 +30,8 @@ end
 if Gem::Requirement.new("< 2.1").satisfied_by?(Gem::Version.new(RUBY_VERSION))
   gem "i18n", "< 1.3.0"
 end
+
+# We only run danger once on a new-ish ruby; no need to install it otherwise
+if Gem::Requirement.new("> 2.4").satisfied_by?(Gem::Version.new(RUBY_VERSION))
+  gem "danger"
+end
