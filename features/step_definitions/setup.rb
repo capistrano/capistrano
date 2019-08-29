@@ -80,10 +80,12 @@ end
 
 Given(/^(\d+) valid existing releases$/) do |num|
   a_day = 86_400 # in seconds
-  offset = -(a_day * num.to_i)
-  num.to_i.times do
-    run_vagrant_command("mkdir -p #{TestApp.release_path(TestApp.timestamp(offset))}")
-    offset += a_day
+  (1...num).each_slice(100) do |num_batch|
+    dirs = num_batch.map do |i|
+      offset = -(a_day * i)
+      TestApp.release_path(TestApp.timestamp(offset))
+    end
+    run_vagrant_command("mkdir -p #{dirs.join(' ')}")
   end
 end
 

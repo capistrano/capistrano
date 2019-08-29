@@ -19,6 +19,7 @@ gem "capistrano", github: "capistrano/capistrano", require: false
 [master]: https://github.com/capistrano/capistrano/compare/v3.11.0...HEAD
 
 * Your contribution here!
+* [#2027](https://github.com/capistrano/capistrano/pull/2027): Batch rm -rf calls in deploy:cleanup. [@azin634](https://github.com/azin634)
 
 ## [`3.11.0`] (2018-06-02)
 
