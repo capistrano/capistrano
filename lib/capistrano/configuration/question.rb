@@ -36,12 +36,12 @@ module Capistrano
       end
 
       def gets
-        return unless $stdin.tty?
+        return unless stdin.tty?
 
         if echo?
-          $stdin.gets
+          stdin.gets
         else
-          $stdin.noecho(&:gets).tap { $stdout.print "\n" }
+          stdin.noecho(&:gets).tap { $stdout.print "\n" }
         end
       rescue Errno::EIO
         # when stdio gets closed
@@ -58,6 +58,10 @@ module Capistrano
 
       def echo?
         (options || {}).fetch(:echo, true)
+      end
+
+      def stdin
+        (options || {}).fetch(:stdin, $stdin)
       end
     end
   end
