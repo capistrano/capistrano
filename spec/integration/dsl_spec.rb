@@ -356,14 +356,16 @@ describe Capistrano::DSL do
   end
 
   describe "asking for a variable" do
+    let(:stdin) { stub(tty?: true) }
+
     before do
-      dsl.ask(:scm, :svn)
+      dsl.ask(:scm, :svn, stdin: stdin)
       $stdout.stubs(:print)
     end
 
     context "variable is provided" do
       before do
-        $stdin.expects(:gets).returns("git")
+        stdin.expects(:gets).returns("git")
       end
 
       it "sets the input as the variable" do
@@ -373,7 +375,7 @@ describe Capistrano::DSL do
 
     context "variable is not provided" do
       before do
-        $stdin.expects(:gets).returns("")
+        stdin.expects(:gets).returns("")
       end
 
       it "sets the variable as the default" do
