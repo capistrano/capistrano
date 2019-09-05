@@ -49,6 +49,8 @@ module Capistrano
       end
 
       def question
+        custom_text = (options || {})[:text]
+        return custom_text if custom_text
         if default.nil?
           I18n.t(:question, key: key, scope: :capistrano)
         else

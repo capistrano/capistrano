@@ -18,6 +18,7 @@ gem "capistrano", github: "capistrano/capistrano", require: false
 
 [master]: https://github.com/capistrano/capistrano/compare/v3.11.0...HEAD
 
+* Parameter `:text` added to `ask()` to override I18n question prefix e.g. `ask(:response, 'default_value', {text: 'Ask your question here (default_value): '})` [@simon-soak](https://github.com/simon-soak)
 * Your contribution here!
 
 ## [`3.11.1`] (2019-08-29)
