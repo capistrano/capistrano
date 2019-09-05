@@ -19,6 +19,7 @@ gem "capistrano", github: "capistrano/capistrano", require: false
 [master]: https://github.com/capistrano/capistrano/compare/v3.11.0...HEAD
 
 * Your contribution here!
+* [#2017](https://github.com/capistrano/capistrano/pull/2017): shell-escape supplied Subversion credentials
 
 ## [`3.11.1`] (2019-08-29)
 
