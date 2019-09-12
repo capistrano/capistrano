@@ -8,6 +8,7 @@ Lint/AmbiguousBlockAssociation:
     false
 Metrics/BlockLength:
   Exclude:
+    - "*.gemspec"
     - "spec/**/*"
     - "lib/**/*.rake"
 Style/BarePercentLiterals:
