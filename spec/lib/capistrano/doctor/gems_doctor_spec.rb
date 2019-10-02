@@ -45,8 +45,8 @@ module Capistrano
 
       describe "Rake" do
         before do
-          load File.expand_path("../../../../../lib/capistrano/doctor.rb",
-                                __FILE__)
+          $:.unshift File.expand_path('../../../../../lib', __FILE__)
+          load 'capistrano/doctor.rb'
         end
 
         after do
