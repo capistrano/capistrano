@@ -155,7 +155,7 @@ The following variables are settable:
   * Number of concurrent connections to Git repository - useful when your Git server limits the number of simultaneous connections while using SSH (like Gitlab CE).
 
 * `:git_wait_interval`
-  * **default:** `3`
+  * **default:** `0`
   * Number of seconds to wait after you reach the limit of concurrent connections to Git repository server and disconnect afterwards to initialize new connections. This prevents from being cut out of SSH server when you use `fail2ban` or similar software for limiting connections to server.
 
 Capistrano plugins can provide their own configuration variables. Please refer
