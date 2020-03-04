@@ -46,7 +46,7 @@ module Capistrano
 
       it "makes git_wait_interval" do
         subject.set_defaults
-        expect(env.fetch(:git_wait_interval)).to eq(3)
+        expect(env.fetch(:git_wait_interval)).to eq(0)
         env.set(:git_wait_interval, 5)
         expect(env.fetch(:git_wait_interval)).to eq(5)
       end

@@ -19,7 +19,7 @@ class Capistrano::SCM::Git < Capistrano::SCM::Plugin
       }
     }
     set_if_empty :git_max_concurrent_connections, 10
-    set_if_empty :git_wait_interval, 3
+    set_if_empty :git_wait_interval, 0
   end
 
   def register_hooks
