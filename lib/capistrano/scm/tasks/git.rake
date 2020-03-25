@@ -6,7 +6,7 @@ namespace :git do
   task :wrapper do
     on release_roles(:all), in: :groups, limit: fetch(:git_max_concurrent_connections), wait: fetch(:git_wait_interval) do
       execute :mkdir, "-p", File.dirname(fetch(:git_wrapper_path)).shellescape
-      upload! StringIO.new("#!/bin/sh -e\nexec /usr/bin/ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no \"$@\"\n"), fetch(:git_wrapper_path)
+      upload! StringIO.new("#!/bin/sh -e\nexec /usr/bin/env ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no \"$@\"\n"), fetch(:git_wrapper_path)
       execute :chmod, "700", fetch(:git_wrapper_path).shellescape
     end
   end
