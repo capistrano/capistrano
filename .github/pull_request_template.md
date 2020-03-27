@@ -13,14 +13,10 @@ to keep the conversation linked together.
 - [ ] Did you run `bundle exec rubocop -a` to fix linter issues?
 - [ ] If relevant, did you create a test?
 - [ ] Did you confirm that the RSpec tests pass?
-- [ ] If you are fixing a bug or introducing a new feature, did you add a CHANGELOG entry?
 
 ### Other Information
 
 If there's anything else that's important and relevant to your pull
 request, mention that information here.
-
-If you are updating any of the CHANGELOG files or are asked to update the
-CHANGELOG files by reviewers, please add the CHANGELOG entry at the top of the file where indicated.
 
 Thanks for helping improve Capistrano!
