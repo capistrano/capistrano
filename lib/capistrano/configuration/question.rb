@@ -49,7 +49,11 @@ module Capistrano
       end
 
       def question
-        if default.nil?
+        if prompt && default.nil?
+          I18n.t(:question_prompt, key: prompt, scope: :capistrano)
+        elsif prompt
+          I18n.t(:question_prompt_default, key: prompt, default_value: default, scope: :capistrano)
+        elsif default.nil?
           I18n.t(:question, key: key, scope: :capistrano)
         else
           I18n.t(:question_default, key: key, default_value: default, scope: :capistrano)
@@ -62,6 +66,10 @@ module Capistrano
 
       def stdin
         (options || {}).fetch(:stdin, $stdin)
+      end
+
+      def prompt
+        (options || {}).fetch(:prompt, nil)
       end
     end
   end

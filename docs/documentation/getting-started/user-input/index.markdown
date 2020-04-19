@@ -49,6 +49,12 @@ server 'example.com', user: 'ssh_user_name', port: 22, password: fetch(:password
 ```
 
 
+You can also show your own message by using `prompt` option:
+
+```ruby
+  ask(:breakfast, "pancakes", prompt: "What's for breakfast?")
+```
+
 **Important!** `ask` will not prompt the user immediately. The question is
 deferred until the first time `fetch` is used to obtain the setting. That means
 you can `ask` for many variables, but only the variables used by your task(s)
