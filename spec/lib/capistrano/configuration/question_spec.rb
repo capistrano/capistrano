@@ -6,6 +6,8 @@ module Capistrano
       let(:question) { Question.new(key, default, stdin: stdin) }
       let(:question_without_echo) { Question.new(key, default, echo: false, stdin: stdin) }
       let(:question_without_default) { Question.new(key, nil, stdin: stdin) }
+      let(:question_prompt) { Question.new(key, default, stdin: stdin, prompt: "Your favorite branch") }
+      let(:question_prompt_without_default) { Question.new(key, nil, stdin: stdin, prompt: "Your favorite branch") }
       let(:default) { :default }
       let(:key) { :branch }
       let(:stdin) { stub(tty?: true) }
@@ -42,6 +44,22 @@ module Capistrano
             stdin.expects(:noecho).never
 
             expect(question_without_default.call).to eq(branch)
+          end
+
+          it "uses prompt and returns the value" do
+            $stdout.expects(:print).with("Your favorite branch (default): ")
+            stdin.expects(:gets).returns(branch)
+            stdin.expects(:noecho).never
+
+            expect(question_prompt.call).to eq(branch)
+          end
+
+          it "uses prompt and returns the value but has no default between parenthesis" do
+            $stdout.expects(:print).with("Your favorite branch: ")
+            stdin.expects(:gets).returns(branch)
+            stdin.expects(:noecho).never
+
+            expect(question_prompt_without_default.call).to eq(branch)
           end
         end
 

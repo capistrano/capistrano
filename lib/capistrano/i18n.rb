@@ -12,6 +12,8 @@ en = {
   written_file: "create %{file}",
   question: "Please enter %{key}: ",
   question_default: "Please enter %{key} (%{default_value}): ",
+  question_prompt: "%{key}: ",
+  question_prompt_default: "%{key} (%{default_value}): ",
   keeping_releases: "Keeping %{keep_releases} of %{releases} deployed releases on %{host}",
   skip_cleanup: "Skipping cleanup of invalid releases on %{host}; unexpected foldername found (should be timestamp)",
   wont_delete_current_release: "Current release was marked for being removed but it's going to be skipped on %{host}",
