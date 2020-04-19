@@ -135,7 +135,7 @@ Tasks: TOP => git:check
 This'll typically come out looking more beautiful depending on your terminal
 colour support, you may well see something like this:
 
-![Capistrano Git Check Colour Example](/images/git-check-example-screenshot.png)
+![Capistrano Git Check Colour Example](/assets/images/git-check-example-screenshot.png)
 
 To run through that shortly, what did we do:
 
@@ -206,6 +206,6 @@ DEBUG [f40edfbb]  3419812c9f146d9a84b44bcc2c3caef94da54758  refs/heads/master
  INFO [f40edfbb] Finished in 3.319 seconds command successful.
 ```
 
-![Capistrano Git Check Colour Example](/images/successful-git-check-example-screenshot.png)
+![Capistrano Git Check Colour Example](/assets/images/successful-git-check-example-screenshot.png)
 
 *Note:* If you get an error like `scp: /tmp/git-ssh.sh: Permission denied`, you may need to set the `:tmp_dir` param.

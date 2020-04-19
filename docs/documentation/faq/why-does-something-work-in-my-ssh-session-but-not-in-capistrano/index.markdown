@@ -114,7 +114,7 @@ INFO Not interactive
 Best explained with this diagram, yes it's that complicated:
 
 <figure class="panel">
-  <img src="/images/BashStartupFiles1.png" title="Bash Startup Files" alt="Bash Startup Files" />
+  <img src="/assets/images/BashStartupFiles1.png" title="Bash Startup Files" alt="Bash Startup Files" />
   <figcaption>
     <p>Source: <a href="http://www.solipsys.co.uk/new/BashInitialisationFiles.html">http://www.solipsys.co.uk/new/BashInitialisationFiles.html</a></p>
   </figcaption>

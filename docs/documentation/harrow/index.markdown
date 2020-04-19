@@ -8,7 +8,7 @@ layout: default
 There are many continuous integration tools in the world already, Harrow is
 ours. It is designed to "feel" familiar to Capistrano users.
 
-![Harrow, web-based Capistrano](/images/capistrano-logo-harrow-logo-c-primary-darker-w640.png)
+![Harrow, web-based Capistrano](/assets/images/capistrano-logo-harrow-logo-c-primary-darker-w640.png)
 
 Although Harrow is designed to work well for Capistrano-style use-cases, it is
 by no means limited to only being used for Capistrano, or even for deployment.
