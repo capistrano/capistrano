@@ -22,7 +22,7 @@ Ruby software to form part of a larger tool.
 
 #### What does it look like?
 
-![Capistrano 3.5 / Airbrussh formatter screenshot](/images/airbrussh-screenshot.png)
+![Capistrano 3.5 / Airbrussh formatter screenshot](/assets/images/airbrussh-screenshot.png)
 
 
 #### What else is in the box?

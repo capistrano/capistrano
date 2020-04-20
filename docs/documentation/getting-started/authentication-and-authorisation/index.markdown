@@ -47,7 +47,7 @@ correct, we are allowed to login.
 **Note:** If you are on Windows, you can use Git for Windows to generate ssh keys. To do this, follow this steps:
 
   1. Install [Git for Windows](https://git-scm.com/download/win).
-  2. Open "Git Bash" and follow next instructions always inside Git Bash prompt. 
+  2. Open "Git Bash" and follow next instructions always inside Git Bash prompt.
   3. Activate ssh-agent: ```$ eval "$(ssh-agent -s)" ```
 
 **Note:** If you want to use [Putty tool](https://www.putty.org/) to connect to remote server (from Windows) with ssh keys, then you need to generate ppk file, through puttygen tool.
@@ -300,7 +300,7 @@ me@localhost $ git ls-remote https://XXXX:@github.com/capistrano/rails3-bootstra
 
 Where `XXXX` is a personal API token, as such:
 
-![Github Personal API Token Page](/images/github-personal-api-token-page.png)
+![Github Personal API Token Page](/assets/images/github-personal-api-token-page.png)
 
 ##### 1.2.3 Deploy Keys
 
