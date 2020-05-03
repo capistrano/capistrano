@@ -26,9 +26,14 @@ if Gem::Requirement.new("< 2.1").satisfied_by?(Gem::Version.new(RUBY_VERSION))
   gem "public_suffix", "< 3.0.0"
 end
 
-# Latest versions of i18n don't support Ruby < 2.1
-if Gem::Requirement.new("< 2.1").satisfied_by?(Gem::Version.new(RUBY_VERSION))
+# Latest versions of i18n don't support Ruby < 2.4
+if Gem::Requirement.new("< 2.4").satisfied_by?(Gem::Version.new(RUBY_VERSION))
   gem "i18n", "< 1.3.0"
+end
+
+# Latest versions of rake don't support Ruby < 2.2
+if Gem::Requirement.new("< 2.2").satisfied_by?(Gem::Version.new(RUBY_VERSION))
+  gem "rake", "< 13.0.0"
 end
 
 # We only run danger once on a new-ish ruby; no need to install it otherwise
