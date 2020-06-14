@@ -191,6 +191,11 @@ module TestApp
 
   def with_clean_bundler_env(&block)
     return yield unless defined?(Bundler)
-    Bundler.with_clean_env(&block)
+
+    if Bundler.respond_to?(:with_unbundled_env)
+      Bundler.with_unbundled_env(&block)
+    else
+      Bundler.with_clean_env(&block)
+    end
   end
 end
