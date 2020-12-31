@@ -1,5 +1,6 @@
 require "capistrano/scm/plugin"
 require "cgi"
+require "securerandom"
 require "shellwords"
 require "uri"
 
@@ -7,10 +8,9 @@ class Capistrano::SCM::Git < Capistrano::SCM::Plugin
   def set_defaults
     set_if_empty :git_shallow_clone, false
     set_if_empty :git_wrapper_path, lambda {
-      # Try to avoid permissions issues when multiple users deploy the same app
-      # by using different file names in the same dir for each deployer and stage.
-      suffix = %i(application stage local_user).map { |key| fetch(key).to_s }.join("-")
-      "#{fetch(:tmp_dir)}/git-ssh-#{suffix}.sh"
+      # Use a unique name that won't collide with other deployments, and
+      # that cannot be guessed by other processes that have access to /tmp.
+      "#{fetch(:tmp_dir)}/git-ssh-#{SecureRandom.hex(10)}.sh"
     }
     set_if_empty :git_environmental_variables, lambda {
       {

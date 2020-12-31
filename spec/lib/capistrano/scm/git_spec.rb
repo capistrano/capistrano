@@ -28,13 +28,10 @@ module Capistrano
     end
 
     describe "#set_defaults" do
-      it "makes git_wrapper_path using application, stage, and local_user" do
+      it "makes git_wrapper_path using a random hex value" do
         env.set(:tmp_dir, "/tmp")
-        env.set(:application, "my_app")
-        env.set(:stage, "staging")
-        env.set(:local_user, "(Git Web User) via ShipIt")
         subject.set_defaults
-        expect(env.fetch(:git_wrapper_path)).to eq("/tmp/git-ssh-my_app-staging-(Git Web User) via ShipIt.sh")
+        expect(env.fetch(:git_wrapper_path)).to match(%r{/tmp/git-ssh-\h{20}\.sh})
       end
 
       it "makes git_max_concurrent_connections" do

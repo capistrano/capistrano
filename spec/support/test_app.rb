@@ -185,8 +185,8 @@ module TestApp
     FileUtils.mv(config_path, location)
   end
 
-  def git_wrapper_path
-    "/tmp/git-ssh-my_app_name-#{stage}-#{current_user}.sh"
+  def git_wrapper_path_glob
+    "/tmp/git-ssh-*.sh"
   end
 
   def with_clean_bundler_env(&block)
