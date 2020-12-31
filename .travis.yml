@@ -18,8 +18,8 @@ matrix:
   include:
     - rvm: rbx-2
       script: bundle exec rake spec
-    # Run Danger only once, on 2.7
-    - rvm: 2.7
+    # Run Danger only once, on 2.5
+    - rvm: 2.5
       before_script: bundle exec danger
 
 script: bundle exec rake spec rubocop
