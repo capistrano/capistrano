@@ -30,6 +30,12 @@ module VagrantHelpers
     return [stdout, stderr] if status.success?
     raise VagrantSSHCommandError, status
   end
+
+  def puts(message)
+    # Attach log messages to the current cucumber feature (`log`),
+    # or simply puts to the console (`super`) if we are outside of cucumber.
+    respond_to?(:log) ? log(message) : super(message)
+  end
 end
 
 World(VagrantHelpers)
