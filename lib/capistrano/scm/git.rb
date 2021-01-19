@@ -60,6 +60,10 @@ class Capistrano::SCM::Git < Capistrano::SCM::Plugin
     end
   end
 
+  def verify_commit
+    git :"verify-commit", fetch_revision
+  end
+
   def archive_to_release_path
     if (tree = fetch(:repo_tree))
       tree = tree.slice %r#^/?(.*?)/?$#, 1

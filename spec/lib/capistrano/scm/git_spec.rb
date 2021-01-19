@@ -169,5 +169,16 @@ module Capistrano
         expect(revision).to eq("81cec13b777ff46348693d327fc8e7832f79bf43")
       end
     end
+
+    describe "#verify_commit" do
+      it "should run git verify-commit" do
+        env.set(:branch, "branch")
+
+        backend.expects(:capture).with(:git, "rev-list --max-count=1 branch").returns("81cec13b777ff46348693d327fc8e7832f79bf43")
+        backend.expects(:execute).with(:git, :"verify-commit", "81cec13b777ff46348693d327fc8e7832f79bf43")
+
+        subject.verify_commit
+      end
+    end
   end
 end
