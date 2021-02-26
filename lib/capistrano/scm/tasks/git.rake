@@ -42,7 +42,7 @@ namespace :git do
       within repo_path do
         with fetch(:git_environmental_variables) do
           git_plugin.update_mirror
-          git_plugin.verify_commit if fetch(:verify_commit)
+          git_plugin.verify_commit if fetch(:git_verify_commit)
         end
       end
     end

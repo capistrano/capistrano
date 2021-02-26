@@ -158,10 +158,9 @@ The following variables are settable:
   * **default:** `0`
   * Number of seconds to wait after you reach the limit of concurrent connections to Git repository server and disconnect afterwards to initialize new connections. This prevents from being cut out of SSH server when you use `fail2ban` or similar software for limiting connections to server.
 
-* `:verify_commit`
+* `:git_verify_commit`
   * **default:** `false`
-  * Whether to check if a valid signature exists on the commit to be deployed.
-  * Currently only implemented for Git.
+  * Whether to check if a valid signature exists on the Git commit to be deployed.
 
 Capistrano plugins can provide their own configuration variables. Please refer
 to the plugin documentation for the specifics. Plugins are allowed to add or
