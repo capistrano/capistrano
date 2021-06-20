@@ -165,6 +165,10 @@ module Capistrano
       installer.scm_installed?
     end
 
+    def scm_plugin
+      installer.scm_plugin
+    end
+
     def servers
       @servers ||= Servers.new
     end
