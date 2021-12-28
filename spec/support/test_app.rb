@@ -40,6 +40,7 @@ module TestApp
     FileUtils.mkdir(test_app_path)
 
     File.open(gemfile, "w+") do |file|
+      file.write "source 'https://rubygems.org'\n"
       file.write "gem 'capistrano', path: '#{path_to_cap}'"
     end
 
