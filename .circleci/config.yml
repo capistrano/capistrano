@@ -5,7 +5,7 @@ executors:
     parameters:
       version:
         description: "Ruby version number"
-        default: "3.1.0"
+        default: "3.1"
         type: string
     docker:
       - image: ruby:<< parameters.version >>
@@ -16,7 +16,7 @@ commands:
     parameters:
       version:
         description: "Ruby version number"
-        default: "3.1.0"
+        default: "3.1"
         type: string
     steps:
       - restore_cache:
@@ -52,7 +52,7 @@ jobs:
     parameters:
       version:
         description: "Ruby version number"
-        default: "3.1.0"
+        default: "3.1"
         type: string
     executor:
       name: ruby
@@ -74,16 +74,16 @@ workflows:
             parameters:
               version:
                 [
-                  "2.0.0-p648",
-                  "2.1.10",
-                  "2.2.10",
-                  "2.3.8",
-                  "2.4.10",
-                  "2.5.9",
-                  "2.6.9",
-                  "2.7.5",
-                  "3.0.3",
-                  "3.1.0",
+                  "2.0",
+                  "2.1",
+                  "2.2",
+                  "2.3",
+                  "2.4",
+                  "2.5",
+                  "2.6",
+                  "2.7",
+                  "3.0",
+                  "3.1",
                 ]
   cron-workflow:
     jobs:
@@ -93,16 +93,16 @@ workflows:
             parameters:
               version:
                 [
-                  "2.0.0-p648",
-                  "2.1.10",
-                  "2.2.10",
-                  "2.3.8",
-                  "2.4.10",
-                  "2.5.9",
-                  "2.6.9",
-                  "2.7.5",
-                  "3.0.3",
-                  "3.1.0",
+                  "2.0",
+                  "2.1",
+                  "2.2",
+                  "2.3",
+                  "2.4",
+                  "2.5",
+                  "2.6",
+                  "2.7",
+                  "3.0",
+                  "3.1",
                 ]
     triggers:
       - schedule:
