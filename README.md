@@ -1,7 +1,7 @@
 
 # Capistrano: A deployment automation tool built on Ruby, Rake, and SSH.
 
-[![Gem Version](https://badge.fury.io/rb/capistrano.svg)](http://badge.fury.io/rb/capistrano) [![Build Status](https://circleci.com/gh/capistrano/capistrano/tree/main.svg?style=shield)](https://app.circleci.com/pipelines/github/capistrano/capistrano?branch=master) [![Code Climate](https://codeclimate.com/github/capistrano/capistrano/badges/gpa.svg)](https://codeclimate.com/github/capistrano/capistrano) [![CodersClan](https://img.shields.io/badge/get-support-blue.svg)](http://codersclan.net/?repo_id=325&source=small)
+[![Gem Version](https://badge.fury.io/rb/capistrano.svg)](http://badge.fury.io/rb/capistrano) [![Build Status](https://circleci.com/gh/capistrano/capistrano/tree/master.svg?style=shield)](https://app.circleci.com/pipelines/github/capistrano/capistrano?branch=master) [![Code Climate](https://codeclimate.com/github/capistrano/capistrano/badges/gpa.svg)](https://codeclimate.com/github/capistrano/capistrano) [![CodersClan](https://img.shields.io/badge/get-support-blue.svg)](http://codersclan.net/?repo_id=325&source=small)
 
 Capistrano is a framework for building automated deployment scripts. Although Capistrano itself is written in Ruby, it can easily be used to deploy projects of any language or framework, be it Rails, Java, or PHP.
 
