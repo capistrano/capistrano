@@ -1,0 +1,113 @@
+version: 2.1
+
+executors:
+  ruby:
+    parameters:
+      version:
+        description: "Ruby version number"
+        default: "3.1"
+        type: string
+    docker:
+      - image: ruby:<< parameters.version >>
+
+commands:
+  bundle_install:
+    description: Install Ruby dependencies with Bundler
+    parameters:
+      version:
+        description: "Ruby version number"
+        default: "3.1"
+        type: string
+    steps:
+      - restore_cache:
+          keys:
+            - bundle-v1-{{ arch }}-<< parameters.version >>
+      - run:
+          name: Install Ruby Dependencies
+          command: |
+            gem install bundler --conservative --no-document || gem install bundler -v '< 2' --no-document
+            bundle config --local path vendor/bundle
+            bundle check || (bundle install --jobs=4 --retry=3 && bundle clean)
+      - save_cache:
+          paths:
+            - ./vendor/bundle
+          key: bundle-v1-{{ arch }}-<< parameters.version >>-{{ checksum "Gemfile.lock" }}
+
+jobs:
+  danger:
+    executor: ruby
+    steps:
+      - checkout
+      - bundle_install
+      - run: bundle exec danger
+
+  rubocop:
+    executor: ruby
+    steps:
+      - checkout
+      - bundle_install
+      - run: bundle exec rubocop
+
+  spec:
+    parameters:
+      version:
+        description: "Ruby version number"
+        default: "3.1"
+        type: string
+    executor:
+      name: ruby
+      version: << parameters.version >>
+    steps:
+      - checkout
+      - bundle_install:
+          version: << parameters.version >>
+      - run: bundle exec rake spec
+
+workflows:
+  version: 2
+  commit-workflow:
+    jobs:
+      - danger
+      - rubocop
+      - spec:
+          matrix:
+            parameters:
+              version:
+                [
+                  "2.0",
+                  "2.1",
+                  "2.2",
+                  "2.3",
+                  "2.4",
+                  "2.5",
+                  "2.6",
+                  "2.7",
+                  "3.0",
+                  "3.1",
+                ]
+  cron-workflow:
+    jobs:
+      - rubocop
+      - spec:
+          matrix:
+            parameters:
+              version:
+                [
+                  "2.0",
+                  "2.1",
+                  "2.2",
+                  "2.3",
+                  "2.4",
+                  "2.5",
+                  "2.6",
+                  "2.7",
+                  "3.0",
+                  "3.1",
+                ]
+    triggers:
+      - schedule:
+          cron: "0 13 * * 6"
+          filters:
+            branches:
+              only:
+                - master

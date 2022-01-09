@@ -53,7 +53,7 @@ $ bundle exec rake features KEEP_RUNNING=1
 
 ### Report failing Cucumber features!
 
-Currently, the Capistrano Travis build does *not* run the Cucumber suite. This means it is possible for a failing Cucumber feature to sneak in without being noticed by our continuous integration checks.
+Currently, the Capistrano CI build does *not* run the Cucumber suite. This means it is possible for a failing Cucumber feature to sneak in without being noticed by our continuous integration checks.
 
 **If you come across a failing Cucumber feature, this is a bug.** Please report it by opening a GitHub issue. Or even better: do your best to fix the feature and submit a pull request!
 
@@ -63,7 +63,7 @@ This project uses [RuboCop](https://github.com/bbatsov/rubocop) to enforce stand
 
 * Test that your contributions pass with `rake rubocop`
 * Rubocop is also run as part of the full test suite with `rake`
-* Note the Travis build will fail and your PR cannot be merged if Rubocop finds errors
+* Note the CI build will fail and your PR cannot be merged if Rubocop finds errors
 
 ## Submitting a pull request
 
