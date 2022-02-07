@@ -10,6 +10,8 @@ module Capistrano
       WHITELIST = %i(
         application
         current_directory
+        linked_dirs
+        linked_files
         releases_directory
         repo_url
         repo_tree
