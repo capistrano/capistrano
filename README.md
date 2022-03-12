@@ -107,7 +107,7 @@ Add Capistrano to your project's Gemfile using `require: false`:
 
 ``` ruby
 group :development do
-  gem "capistrano", "~> 3.16", require: false
+  gem "capistrano", "~> 3.17", require: false
 end
 ```
 
