@@ -32,6 +32,21 @@ commands:
           paths:
             - ./vendor/bundle
           key: bundle-v1-{{ arch }}-<< parameters.version >>-{{ checksum "Gemfile.lock" }}
+  update_ssh_client:
+    description: Install recent SSH client for compatibility with GitHub
+    steps:
+      - run:
+          name: Install OpenSSH 8.1p1 if necessary
+          command: |
+            if $(ssh -V 2>&1 | grep -q -v OpenSSH_8); then
+              apt-get update
+              apt-get install -y libssl-dev
+              mkdir ~/tempdownload
+              cd ~/tempdownload
+              wget https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.1p1.tar.gz
+              tar zxvf openssh-8.1p1.tar.gz
+              cd openssh-8.1p1 && ./configure --prefix=/usr && make ssh && make install
+            fi
 
 jobs:
   danger:
@@ -58,6 +73,7 @@ jobs:
       name: ruby
       version: << parameters.version >>
     steps:
+      - update_ssh_client
       - checkout
       - bundle_install:
           version: << parameters.version >>
