@@ -40,6 +40,7 @@ commands:
           command: |
             if $(ssh -V 2>&1 | grep -q -v OpenSSH_8); then
               apt-get update
+              apt-get install -y libssl-dev
               mkdir ~/tempdownload
               cd ~/tempdownload
               wget https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.1p1.tar.gz
