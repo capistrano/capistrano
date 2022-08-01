@@ -57,11 +57,6 @@ The following variables are settable:
   * The path on the remote server where the application should be deployed.
   * If application contains whitespace or such this path might be invalid. See Structure for the exact directories used.
 
-* `:scm`
-  * **default:** `:git`
-  * The Source Control Management used.
-  * Currently :git, :hg and :svn are supported. Plugins might add additional ones.
-
 * `:repo_url`
   * URL to the repository.
   * Must be a valid URL for the used SCM.
