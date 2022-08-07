@@ -12,7 +12,7 @@ module TestApp
   def default_config
     <<-CONFIG
       set :deploy_to, '#{deploy_to}'
-      set :repo_url, 'git://github.com/capistrano/capistrano.git'
+      set :repo_url, 'https://github.com/capistrano/capistrano.git'
       set :branch, 'master'
       set :ssh_options, { keys: "\#{ENV['HOME']}/.vagrant.d/insecure_private_key", auth_methods: ['publickey'] }
       server 'vagrant@localhost:2220', roles: %w{web app}
