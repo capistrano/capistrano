@@ -16,7 +16,7 @@ module Capistrano
     end
 
     def t(key, options={})
-      I18n.t(key, options.merge(scope: :capistrano))
+      I18n.t(key, **options.merge(scope: :capistrano))
     end
 
     def scm
