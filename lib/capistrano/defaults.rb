@@ -21,7 +21,7 @@ end
 # We use a special :_default_git value so that SCMResolver can tell whether the
 # default has been replaced by the user via `set`.
 set_if_empty :scm, Capistrano::Configuration::SCMResolver::DEFAULT_GIT
-set_if_empty :branch, "master"
+set_if_empty :branch, "main"
 set_if_empty :deploy_to, -> { "/var/www/#{fetch(:application)}" }
 set_if_empty :tmp_dir, "/tmp"
 
