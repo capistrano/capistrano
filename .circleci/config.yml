@@ -5,7 +5,7 @@ executors:
     parameters:
       version:
         description: "Ruby version number"
-        default: "3.1"
+        default: "3.2"
         type: string
     docker:
       - image: ruby:<< parameters.version >>
@@ -16,7 +16,7 @@ commands:
     parameters:
       version:
         description: "Ruby version number"
-        default: "3.1"
+        default: "3.2"
         type: string
     steps:
       - restore_cache:
@@ -67,7 +67,7 @@ jobs:
     parameters:
       version:
         description: "Ruby version number"
-        default: "3.1"
+        default: "3.2"
         type: string
     executor:
       name: ruby
@@ -100,6 +100,7 @@ workflows:
                   "2.7",
                   "3.0",
                   "3.1",
+                  "3.2",
                 ]
   cron-workflow:
     jobs:
@@ -119,6 +120,7 @@ workflows:
                   "2.7",
                   "3.0",
                   "3.1",
+                  "3.2",
                 ]
     triggers:
       - schedule:
