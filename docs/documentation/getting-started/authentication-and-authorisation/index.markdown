@@ -359,7 +359,7 @@ root@remote $ chown deploy ${deploy_to}/{releases,shared}
 
 **Note:** The `chmod g+s` is a really handy, and little known Unix feature, it
 means that at the operating system level, without having to pay much attention
-to the permissions at runtime, all files an directories created inside the
+to the permissions at runtime, all files and directories created inside the
 `${deploy_to}` directory will inherit the group ownership, that means in this
 case even though we are root, the files will be created being owned by `root`
 with the group `deploy`, the `umask 0002` ensures that the files created
