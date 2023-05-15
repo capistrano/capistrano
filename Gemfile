@@ -9,5 +9,7 @@ gemspec
 #
 group :development do
   gem "rake"
+  gem "rexml"
   gem "pry"
+  gem "test-unit"
 end
