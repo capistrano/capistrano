@@ -102,7 +102,7 @@ module Capistrano
 
           Logger.sorted_formatters.each do |formatter|
             if (formatter[:level] == level || formatter[:level].nil?)
-              if message =~ formatter[:match] || line_prefix =~ formatter[:match]
+              if message =~ formatter[:match] || formatter[:match] =~ line_prefix.to_s
                 color = formatter[:color] if formatter[:color]
                 style = formatter[:style] || formatter[:attribute] # (support original cap colors)
                 message.gsub!(formatter[:match], formatter[:replace]) if formatter[:replace]
