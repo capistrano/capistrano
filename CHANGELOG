@@ -1,3 +1,7 @@
+## 2.15.10
+
+* Fix Ruby 3.2 compatibility issues (@intrip)
+
 ## 2.15.9
 
 * Continue if `HOSTROLEFILTER=` is set
