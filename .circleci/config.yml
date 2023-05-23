@@ -39,6 +39,8 @@ commands:
           name: Install OpenSSH 8.1p1 if necessary
           command: |
             if $(ssh -V 2>&1 | grep -q -v OpenSSH_8); then
+              # Stretch packages have been moved to the archvie.debian.org domain as of April 2023
+              sed -E 's/^(deb http:\/\/)(security|deb)(\.debian\.org\S+ stretch)/\1archive\3/g' -i /etc/apt/sources.list
               apt-get update || true
               apt-get install -y --force-yes libssl-dev || true
               mkdir ~/tempdownload
