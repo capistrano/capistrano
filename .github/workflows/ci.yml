@@ -53,4 +53,6 @@ jobs:
           ruby-version: "3.2"
           bundler-cache: true
       - name: danger
+        env:
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
         run: bundle exec danger
