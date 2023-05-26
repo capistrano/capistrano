@@ -30,6 +30,7 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+          rubygems: "2.7.11"
       - name: rake spec
         run: bundle exec rake spec
   rubocop:
