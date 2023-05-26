@@ -57,6 +57,7 @@ jobs:
           DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
         run: bundle exec danger
   features:
+    needs: [spec, spec-legacy]
     runs-on: macos-12
     steps:
       - uses: actions/checkout@v3
