@@ -51,12 +51,6 @@ $ bundle exec rake features
 $ bundle exec rake features KEEP_RUNNING=1
 ```
 
-### Report failing Cucumber features!
-
-Currently, the Capistrano CI build does *not* run the Cucumber suite. This means it is possible for a failing Cucumber feature to sneak in without being noticed by our continuous integration checks.
-
-**If you come across a failing Cucumber feature, this is a bug.** Please report it by opening a GitHub issue. Or even better: do your best to fix the feature and submit a pull request!
-
 ## Coding guidelines
 
 This project uses [RuboCop](https://github.com/bbatsov/rubocop) to enforce standard Ruby coding guidelines.
