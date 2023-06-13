@@ -22,7 +22,7 @@ end
 
 if ARGV.empty?
   abort "Please specify the directory to capify, e.g. `#{File.basename($0)} .'"
-elsif !File.exists?(ARGV.first)
+elsif !File.exist?(ARGV.first)
   abort "`#{ARGV.first}' does not exist."
 elsif !File.directory?(ARGV.first)
   abort "`#{ARGV.first}' is not a directory."
@@ -75,12 +75,12 @@ role :db,  "your slave db-server here"
 base = ARGV.shift
 files.each do |file, content|
   file = File.join(base, file)
-  if File.exists?(file)
+  if File.exist?(file)
     warn "[skip] '#{file}' already exists"
-  elsif File.exists?(file.downcase)
+  elsif File.exist?(file.downcase)
     warn "[skip] '#{file.downcase}' exists, which could conflict with `#{file}'"
   else
-    unless File.exists?(File.dirname(file))
+    unless File.exist?(File.dirname(file))
       puts "[add] making directory '#{File.dirname(file)}'"
       FileUtils.mkdir(File.dirname(file))
     end

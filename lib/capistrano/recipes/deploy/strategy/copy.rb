@@ -227,7 +227,7 @@ module Capistrano
           end
 
           def copy_repository_to_local_cache
-            return refresh_local_cache if File.exists?(copy_cache)
+            return refresh_local_cache if File.exist?(copy_cache)
             create_local_cache
           end
 

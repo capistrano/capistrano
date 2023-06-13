@@ -52,7 +52,7 @@ Capistrano::Configuration.instance.load do
       FileUtils.mkdir_p(location)
       stages.each do |name|
         file = File.join(location, name + ".rb")
-        unless File.exists?(file)
+        unless File.exist?(file)
           File.open(file, "w") do |f|
             f.puts "# #{name.upcase}-specific deployment configuration"
             f.puts "# please put general deployment config in config/deploy.rb"
