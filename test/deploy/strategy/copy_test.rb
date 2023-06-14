@@ -222,7 +222,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @config[:copy_cache] = true
 
     Dir.stubs(:tmpdir).returns("/temp/dir")
-    File.expects(:exists?).with("/temp/dir/captest").returns(false)
+    File.expects(:exist?).with("/temp/dir/captest").returns(false)
     Dir.expects(:chdir).with("/temp/dir/captest").yields
 
     @source.expects(:checkout).with("154", "/temp/dir/captest").returns(:local_checkout)
@@ -240,7 +240,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @config[:copy_cache] = true
 
     Dir.stubs(:tmpdir).returns("/temp/dir")
-    File.expects(:exists?).with("/temp/dir/captest").returns(true)
+    File.expects(:exist?).with("/temp/dir/captest").returns(true)
     Dir.expects(:chdir).with("/temp/dir/captest").yields
 
     @source.expects(:sync).with("154", "/temp/dir/captest").returns(:local_sync)
@@ -258,7 +258,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @config[:copy_cache] = "/u/caches/captest"
 
     Dir.stubs(:tmpdir).returns("/temp/dir")
-    File.expects(:exists?).with("/u/caches/captest").returns(true)
+    File.expects(:exist?).with("/u/caches/captest").returns(true)
     Dir.expects(:chdir).with("/u/caches/captest").yields
 
     @source.expects(:sync).with("154", "/u/caches/captest").returns(:local_sync)
@@ -277,7 +277,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
 
     Dir.stubs(:pwd).returns("/u")
     Dir.stubs(:tmpdir).returns("/temp/dir")
-    File.expects(:exists?).with("/u/caches/captest").returns(true)
+    File.expects(:exist?).with("/u/caches/captest").returns(true)
     Dir.expects(:chdir).with("/u/caches/captest").yields
 
     @source.expects(:sync).with("154", "/u/caches/captest").returns(:local_sync)
@@ -296,7 +296,7 @@ class DeployStrategyCopyTest < Test::Unit::TestCase
     @config[:copy_exclude] = "*/bar.txt"
 
     Dir.stubs(:tmpdir).returns("/temp/dir")
-    File.expects(:exists?).with("/temp/dir/captest").returns(true)
+    File.expects(:exist?).with("/temp/dir/captest").returns(true)
     Dir.expects(:chdir).with("/temp/dir/captest").yields
 
     @source.expects(:sync).with("154", "/temp/dir/captest").returns(:local_sync)
