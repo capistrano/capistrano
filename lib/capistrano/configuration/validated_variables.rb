@@ -68,7 +68,7 @@ module Capistrano
       # works as expected.
       #
       def assert_valid_later(key, callable)
-        validation_callback = lambda do
+        validation_callback = proc do
           value = callable.call
           assert_valid_now(key, value)
           value
