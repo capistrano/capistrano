@@ -1,5 +1,5 @@
-name-template: "$NEXT_PATCH_VERSION"
-tag-template: "v$NEXT_PATCH_VERSION"
+name-template: "$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
 categories:
   - title: "⚠️ Breaking Changes"
     label: "⚠️ Breaking"
@@ -11,7 +11,15 @@ categories:
     label: "📚 Docs"
   - title: "🏠 Housekeeping"
     label: "🏠 Housekeeping"
+version-resolver:
+  minor:
+    labels:
+      - "⚠️ Breaking"
+      - "✨ Feature"
+  default: patch
 change-template: "- $TITLE (#$NUMBER) @$AUTHOR"
 no-changes-template: "- No changes"
 template: |
   $CHANGES
+
+  **Full Changelog:** https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
