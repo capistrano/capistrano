@@ -8,6 +8,7 @@ module Capistrano
   # see also - spec/integration/dsl_spec.rb
   describe DSL do
     let(:dsl) { DummyDSL.new }
+    let(:block) { proc {} }
 
     describe "#t" do
       before do
@@ -118,6 +119,73 @@ module Capistrano
             dsl.invoke!("D")
             dsl.invoke!("D")
           end.to_not output(/If you really meant to run this task again, use invoke!/).to_stderr
+        end
+      end
+    end
+
+    describe "#run_locally" do
+      context "dry run" do
+        before do
+          dsl.set(:sshkit_backend, SSHKit::Backend::Printer)
+          @localhost = mock("localhost")
+          SSHKit::Host.expects(:new).with(:local).returns(@localhost)
+        end
+
+        it "will call SSHKit printer backend" do
+          printer = mock("printer")
+          printer.expects(:run).with
+
+          SSHKit::Backend::Printer.expects(:new).with(@localhost) { |&block| expect(block).to be(block) }.returns(printer)
+
+          expect(dsl.dry_run?).to be_truthy
+          dsl.run_locally(&block)
+        end
+      end
+
+      context "regular run" do
+        before do
+          dsl.set(:sshkit_backend, nil)
+        end
+
+        it "will call SSHKit local backend" do
+          local = mock("local")
+          local.expects(:run).with
+
+          SSHKit::Backend::Local.expects(:new).with { |&block| expect(block).to be(block) }.returns(local)
+
+          expect(dsl.dry_run?).to be_falsey
+          dsl.run_locally(&block)
+        end
+      end
+    end
+
+    describe "#run_locally!" do
+      before do
+        local = mock("local")
+        local.expects(:run).with
+
+        SSHKit::Backend::Local.expects(:new).with { |&block| expect(block).to be(block) }.returns(local)
+      end
+
+      context "dry run" do
+        before do
+          dsl.set(:sshkit_backend, SSHKit::Backend::Printer)
+        end
+
+        it "will call SSHKit local backend" do
+          expect(dsl.dry_run?).to be_truthy
+          dsl.run_locally!(&block)
+        end
+      end
+
+      context "regular run" do
+        before do
+          dsl.set(:sshkit_backend, nil)
+        end
+
+        it "will call SSHKit local backend" do
+          expect(dsl.dry_run?).to be_falsey
+          dsl.run_locally!(&block)
         end
       end
     end
