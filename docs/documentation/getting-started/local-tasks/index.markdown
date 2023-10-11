@@ -16,7 +16,7 @@ task :notify do
 end
 ```
 
-**`run_locally` will not execute any task in dry mode. To run tasks whenever dry mode is on please use `run_locally!` instead.**
+**`run_locally` will not actually execute any commands when in `--dry-run` mode. To run local commands even in `--dry-run`, use `run_locally!` instead.**
 
 Of course, you can always just use standard ruby syntax to run things locally:
 
