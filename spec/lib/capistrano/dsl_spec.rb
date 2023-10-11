@@ -8,7 +8,10 @@ module Capistrano
   # see also - spec/integration/dsl_spec.rb
   describe DSL do
     let(:dsl) { DummyDSL.new }
-    let(:block) { proc {} }
+
+    after do
+      Configuration.reset!
+    end
 
     describe "#t" do
       before do
@@ -126,66 +129,51 @@ module Capistrano
     describe "#run_locally" do
       context "dry run" do
         before do
+          # This is equivalent to passing --dry-run on the command line
           dsl.set(:sshkit_backend, SSHKit::Backend::Printer)
-          @localhost = mock("localhost")
-          SSHKit::Host.expects(:new).with(:local).returns(@localhost)
+          expect(dsl.dry_run?).to be_truthy
         end
 
-        it "will call SSHKit printer backend" do
-          printer = mock("printer")
-          printer.expects(:run).with
+        it "uses the SSHKit printer backend" do
+          backend = nil
+          dsl.run_locally { backend = self.class }
 
-          SSHKit::Backend::Printer.expects(:new).with(@localhost) { |&block| expect(block).to be(block) }.returns(printer)
-
-          expect(dsl.dry_run?).to be_truthy
-          dsl.run_locally(&block)
+          expect(backend).to eq(SSHKit::Backend::Printer)
         end
       end
 
       context "regular run" do
-        before do
-          dsl.set(:sshkit_backend, nil)
-        end
+        it "uses the SSHKit local backend" do
+          backend = nil
+          dsl.run_locally { backend = self.class }
 
-        it "will call SSHKit local backend" do
-          local = mock("local")
-          local.expects(:run).with
-
-          SSHKit::Backend::Local.expects(:new).with { |&block| expect(block).to be(block) }.returns(local)
-
-          expect(dsl.dry_run?).to be_falsey
-          dsl.run_locally(&block)
+          expect(backend).to eq(SSHKit::Backend::Local)
         end
       end
     end
 
     describe "#run_locally!" do
-      before do
-        local = mock("local")
-        local.expects(:run).with
-
-        SSHKit::Backend::Local.expects(:new).with { |&block| expect(block).to be(block) }.returns(local)
-      end
-
       context "dry run" do
         before do
+          # This is equivalent to passing --dry-run on the command line
           dsl.set(:sshkit_backend, SSHKit::Backend::Printer)
+          expect(dsl.dry_run?).to be_truthy
         end
 
-        it "will call SSHKit local backend" do
-          expect(dsl.dry_run?).to be_truthy
-          dsl.run_locally!(&block)
+        it "uses the SSHKit local backend" do
+          backend = nil
+          dsl.run_locally! { backend = self.class }
+
+          expect(backend).to eq(SSHKit::Backend::Local)
         end
       end
 
       context "regular run" do
-        before do
-          dsl.set(:sshkit_backend, nil)
-        end
+        it "uses the SSHKit local backend" do
+          backend = nil
+          dsl.run_locally! { backend = self.class }
 
-        it "will call SSHKit local backend" do
-          expect(dsl.dry_run?).to be_falsey
-          dsl.run_locally!(&block)
+          expect(backend).to eq(SSHKit::Backend::Local)
         end
       end
     end
