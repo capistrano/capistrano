@@ -225,10 +225,6 @@ exact same check that Capistrano does internally before attempting to deploy.
 The `-A` option may, or may not be required on your system, it's worth trying
 it both ways just to know how your system treats agent forwarding by default.
 
-If you get the error "host key verification failed." log in into your server
-and run as the deploy user the command `ssh git@github.com` to add github.com
-to the list of known hosts.
-
 From the SSH documentation:
 
 ```bash
@@ -248,6 +244,9 @@ don't trust the administrators, as they can can override the permissions on
 the system and use your keys as if they were you. That said, if you can't
 trust your server administrators, perhaps they shouldn't have access to your
 servers!
+
+If you get the error "Host key verification failed" run `cap production git:check` 
+to add github.com to the list of known hosts on all your servers automatically.
 
 ##### 1.2.2 HTTP Authentication
 
