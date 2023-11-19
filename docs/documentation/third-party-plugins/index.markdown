@@ -58,3 +58,5 @@ You can help us expanding this list by sending us a pull request on
 <div class="github-widget" data-repo="danieltoader/capistrano-teams"></div>
 
 <div class="github-widget" data-repo="floydj/capistrano-mysql_tables"></div>
+
+<div class="github-widget" data-repo="axsuul/capistrano-nomad"></div>
