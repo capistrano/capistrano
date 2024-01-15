@@ -40,7 +40,9 @@ end
 
 # We only run danger and rubocop on a new-ish ruby; no need to install them otherwise
 if Gem::Requirement.new("> 2.4").satisfied_by?(Gem::Version.new(RUBY_VERSION))
+  gem "base64"
   gem "danger"
   gem "psych", "< 4" # Ensures rubocop works on Ruby 3.1
+  gem "racc"
   gem "rubocop", "0.48.1"
 end
