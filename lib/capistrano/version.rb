@@ -1,3 +1,3 @@
 module Capistrano
-  VERSION = "3.17.3".freeze
+  VERSION = "3.18.0".freeze
 end
