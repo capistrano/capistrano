@@ -54,7 +54,7 @@ task :ditty do
 
   on roles(:app) do
     # We can set environmental variables for the duration of a block
-    # and move the process into a directoy, executing arbitrary tasks
+    # and move the process into a directory, executing arbitrary tasks
     # such as letting Rails do some heavy lifting.
     with({:rails_env => :production}) do
       within('/var/www/my/rails/app') do

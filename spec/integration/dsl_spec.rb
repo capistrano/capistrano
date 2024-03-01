@@ -247,7 +247,7 @@ describe Capistrano::DSL do
           end
         end
 
-        context "when the attribute `primary` is explicity set" do
+        context "when the attribute `primary` is explicitly set" do
           subject { dsl.primary(:app) }
           it "returns the servers" do
             expect(subject.hostname).to eq "example4.com"

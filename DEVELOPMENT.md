@@ -20,7 +20,7 @@ Everyone can help improve Capistrano. There are ways to contribute even if you a
 
 ## Contributing documentation
 
-Improvements and additions to Capistrano's documentation are very much appreciated. The official documention is stored in the `docs/` directory as Markdown files. These files are used to automatically generate the [capistranorb.com](http://capistranorb.com/) website, which is hosted by GitHub Pages. Feel free to make changes to this documentation as you see fit. Before opening a pull request, make sure your documentation renders correctly by previewing the website in your local environment. Refer to [docs/README.md][] for instructions.
+Improvements and additions to Capistrano's documentation are very much appreciated. The official documentation is stored in the `docs/` directory as Markdown files. These files are used to automatically generate the [capistranorb.com](http://capistranorb.com/) website, which is hosted by GitHub Pages. Feel free to make changes to this documentation as you see fit. Before opening a pull request, make sure your documentation renders correctly by previewing the website in your local environment. Refer to [docs/README.md][] for instructions.
 
 ## Setting up your development environment
 

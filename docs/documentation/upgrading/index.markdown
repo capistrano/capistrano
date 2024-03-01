@@ -7,7 +7,7 @@ layout: default
 Update your Gemfile: `gem 'capistrano', '~> 3.0', require: false, group: :development`
 
 
-If you deploy Rails, you wil also need `capistrano-rails` and `capistrano-bundler` gems (Rails and Bundler integrations were moved out from Capistrano 3).
+If you deploy Rails, you will also need `capistrano-rails` and `capistrano-bundler` gems (Rails and Bundler integrations were moved out from Capistrano 3).
 
 ```ruby
 group :development do
