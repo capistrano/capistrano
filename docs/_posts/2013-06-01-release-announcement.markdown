@@ -74,7 +74,7 @@ exist in version three, ***yet***.
   it needs better `readline` support, and some more controls around what to do
   when things go badly on some servers, but not others.
 * **Cold Deploy** The `cap deploy:cold` is a really old legacy component,
-  orignally from the days of the `script/spinner` where deploying cold
+  originally from the days of the `script/spinner` where deploying cold
   (starting workers that weren't running), and deploying a *warm* system were
   different (restarting existing worker pools, which wasn't fun!) By and large
   these things have gone away, and it's time `deploy:cold` went away. It's
@@ -90,7 +90,7 @@ features are awesome.
 
 #### Rake Integration
 
-We have moved away from our own DSL implemenation to implement Capistrano as a
+We have moved away from our own DSL implementation to implement Capistrano as a
 *Rake* application.
 
 Rake has always supported being sub-classed, so to speak as a
@@ -167,7 +167,7 @@ this:
 {% endhighlight %}
 
 This always felt a little unclean, and indeed it's a hack that was originally
-implemeted to facilitate rolling deployments at a large German firm by a
+implemented to facilitate rolling deployments at a large German firm by a
 couple of freelancers who were consulting with them. (Hint, one of those guys
 went on to found Travis-CI!)
 
@@ -347,7 +347,7 @@ In Capistrano v3 this looks more like this:
 {% endhighlight %}
 
 Again, with other examples this format is a little longer, but much more
-expressive, and all the nightmare of shell escaping is handled interally for
+expressive, and all the nightmare of shell escaping is handled internally for
 you, environmental variables are capitalised and applied at the correct point
 (i.e between the `cd` and `rake` calls in this case).
 
@@ -363,7 +363,7 @@ consulted.
 
 This magic led to times when people were not recognising that magic variables
 were even being used. The magic variable system of Capistrano v2 did also
-include a way to `fetch(:some_variable, 'with a default value')` incase the
+include a way to `fetch(:some_variable, 'with a default value')` in case the
 variable might not be set already, but it wasn't widely used, and more often
 than not people just used things like `latest_release_directory` never knowing
 that behind the scenes an exception was raised, then rescued, and that
@@ -566,7 +566,7 @@ and such like, then it's required to `require` the support files.
 #### Rake DSL Is Additive
 
 In Capistrano v2 if you re-define a task then it replaces the original
-implemetation, this has been used by people to replace internal tasks
+implementation, this has been used by people to replace internal tasks
 piecemeal with their own implementations
 
 #### `sudo` Behaviour

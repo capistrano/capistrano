@@ -72,7 +72,7 @@ module Capistrano
 
     describe "#invoke" do
       context "reinvoking" do
-        it "will not reenable invoking task", capture_io: true do
+        it "will not re-enable invoking task", capture_io: true do
           counter = 0
 
           Rake::Task.define_task("A") do
@@ -98,7 +98,7 @@ module Capistrano
 
     describe "#invoke!" do
       context "reinvoking" do
-        it "will reenable invoking task", capture_io: true do
+        it "will re-enable invoking task", capture_io: true do
           counter = 0
 
           Rake::Task.define_task("C") do
