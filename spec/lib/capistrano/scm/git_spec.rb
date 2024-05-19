@@ -170,6 +170,15 @@ module Capistrano
       end
     end
 
+    describe "#fetch_revision_time" do
+      it "should capture git log" do
+        env.set(:branch, "branch")
+        backend.expects(:capture).with(:git, "log -1 --pretty=format:\"%ct\" branch").returns("1715828406")
+        revision_time = subject.fetch_revision_time
+        expect(revision_time).to eq("1715828406")
+      end
+    end
+
     describe "#verify_commit" do
       it "should run git verify-commit" do
         env.set(:branch, "branch")

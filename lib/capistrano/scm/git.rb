@@ -78,6 +78,10 @@ class Capistrano::SCM::Git < Capistrano::SCM::Plugin
     backend.capture(:git, "rev-list --max-count=1 #{fetch(:branch)}")
   end
 
+  def fetch_revision_time
+    backend.capture(:git, "log -1 --pretty=format:\"%ct\" #{fetch(:branch)}")
+  end
+
   def git(*args)
     args.unshift :git
     backend.execute(*args)
