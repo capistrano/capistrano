@@ -12,6 +12,7 @@ module Capistrano
         Rake::Task.define_task("deploy:check")
         Rake::Task.define_task("deploy:new_release_path")
         Rake::Task.define_task("deploy:set_current_revision")
+        Rake::Task.define_task("deploy:set_current_revision_time")
         set :scm, SCMResolver::DEFAULT_GIT
       end
 
