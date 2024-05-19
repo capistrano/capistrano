@@ -12,7 +12,7 @@ on roles(:app), in: :sequence, wait: 5 do
   within "/opt/sites/example.com" do
     # commands in this block execute in the
     # directory: /opt/sites/example.com
-    as :deploy  do
+    as :deploy do
       # commands in this block execute as the "deploy" user.
       with rails_env: :production do
         # commands in this block execute with the environment

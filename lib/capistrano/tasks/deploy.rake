@@ -236,7 +236,7 @@ namespace :deploy do
   end
 
   desc "Place a REVISION file with the current revision SHA in the current release path"
-  task :set_current_revision  do
+  task :set_current_revision do
     on release_roles(:all) do
       within release_path do
         execute :echo, "\"#{fetch(:current_revision)}\" > REVISION"
