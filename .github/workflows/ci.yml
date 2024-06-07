@@ -66,19 +66,6 @@ jobs:
           bundler-cache: true
       - name: rake rubocop
         run: bundle exec rake rubocop
-  danger:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "ruby" # latest-stable
-          bundler-cache: true
-      - name: danger
-        env:
-          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
-        run: bundle exec danger
   features:
     needs: [spec, spec-legacy]
     runs-on: macos-12
