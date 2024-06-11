@@ -20,22 +20,16 @@ Everyone can help improve Capistrano. There are ways to contribute even if you a
 
 ## Contributing documentation
 
-Improvements and additions to Capistrano's documentation are very much appreciated. The official documentation is stored in the `docs/` directory as Markdown files. These files are used to automatically generate the [capistranorb.com](http://capistranorb.com/) website, which is hosted by GitHub Pages. Feel free to make changes to this documentation as you see fit. Before opening a pull request, make sure your documentation renders correctly by previewing the website in your local environment. Refer to [docs/README.md][] for instructions.
+Improvements and additions to Capistrano's documentation are very much appreciated. The official documentation is stored in the `docs/` directory as Markdown files. These files are used to automatically generate the [capistranorb.com](https://capistranorb.com/) website, which is hosted by GitHub Pages. Feel free to make changes to this documentation as you see fit. Before opening a pull request, make sure your documentation renders correctly by previewing the website in your local environment. Refer to [docs/README.md][] for instructions.
 
 ## Setting up your development environment
 
-Capistrano is a Ruby project, so we expect you to have a functioning Ruby environment. To hack on Capistrano you will further need some specialized tools to run its test suite.
-
-Make sure to install:
-
-* [Bundler](https://bundler.io/)
-* [Vagrant](https://www.vagrantup.com/)
-* [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (or another [Vagrant-supported](https://docs.vagrantup.com/v2/getting-started/providers.html) VM host)
+Capistrano is a Ruby project, so we expect you to have a functioning Ruby environment with the latest stable version of Ruby. To run Cucumber tests, you'll also need [Docker installed](https://docs.docker.com/get-docker/) and running.
 
 
 ### Running tests
 
-Capistrano has two test suites: an RSpec suite and a Cucumber suite. The RSpec suite handles quick feedback unit specs. The Cucumber suite is an integration suite that uses Vagrant to deploy to a real virtual server.
+Capistrano has two test suites: an RSpec suite and a Cucumber suite. The RSpec suite handles quick feedback unit specs. The Cucumber suite is an integration suite that uses a Docker container as an SSH server and deployment target.
 
 ```
 # Ensure all dependencies are installed
@@ -44,11 +38,8 @@ $ bundle install
 # Run the RSpec suite
 $ bundle exec rake spec
 
-# Run the Cucumber suite
+# Run the Cucumber suite (Docker must be running)
 $ bundle exec rake features
-
-# Run the Cucumber suite and leave the VM running (faster for subsequent runs)
-$ bundle exec rake features KEEP_RUNNING=1
 ```
 
 ## Coding guidelines

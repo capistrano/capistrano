@@ -7,11 +7,8 @@ Given(/^a test app without any configuration$/) do
 end
 
 Given(/^servers with the roles app and web$/) do
-  begin
-    vagrant_cli_command("up")
-  rescue
-    nil
-  end
+  start_ssh_server
+  wait_for_ssh_server
 end
 
 Given(/^a linked file "(.*?)"$/) do |file|
@@ -21,8 +18,8 @@ end
 
 Given(/^file "(.*?)" exists in shared path$/) do |file|
   file_shared_path = TestApp.shared_path.join(file)
-  run_vagrant_command("mkdir -p #{file_shared_path.dirname}")
-  run_vagrant_command("touch #{file_shared_path}")
+  run_remote_ssh_command("mkdir -p #{file_shared_path.dirname}")
+  run_remote_ssh_command("touch #{file_shared_path}")
 end
 
 Given(/^all linked files exists in shared path$/) do
@@ -33,8 +30,8 @@ end
 
 Given(/^file "(.*?)" does not exist in shared path$/) do |file|
   file_shared_path = TestApp.shared_path.join(file)
-  run_vagrant_command("mkdir -p #{TestApp.shared_path}")
-  run_vagrant_command("touch #{file_shared_path} && rm #{file_shared_path}")
+  run_remote_ssh_command("mkdir -p #{TestApp.shared_path}")
+  run_remote_ssh_command("touch #{file_shared_path} && rm #{file_shared_path}")
 end
 
 Given(/^a custom task to generate a file$/) do
@@ -72,7 +69,7 @@ Given(/^I make (\d+) deployments$/) do |count|
 
   @release_paths = (1..count.to_i).map do
     TestApp.cap("deploy")
-    stdout, _stderr = run_vagrant_command("readlink #{TestApp.current_path}")
+    stdout, _stderr = run_remote_ssh_command("readlink #{TestApp.current_path}")
 
     stdout.strip
   end
@@ -85,10 +82,10 @@ Given(/^(\d+) valid existing releases$/) do |num|
       offset = -(a_day * i)
       TestApp.release_path(TestApp.timestamp(offset))
     end
-    run_vagrant_command("mkdir -p #{dirs.join(' ')}")
+    run_remote_ssh_command("mkdir -p #{dirs.join(' ')}")
   end
 end
 
 Given(/^an invalid release named "(.+)"$/) do |filename|
-  run_vagrant_command("mkdir -p #{TestApp.release_path(filename)}")
+  run_remote_ssh_command("mkdir -p #{TestApp.release_path(filename)}")
 end
