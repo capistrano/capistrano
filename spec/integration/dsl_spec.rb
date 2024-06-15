@@ -592,8 +592,8 @@ describe Capistrano::DSL do
 
     it "yields the properties for a single role" do
       recipient = mock("recipient")
-      recipient.expects(:doit).with("example1.com", :redis, port: 6379, type: :slave)
-      recipient.expects(:doit).with("example2.com", :redis, port: 6379, type: :master)
+      recipient.expects(:doit).with("example1.com", :redis, { port: 6379, type: :slave })
+      recipient.expects(:doit).with("example2.com", :redis, { port: 6379, type: :master })
       dsl.role_properties(:redis) do |host, role, props|
         recipient.doit(host, role, props)
       end
@@ -601,8 +601,8 @@ describe Capistrano::DSL do
 
     it "yields the properties for multiple roles" do
       recipient = mock("recipient")
-      recipient.expects(:doit).with("example1.com", :redis, port: 6379, type: :slave)
-      recipient.expects(:doit).with("example2.com", :redis, port: 6379, type: :master)
+      recipient.expects(:doit).with("example1.com", :redis, { port: 6379, type: :slave })
+      recipient.expects(:doit).with("example2.com", :redis, { port: 6379, type: :master })
       recipient.expects(:doit).with("example3.com", :app, nil)
       dsl.role_properties(:redis, :app) do |host, role, props|
         recipient.doit(host, role, props)
@@ -611,10 +611,10 @@ describe Capistrano::DSL do
 
     it "yields the merged properties for multiple roles" do
       recipient = mock("recipient")
-      recipient.expects(:doit).with("example1.com", :redis, port: 6379, type: :slave)
-      recipient.expects(:doit).with("example2.com", :redis, port: 6379, type: :master)
-      recipient.expects(:doit).with("example1.com", :web, port: 80)
-      recipient.expects(:doit).with("example2.com", :web, port: 81)
+      recipient.expects(:doit).with("example1.com", :redis, { port: 6379, type: :slave })
+      recipient.expects(:doit).with("example2.com", :redis, { port: 6379, type: :master })
+      recipient.expects(:doit).with("example1.com", :web, { port: 80 })
+      recipient.expects(:doit).with("example2.com", :web, { port: 81 })
       dsl.role_properties(:redis, :web) do |host, role, props|
         recipient.doit(host, role, props)
       end
@@ -622,8 +622,8 @@ describe Capistrano::DSL do
 
     it "honours a property filter before yielding" do
       recipient = mock("recipient")
-      recipient.expects(:doit).with("example1.com", :redis, port: 6379, type: :slave)
-      recipient.expects(:doit).with("example1.com", :web, port: 80)
+      recipient.expects(:doit).with("example1.com", :redis, { port: 6379, type: :slave })
+      recipient.expects(:doit).with("example1.com", :web, { port: 80 })
       dsl.role_properties(:redis, :web, select: :active) do |host, role, props|
         recipient.doit(host, role, props)
       end
