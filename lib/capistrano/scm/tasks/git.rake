@@ -76,7 +76,7 @@ namespace :git do
     on release_roles(:all), in: :groups, limit: fetch(:git_max_concurrent_connections), wait: fetch(:git_wait_interval) do
       within repo_path do
         with fetch(:git_environmental_variables) do
-          set :current_revision, git_plugin.fetch_revision
+          set :current_revision_time, git_plugin.fetch_revision_time
         end
       end
     end
