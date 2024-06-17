@@ -64,7 +64,7 @@ Given(/^a stage file named (.+)$/) do |filename|
   TestApp.write_local_stage_file(filename)
 end
 
-Given(/^I make (\d+) deployments$/) do |count|
+Given(/^I make (\d+) deployments?$/) do |count|
   step "all linked files exists in shared path"
 
   @release_paths = (1..count.to_i).map do

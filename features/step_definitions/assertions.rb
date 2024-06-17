@@ -48,6 +48,20 @@ Then(/^the release is created$/) do
   run_remote_ssh_command("ls -g #{TestApp.releases_path}")
 end
 
+Then(/^the REVISION file is created in the release$/) do
+  stdout, _stderr = run_remote_ssh_command("cat #{@release_paths[0]}/REVISION")
+
+  # TODO: confirm that this value is actually constant for everyone
+  expect(stdout.strip).to eq "3f41365139a0b3a408e96f13c781d9cedba8b4b8"
+end
+
+Then(/^the REVISION_TIME file is created in the release$/) do
+  stdout, _stderr = run_remote_ssh_command("cat #{@release_paths[0]}/REVISION_TIME")
+
+  # TODO: confirm that this value is actually constant for everyone
+  expect(stdout.strip).to eq "1718251930"
+end
+
 Then(/^file symlinks are created in the new release$/) do
   TestApp.linked_files.each do |file|
     run_remote_ssh_command(test_symlink_exists(TestApp.current_path.join(file)))

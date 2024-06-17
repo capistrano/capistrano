@@ -40,6 +40,11 @@ Feature: Deploy
     Then the repo is cloned
     And the release is created
 
+  Scenario: REVISION and REVISION_TIME files are present
+    Given I make 1 deployment
+    And the REVISION file is created in the release
+    And the REVISION_TIME file is created in the release
+
   Scenario: Symlink linked files
     When I run cap "deploy:symlink:linked_files deploy:symlink:release" as part of a release
     Then file symlinks are created in the new release
@@ -85,4 +90,3 @@ Feature: Deploy
     Given I make 3 deployments
     When I rollback to a specific release
     Then the current symlink points to that specific release
-
