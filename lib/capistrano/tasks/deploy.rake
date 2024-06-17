@@ -259,7 +259,9 @@ namespace :deploy do
   task :set_current_revision_time do
     on release_roles(:all) do
       within release_path do
-        execute :echo, "\"#{fetch(:current_revision_time)}\" > REVISION_TIME"
+        if fetch(:current_revision_time)
+          execute :echo, "\"#{fetch(:current_revision_time)}\" > REVISION_TIME"
+        end
       end
     end
   end
