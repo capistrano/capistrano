@@ -51,15 +51,13 @@ end
 Then(/^the REVISION file is created in the release$/) do
   stdout, _stderr = run_remote_ssh_command("cat #{@release_paths[0]}/REVISION")
 
-  # TODO: confirm that this value is actually constant for everyone
-  expect(stdout.strip).to eq "3f41365139a0b3a408e96f13c781d9cedba8b4b8"
+  expect(stdout.strip).to match(/\h{40}/)
 end
 
 Then(/^the REVISION_TIME file is created in the release$/) do
   stdout, _stderr = run_remote_ssh_command("cat #{@release_paths[0]}/REVISION_TIME")
 
-  # TODO: confirm that this value is actually constant for everyone
-  expect(stdout.strip).to eq "1718251930"
+  expect(stdout.strip).to match(/\d{10}/)
 end
 
 Then(/^file symlinks are created in the new release$/) do
