@@ -45,7 +45,9 @@ Then(/^the repo is cloned$/) do
 end
 
 Then(/^the release is created$/) do
-  run_remote_ssh_command("ls -g #{TestApp.releases_path}")
+  stdout, _stderr = run_remote_ssh_command("ls #{TestApp.releases_path}")
+
+  expect(stdout.strip).to match(/\A#{Time.now.utc.strftime("%Y%m%d")}\d{6}\Z/)
 end
 
 Then(/^file symlinks are created in the new release$/) do
