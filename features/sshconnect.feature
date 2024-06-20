@@ -8,4 +8,4 @@ Feature: SSH Connection
   Scenario: Switching from default user to root and back again
     When I run cap "am_i_root"
     Then the task is successful
-    And the output matches "I am uid=0\(root\)" followed by "I am uid=\d+\(vagrant\)"
+    And the output matches "I am uid=0\(root\)" followed by "I am uid=\d+\(deployer\)"

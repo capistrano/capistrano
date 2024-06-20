@@ -68,16 +68,9 @@ jobs:
         run: bundle exec rake rubocop
   features:
     needs: [spec, spec-legacy]
-    runs-on: macos-12
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Cache Vagrant boxes
-        uses: actions/cache@v3
-        with:
-          path: ~/.vagrant.d/boxes
-          key: ${{ runner.os }}-vagrant-${{ hashFiles('Vagrantfile') }}
-          restore-keys: |
-            ${{ runner.os }}-vagrant-
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
