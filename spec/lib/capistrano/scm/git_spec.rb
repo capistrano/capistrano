@@ -19,6 +19,7 @@ module Capistrano
       Rake::Task.define_task("deploy:new_release_path")
       Rake::Task.define_task("deploy:check")
       Rake::Task.define_task("deploy:set_current_revision")
+      Rake::Task.define_task("deploy:set_current_revision_time")
     end
 
     # Clean up any tasks or variables that the plugin defined.
@@ -167,6 +168,15 @@ module Capistrano
         backend.expects(:capture).with(:git, "rev-list --max-count=1 branch").returns("81cec13b777ff46348693d327fc8e7832f79bf43")
         revision = subject.fetch_revision
         expect(revision).to eq("81cec13b777ff46348693d327fc8e7832f79bf43")
+      end
+    end
+
+    describe "#fetch_revision_time" do
+      it "should capture git log" do
+        env.set(:branch, "branch")
+        backend.expects(:capture).with(:git, "log -1 --pretty=format:\"%ct\" branch").returns("1715828406")
+        revision_time = subject.fetch_revision_time
+        expect(revision_time).to eq("1715828406")
       end
     end
 

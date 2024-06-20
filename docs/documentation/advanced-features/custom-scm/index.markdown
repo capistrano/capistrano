@@ -76,7 +76,7 @@ def register_hooks
 end
 ```
 
-### 3. Implement the set_current_revision task
+### 3. Implement the set_current_revision and set_current_revision_time tasks
 
 Similar to how you defined a `create_release`, you should also define a
 `set_current_revision` task. The purpose of this task is to set a special
@@ -89,6 +89,14 @@ set :current_revision, "..."
 # Register this hook to ensure your task runs
 before "deploy:set_current_revision", "foo:set_current_revision"
 ```
+
+Ideally you should also define a `set_current_revision_time` task, though this is
+not required for Capistrano to function. The purpose of this task is to set a 
+special variable which downstream users can use to have a version time that is
+independent of when the version was actually deployed, which can be useful when
+using scaling groups.
+
+The time should be a unix timestamp.
 
 ### 4. Use the plugin
 

@@ -26,6 +26,7 @@ class Capistrano::SCM::Git < Capistrano::SCM::Plugin
     after "deploy:new_release_path", "git:create_release"
     before "deploy:check", "git:check"
     before "deploy:set_current_revision", "git:set_current_revision"
+    before "deploy:set_current_revision_time", "git:set_current_revision_time"
   end
 
   def define_tasks
@@ -76,6 +77,10 @@ class Capistrano::SCM::Git < Capistrano::SCM::Plugin
 
   def fetch_revision
     backend.capture(:git, "rev-list --max-count=1 #{fetch(:branch)}")
+  end
+
+  def fetch_revision_time
+    backend.capture(:git, "log -1 --pretty=format:\"%ct\" #{fetch(:branch)}")
   end
 
   def git(*args)

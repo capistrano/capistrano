@@ -3,6 +3,7 @@ namespace :deploy do
     invoke "deploy:print_config_variables" if fetch(:print_config_variables, false)
     invoke "deploy:check"
     invoke "deploy:set_previous_revision"
+    invoke "deploy:set_previous_revision_time"
   end
 
   task :print_config_variables do
@@ -27,6 +28,7 @@ namespace :deploy do
 
   task updating: :new_release_path do
     invoke "deploy:set_current_revision"
+    invoke "deploy:set_current_revision_time"
     invoke "deploy:symlink:shared"
   end
 
@@ -249,6 +251,26 @@ namespace :deploy do
       target = release_path.join("REVISION")
       if test "[ -f #{target} ]"
         set(:previous_revision, capture(:cat, target, "2>/dev/null"))
+      end
+    end
+  end
+
+  desc "Place a REVISION_TIME file with the current revision commit time in the current release path"
+  task :set_current_revision_time do
+    on release_roles(:all) do
+      within release_path do
+        if fetch(:current_revision_time)
+          execute :echo, "\"#{fetch(:current_revision_time)}\" > REVISION_TIME"
+        end
+      end
+    end
+  end
+
+  task :set_previous_revision_time do
+    on release_roles(:all) do
+      target = release_path.join("REVISION_TIME")
+      if test "[ -f #{target} ]"
+        set(:previous_revision_time, capture(:cat, target, "2>/dev/null"))
       end
     end
   end

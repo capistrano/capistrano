@@ -50,6 +50,18 @@ Then(/^the release is created$/) do
   expect(stdout.strip).to match(/\A#{Time.now.utc.strftime("%Y%m%d")}\d{6}\Z/)
 end
 
+Then(/^the REVISION file is created in the release$/) do
+  stdout, _stderr = run_remote_ssh_command("cat #{@release_paths[0]}/REVISION")
+
+  expect(stdout.strip).to match(/\h{40}/)
+end
+
+Then(/^the REVISION_TIME file is created in the release$/) do
+  stdout, _stderr = run_remote_ssh_command("cat #{@release_paths[0]}/REVISION_TIME")
+
+  expect(stdout.strip).to match(/\d{10}/)
+end
+
 Then(/^file symlinks are created in the new release$/) do
   TestApp.linked_files.each do |file|
     run_remote_ssh_command(test_symlink_exists(TestApp.current_path.join(file)))
