@@ -25,11 +25,26 @@ class DockerGateway
 
   def run_compose_command(command)
     log "[docker compose] #{command}"
-    stdout, stderr, status = Open3.capture3("docker compose #{command}")
+    stdout, stderr, status = Open3.popen3("docker compose #{command}") do |stdin, stdout, stderr, wait_threads|
+      stdin << ""
+      stdin.close
+      out = Thread.new { read_lines(stdout, &$stdout.method(:puts)) }
+      err = Thread.new { stderr.read }
+      [out.value, err.value.to_s, wait_threads.value]
+    end
 
     (stdout + stderr).each_line { |line| log "[docker compose] #{line}" }
 
     [stdout, stderr, status]
+  end
+
+  def read_lines(io)
+    buffer = + ""
+    while (line = io.gets)
+      buffer << line
+      yield line
+    end
+    buffer
   end
 
   def log(message)
