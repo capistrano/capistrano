@@ -35,7 +35,11 @@ module Capistrano
             plugin.set_defaults
           end
         end
+        @scm_plugin = plugin if provides_scm?(plugin)
+        plugin
       end
+
+      attr_reader :scm_plugin
 
       def scm_installed?
         @scm_installed
