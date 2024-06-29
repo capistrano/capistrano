@@ -172,9 +172,9 @@ module Capistrano
     end
 
     describe "#fetch_revision_time" do
-      it "should capture git log" do
+      it "should capture git log without a pager" do
         env.set(:branch, "branch")
-        backend.expects(:capture).with(:git, "log -1 --pretty=format:\"%ct\" branch").returns("1715828406")
+        backend.expects(:capture).with(:git, "--no-pager log -1 --pretty=format:\"%ct\" branch").returns("1715828406")
         revision_time = subject.fetch_revision_time
         expect(revision_time).to eq("1715828406")
       end
