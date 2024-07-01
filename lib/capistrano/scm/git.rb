@@ -80,7 +80,7 @@ class Capistrano::SCM::Git < Capistrano::SCM::Plugin
   end
 
   def fetch_revision_time
-    backend.capture(:git, "log -1 --pretty=format:\"%ct\" #{fetch(:branch)}")
+    backend.capture(:git, "--no-pager log -1 --pretty=format:\"%ct\" #{fetch(:branch)}")
   end
 
   def git(*args)
