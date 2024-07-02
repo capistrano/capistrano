@@ -73,6 +73,14 @@ module Capistrano
     # rubocop:enable Security/MarshalLoad
 
     def run_locally(&block)
+      if dry_run?
+        SSHKit::Backend::Printer.new(SSHKit::Host.new(:local), &block).run
+      else
+        SSHKit::Backend::Local.new(&block).run
+      end
+    end
+
+    def run_locally!(&block)
       SSHKit::Backend::Local.new(&block).run
     end
 
