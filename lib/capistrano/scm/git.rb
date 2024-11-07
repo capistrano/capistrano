@@ -2,6 +2,7 @@ require "capistrano/scm/plugin"
 require "cgi"
 require "securerandom"
 require "shellwords"
+require "stringio"
 require "uri"
 
 class Capistrano::SCM::Git < Capistrano::SCM::Plugin
