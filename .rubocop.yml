@@ -13,16 +13,13 @@ Metrics/BlockLength:
     - "lib/**/*.rake"
 Style/BarePercentLiterals:
   EnforcedStyle: percent_q
-Style/BracesAroundHashParameters:
-  Exclude:
-    - spec/integration/dsl_spec.rb
 Style/ClassAndModuleChildren:
   Enabled: false
 Style/DoubleNegation:
   Enabled: false
 Style/IndentHeredoc:
   Enabled: false
-Style/SpaceAroundEqualsInParameterDefault:
+Layout/SpaceAroundEqualsInParameterDefault:
   EnforcedStyle: no_space
 Style/StringLiterals:
   EnforcedStyle: double_quotes
@@ -48,7 +45,7 @@ Metrics/MethodLength:
   Enabled: false
 Style/PredicateName:
   Enabled: false
-Metrics/LineLength:
+Layout/LineLength:
   Enabled: false
 Metrics/AbcSize:
   Enabled: false
@@ -58,5 +55,5 @@ Metrics/ClassLength:
   Enabled: false
 Metrics/ModuleLength:
   Enabled: false
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false
