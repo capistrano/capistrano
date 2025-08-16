@@ -50,7 +50,7 @@ correct, we are allowed to login.
   2. Open "Git Bash" and follow next instructions always inside Git Bash prompt.
   3. Activate ssh-agent: ```$ eval "$(ssh-agent -s)" ```
 
-**Note:** If you want to use [Putty tool](https://www.putty.org/) to connect to remote server (from Windows) with ssh keys, then you need to generate ppk file, through puttygen tool.
+**Note:** If you want to use [Putty tool](https://putty.software/) to connect to remote server (from Windows) with ssh keys, then you need to generate ppk file, through puttygen tool.
 
 
 **Hint:** If you have more than one developer in your team, they should all add their
