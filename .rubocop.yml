@@ -1,10 +1,21 @@
+inherit_from: .rubocop_todo.yml
+
 AllCops:
   DisplayCopNames: true
   DisplayStyleGuide: true
-  TargetRubyVersion: 2.0
+  NewCops: disable
+  SuggestExtensions: false
+  TargetRubyVersion: 2.5
 
+Layout/HeredocIndentation:
+  Enabled: false
+Layout/SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space
 Lint/AmbiguousBlockAssociation:
   Enabled: false
+Lint/EmptyFile:
+  Exclude:
+    - "lib/capistrano.rb"
 Metrics/BlockLength:
   Exclude:
     - "*.gemspec"
@@ -12,17 +23,12 @@ Metrics/BlockLength:
     - "lib/**/*.rake"
 Style/BarePercentLiterals:
   EnforcedStyle: percent_q
-Style/BracesAroundHashParameters:
-  Exclude:
-    - spec/integration/dsl_spec.rb
 Style/ClassAndModuleChildren:
   Enabled: false
 Style/DoubleNegation:
   Enabled: false
-Style/IndentHeredoc:
+Style/FrozenStringLiteralComment:
   Enabled: false
-Style/SpaceAroundEqualsInParameterDefault:
-  EnforcedStyle: no_space
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 Style/TrivialAccessors:
@@ -45,9 +51,9 @@ Metrics/CyclomaticComplexity:
   Enabled: false
 Metrics/MethodLength:
   Enabled: false
-Style/PredicateName:
+Naming/PredicatePrefix:
   Enabled: false
-Metrics/LineLength:
+Layout/LineLength:
   Enabled: false
 Metrics/AbcSize:
   Enabled: false
@@ -57,5 +63,5 @@ Metrics/ClassLength:
   Enabled: false
 Metrics/ModuleLength:
   Enabled: false
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false

@@ -15,7 +15,7 @@ RSpec::Core::RakeTask.new
 begin
   require "cucumber/rake/task"
   Cucumber::Rake::Task.new(:features)
-rescue LoadError # rubocop:disable Lint/HandleExceptions
+rescue LoadError # rubocop:disable Lint/SuppressedException
 end
 
 Rake::Task["release"].enhance do

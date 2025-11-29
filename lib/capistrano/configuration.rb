@@ -49,7 +49,7 @@ module Capistrano
       if value && value.respond_to?(:any?)
         begin
           return value.any?
-        rescue ArgumentError # rubocop:disable Lint/HandleExceptions
+        rescue ArgumentError
           # Gracefully ignore values whose `any?` method doesn't accept 0 args
         end
       end
