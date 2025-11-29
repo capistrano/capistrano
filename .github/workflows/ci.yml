@@ -8,20 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby:
-          [
-            "2.3",
-            "2.4",
-            "2.5",
-            "2.6",
-            "2.7",
-            "3.0",
-            "3.1",
-            "3.2",
-            "3.3",
-            "3.4",
-            "head",
-          ]
+        ruby: ["3.1", "3.2", "3.3", "3.4", "head"]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Ruby
@@ -32,10 +19,12 @@ jobs:
       - name: rake spec
         run: bundle exec rake spec
   spec-legacy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        ruby: ["2.0", "2.1", "2.2"]
+        ruby: ["2.5", "2.6", "2.7", "3.0"]
+    env:
+      BUNDLE_GEMFILE: gemfiles/legacy.gemfile
     steps:
       - uses: actions/checkout@v4
       - name: Set up Ruby
@@ -63,12 +52,12 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "ruby" # latest-stable
-          bundler-cache: true
-      - name: rake rubocop
-        run: bundle exec rake rubocop
+          ruby-version: "2.7"
+          bundler: none
+      - run: gem install rubocop --version 0.48.1
+      - run: rubocop
   features:
-    needs: [spec, spec-legacy]
+    needs: spec-all
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
