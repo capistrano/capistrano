@@ -96,7 +96,7 @@ Capistrano 3 expects a POSIX shell like Bash or Sh. Shells like tcsh, csh, and s
 
 ### Requirements
 
-* Ruby version 2.0 or higher on your local machine (MRI or Rubinius)
+* Ruby version 2.5 or higher on your local machine (MRI or Rubinius)
 * A project that uses source control (Git, Mercurial, and Subversion support is built-in)
 * The SCM binaries (e.g. `git`, `hg`) needed to check out your project must be installed on the server(s) you are deploying to
 * [Bundler](http://bundler.io), along with a Gemfile for your project, are recommended

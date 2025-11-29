@@ -1,5 +1,4 @@
 require "bundler/gem_tasks"
-require "cucumber/rake/task"
 require "rspec/core/rake_task"
 
 begin
@@ -12,7 +11,12 @@ rescue LoadError
 end
 
 RSpec::Core::RakeTask.new
-Cucumber::Rake::Task.new(:features)
+
+begin
+  require "cucumber/rake/task"
+  Cucumber::Rake::Task.new(:features)
+rescue LoadError # rubocop:disable Lint/HandleExceptions
+end
 
 Rake::Task["release"].enhance do
   puts "Don't forget to publish the release on GitHub!"
