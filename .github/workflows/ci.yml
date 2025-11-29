@@ -10,7 +10,7 @@ jobs:
       matrix:
         ruby: ["3.1", "3.2", "3.3", "3.4", "head"]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -26,7 +26,7 @@ jobs:
     env:
       BUNDLE_GEMFILE: gemfiles/legacy.gemfile
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -48,7 +48,7 @@ jobs:
   rubocop:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -59,7 +59,7 @@ jobs:
     needs: spec-all
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
