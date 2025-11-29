@@ -52,10 +52,9 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "2.7"
-          bundler: none
-      - run: gem install rubocop --version 0.48.1
-      - run: rubocop
+          ruby-version: "ruby" # latest-stable
+          bundler-cache: true
+      - run: bundle exec rubocop
   features:
     needs: spec-all
     runs-on: ubuntu-latest
