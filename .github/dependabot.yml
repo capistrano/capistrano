@@ -1,0 +1,20 @@
+version: 2
+updates:
+  - package-ecosystem: bundler
+    directory: "/"
+    schedule:
+      interval: monthly
+      time: "16:00"
+      timezone: America/Los_Angeles
+    open-pull-requests-limit: 10
+    labels:
+      - "🏠 Housekeeping"
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: monthly
+      time: "16:00"
+      timezone: America/Los_Angeles
+    open-pull-requests-limit: 10
+    labels:
+      - "🏠 Housekeeping"
