@@ -39,6 +39,12 @@ Style/SingleLineBlockParams:
   Enabled: false
 Style/ModuleFunction:
   Enabled: false
+Style/FormatStringToken:
+  EnforcedStyle: template
+Style/StringLiteralsInInterpolation:
+  Enabled: false
+Style/StderrPuts:
+  Enabled: false
 
 # Enable someday
 Style/Documentation:
