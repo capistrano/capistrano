@@ -31,6 +31,11 @@ module Capistrano
           expect(Rake::Task["git:wrapper"]).not_to be_nil
         end
 
+        it "exposes the scm plugin instance in the DSL", capture_io: true do
+          resolver.resolve
+          expect(scm_plugin).to be_a(Capistrano::SCM::Git)
+        end
+
         it "sets :scm to :git", capture_io: true do
           resolver.resolve
           expect(fetch(:scm)).to eq(:git)
@@ -44,6 +49,11 @@ module Capistrano
 
         it "emits no warning" do
           expect { resolver.resolve }.not_to output.to_stderr
+        end
+
+        it "exposes the scm plugin instance in the DSL" do
+          resolver.resolve
+          expect(scm_plugin).to be_a(Capistrano::SCM::Git)
         end
 
         it "deletes :scm" do
