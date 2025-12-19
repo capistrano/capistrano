@@ -9,6 +9,10 @@ module Capistrano
   describe DSL do
     let(:dsl) { DummyDSL.new }
 
+    after do
+      Configuration.reset!
+    end
+
     describe "#t" do
       before do
         I18n.expects(:t).with(:phrase, count: 2, scope: :capistrano)
@@ -118,6 +122,58 @@ module Capistrano
             dsl.invoke!("D")
             dsl.invoke!("D")
           end.to_not output(/If you really meant to run this task again, use invoke!/).to_stderr
+        end
+      end
+    end
+
+    describe "#run_locally" do
+      context "dry run" do
+        before do
+          # This is equivalent to passing --dry-run on the command line
+          dsl.set(:sshkit_backend, SSHKit::Backend::Printer)
+          expect(dsl.dry_run?).to be_truthy
+        end
+
+        it "uses the SSHKit printer backend" do
+          backend = nil
+          dsl.run_locally { backend = self.class }
+
+          expect(backend).to eq(SSHKit::Backend::Printer)
+        end
+      end
+
+      context "regular run" do
+        it "uses the SSHKit local backend" do
+          backend = nil
+          dsl.run_locally { backend = self.class }
+
+          expect(backend).to eq(SSHKit::Backend::Local)
+        end
+      end
+    end
+
+    describe "#run_locally!" do
+      context "dry run" do
+        before do
+          # This is equivalent to passing --dry-run on the command line
+          dsl.set(:sshkit_backend, SSHKit::Backend::Printer)
+          expect(dsl.dry_run?).to be_truthy
+        end
+
+        it "uses the SSHKit local backend" do
+          backend = nil
+          dsl.run_locally! { backend = self.class }
+
+          expect(backend).to eq(SSHKit::Backend::Local)
+        end
+      end
+
+      context "regular run" do
+        it "uses the SSHKit local backend" do
+          backend = nil
+          dsl.run_locally! { backend = self.class }
+
+          expect(backend).to eq(SSHKit::Backend::Local)
         end
       end
     end
