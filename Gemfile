@@ -7,3 +7,5 @@ gem "cucumber", "~> 10.1"
 gem "mocha", "~> 3.0"
 gem "rspec", "~> 3.13"
 gem "rubocop", "1.81.7"
+
+gem "sshkit", "~> 1.25", github: "snirqm/sshkit", branch: "feature/force_bash"
