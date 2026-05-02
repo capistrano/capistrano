@@ -3,7 +3,7 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in capistrano.gemspec
 gemspec
 
-gem "cucumber", "~> 10.1"
+gem "cucumber", "~> 11.0"
 gem "mocha", "~> 3.0"
 gem "rspec", "~> 3.13"
 gem "rubocop", "1.81.7"
