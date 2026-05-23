@@ -196,6 +196,42 @@ namespace :deploy do
     end
   end
 
+  desc "Remove failed release if enabled"
+  task :remove_failed_release do
+    next unless fetch(:remove_failed_release)
+
+    failed_release_path = fetch(:release_path, nil)
+    next unless failed_release_path
+
+    on release_roles(:all) do |host|
+      next unless test "[ -d #{failed_release_path} ]"
+
+      if test "[ -d #{current_path} ]"
+        current_release = nil
+        failed_release = nil
+
+        # Use `pwd -P` instead of `readlink -f`.
+        # The `-f` option is not supported on macOS/BSD systems,
+        # so `pwd -P` ensures compatibility by resolving the physical path.
+        within current_path do
+          current_release = capture(:pwd, "-P").strip
+        end
+
+        within failed_release_path do
+          failed_release = capture(:pwd, "-P").strip
+        end
+
+        if current_release == failed_release
+          warn t(:wont_delete_current_release_on_failure, host: host.to_s, release: failed_release_path)
+          next
+        end
+      end
+
+      info t(:removing_failed_release, host: host.to_s, release: failed_release_path)
+      execute :rm, "-rf", failed_release_path
+    end
+  end
+
   desc "Log details of the deploy"
   task :log_revision do
     on release_roles(:all) do
@@ -278,3 +314,5 @@ namespace :deploy do
   task :restart
   task :failed
 end
+
+after "deploy:failed", "deploy:remove_failed_release"

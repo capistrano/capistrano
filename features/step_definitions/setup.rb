@@ -11,6 +11,10 @@ Given(/^servers with the roles app and web$/) do
   wait_for_ssh_server
 end
 
+Given(/^an empty deploy directory$/) do
+  run_remote_ssh_command("rm -rf #{TestApp.deploy_to}")
+end
+
 Given(/^a linked file "(.*?)"$/) do |file|
   # ignoring other linked files
   TestApp.append_to_deploy_file("set :linked_files, ['#{file}']")
@@ -53,6 +57,10 @@ end
 Given(/^a custom task that will simulate a failure$/) do
   safely_remove_file(TestApp.shared_path.join("failed"))
   TestApp.copy_task_to_test_app("spec/support/tasks/fail.rake")
+end
+
+Given(/^a custom task to create a failed release directory$/) do
+  TestApp.copy_task_to_test_app("spec/support/tasks/create_failed_release_directory.rake")
 end
 
 Given(/^a custom task to run in the event of a failure$/) do
