@@ -17,7 +17,8 @@ Gem::Specification.new do |gem|
     "changelog_uri" => "https://github.com/capistrano/capistrano/releases",
     "source_code_uri" => "https://github.com/capistrano/capistrano",
     "homepage_uri" => "https://capistranorb.com/",
-    "documentation_uri" => "https://capistranorb.com/"
+    "documentation_uri" => "https://capistranorb.com/",
+    "rubygems_mfa_required" => "true"
   }
   gem.files         = `git ls-files -z`.split("\x0").reject { |f| f =~ /^docs/ }
   gem.executables   = %w(cap capify)
