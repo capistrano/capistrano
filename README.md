@@ -1,7 +1,7 @@
 
 # Capistrano: A deployment automation tool built on Ruby, Rake, and SSH.
 
-[![Gem Version](https://badge.fury.io/rb/capistrano.svg)](http://badge.fury.io/rb/capistrano) [![Build Status](https://github.com/capistrano/capistrano/actions/workflows/ci.yml/badge.svg)](https://github.com/capistrano/capistrano/actions/workflows/ci.yml) [![Code Climate](https://codeclimate.com/github/capistrano/capistrano/badges/gpa.svg)](https://codeclimate.com/github/capistrano/capistrano) [![CodersClan](https://img.shields.io/badge/get-support-blue.svg)](http://codersclan.net/?repo_id=325&source=small)
+[![Gem Version](https://badge.fury.io/rb/capistrano.svg)](https://badge.fury.io/rb/capistrano) [![Build Status](https://github.com/capistrano/capistrano/actions/workflows/ci.yml/badge.svg)](https://github.com/capistrano/capistrano/actions/workflows/ci.yml) [![Code Climate](https://codeclimate.com/github/capistrano/capistrano/badges/gpa.svg)](https://codeclimate.com/github/capistrano/capistrano) [![CodersClan](https://img.shields.io/badge/get-support-blue.svg)](https://codersclan.net/?repo_id=325&source=small)
 
 Capistrano is a framework for building automated deployment scripts. Although Capistrano itself is written in Ruby, it can easily be used to deploy projects of any language or framework, be it Rails, Java, or PHP.
 
@@ -99,7 +99,7 @@ Capistrano 3 expects a POSIX shell like Bash or Sh. Shells like tcsh, csh, and s
 * Ruby version 2.5 or higher on your local machine (MRI or Rubinius)
 * A project that uses source control (Git, Mercurial, and Subversion support is built-in)
 * The SCM binaries (e.g. `git`, `hg`) needed to check out your project must be installed on the server(s) you are deploying to
-* [Bundler](http://bundler.io), along with a Gemfile for your project, are recommended
+* [Bundler](https://bundler.io), along with a Gemfile for your project, are recommended
 
 ### Install the Capistrano gem
 
@@ -177,10 +177,10 @@ $ bundle exec cap production deploy --print-config-variables
 
 Capistrano is a large project encompassing multiple GitHub repositories and a community of plugins, and it can be overwhelming when you are just getting started. Here are resources that can help:
 
-* **The [docs](docs) directory contains the official documentation**, and is used to generate the [Capistrano website](http://capistranorb.com)
-* [Stack Overflow](http://stackoverflow.com/questions/tagged/capistrano) has a Capistrano tag with lots of activity
+* **The [docs](docs) directory contains the official documentation**, and is used to generate the [Capistrano website](https://capistranorb.com)
+* [Stack Overflow](https://stackoverflow.com/questions/tagged/capistrano) has a Capistrano tag with lots of activity
 * [The Capistrano mailing list](https://groups.google.com/forum/#!forum/capistrano) is low-traffic but is monitored by Capistrano contributors
-* [CodersClan](http://codersclan.net/?repo_id=325&source=link) has Capistrano experts available to solve problems for bounties
+* [CodersClan](https://codersclan.net/?repo_id=325&source=link) has Capistrano experts available to solve problems for bounties
 
 Related GitHub repositories:
 
