@@ -109,6 +109,11 @@ The following variables are settable:
   * The last `n` releases are kept for possible rollbacks.
   * The cleanup task detects outdated release folders and removes them if needed.
 
+* `:remove_failed_release`
+  * **default:** `false`
+  * Remove the failed `release_path` after `deploy:failed`, unless `current` points to that release.
+  * This can prevent failed releases from consuming `:keep_releases` slots.
+
 * `:tmp_dir`
   * **default:** `'/tmp'`
   * Temporary directory used during deployments to store data.

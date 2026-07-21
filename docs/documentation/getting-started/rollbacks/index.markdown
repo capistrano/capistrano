@@ -35,6 +35,10 @@ end
 
 This is different from a specifically invoked rollback, and is application specific. *For reasons stated above, it can be dangerous to use this hook without careful testing.*
 
+If you want Capistrano to remove the failed release directory after a failed
+deployment, set `:remove_failed_release` to `true`. Capistrano will skip removal
+when `current` points to the failed release.
+
 ### `deploy:rollback ROLLBACK_RELEASE=release`
 
 Rollback to a specific release using the `ROLLBACK_RELEASE` environment variable.

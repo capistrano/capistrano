@@ -19,6 +19,8 @@ en = {
   wont_delete_current_release: "Current release was marked for being removed but it's going to be skipped on %{host}",
   no_current_release: "There is no current release present on %{host}",
   no_old_releases: "No old releases (keeping newest %{keep_releases}) on %{host}",
+  removing_failed_release: "Removing failed release %{release} on %{host}",
+  wont_delete_current_release_on_failure: "Failed release %{release} is current on %{host}; skipping removal",
   linked_file_does_not_exist: "linked file %{file} does not exist on %{host}",
   cannot_rollback: "There are no older releases to rollback to",
   cannot_found_rollback_release: "Cannot rollback because release %{release} does not exist",
