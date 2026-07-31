@@ -32,5 +32,6 @@ set_if_empty :format, :airbrussh
 set_if_empty :log_level, :debug
 
 set_if_empty :pty, false
+set_if_empty :force_bash, false
 
 set_if_empty :local_user, -> { ENV["USER"] || ENV["LOGNAME"] || ENV["USERNAME"] }

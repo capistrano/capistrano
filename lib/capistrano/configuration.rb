@@ -99,6 +99,7 @@ module Capistrano
         sshkit.default_env      = fetch(:default_env)
         sshkit.backend          = fetch(:sshkit_backend, SSHKit::Backend::Netssh)
         sshkit.backend.configure do |backend|
+          backend.force_bash         = fetch(:force_bash)
           backend.pty                = fetch(:pty)
           backend.connection_timeout = fetch(:connection_timeout)
           backend.ssh_options        = (backend.ssh_options || {}).merge(fetch(:ssh_options, {}))
