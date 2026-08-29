@@ -28,10 +28,11 @@ module Capistrano
       end
 
       def untrusted!
+        was_trusted = @trusted
         @trusted = false
         yield
       ensure
-        @trusted = true
+        @trusted = was_trusted
       end
 
       def set(key, value=nil, &block)
