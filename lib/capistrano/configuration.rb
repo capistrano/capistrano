@@ -128,6 +128,7 @@ module Capistrano
       end
       @custom_filters ||= []
       @custom_filters << filter
+      @filters = nil
     end
 
     def setup_filters
@@ -144,6 +145,7 @@ module Capistrano
 
     def add_cmdline_filter(type, values)
       cmdline_filters << Filter.new(type, values)
+      @filters = nil
     end
 
     def filter(list)
