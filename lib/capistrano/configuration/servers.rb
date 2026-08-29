@@ -29,6 +29,7 @@ module Capistrano
       # rubocop:enable Security/MarshalLoad
 
       def roles_for(names)
+        names = names.dup
         options = extract_options(names)
         s = Filter.new(:role, names).filter(servers_by_key.values)
         s.select { |server| server.select?(options) }

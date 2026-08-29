@@ -19,11 +19,9 @@ module Capistrano
       end
 
       def release_roles(*names)
-        if names.last.is_a? Hash
-          names.last[:exclude] = :no_release
-        else
-          names << { exclude: :no_release }
-        end
+        options = names.last.is_a?(Hash) ? names.pop.dup : {}
+        options[:exclude] = :no_release
+        names << options
         roles(*names)
       end
 
