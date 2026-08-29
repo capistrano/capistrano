@@ -66,7 +66,7 @@ module Capistrano
       end
 
       def location(key)
-        loc = variables.source_locations(key).first
+        loc = variables.source_locations(key)&.first
         loc && loc.sub(/^#{Regexp.quote(Dir.pwd)}/, "").sub(/:in.*/, "")
       end
     end
