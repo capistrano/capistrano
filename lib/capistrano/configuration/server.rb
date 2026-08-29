@@ -79,6 +79,9 @@ module Capistrano
       end
 
       class Properties
+        UNDEFINED = Object.new.freeze
+        private_constant :UNDEFINED
+
         def initialize
           @properties = {}
         end
@@ -112,11 +115,11 @@ module Capistrano
           @properties.keys
         end
 
-        def method_missing(key, value=nil)
-          if value
-            set(lvalue(key), value)
-          else
+        def method_missing(key, value=UNDEFINED)
+          if value.equal?(UNDEFINED)
             fetch(key)
+          else
+            set(lvalue(key), value)
           end
         end
 
