@@ -43,7 +43,7 @@ module Capistrano
         else
           stdin.noecho(&:gets).tap { $stdout.print "\n" }
         end
-      rescue Errno::EIO
+      rescue Errno::EIO, IOError
         # when stdio gets closed
         return
       end
