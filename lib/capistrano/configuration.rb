@@ -119,9 +119,7 @@ module Capistrano
         raise ArgumentError, "Both a block and an object were given" if filter
 
         filter = Object.new
-        def filter.filter(servers)
-          block.call(servers)
-        end
+        filter.define_singleton_method(:filter, &block)
       elsif !filter.respond_to? :filter
         raise TypeError, "Provided custom filter <#{filter.inspect}> does " \
                          "not have a public 'filter' method"
