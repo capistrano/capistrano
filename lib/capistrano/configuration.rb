@@ -37,7 +37,7 @@ module Capistrano
     end
 
     def append(key, *values)
-      set(key, Array(fetch(key)).concat(values))
+      set(key, Array(fetch(key)).dup.concat(values))
     end
 
     def remove(key, *values)

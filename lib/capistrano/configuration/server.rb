@@ -85,15 +85,15 @@ module Capistrano
 
         def set(key, value)
           pval = @properties[key]
-          if pval.is_a?(Hash) && value.is_a?(Hash)
-            pval.merge!(value)
-          elsif pval.is_a?(Set) && value.is_a?(Set)
-            pval.merge(value)
-          elsif pval.is_a?(Array) && value.is_a?(Array)
-            pval.concat value
-          else
-            @properties[key] = value
-          end
+          @properties[key] = if pval.is_a?(Hash) && value.is_a?(Hash)
+                               pval.merge(value)
+                             elsif pval.is_a?(Set) && value.is_a?(Set)
+                               pval | value
+                             elsif pval.is_a?(Array) && value.is_a?(Array)
+                               pval + value
+                             else
+                               duplicate_collection(value)
+                             end
         end
 
         def fetch(key)
@@ -125,6 +125,10 @@ module Capistrano
         end
 
         private
+
+        def duplicate_collection(value)
+          value.is_a?(Hash) || value.is_a?(Set) || value.is_a?(Array) ? value.dup : value
+        end
 
         def lvalue(key)
           key.to_s.chomp("=").to_sym
